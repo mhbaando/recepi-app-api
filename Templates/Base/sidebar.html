@@ -91,7 +91,7 @@
 
   <ul class="menu-inner py-1">
     <!-- Dashboards -->
-    <li class="menu-item">
+    <li class="menu-item {% if pageTitle == 'Dashboard' %}active{% endif %}">
       <a href="app-email.html" class="menu-link">
         <i class="menu-icon tf-icons bx bx-envelope"></i>
         <div data-i18n="Email">Dashboard</div>
@@ -136,20 +136,20 @@
       </ul>
     </li>
 
-    <li class="menu-item">
+    <li class="menu-item {% if pageTitle == 'Account List' or pageTitle == '' %}active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
         <div data-i18n="Dashboards">Payments</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item">
-          <a href="dashboards-analytics.html" class="menu-link">
+        <li class="menu-item {% if pageTitle == 'Account List' %}active{% endif %}">
+          <a href={% url 'AccountsPage' %} class="menu-link">
             <div data-i18n="Analytics">Accounts</div>
           </a>
         </li>
-        <li class="menu-item">
-          <a href="dashboards-crm.html" class="menu-link">
-            <div data-i18n="CRM">Account List</div>
+        <li class="menu-item {% if pageTitle == 'Receipt List' %}active{% endif %}">
+          <a href={% url 'AddAccount' %} class="menu-link">
+            <div data-i18n="Analytics">Receipts</div>
           </a>
         </li>
       </ul>
