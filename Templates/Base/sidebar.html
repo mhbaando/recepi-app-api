@@ -12,7 +12,7 @@
   <ul class="menu-inner py-1">
     <!-- Dashboards -->
     <li class="menu-item {% if pageTitle == 'Dashboard' %}active{% endif %}">
-      <a href="app-email.html" class="menu-link">
+      <a href="{% url 'Dashboard'%} " class="menu-link">
         <i class="menu-icon tf-icons bx bx-envelope"></i>
         <div data-i18n="Email">Dashboard</div>
       </a>
