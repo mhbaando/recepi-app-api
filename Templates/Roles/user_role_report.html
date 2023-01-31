@@ -1,0 +1,145 @@
+{% extends "../Base/index.html" %}
+{% load static %}
+{% block PageTitle %}
+<title>User Roles Report</title>
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Roles</h4>
+                        {% csrf_token %}
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Roles</a></li>
+                                <li class="breadcrumb-item active">User Roles Report</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            
+                   <div class="row">
+            {% csrf_token %}
+            <div class="col-md-12">
+                <div class="accordion custom-accordionwithicon accordion-fill-primary" id="accordionFill">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="accordionFillExample1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accor_fill1" aria-expanded="true" aria-controls="accor_fill1">
+                                Select Filters
+                            </button>
+                        </h2>
+                        <div id="accor_fill1" class="accordion-collapse collapse show" aria-labelledby="accordionFillExample1" data-bs-parent="#accordionFill">
+                            <div class="accordion-body">
+                                 <div class="row w-100">
+                                    <div class="col-md-9 mb-2">
+                                        <label class="form-label">Search User</label>
+                                        <input type="text" required
+                                            data-pristine-required-message="Please Enter User Credentials"
+                                            id="search_user" class="form-control" placeholder="User Credentials" />
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="" class="form-label">Select Filter Type</label>
+                                        <select class="form-control" name="" id="RoleType">
+                                            <option value="Role">Role</option>
+                                            <option value="Group">Group</option>
+                                        </select>
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+              
+              </div>
+
+              <div class="col-md-12 mt-2">
+                <div class="card w-100">
+                    <div class="card-body">
+                    <div class="mt-4 table-responsive">
+
+                    <table id="rolesList" class="table table-striped table-bordered text-nowrap w-100">
+                        <thead>
+                            <tr>
+                                <td class="wd-20p">App</td>
+                                <td class="wd-20p">Modal</td>
+                                <td class="wd-60p">Codename</td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <table id="groupsList" class="d-none table table-striped table-bordered text-nowrap w-100">
+                        <thead>
+                            <tr>
+                                <td class="wd-20p">Group Name</td>
+                                <td class="wd-20p">Permissions</td>
+                                <td class="wd-20p">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+              </div>
+                </div>
+           
+        </div>
+  
+  
+    </div>
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+
+</div>
+
+
+<!-- Show Permissions -->
+<div class="modal fade zoomIn group_permisions_roles" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zoomInModalLabel">Add Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                  <table id="group_permisions_rolesTable" class="table table-bordered dt-responsive w-100">
+                  <thead>
+                      <tr>
+                          <th>Model</th>
+                          <th>Name</th>
+                          <th>Code Name</th>
+                          {% if perms.Users.remove_role_from_group %}
+                          <th>Action</th>
+                          {% endif %}
+                  </thead>
+
+                  <tbody></tbody>
+              </table>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+{% endblock %}
+
+{% block ScriptBlock %}
+<script src={% static 'scripts/role/user_roles_report.js' %}></script>
+{% endblock %}
