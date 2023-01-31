@@ -98,7 +98,7 @@ def AccountsPage(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
-        'pageTitle': 'Account List',
+        'pageTitle': 'Accounts',
         'page_obj': page_obj,
         'SearchQuery': SearchQuery,
         'DataNumber': DataNumber,
