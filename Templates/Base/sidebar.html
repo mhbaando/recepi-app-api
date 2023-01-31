@@ -74,6 +74,29 @@
         </li>
       </ul>
     </li>
+    <li class="menu-item {% if pageTitle == 'Register License' or pageTitle == 'Renew License' or  pageTitle == 'license Lists' %}active open{% endif %}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
+        <div data-i18n="Dashboards">License</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item {% if pageTitle == 'Register License' %}active{% endif %}">
+          <a href={% url 'NewLicense' %} class="menu-link">
+            <div data-i18n="Analytics">New License</div>
+          </a>
+        </li>
+        <li class="menu-item {% if pageTitle == 'Renew License' %}active{% endif %}">
+          <a href={% url 'ReNewLicense' %} class="menu-link">
+            <div data-i18n="Analytics">Re-new License</div>
+          </a>
+        </li>
+        <li class="menu-item {% if pageTitle == 'license Lists' %}active{% endif %}">
+          <a href={% url 'LicenseLists' %} class="menu-link">
+            <div data-i18n="Analytics">License Lists</div>
+          </a>
+        </li>
+      </ul>
+    </li>
 
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
