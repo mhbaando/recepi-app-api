@@ -6,7 +6,6 @@ from django.core.paginator import Paginator
 # Register License
 
 
-@login_required(login_url='user_login')
 def NewLicense(request):
     context = {
         'pageTitle': 'Register License'
@@ -16,7 +15,6 @@ def NewLicense(request):
 # Re-New License
 
 
-@login_required(login_url='user_login')
 def ReNewLicense(request):
     context = {
         'pageTitle': 'Renew License'
@@ -25,7 +23,6 @@ def ReNewLicense(request):
 # License Lists
 
 
-@login_required(login_url='user_login')
 def LicenseLists(request):
     licenselist = [
         {
