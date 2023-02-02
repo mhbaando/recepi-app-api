@@ -22,12 +22,9 @@
                                     <label class="form-label" for="account-type">Account Type</label>
                                     <select name="" id="account-type" class="form-select select2">
                                         <option value="">Select account type</option>
-                                        <option value="Moto">Moto</option>
-                                        <option value="Vehicle">Vehicle</option>
-                                        <option value="License">License</option>
-                                        <option value="Remoor">Remoor</option>
-                                        <option value="Plate">Plate</option>
-                                        <option value="Moto">Moto</option>
+                                        {% for item in account_types %}
+                                        <option value={{item.type_id}}>{{item.name}}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <div class="mb-3">
@@ -46,7 +43,7 @@
                                     </div>
                                     <div class="col-sm-auto ms-auto">
                                         <div class="hstack gap-2">
-                                           <button type="submit" class="btn btn-primary text-right">Send</button>
+                                           <button type="button" class="btn btn-primary text-right" id="add_new_account">Send</button>
                                             <a href={% url 'AccountsPage' %} class="btn btn-danger">
                                                 Go Back
                                             </a>
