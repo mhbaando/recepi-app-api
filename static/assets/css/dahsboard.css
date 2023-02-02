@@ -40,6 +40,21 @@
 
 
 /* license */
+
+.license-card-holder{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows:auto ;
+    gap: 15px;
+
+    margin: 5px 0;
+}
+
+.license-card-holder:last-child{
+    column-span: all;
+    border: 1px solid reds;
+}
+
 .license-card {
     display: flex;
     align-items: center;
@@ -53,6 +68,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
 
+    margin: 5px 0;
 }
 
 .license-card:hover {
