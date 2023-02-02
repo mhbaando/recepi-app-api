@@ -14,7 +14,10 @@ class Users(AbstractUser):
     gender = models.CharField(max_length=10, null=True, blank=True)
     avatar = models.FileField(upload_to="Avatars/")
     is_admin = models.BooleanField(default=False)
+    is_state = models.BooleanField(default=False)
     modified_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    federal_state = models.ForeignKey(
+        'Customers.federal_state', on_delete=models.RESTRICT, blank=True, null=True)  # Federal state
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

@@ -140,12 +140,12 @@
 
         if (search != '') {
             url = 
-                `/license_lists?DataNumber=${entries}&Status=${Status}&SearchQuery=${search}&page=${page}`
+                `/vehicles/license_lists?DataNumber=${entries}&Status=${Status}&SearchQuery=${search}&page=${page}`
         }
 
         else {
             url = 
-                `/license_lists?DataNumber=${entries}&Status=${Status}&page=${page}`
+                `/vehicles/license_lists?DataNumber=${entries}&Status=${Status}&page=${page}`
         }
 
         window.location.replace(url);
