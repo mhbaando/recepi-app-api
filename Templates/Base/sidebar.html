@@ -34,27 +34,24 @@
     </li>
     <!-- company -->
 
-
-
-
-    <li class="menu-item">
+    <li class="menu-item {% if pageTitle == 'register company' or pageTitle == 'view_Company' or pageTitle == 'detail company' or pageTitle == 'block company'  %}active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <i class="menu-icon tf-icons bx bx-building"></i>
         <div data-i18n="Dashboards">Company</div>
       </a>
-      <ul class="menu-sub">
-        <li class="menu-item">
-          <a href="{% url 'register' %}"class="menu-link">
+      <ul class="menu-sub ">
+        <li class="menu-item {% if pageTitle == 'register company' %}active {% endif %}">
+          <a href="{% url 'register_company' %}"class="menu-link">
             <div data-i18n="Analytics">Register</div>
           </a>
         </li>
-        <li class="menu-item">
-          <a href="{% url 'comapny-block' %}" class="menu-link">
+        <li class="menu-item {% if pageTitle == 'block company' %}active {% endif %}">
+          <a href="{% url 'comapny_block' %}" class="menu-link">
             <div data-i18n="Analytics">Block Company</div>
           </a>
         </li>
         
-        <li class="menu-item">
+        <li class="menu-item {% if pageTitle == 'view_Company' %}active {% endif %}">
           <a href="{% url 'view_company' %}" class="menu-link">
             <div data-i18n="CRM">Company View</div>
           </a>
