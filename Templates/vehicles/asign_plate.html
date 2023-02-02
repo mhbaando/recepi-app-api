@@ -1,0 +1,134 @@
+{% extends 'Base/index.html' %} {% load static %} {% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Assign Plate /</span> {{pageTitle}}</h4>
+<div class="row ">
+  <div class="col-sm-6 mb-3 mb-sm-0">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Basic info</h5>
+        <p class="card-text"></p>   
+        
+        <div class="form-group col-md-12">
+          <label for="vehicle id">Vehicle ID</label>
+          <input
+            type="text"
+            class="form-control"
+            value=""
+            placeholder="648738"
+            name="name"
+          />
+        </div>
+
+        <div class="form-group col-md-12">
+          <label for="mother's name">Owner's Name</label>
+          <input
+            type="text"
+            class="form-control"
+            value=""
+            placeholder="asho ahmed ali"
+            disabled
+            name="name"
+          />
+        </div>
+        <div class="form-group col-md-12">
+          <label for="vehicle id">Registered Date</label>
+          <input
+            type="date"
+            class="form-control"
+            value=""
+            disabled placeholder="12/4/2022"
+            name="name"
+          />
+        </div>
+
+        <div class="form-group col-md-12">
+          <label for="personal id">PersonalID</label>
+          <input
+            type="text"
+            class="form-control"
+            value=""
+            placeholder="rv-34625"
+            disabled
+            name="name"
+          />
+        </div>
+        <div class="form-group col-md-12">
+          <label for="personal id">Owner Mother's name</label>
+          <input
+            type="text"
+            class="form-control"
+            value=""
+            placeholder="fadumo maxamed ahmed"
+            disabled
+            name="name"
+          />
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Plate Info</h5>
+        <p class="card-text">  
+        </p>
+        <div class="form-group col-md-12">
+                <label class="form-label">Plate Type</label>
+                <select name="state_name" id="place_issue" class="form-control form-select select2">
+                    <option value="">Select a Type</option>
+                    <option value="pt">Putland</option>
+                    <option value="br">.....</option>
+                   
+                </select>
+            </div>
+       
+          <div class="form-group col-md-12">
+            <label>Code</label>
+            <select name="model" class="form-control">
+              <option value="year">select a code</option>
+              <option value="pt">pt</option>
+              <option value="br">.....</option>
+            </select>
+          </div>
+          <div class="form-group col-md-12">
+            <label>State</label>
+            <select name="model" class="form-control">
+              <option value="">select a state</option>
+              <option value="pt">Putland</option>
+              <option value="br">.....</option>
+            </select>
+          </div>
+          <div class="form-group col-md-12">
+            <label>plate number</label>
+            <select name="model" class="form-control">
+              <option value="">select a plate</option>
+              <option value="pt">Pt</option>
+              <option value="br">.....</option>
+            </select>
+          </div>
+          <div class="form-group col-md-12">
+            <div class="mt-3">
+                <button class="btn btn-primary">Save</button>
+              
+           
+            </div>
+        </div>
+
+      </div>
+      
+        
+          
+        </div>
+          </div>
+         
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+{% endblock content %}

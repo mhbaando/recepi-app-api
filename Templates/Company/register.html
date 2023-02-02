@@ -1,0 +1,99 @@
+{% extends 'base/index.html'%} {% load static %} {% block content %}
+
+<!-- card 1 -->
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">Basic Info</h5>
+    <form  method="POST"  > 
+        <div class="form-row">
+    
+        <div class="form-group col-md-6">
+          <label for="">Company Name</label>
+          <input  class = "form-control" type="text" name="company" placeholder="al taqwa" />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="">Registration No</label>
+          <input  class = "form-control" type="text" name="company" placeholder="al taqwa" />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="">Website</label>
+          <input  class = "form-control" type="text" name="company" placeholder="al taqwa" />
+        </div>
+        <div class="form-group col-md-6"
+        <label>Owner</label>
+        <select class="form-control">
+            <option value="">select a customer</option>
+        </select>
+
+    </div>
+   
+  </div>
+</div>
+</div>
+</form>
+<!-- card 2 -->
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Contact Info</h5>
+
+
+
+
+    <form  method="POST"  > 
+        <div class="form-row">
+    
+        <div class="form-group col-md-6">
+          <label for="">Phone</label>
+          <input  class = "form-control" type="text" name="company" placeholder="a6578675" />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="">Email</label>
+          <input  class = "form-control" type="text" name="company" placeholder="halima@gmai.com" />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="">Address</label>
+          <input  class = "form-control" type="text" name="company" placeholder="hodan digfeer mogadishu-somalia" />
+        </div>
+        <div class="form-group col-md-6"
+        <label>State</label>
+        <select class="form-control">
+            <option value="">select a state</option>
+        </select>
+
+    </div>
+   
+  </div>
+</div>
+</div>
+</form>
+  
+      
+
+
+   
+  </div>
+</div>
+<!-- card 3 -->
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Identification Info</h5>
+    <p>fill all required feild to register new customer</p>
+    <img src="..." class="rounded float-start" alt="...">
+    <button type="button" class="btn btn-outline-primary ml-4">Primary</button>
+
+    <div>
+
+
+      <div class="file-upload-wrapper">
+        <input type="file" id="input-file-max-fs" class="file-upload" data-max-file-size="2M" />
+      </div>
+    </div>
+
+    <div class="form-outline">
+      <label class="form-label" for="textAreaExample">Description</label>
+      <textarea class="form-control" id="textAreaExample" placeholder="write your description here" rows="4"></textarea>
+    
+    </div>
+  </div>
+  {% endblock %}
+</div>

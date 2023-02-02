@@ -1,0 +1,67 @@
+{% extends "Base/index.html" %}
+{% load static %}
+{% block content %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4">
+            <span class="text-muted fw-light">Payment /</span> {{ pageTitle }}
+        </h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <form id="create_new_account">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="account-number">Account Number</label>
+                                        <input type="numebr"
+                                               class="form-control"
+                                               id="account-number"
+                                               placeholder="Account Number"
+                                               required/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="account-type">Account Type</label>
+                                        <select name="" id="account-type" class="form-select select2">
+                                            <option value="">
+                                                Select account type
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="account-name">Account Name</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="account-name"
+                                               placeholder="Account Name"
+                                               required/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="account-amount">Amount</label>
+                                        <input type="numebr"
+                                               class="form-control"
+                                               id="account-amount"
+                                               placeholder="Amount"
+                                               required/>
+                                    </div>
+                                    <div class="row mb-2 g-4 align-items-center">
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-auto ms-auto">
+                                            <div class="hstack gap-2">
+                                                <button type="submit" class="btn btn-primary text-right">Send</button>
+                                                <a href={% url 'ReceiptsPage' %} class="btn btn-danger">Go Back</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    <script src={% static "scripts/finance/re.js" %}></script>
+{% endblock scriptData %}

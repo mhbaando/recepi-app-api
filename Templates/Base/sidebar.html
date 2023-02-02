@@ -1,23 +1,19 @@
 {% load static %}
-
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <div class="app-brand demo mt-3 mb-5">
     <a href="index.html" class="app-brand-link">
-     <img src={% static "brand/logo.png" %} alt="Logo" width="100%">
+      <img src={% static "brand/logo.png" %} alt="Logo" width="100%">
     </a>
   </div>
-
   <div class="menu-inner-shadow"></div>
-
   <ul class="menu-inner py-1">
     <!-- Dashboards -->
     <li class="menu-item {% if pageTitle == 'Dashboard' %}active{% endif %}">
-      <a href="app-email.html" class="menu-link">
+      <a href="{% url 'Dashboard' %} " class="menu-link">
         <i class="menu-icon tf-icons bx bx-envelope"></i>
         <div data-i18n="Email">Dashboard</div>
       </a>
     </li>
-
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-home-circle"></i>
@@ -36,39 +32,50 @@
         </li>
       </ul>
     </li>
-
-    <li class="menu-item">
+    <li class="menu-item {% if pageTitle == 'view_vehicles' or pageTitle == 'assign aplate' or  pageTitle == 'tranfer_vehicle' or  pageTitle == 'register_vehicle' %}active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <i class="menu-icon tf-icons bx bx-car"></i>
         <div data-i18n="Dashboards">Vehicles</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item">
-          <a href="dashboards-analytics.html" class="menu-link">
-            <div data-i18n="Analytics">Register</div>
+        <li class="menu-item {% if pageTitle == 'register_vehicle' %}active open{% endif %}">
+          <a href="{% url 'register-vehicle' %}" class="menu-link">
+            <div data-i18n="CRM">Register</div>
           </a>
         </li>
-        <li class="menu-item">
-          <a href="dashboards-crm.html" class="menu-link">
-            <div data-i18n="CRM">View Company</div>
+        <li class="menu-item {% if pageTitle == 'assign aplate' %}active open{% endif %}">
+          <a href="{% url 'asign-plate' %}" class="menu-link">
+            <div data-i18n="CRM">Assign Plate</div>
+          </a>
+        </li>
+   
+        <li class="menu-item {% if pageTitle == 'tranfer_vehicle' %}active open{% endif %}">
+          <a href="{% url 'transfer' %}" class="menu-link">
+            <div data-i18n="CRM">Transfer Vehicles</div>
+          </a>
+        </li>
+        <li class="menu-item {% if pageTitle == 'view_vehicles' %}active open{% endif %}">
+          <a href="{% url 'veiw-vehicle' %}" class="menu-link">
+            <div data-i18n="CRM">View Vehicles</div>
           </a>
         </li>
       </ul>
     </li>
 
-    <li class="menu-item {% if pageTitle == 'Account List' or pageTitle == '' %}active open{% endif %}">
+
+    <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' or pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
         <div data-i18n="Dashboards">Payments</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item {% if pageTitle == 'Accounts' %}active{% endif %}">
+        <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' %}active{% endif %}">
           <a href={% url 'AccountsPage' %} class="menu-link">
             <div data-i18n="Analytics">Accounts</div>
           </a>
         </li>
-        <li class="menu-item {% if pageTitle == 'Receipt List' %}active{% endif %}">
-          <a href={% url 'AddAccount' %} class="menu-link">
+        <li class="menu-item {% if pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active{% endif %}">
+          <a href={% url 'ReceiptsPage' %} class="menu-link">
             <div data-i18n="Analytics">Receipts</div>
           </a>
         </li>
@@ -97,7 +104,6 @@
         </li>
       </ul>
     </li>
-
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-home-circle"></i>

@@ -1,0 +1,121 @@
+{% extends 'Base/index.html' %}
+{% load static %}
+{% block content %}
+ 
+<!--End Page header-->
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"> Vehicle /</span> {{pageTitle}}</h4>   
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Vehicle Lists</div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="row mb-2 g-4 align-items-center">
+    
+                            <div class="col-sm-auto ms-auto">
+                                <div class="hstack gap-2">
+                                    <div class="form-group">
+                                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber }}
+                                            class="form-control select2 w-100">
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="30">30</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
+    
+                                    <form autocomplete='off'>
+                                        <div class="input-group mr-0">
+                                            <input id="SearchQuery" type="text" placeholder="Search..."
+                                                value='{{SearchQuery}}' class="form-control"
+                                                aria-label="Recipient's username" aria-describedby="button-addon2">
+                                            <button class="btn btn-primary" type="button" id="button-addon2">
+                                                <i class="bx bx-search"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+    
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Model Brand</th>
+                                    <th scope="col">Owner</th>
+                                    <th scope="col">Vin</th>
+                                    <th scope="col">Plate</th>
+                                    <th scope="col">status</th>
+                                    <th scope="col">action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if page_obj %}
+                                {% for item in page_obj %}
+                                <tr>
+                                    <td>{{item.Model_brand}}</td>
+                                    <td>{{item.ownner}}</td>
+                                    <td>{{item.vin}}</td>
+                                    <td>{{item.plate}}</td>
+                                    
+                                <td>
+                                    <span
+                                        class="badge bg-{% if item.status == 'UnBlocked' %}success{% elif item.status == 'jghh'%}warning{% else %}danger{% endif %}">{{item.status}}</span>
+                                </td>
+                                <td>
+                                    <span
+                                        class="badge bg-{% if item.action == 'Edit' %}dark{% endif %}">{{item.action}}</span>
+                                </td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td class='text-center' colspan='4'>no customered registered</td>
+                                </tr>
+                                {% endif %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+{% endblock content %}
+
+
+{% block scriptData %}
+  <script src={% static "scripts/vehic/vehicles.js" %}></script>
+{% endblock scriptData %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
