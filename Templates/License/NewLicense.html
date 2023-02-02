@@ -1,5 +1,12 @@
 {% extends 'Base/index.html' %}
 {% load static %}
+{% block  cssData %}
+<!-- autocomplete -->
+<link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
+<style>
+    .ui-autocomplete { z-index:2147483647; }
+</style>
+{% endblock  %}
 {% block content %}
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">License /</span> {{pageTitle}}</h4>   
@@ -27,6 +34,7 @@
                                   </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-6 mb-0">
                             <div class="mb-3">
                                 <label class="form-label">Ownar Name</label>
@@ -55,28 +63,32 @@
                         <div class="col-md-6 mb-0">
                             <div class="mb-3">
                                 <label class="form-label">Place Issue</label>
-                                <select name="state_name" id="place_issue" class="form-control form-select select2">
-                                    <option value="">Select Place</option>
-                                    <option value="br">Banadir</option>
-                                    <option value="cz">.....</option>
-                                   
+                                <select id="place_issue" class="form-select">
+                                    {% if FederalState %}
+                                    <option value="">Select State</option>
+                                    {% for item in FederalState %}
+                                    <option value={{item.state_id}}>{{item.state_name}}</option>
+                                    {% endfor %}
+                                    {% endif %}
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6 mb-0">
                             <div class="mb-3">
                                 <label class="form-label">Expire Date</label>
-                                <input type="date" disabled class="form-control" id="expire_date" placeholder="Personal ID">
+                                <input type="text" disabled class="form-control" id="expire_date" value='{{expired_year}}' placeholder={{expired_year}}>
                             </div>
                         </div>
                         <div class="col-md-6 mb-0">
                             <div class="mb-3">
                                 <label class="form-label">State </label>
-                                <select name="state_name" id="state_id" class="form-control form-select select2">
+                                <select id="state_name" class="form-select">
+                                    {% if FederalState %}
                                     <option value="">Select State</option>
-                                    <option value="br">Banadir</option>
-                                    <option value="cz">.....</option>
-                                   
+                                    {% for item in FederalState %}
+                                    <option value={{item.state_id}}>{{item.state_name}}</option>
+                                    {% endfor %}
+                                    {% endif %}
                                 </select>
                             </div>
                         </div>
@@ -95,8 +107,17 @@
             </div>
         </div>
        
-    </div
+    </div>
    
 </div>
->
+
 {% endblock content %}
+{% block scriptData %}
+<script>
+    {% comment %} let x=x.toString({{expired_year}})
+    $("#expire_date").val(x); {% endcomment %}
+   </script>
+<script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
+<script src={% static 'scripts/license/newlicense.js' %}></script>
+
+{% endblock %}
