@@ -1,12 +1,9 @@
 {% extends "Base/index.html" %}
 {% load static %}
-{% block cssData %}
-  <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
-{% endblock cssData %}
 
 {% block content %}
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Vehicle list /</span> {{ pageTitle }}</h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Company/</span> {{ pageTitle }}</h4>
 
 
     <div class="row">
@@ -14,13 +11,15 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-2 g-4 align-items-center">
-                        <div class="col-sm-3">
-                            <a href ="{% url 'register-vehicle' %}" class="btn btn-primary">
-                                Register Anew Vehicle
+                        <!-- <div class="col-sm-3">
+                            <a href ={% url 'AddAccount' %} class="btn btn-primary">
+                                Add new account
                             </a>
-                        </div>
+                        </div> -->
                         <div class="col-sm-auto ms-auto">
                             <div class="hstack gap-2">
+                                
+                                    
                                 <div class="form-group">
                                         <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber }}
                                             class="form-control select2 w-100">
@@ -53,36 +52,37 @@
                             <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Model Brand</th>
+                                        <th scope="col">Name</th>
                                         <th scope="col">Owner</th>
-                                        <th scope="col">Vin</th>
-                                        <th scope="col">Plate</th>
-                                        <th scope="col">status</th>
-                                        <th scope="col">action</th>
+                                        <th scope="col">Register No</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {% if page_obj %}
                                     {% for item in page_obj %}
                                     <tr>
-                                        <td>{{item.Model_brand}}</td>
+                                        <td>{{item.Name}}</td>
                                         <td>{{item.ownner}}</td>
-                                        <td>{{item.vin}}</td>
-                                        <td>{{item.plate}}</td>
+                                        <td>{{item.Register}}</td>
+                                        <td>{{item.Phone}}</td>
+                                        <td>
+                                            <span
+                                                class="badge bg-{% if item.status == 'UnBlocked' %}success{% elif item.status == 'Blocked'%}danger{% else %}danger{% endif %}">{{item.status}}</span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="badge bg-{% if item.action == 'Edit' %}dark{% endif %}">{{item.action}}</span>
+                                        </td>
                                         
-                                    <td>
-                                        <span
-                                            class="badge bg-{% if item.status == 'UnBlocked' %}success{% elif item.status == 'jghh'%}warning{% else %}danger{% endif %}">{{item.status}}</span>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="badge bg-{% if item.action == 'Edit' %}dark{% endif %}">{{item.action}}</span>
-                                    </td>
+                                       
                                     </tr>
                                     {% endfor %}
                                     {% else %}
                                     <tr>
-                                        <td class='text-center' colspan='4'>no customered registered</td>
+                                        <td class='text-center' colspan='4'>No company view available</td>
                                     </tr>
                                     {% endif %}
                                 </tbody>
@@ -131,40 +131,5 @@
 {% endblock content %}
 
 {% block scriptData %}
-<script src={% static "scripts/vehic/vehicles.js" %}></script>
+<script src={% static "scripts/company/comp_list.js" %}></script>
 {% endblock scriptData %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

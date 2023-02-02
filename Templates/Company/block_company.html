@@ -1,0 +1,97 @@
+{% extends 'Base/index.html' %} {% load static %} {% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Block Company /</span> {{pageTitle}}</h4>
+<div class="row ">
+  <div class="col-sm-6 mb-3 mb-sm-0">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Company info</h5>
+        <div class="row">
+           
+        
+        <div class="col-md-12 mb-0">
+          <div class="mb-3">
+          <label for="comapny id">Customer Name</label>
+          <input
+            type="text"
+            class="form-control"
+            value=""
+            placeholder="Faisa Mohamed Abdi"
+            name="name"
+          />
+        </div>
+        </div>
+
+  <div class="col-md-12 mb-0">
+          <div class="mb-3">
+          <label for="mother's name">Owner's Name</label>
+          <input
+            type="text"
+            class="form-control"
+            value=""
+            placeholder="Mohamed ali abdi"
+            disabled
+            name="name"
+          />
+        </div>
+
+    
+
+    <div class="col-md-12 mb-0">
+      <div class="mb-3">
+          <label for="personal id">PersonalID</label>
+          <input
+            type="text"
+            class="form-control"
+            value=""
+            placeholder="7855-34625"
+            disabled
+            name="name"
+          />
+        </div>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+        <label class="form-check-label" for="flexRadioDefault1">
+          block
+        </label>
+      </div>
+
+</div>
+
+
+
+
+
+    
+  <div class="col-md-12 mb-0">
+    <div class="mb-3">
+            <div class="mt-3">
+                <button class="btn btn-primary">Block Company</button>
+              
+           
+            </div>
+            </div>
+        </div>
+
+      </div>
+  
+      </div>
+      
+        
+          
+        </div>
+          </div>
+
+        
+         
+      </div>
+    </div>
+  </div>
+ 
+</div>
+</div>
+
+
+
+{% endblock content %}
