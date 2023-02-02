@@ -1,10 +1,8 @@
 {% extends "Base/index.html" %}
 {% load static %}
-
 {% block cssData %}
   <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
 {% endblock cssData %}
-
 {% block content %}
   <div class="container-xxl flex-grow-1">
     <div class="container">
@@ -68,124 +66,126 @@
     {% comment %} Dahsboard charts {% endcomment %}
     <div class="container mt-4">
       <div class="row gap-3">
-        <div class="col-sm-12 col-lg bg-white rounded p-3">
+        <div class="col-sm-12 col-lg  bg-white rounded p-3">
           <h6>Vehicles & Customers</h6>
           {% comment %} charts {% endcomment %}
           <div id="totalRevenueChart" class="px-2"></div>
         </div>
-        <div class="col-sm-12 col-lg-4 bg-white rounded p-3">
-          <h6>Types of Licenses</h6>
-          <div class="row p-3 gap-3">
-            <div class="col px-3 license-card">
-              <img src="{% static "assets/img/dashboard/A.png" %}"
-                   alt="Vheicle"
-                   width="auto"
-                   height="30"/>
-              <div>
-                <p class="p-0 m-0 license-card__title">
-                  <span>A</span> - Total
-                </p>
-                <p class="p-0 m-0">320</p>
+        <div class="col-sm-12 col-lg-4 bg-white rounded">
+          <div class="container my-3">
+            <h6>Types of Licenses</h6>
+            <div class="license-card-holder">
+              <div class="px-3 license-card">
+                <img src="{% static "assets/img/dashboard/A.png" %}"
+                     alt="Vheicle"
+                     width="auto"
+                     height="30"/>
+                <div>
+                  <p class="p-0 m-0 license-card__title">
+                    <span>A</span> - Total
+                  </p>
+                  <p class="p-0 m-0">320</p>
+                </div>
               </div>
-            </div>
-            <div class="col px-3 license-card">
-              <img src="{% static "assets/img/dashboard/A1.png" %}"
-                   alt="Vheicle"
-                   width="auto"
-                   height="30"/>
-              <div>
-                <p class="p-0 m-0 license-card__title">
-                  <span>A1</span> - Total
-                </p>
-                <p class="p-0 m-0">320</p>
+              <div class="px-3 license-card">
+                <img src="{% static "assets/img/dashboard/A1.png" %}"
+                     alt="Vheicle"
+                     width="auto"
+                     height="30"/>
+                <div>
+                  <p class="p-0 m-0 license-card__title">
+                    <span>A1</span> - Total
+                  </p>
+                  <p class="p-0 m-0">320</p>
+                </div>
               </div>
-            </div>
-            <div class="col px-3 license-card">
-              <img src="{% static "assets/img/dashboard/B.png" %}"
-                   alt="Vheicle"
-                   width="auto"
-                   height="35"/>
-              <div>
-                <p class="p-0 m-0 license-card__title">
-                  <span>B</span> - Total
-                </p>
-                <p class="p-0 m-0">320</p>
+              <div class="px-3 license-card">
+                <img src="{% static "assets/img/dashboard/B.png" %}"
+                     alt="Vheicle"
+                     width="auto"
+                     height="35"/>
+                <div>
+                  <p class="p-0 m-0 license-card__title">
+                    <span>B</span> - Total
+                  </p>
+                  <p class="p-0 m-0">320</p>
+                </div>
               </div>
-            </div>
-            <div class="col px-3 license-card">
-              <img src="{% static "assets/img/dashboard/C.png" %}"
-                   alt="Vheicle"
-                   width="auto"
-                   height="30"/>
-              <div>
-                <p class="p-0 m-0 license-card__title">
-                  <span>C</span> - Total
-                </p>
-                <p class="p-0 m-0">320</p>
+              <div class="px-3 license-card">
+                <img src="{% static "assets/img/dashboard/C.png" %}"
+                     alt="Vheicle"
+                     width="auto"
+                     height="30"/>
+                <div>
+                  <p class="p-0 m-0 license-card__title">
+                    <span>C</span> - Total
+                  </p>
+                  <p class="p-0 m-0">320</p>
+                </div>
               </div>
-            </div>
-            <div class="col px-3 license-card">
-              <img src="{% static "assets/img/dashboard/C1.png" %}"
-                   alt="Vheicle"
-                   width="auto"
-                   height="25"/>
-              <div>
-                <p class="p-0 m-0 license-card__title">
-                  <span>C1</span> - Total
-                </p>
-                <p class="p-0 m-0">320</p>
+              <div class="px-3 license-card">
+                <img src="{% static "assets/img/dashboard/C1.png" %}"
+                     alt="Vheicle"
+                     width="auto"
+                     height="25"/>
+                <div>
+                  <p class="p-0 m-0 license-card__title">
+                    <span>C1</span> - Total
+                  </p>
+                  <p class="p-0 m-0">320</p>
+                </div>
               </div>
-            </div>
-            <div class="col px-3 license-card">
-              <img src="{% static "assets/img/dashboard/D.png" %}"
-                   alt="Vheicle"
-                   width="auto"
-                   height="30"/>
-              <div>
-                <p class="p-0 m-0 license-card__title">
-                  <span>D</span> - Total
-                </p>
-                <p class="p-0 m-0">320</p>
+              <div class="px-3 license-card">
+                <img src="{% static "assets/img/dashboard/D.png" %}"
+                     alt="Vheicle"
+                     width="auto"
+                     height="30"/>
+                <div>
+                  <p class="p-0 m-0 license-card__title">
+                    <span>D</span> - Total
+                  </p>
+                  <p class="p-0 m-0">320</p>
+                </div>
               </div>
-            </div>
-            <div class="col px-3 license-card">
-              <img src="{% static "assets/img/dashboard/E.png" %}"
-                   alt="Vheicle"
-                   width="auto"
-                   height="35"/>
-              <div>
-                <p class="p-0 m-0 license-card__title">
-                  <span>E</span> - Total
-                </p>
-                <p class="p-0 m-0">320</p>
+              <div class="px-3 license-card">
+                <img src="{% static "assets/img/dashboard/E.png" %}"
+                     alt="Vheicle"
+                     width="auto"
+                     height="35"/>
+                <div>
+                  <p class="p-0 m-0 license-card__title">
+                    <span>E</span> - Total
+                  </p>
+                  <p class="p-0 m-0">320</p>
+                </div>
               </div>
-            </div>
-            <div class="col px-3 license-card">
-              <img src="{% static "assets/img/dashboard/F.png" %}"
-                   alt="Vheicle"
-                   width="auto"
-                   height="30"/>
-              <div>
-                <p class="p-0 m-0 license-card__title">
-                  <span>F</span> - Total
-                </p>
-                <p class="p-0 m-0">
-                  320
-                </p>
+              <div class="px-3 license-card">
+                <img src="{% static "assets/img/dashboard/F.png" %}"
+                     alt="Vheicle"
+                     width="auto"
+                     height="30"/>
+                <div>
+                  <p class="p-0 m-0 license-card__title">
+                    <span>F</span> - Total
+                  </p>
+                  <p class="p-0 m-0">
+                    320
+                  </p>
+                </div>
               </div>
-            </div>
-            <div class="col px-3 license-card">
-              <img src="{% static "assets/img/dashboard/G.png" %}"
-                   alt="Vheicle"
-                   width="auto"
-                   height="30"/>
-              <div>
-                <p class="p-0 m-0 license-card__title">
-                  <span>G</span> - Total
-                </p>
-                <p class="p-0 m-0">
-                  320
-                </p>
+              <div class="px-3 license-card">
+                <img src="{% static "assets/img/dashboard/G.png" %}"
+                     alt="Vheicle"
+                     width="auto"
+                     height="30"/>
+                <div>
+                  <p class="p-0 m-0 license-card__title">
+                    <span>G</span> - Total
+                  </p>
+                  <p class="p-0 m-0">
+                    320
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -347,8 +347,7 @@
       </div>
     </div>
   </div>
-  {% endblock content %}
-  {% block scriptData %}
-    <script src="{% static "scripts/dashboard/chart.js" %}"></script>
-  {% endblock scriptData %}
-
+{% endblock content %}
+{% block scriptData %}
+  <script src="{% static "scripts/dashboard/chart.js" %}"></script>
+{% endblock scriptData %}
