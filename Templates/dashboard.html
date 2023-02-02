@@ -1,10 +1,8 @@
 {% extends "Base/index.html" %}
 {% load static %}
-
 {% block cssData %}
   <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
 {% endblock cssData %}
-
 {% block content %}
   <div class="container-xxl flex-grow-1">
     <div class="container">
@@ -347,8 +345,7 @@
       </div>
     </div>
   </div>
-  {% endblock content %}
-  {% block scriptData %}
-    <script src="{% static "scripts/dashboard/chart.js" %}"></script>
-  {% endblock scriptData %}
-
+{% endblock content %}
+{% block scriptData %}
+  <script src="{% static "scripts/dashboard/chart.js" %}"></script>
+{% endblock scriptData %}
