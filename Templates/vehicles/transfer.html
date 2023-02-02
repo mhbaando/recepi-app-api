@@ -1,5 +1,8 @@
 {% extends 'Base/index.html' %}
 {% load static %}
+{% block cssData %}
+  <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
+{% endblock cssData %}
 {% block content %}
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Transfer /</span> {{pageTitle}}</h4>   
@@ -40,7 +43,7 @@
 
                       <div class="col-md-6 mb-0">
                         <div class="mb-3">
-                            <label class="form-label">New Owner Mother's Name</label>
+                            <label class="form-label">Personal ID</label>
                             <input type="text" class="form-control" id="mother_name" disabled placeholder="Mother's Name">
                         </div>
                     </div>
@@ -71,6 +74,167 @@
        
       </div>
 </div>
+<div class="container-xxl flex-grow-1 container-p-y"> 
+     <!-- Basic Layout -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Transfer History</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+
+    <div class="row table-responsive">
+    <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
+      <thead>
+        <tr class="text-nowrap">
+          <th>
+            #
+          </th>
+          <th>
+            Plate Numer
+          </th>
+          <th>
+            Old Owner
+          </th>
+          <th>
+            New Owner
+          </th>
+          <th>
+            Vehicle Brand
+          </th>
+          <th>
+            Vin
+          </th>
+          <th>
+            Status
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">
+            5
+          </th>
+          <td>
+            pt-65456
+          </td>
+          <td>
+            aisha ahmed
+          </td>
+          <td>
+            maxamed cilmi farah
+          </td>
+          <td>
+            Toyota
+          </td>
+          <td>
+            v-9847658
+          </td>
+          <td>
+            <span class="badge bg-label-success">Unblocked</span>
+          </td>
+        </tr>
+        <tr>
+            <th scope="row">
+              4
+            </th>
+            <td>
+              pt-65456
+            </td>
+            <td>
+              ali ahmed farah
+            </td>
+            <td>
+              farhan ahmed cilmi
+            </td>
+            <td>
+              lambargini
+            </td>
+            <td>
+              v-9847658
+            </td>
+            <td>
+              <span class="badge bg-label-danger">blocked</span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">
+              3
+            </th>
+            <td>
+              pt-65456
+            </td>
+            <td>
+              fartun ahamed cilmi
+            </td>
+            <td>
+              farhan ahmed cilmi
+            </td>
+            <td>
+              lambargini
+            </td>
+            <td>
+              v-9847658
+            </td>
+            <td>
+              <span class="badge bg-label-success">Unblocked</span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">
+              2
+            </th>
+            <td>
+              pt-65456
+            </td>
+            <td>
+              ali ahmed farah
+            </td>
+            <td>
+              farhan ahmed cilmi
+            </td>
+            <td>
+              lambargini
+            </td>
+            <td>
+              v-9847658
+            </td>
+            <td>
+              <span class="badge bg-label-danger">blocked</span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">
+              1
+            </th>
+            <td>
+              pt-65456
+            </td>
+            <td>
+              ali ahmed farah
+            </td>
+            <td>
+              farhan ahmed cilmi
+            </td>
+            <td>
+              lambargini
+            </td>
+            <td>
+              v-9847658
+            </td>
+            <td>
+              <span class="badge bg-label-danger">blocked</span>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
    
 
 
