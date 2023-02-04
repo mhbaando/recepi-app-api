@@ -39,7 +39,7 @@
     text-align: center;
     line-height: 70%;
     width: 100% !important;
-    height: 316px !important;
+
  }
 
  
@@ -72,6 +72,18 @@
     height: 150px;
 
 }
+
+
+#uploadedAvatar {
+    width: 180px  !important;
+    height: 180px !important;
+
+    border-radius: 10px;
+
+    object-fit: cover;
+    object-position: center;
+}
+
 
 
 /* disbale arrows form number input */
