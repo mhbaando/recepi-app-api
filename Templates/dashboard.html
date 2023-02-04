@@ -4,14 +4,14 @@
   <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
 {% endblock cssData %}
 {% block content %}
-  <div class="container-xxl flex-grow-1">
-    <div class="container">
+  <div class="container-xxl flex-grow-1 px-4">
+    <div>
       <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">Home /</span> {{ pageTitle }}
       </h4>
     </div>
     {% comment %} summary container {% endcomment %}
-    <div class="container">
+    <div class="">
       <div class="row gap-3">
         <div class="col  rounded summary-card px-3 py-3">
           <div class="summary-cart_img">
@@ -64,14 +64,14 @@
       </div>
     </div>
     {% comment %} Dahsboard charts {% endcomment %}
-    <div class="container mt-4">
+    <div class="mt-4">
       <div class="row gap-3">
-        <div class="col-sm-12 col-lg  bg-white rounded p-3">
+        <div class="col-lg-8 bg-white rounded p-3">
           <h6>Vehicles & Customers</h6>
           {% comment %} charts {% endcomment %}
           <div id="totalRevenueChart" class="px-2"></div>
         </div>
-        <div class="col-sm-12 col-lg-4 bg-white rounded">
+        <div class="col bg-white rounded">
           <div class="container my-3">
             <h6>Types of Licenses</h6>
             <div class="license-card-holder">
@@ -193,7 +193,7 @@
       </div>
     </div>
     {% comment %} Lates Activity {% endcomment %}
-    <div class="container mt-4">
+    <div class="mt-4">
       <div class="row bg-white rounded p-3">
         <h6>
           Lates Activity
