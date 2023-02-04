@@ -69,9 +69,6 @@
                                         <th>Phone</th>
                                         <th>Created Date</th>
                                         <th>Modified Date</th>
-                                        {% if perms.Users.change_users  or perms.Users.change_password %}
-                                        <th>Action</th>
-                                        {% endif %}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -86,38 +83,6 @@
                                         <td>{{users.phone}}</td>
                                         <td>{{users.date_joined}}</td>
                                         <td>{{users.get_modified_date}}</td>
-                                        {% if perms.Users.change_users or perms.Users.change_password%}
-                                        <td>
-
-                                            <div class="dropdown d-inline-block">
-                                                <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="ri-more-fill align-middle"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                    {% if perms.Users.change_users %}
-                                                    <li>
-                                                        <a class="dropdown-item edit-item-btn edit-user" id='{{users.id}}'>
-                                                            <i class="ri-pencil-fill align-bottom me-2 text-muted" ></i> Edit
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                    <a class="dropdown-item edit-item-btn profile-user" id='{{users.id}}'>
-                                                        <i class="ri-pencil-fill align-bottom me-2 text-muted" ></i> Change Profile
-                                                    </a>
-                                                </li>
-                                                    {% endif %}
-                                                   
-                                                    {% if perms.Users.change_password   %}
-                                                    <li>
-                                                        <a class="dropdown-item remove-item-btn password-user" id='{{users.id}}'>
-                                                            <i class="ri-lock-password-line align-bottom me-2 text-muted"></i> Change Password
-                                                        </a>
-                                                    </li>
-                                                    {% endif %}
-                                                </ul>
-                                            </div>
-                                        </td>
-                                        {% endif %}
                                     </tr>
                                     {% endfor %}
                                     {% else %}
@@ -134,27 +99,31 @@
                                 Showing {{ page_obj.number }} to {{ page_obj.paginator.num_pages }} of {{ TotalUsers }}.
                             </div>
                             <div class="col-md-6 d-flex justify-content-end align-items-center">
-                                <ul class="pagination listjs-pagination">
-                                    <a class="cursor-pointer page-item pagination-prev {% if not page_obj.has_previous %}disabled{% endif %}" page="1">
-                                            <i class="bx bx-chevrons-left"></i>
-                                    </a>
-                                    <a class="cursor-pointer page-item pagination-prev {% if not page_obj.has_previous %}disabled{% endif %}" page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
-                                        Previous
-                                    </a>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination">
+                                      <li class="page-item first {% if not page_obj.has_previous %}disabled{% endif %}" page="1">
+                                        <a class="page-link" href="javascript:void(0);"
+                                          ><i class="tf-icon bx bx-chevrons-left"></i
+                                        ></a>
+                                      </li>
+                                      <li class="page-item prev {% if not page_obj.has_previous %}disabled{% endif %}" page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
+                                        <a class="page-link" href="javascript:void(0);"
+                                          ><i class="tf-icon bx bx-chevron-left"></i
+                                        ></a>
+                                      </li>
                                     
-                                    {% for page in Pages %}
-                                    <li class="{% if page_obj.number == page %}active{% endif %}">
-                                        <a class="page-item cursor-pointer page {% if page == '…' %}disabled{% endif %}" page="{{page}}">{{page}}</a>
-                                    </li>
-                                    {% endfor %}
-
-                                    <a class="cursor-pointer page-item pagination-next {% if not page_obj.has_next %}disabled{% endif %}" page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
-                                            Next
-                                    </a>
-                                    <a class="cursor-pointer page-item pagination-next {% if not page_obj.has_next %}disabled{% endif %}" page="{{ page_obj.paginator.num_pages}}">
-                                        <i class="bx bx-chevrons-right"></i>
-                                    </a>
-                                </ul>
+                                      <li class="page-item next {% if not page_obj.has_next %}disabled{% endif %}" page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
+                                        <a class="page-link" href="javascript:void(0);"
+                                          ><i class="tf-icon bx bx-chevron-right"></i
+                                        ></a>
+                                      </li>
+                                      <li class="page-item last {% if not page_obj.has_next %}disabled{% endif %}" page="{{ page_obj.paginator.num_pages}}">
+                                        <a class="page-link" href="javascript:void(0);"
+                                          ><i class="tf-icon bx bx-chevrons-right"></i
+                                        ></a>
+                                      </li>
+                                    </ul>
+                                  </nav>
                             </div>
                         </div>
                     </div>
@@ -165,3 +134,8 @@
     </div>
 </div>
 {% endblock content %}
+
+
+{% block scriptData %}
+<script src={% static "scripts/users/users_list.js" %}></script>
+{% endblock scriptData %}
