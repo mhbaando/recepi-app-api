@@ -1,0 +1,16 @@
+.card-header{
+    padding-bottom: 0 !important;
+}
+.card-subheading {
+    font-size: 16px;
+    margin: 0 1.5rem;
+    color: rgb(185, 185, 185);
+}
+
+.card-body {
+    padding-bottom: 0 !important;
+}
+
+.card-body-custom {
+    padding: 0 1.5rem !important;
+}

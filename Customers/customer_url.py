@@ -18,4 +18,8 @@ urlpatterns = [
          license.SearchReceiptVoucher, name='SearchReceiptVoucher'),
     path('customer_info/<int:id>', license.customer_info, name='customer_info'),
     path('manage_license/<int:id>', license.manage_license, name='manage_license'),
+
+    # customers
+    # register customer
+    path('', views.register_customer, name='register_customer',)
 ]
