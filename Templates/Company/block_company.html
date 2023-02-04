@@ -1,76 +1,85 @@
 {% extends "Base/index.html" %}
 {% load static %}
 {% block content %}
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <div class="col-md-12 mb-0">
-              <div class="mb-3">
-                <h1>Company Info</h1>
-                <label for="customer name">Customer Name</label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>
-                    select comapny to block
-                  </option>
-                  <option value="1">
-                    al taqwa
-                  </option>
-                  <option value="2">
-                    premeir bank
-                  </option>
-                  <option value="3">
-                    salam bank
-                  </option>
-                </select>
-              </div>
-            </div>
-            <form>
-              <fieldset disabled>
+  <div class="container-xxl flex-grow-1">
+    <div class="container">
+      <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Home /</span> {{ pageTitle }}
+      </h4>
+    </div>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="col-md-12 mb-0">
                 <div class="mb-3">
-                  <label for="disabledTextInput" class="form-label">Owner's Name</label>
-                  <input type="text"
-                         id="disabledTextInput"
-                         class="form-control"
-                         placeholder="halima ahmed">
+                  <h1>Company Info</h1>
+                  <label for="customer name">Customer Name</label>
+                  <select class="form-select" aria-label="Default select example">
+                    <option selected>
+                      select comapny to block
+                    </option>
+                    <option value="1">
+                      al taqwa
+                    </option>
+                    <option value="2">
+                      premeir bank
+                    </option>
+                    <option value="3">
+                      salam bank
+                    </option>
+                  </select>
                 </div>
+              </div>
+              <form>
                 <fieldset disabled>
                   <div class="mb-3">
-                    <label for="disabledTextInput" class="form-label">Personal ID</label>
+                    <label for="disabledTextInput" class="form-label">Owner's Name</label>
                     <input type="text"
                            id="disabledTextInput"
                            class="form-control"
-                           placeholder="85748697">
+                           placeholder="halima ahmed">
                   </div>
-                </form>
-                <input type="checkbox">
-                block
+                  <fieldset disabled>
+                    <div class="mb-3">
+                      <label for="disabledTextInput" class="form-label">Personal ID</label>
+                      <input type="text"
+                             id="disabledTextInput"
+                             class="form-control"
+                             placeholder="85748697">
+                    </div>
+                  </form>
+                  <input type="checkbox">
+                  block
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Upload Documents</h5>
-                <label for="comapy">upload all necessary documents to block company</label>
-                <br>
-                <br>
-                <a href="#" class="btn btn-primary bi bi-cloud-arrow-up-fill">click to upload</a>
-                <div>
-                  <div class="form-outline">
-                    <br>
-                    <br>
-                    <label class="form-label" for="textAreaExample">Description</label>
-                    <textarea class="form-control"
-                              id="textAreaExample"
-                              placeholder="write your description here"
-                              rows="4"></textarea>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Upload Documents</h5>
+                  <label for="comapy">upload all necessary documents to block company</label>
+                  <br>
+                  <br>
+                  <button type="button" class="btn btn-primary">
+                    <span class="bi bi-cloud-arrow-up"></span> Click to Upload
+                  </button>
+                  <div>
+                    <div class="form-outline">
+                      <br>
+                      <br>
+                      <label class="form-label" for="textAreaExample">Description</label>
+                      <textarea class="form-control"
+                                id="textAreaExample"
+                                placeholder="write your description here"
+                                rows="4"></textarea>
+                    </div>
+                    
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    {% endblock content %}
+      {% endblock content %}

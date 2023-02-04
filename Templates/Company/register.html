@@ -8,25 +8,44 @@
       </h4>
     </div>
     <div class="card">
-      <div class="card-header">Featured</div>
+      <div class="card-header">
+        <h2>Basic Info</h2>
+      </div>
       <div class="card-body">
         <div class="col-md-12 mb-0">
           <div class="mb-3">
             <form>
               <div class="row">
                 <div class="col">
-                  <input type="text" class="form-control" placeholder="First name"/>
+                  <label for="company">Company Name</label>
+                  <input type="text" class="form-control" placeholder="Al taqwa"/>
                 </div>
                 <div class="col">
-                  <input type="text" class="form-control" placeholder="Last name"/>
+                  <label for="company">Registration No</label>
+                  <input type="text" class="form-control" placeholder="563748"/>
                 </div>
               </div>
               <div class="row mt-4">
                 <div class="col">
-                  <input type="text" class="form-control" placeholder="First name">
+                  <label for="company">Website</label>
+                  <input type="text" class="form-control" placeholder="http://altaqwa.com"/>
                 </div>
                 <div class="col">
-                  <input type="text" class="form-control" placeholder="Last name">
+                  <label for="company">Owner</label>
+                  <select class="form-select" aria-label="Default select example">
+                    <option selected>
+                      select a customer
+                    </option>
+                    <option value="1">
+                      Halima Hussein
+                    </option>
+                    <option value="2">
+                      Mohamoud Ali
+                    </option>
+                    <option value="3">
+                      Yusra Ahmed
+                    </option>
+                  </select>
                 </div>
               </div>
             </form>
@@ -35,35 +54,91 @@
       </div>
     </div>
     <div class="card my-5">
-      <div class="card-header">Featured</div>
+      <div class="card-header">
+        <h2>Contact Info</h2>
+      </div>
       <div class="card-body">
         <form>
           <div class="row">
             <div class="col">
-              <input type="text" class="form-control" placeholder="First name">
+              <label for="company">Phone</label>
+              <input type="text" class="form-control" placeholder="546576"/>
             </div>
             <div class="col">
-              <input type="text" class="form-control" placeholder="Last name">
+              <label for="company">Email</label>
+              <input type="text" class="form-control" placeholder="halima123@gmail.com"/>
             </div>
           </div>
           <div class="row mt-4">
             <div class="col">
-              <input type="text" class="form-control" placeholder="First name">
+              <label for="company">Address</label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="hodan digfer street mogadisu-Somalia"/>
             </div>
             <div class="col">
-              <input type="text" class="form-control" placeholder="Last name">
+              <label for="company">Owner</label>
+              <select class="form-select" aria-label="Default select example">
+                <option selected>
+                  select a state
+                </option>
+                <option value="1">
+                  putland
+                </option>
+                <option value="2">
+                  banadir
+                </option>
+                <option value="3">
+                  jubaland
+                </option>
+              </select>
             </div>
           </div>
         </form>
       </div>
     </div>
     <div class="card">
-      <div class="card-header">Featured</div>
+      <div class="card-header">
+        <h2>Identification Info</h2>
+      </div>
       <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-        <p>With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <h5 class="card-title">fill all required field to register new customer</h5>
+        <div class="row">
+          <div class="col">
+            <label for="company">Logo</label>
+            <button class="upload " disabled>+</button>
+            <button type="button" class="btn btn-outline-primary">Upload Image</button>
+          </div>
+          <div class="col">
+            <label for="company">Documents</label>
+            <br>
+            <br>
+            <i class="bi bi-cloud-arrow-up bg-gray width="100" height="100" ></i>
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="16"
+                 height="16"
+                 fill="currentColor"
+                 class="bi bi-cloud-arrow-up"
+                 viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z"/>
+              <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+            </svg>
+          </div>
+          <div class="form-outline">
+            <br>
+            <br>
+            <label class="form-label" for="textAreaExample">Description</label>
+            <textarea class="form-control"
+                      id="textAreaExample"
+                      placeholder="write your description here"
+                      rows="4"></textarea>
+          </div>
+        </div>
       </div>
     </div>
+    <a href="#"
+       class="btn btn-primary btn-lg active"
+       role="button"
+       aria-pressed="true">Save Company</a>
   </div>
 {% endblock content %}

@@ -1,172 +1,168 @@
-{% extends "Base/index.html" %} 
-{% load static %} 
-
+{% extends "Base/index.html" %}
+{% load static %}
 {% block content %}
-<div class="col-lg-12">
-  <div class="card">
-    <div class="card-body">
-      <div
-        class="row mb-3 w-100 d-flex justify-content-between align-items-center"
-      >
-        <div
-          class="col-md-3 pl-1 d-flex justify-content-start align-items-center"
-        ></div>
-        <div class="col-md-9 pr-1">
-          <div
-            class="row d-flex justify-content-end align-items-center"
-          >
-            <div class="col-md-1">
-              <div class="form-group">
-                <select
-                  id="DataNumber"
-                  name="DataNumber"
-                  DataNumber="{{DataNumber}}"
-                  class="form-control select2 w-100"
-                >
-                  <option value="1">1</option>
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="30">30</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
+  {% csrf_token %}
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+      <span class="text-muted fw-light">Users /</span> {{ pageTitle }}
+    </h4>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-3 w-100 d-flex justify-content-between align-items-center">
+            <div class="col-md-3 pl-1 d-flex justify-content-start align-items-center"></div>
+            <div class="col-md-9 pr-1">
+              <div class="row d-flex justify-content-end align-items-center">
+                <div class="col-md-1">
+                  <div class="form-group">
+                    <select id="DataNumber"
+                            name="DataNumber"
+                            DataNumber="{{ DataNumber }}"
+                            class="form-control select2 w-100">
+                      <option value="1">
+                        1
+                      </option>
+                      <option value="5">
+                        5
+                      </option>
+                      <option value="10">
+                        10
+                      </option>
+                      <option value="30">
+                        30
+                      </option>
+                      <option value="50">
+                        50
+                      </option>
+                      <option value="100">
+                        100
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3 pr-1 d-flex justify-content-end align-items-center">
+                  <form autocomplete="off">
+                    <div class="input-group mr-0">
+                      <input id="SearchQuery"
+                             type="text"
+                             value="{{ SearchQuery }}"
+                             autocomplete="false"
+                             placeholder="Search..."
+                             class="form-control"
+                             aria-label="Recipient's username"
+                             aria-describedby="button-addon2"/>
+                      <button class="btn btn-primary" type="button" id="button-addon2">
+                        <i class="bx bx-search"></i>
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
-            <div
-              class="col-md-3 pr-1 d-flex justify-content-end align-items-center"
-            >
-              <form autocomplete="off">
-                <div class="input-group mr-0">
-                  <input
-                    id="SearchQuery"
-                    type="text"
-                    autocomplete="false"
-                    placeholder="Search..."
-                    class="form-control"
-                    aria-label="Recipient's username"
-                    aria-describedby="button-addon2"
-                  />
-                  <button
-                    class="btn btn-primary"
-                    type="button"
-                    id="button-addon2"
-                  >
-                    <i class="bx bx-search"></i>
-                  </button>
-                </div>
-              </form>
-            </div>
           </div>
-        </div>
-      </div>
-      <div class="col-md-12">
-        <div class="table-responsive">
-          <table
-            id="audit"
-            class="table table-bordered dt-responsive nowrap table-striped align-middle"
-            style="width: 100%"
-          >
-            <thead>
-              <tr>
-                <th class="wd-2p">Avatar</th>
-                <th class="wd-5p">Username</th>
-                <th class="wd-30p">Name</th>
-                <th class="wd-40p">Action</th>
-                <th class="wd-20p">Module</th>
-                <th class="wd-10p">Date</th>
-                <th class="wd-30p">Machine</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% if page_obj %} {% for audit in page_obj %}
-              <tr>
-                <td>
-                  <img
-                    src="/media/{{ audit.Avatar }}"
-                    alt=""
-                    class="rounded-circle avatar-sm"
-                  />
-                </td>
-                <td>{{ audit.Username }}</td>
-                <td>{{ audit.Name }}</td>
-                <td>{{ audit.Actions }}</td>
-                <td>{{ audit.Module }}</td>
-                <td>{{ audit.date_of_action }}</td>
-                <td>{{ audit.user_agent }}</td>
-              </tr>
-              {% endfor %} {% else %}
-              <tr>
-                <td colspan="8" class="text-center">No Data Found</td>
-              </tr>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table id="audit"
+                     class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                     style="width: 100%">
+                <thead>
+                  <tr>
+                    <th class="wd-2p">Avatar</th>
+                    <th class="wd-5p">Username</th>
+                    <th class="wd-30p">Name</th>
+                    <th class="wd-40p">Trial</th>
+                    <th class="wd-20p">Module</th>
+                    <th class="wd-10p">Date</th>
+                    <th class="wd-30p">Machine</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if page_obj %}
+                    {% for audit in page_obj %}
+                      <tr>
+                        <td>
+                          <img src="/media/{{ audit.Avatar }}"
+                               alt=""
+                               class="rounded-circle avatar-sm "/>
+                        </td>
+                        <td>{{ audit.Username }}</td>
+                        <td>{{ audit.Name }}</td>
+                      <td class='showTrial' trial_id={{ audit.id }}><a href='#'>{{ audit.reduceActions }}</a>
+                    </td>
+                    <td>{{ audit.Module }}</td>
+                    <td>{{ audit.date_of_action }}</td>
+                    <td>{{ audit.user_agent }}</td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="8" class="text-center">No Data Found</td>
+                </tr>
               {% endif %}
             </tbody>
           </table>
         </div>
       </div>
-      <div         class="mt-3 col-md-12 d-flex justify-content-between align-items-center"
-      >
-        <div
-          activePage="{{page_obj.number}}"
-          class="col-md-6 activePage">
+      <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+        <div activePage="{{ page_obj.number }}" class="col-md-6 activePage">
           Showing {{ page_obj.number }} to {{ page_obj.paginator.num_pages }} of {{ TotalUsers }}.
         </div>
-        <div
-          class="col-md-6 d-flex justify-content-end align-items-center"
-        >
-          <ul class="pagination listjs-pagination">
-            <a
-              class="cursor-pointer page-item pagination-prev {% if page_obj.has_previous %}{% else %}disabled{% endif %}"
-              page="1"
-            >
-              <i class="bx bx-chevrons-left"></i>
-            </a>
-            <a
-              class="cursor-pointer page-item pagination-prev {% if page_obj.has_previous %}{% else %}disabled{% endif %}"
-              page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}"
-            >
-              Previous
-            </a>
-
-            {% for page in Pages%}
-            <li class="{% if page == '…' %}disabled{% endif %}">
-              <a
-                class="page-item cursor-pointer page {% if page == '…' %}disabled{% endif %}"
-                page="{{page}}"
-                >{{page}}</a
-              >
-            </li>
-            {% endfor %}
-
-            <a
-              class="cursor-pointer page-item pagination-next {% if not page_obj.has_next %}disabled{% endif %}"
-              page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}"
-            >
-              Next
-            </a>
-            <a
-              class="cursor-pointer page-item pagination-next {% if not page_obj.has_next %}disabled{% endif %}"
-              page="{{ page_obj.paginator.num_pages}}"
-            >
-              <i class="bx bx-chevrons-right"></i>
-            </a>
-          </ul>
+        <div class="col-md-6 d-flex justify-content-end align-items-center">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item first {% if not page_obj.has_previous %}disabled{% endif %}"
+                  page="1">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i
+                ></a>
+              </li>
+              <li class="page-item prev {% if not page_obj.has_previous %}disabled{% endif %}"
+                  page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i
+                ></a>
+              </li>
+              <li class="page-item next {% if not page_obj.has_next %}disabled{% endif %}"
+                  page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i
+                ></a>
+              </li>
+              <li class="page-item last {% if not page_obj.has_next %}disabled{% endif %}"
+                  page="{{ page_obj.paginator.num_pages }}">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i
+                ></a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-{% endblock %} 
-
-{% block ScriptBlock %}
-<script src="{% static 'assets/js/jquery-3.5.1.js' %}"></script>
-<script>
+</div>
+<div class="modal fade modal-lg showTrialModal"
+     tabindex="-1"
+     aria-labelledby="exampleModalgridLabel"
+     aria-modal="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">Show Trial</h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="traceBack"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scriptData %}
+  <script src="{% static 'assets/js/jquery-3.5.1.js' %}"></script>
+  <script>
   $(document).ready(function () {
-    $("#audit").DataTable({
-      paging: false,
-      searching: false,
-      info: false,
-    });
+   
     // Update The Entries Selection
     $("#DataNumber").val($("#DataNumber").attr("DataNumber"));
 
@@ -195,10 +191,46 @@
       let entries = $("#DataNumber").val();
 
       window.location.replace(
-        BASE_URL +
-          `users/audit_trials?DataNumber=${entries}&SearchQuery=${search}&page=${page}`
+        `/audit_trials?DataNumber=${entries}&SearchQuery=${search}&page=${page}`
       );
     }
+
+
+    $("#audit").on("click", ".showTrial", function () {
+      let id = $(this).attr("trial_id");
+      
+      let formData = new FormData();
+      formData.append('id',id);
+
+      $.ajax({
+        method: "POST",
+        url: "/manage_error_log/AuditTrial",
+        headers: { "X-CSRFToken": csrftoken },
+        processData: false,
+        contentType: false,
+        data: formData,
+        async: false,
+        success: function (response) {
+          if (!response.isError) {
+            $(".showTrialModal").modal("show");
+            $(".showTrialModal .traceBack").html(
+              `
+              <p>${response.Message.Trial}</p>
+              <br/>
+              <p><b>Path:</b> ${response.Message.Path}</p>
+              `
+            );
+          } else {
+            $(".showTrialModal").modal("hide");
+          }
+        },
+        error: function (response) {
+          // console.log(response);
+        },
+      });
+    });
+
+
   });
-</script>
+  </script>
 {% endblock %}

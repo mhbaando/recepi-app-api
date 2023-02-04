@@ -42,10 +42,9 @@ class Users(AbstractUser):
         return "Anonymous"
 
     @classmethod
-    def create_user(cls, fname, lname, email, phone, gender, image, is_admins, is_agents, is_supers, request, emp_number=None):
+    def create_user(cls, fname, lname, email, phone, gender, image, is_admins, is_state, is_supers, request, state=None):
         try:
-            username = generateUsername(
-                is_admins, is_agents, is_supers)
+            username = generateUsername()
             Users = cls(
                 first_name=fname.strip(),
                 last_name=lname.strip(),
@@ -55,10 +54,11 @@ class Users(AbstractUser):
                 email=email,
                 avatar=image,
                 is_admin=is_admins,
-                is_staff=is_agents,
+                is_state=is_state,
                 is_superuser=is_supers,
-                employee=emp_number,
-                is_active=False if is_agents else True
+                is_active=False if is_state else True,
+                federal_state=state
+                
             )
             Users.set_password('123')
             Users.save()
@@ -120,16 +120,11 @@ def PreviewDate(date_string, is_datetime, add_time=True):
 
 
 # Generating username for each user by counting from the last username
-def generateUsername(is_admins, is_agents, is_supers):
+def generateUsername():
     user = ''
-    letter = ''
-    if is_supers or is_admins:
-        letter = 'AD'
-        user = Users.objects.filter(Q(is_superuser=True) | Q(is_admin=True))
+    letter = 'AD'
 
-    elif is_agents:
-        letter = 'EM'
-        user = Users.objects.filter(is_staff=True, is_superuser=False)
+    user = Users.objects.all()
 
     if len(user) > 0:
         username = user[0].username
@@ -227,6 +222,7 @@ def sendException(request, username, name, error, avatar='', model='', brand='')
         'isError': True,
         'title': "An error occurred please contact us"
     }
+
 
 def getCurrentDate():
     time = datetime.datetime.now(datetime.timezone.utc)

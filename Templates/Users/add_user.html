@@ -1,6 +1,7 @@
 {% extends "Base/index.html" %}
 {% load static %}
 {% block content %}
+{% csrf_token %}
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Users /</span> {{ pageTitle }}</h4>
 
@@ -46,7 +47,7 @@
                                      
                                         <option selected value="">Select User Type</option>
                                         <option value="Admin">Admin</option>
-                                        <option value="Admin">State</option>
+                                        <option value="State">State</option>
                                         {% if request.user.is_superuser %}
                                         <option value="Super">Superuser</option>
                                         {% endif %}

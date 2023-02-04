@@ -15,7 +15,7 @@ urlpatterns = [
     path('renew_license', license.ReNewLicense, name='ReNewLicense'),
     path('license_lists', license.LicenseLists, name='LicenseLists'),
     path('receipt_voucher/<int:search>',
-         license.Searchinvoice, name='Searchinvoice'),
+         license.SearchReceiptVoucher, name='SearchReceiptVoucher'),
     path('customer_info/<int:id>', license.customer_info, name='customer_info'),
     path('manage_license/<int:id>', license.manage_license, name='manage_license'),
 
