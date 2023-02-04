@@ -135,7 +135,7 @@
         </li>
       </ul>
     </li>
-    <li class="menu-item">
+    <li class="menu-item {% if pageTitle == 'Users List' %}active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-home-circle"></i>
         <div data-i18n="Dashboards">Users</div>
@@ -146,8 +146,8 @@
             <div data-i18n="Analytics">Create</div>
           </a>
         </li>
-        <li class="menu-item">
-          <a href="dashboards-crm.html" class="menu-link">
+        <li class="menu-item {% if pageTitle == 'Users List' %}active{% endif %}">
+          <a href={% url "UsersList" %} class="menu-link">
             <div data-i18n="CRM">Users List</div>
           </a>
         </li>
