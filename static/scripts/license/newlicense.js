@@ -62,7 +62,7 @@ $(document).ready(function () {
                     confirmButtonText: "Ok it!",
                   }).then(function (e) {
                     if (e.value) {
-                      // window.location.reload();
+                      window.location.reload();
                     }
                   });
                 } else {
