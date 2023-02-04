@@ -17,7 +17,11 @@ expired_year = current_date.replace(year=years_to_add)
 
 @login_required(login_url='Login')
 def NewLicense(request):
-    FederalState = customer_model.federal_state.objects.all()
+    if request.user.is_admin or request.user.is_superuser:
+        FederalState = customer_model.federal_state.objects.all()
+    else:
+        FederalState = customer_model.federal_state.objects.filter(
+            Q(state_id=request.user.federal_state.state_id))
 
     context = {
         'FederalState': FederalState,
@@ -57,7 +61,7 @@ def LicenseLists(request):
         Status = request.GET.get('Status')
     if CheckSearchQuery:
         SearchQuery = request.GET['SearchQuery']
-        if request.is_admin or request.user.is_superuser:
+        if request.user.is_admin or request.user.is_superuser:
             Licenselists = customer_model.license.objects.filter(
                 Q(owner__full_name__icontains=SearchQuery) |
                 Q(owner__phone__icontains=SearchQuery) |
