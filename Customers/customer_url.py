@@ -9,4 +9,8 @@ urlpatterns = [
     path('company_block/', views.block_company, name='comapny_block'),
     path('company_profile/', views.profile, name='comapny_profile'),
 
+
+    # customers
+    # register customer
+    path('', views.register_customer, name='register_customer',)
 ]
