@@ -102,7 +102,6 @@ def Searchinvoice(request, search):
                 {
                     'label': f"{searchQuery[xSearch].rv_number}",
                     'value': f"{searchQuery[xSearch].rv_number}",
-                    'username': searchQuery[xSearch].rv_number,
                     'rv_id': searchQuery[xSearch].rv_id,
 
                 }
@@ -134,10 +133,6 @@ def customer_info(request, id):
         except Exception as error:
             username = request.user.username
             name = request.user.first_name + ' ' + request.user.last_name
-
-            # Save Errors
-            # sendException(
-            #     request, username, name, error)
             message = {
                 'title': "Server Error",
                 'type': "error",
@@ -145,3 +140,61 @@ def customer_info(request, id):
                 'Message': f"On Error Occurs. { str(error)}. Please try again or contact system administrator"
             }
             return JsonResponse(message, status=200)
+
+
+@login_required(login_url='Login')
+def manage_license(request, id):
+    try:
+        if id == 0:
+            # Post new  Weapon model and check if the user is allowed to create
+            if request.method == 'POST':
+                owner = request.POST.get('owner')
+                federal_state = request.POST.get('federal_state')
+                place_of_issue = request.POST.get('place_of_issue')
+                rv_number = request.POST.get('rv_number')
+
+                # if customer_model.license.objects.filter(rv_number=rv_number).exists():
+                #     message = {
+                #         'isError': True,
+                #         'title': "Duplicate Error!!",
+                #         'type': "warning",
+                #         'Message': 'This receipt voucher already exits'
+                #     }
+                #     return JsonResponse(message, status=200)
+                # else:
+
+                # get instance of owner
+                get_owner = customer_model.customer.objects.get(
+                    customer_id=owner)
+
+                # get instance of federal state
+                get_federal_state = customer_model.federal_state.objects.get(
+                    state_id=federal_state)
+                save_license = customer_model.license(
+                    federal_state=get_federal_state,
+                    owner=get_owner,
+                    place_of_issue=get_federal_state.state_name,
+                    reg_user=request.user
+                )
+                save_license.save()
+                # TODO: Add to Trial
+                message = {
+                    'isError': False,
+                    'title': "Successfully!!!",
+                    'type': "success",
+                    'Message': 'New license has been successfully created'
+                }
+
+                return JsonResponse(message, status=200)
+
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + ' ' + request.user.last_name
+
+        message = {
+            'isError': True,
+            'title': "Server Error",
+            'type': "error",
+            'Message': 'On Error Occurs . Please try again or contact system administrator'
+        }
+        return JsonResponse(message, status=200)
