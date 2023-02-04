@@ -149,3 +149,13 @@ def block_company(request):
 
 def profile(request):
     return render(request, 'company/comp_details.html')
+
+
+# customers
+def register_customer(request):
+
+    context = {
+        'pageTitle': 'Register Customer'
+    }
+
+    return render(request, 'Customer/register.html', context)

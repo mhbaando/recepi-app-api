@@ -3,14 +3,14 @@ $(document).ready(function () {
 
   $("#submit").on("click", function () {
 
-    let receipt_voucher = $("#search").attr("rv_id");
-    let receipt_voucher_value = $("#search").val();
+    let rv_id = $("#search").attr("rv_id");
+    let rv_number = $("#search").val();
     let place_issue = $("#place_issue").val();
     let state_name = $("#state_name").val();
     let formData = new FormData();
 
     // Validations
-    if (receipt_voucher == undefined || receipt_voucher_value == "") {
+    if (rv_id == undefined || rv_number == "") {
       Swal.fire("Warning!!", "Please enter receipt voucher", "warning");
     } 
     
@@ -29,18 +29,18 @@ $(document).ready(function () {
       );
     } 
     else {
-        formData.append("receipt_voucher", "receipt_voucher");
-        formData.append("receipt_voucher_value", receipt_voucher_value);
-        formData.append("Weapons", Weapons);
+        formData.append("rv_id", rv_id);
+        formData.append("rv_number", rv_number);
+        formData.append("federal_state", state_name);
    
         Swal.fire({
           title: "Are you sure",
-          text: "to insert this data ?",
+          text: "to register this license ?",
           icon: "warning",
           showCancelButton: !0,
           confirmButtonColor: "#2ab57d",
           cancelButtonColor: "#fd625e",
-          confirmButtonText: "Yes, insert it!",
+          confirmButtonText: "Yes, register it!",
         }).then(function (e) {
           if (e.value) {
             $.ajax({
@@ -81,18 +81,21 @@ $(document).ready(function () {
 
   // Performing autocomplete function
   $("#search").on("input", function () {
-
+    $("#search").removeAttr("rv_id");
+    $("#ownar_name").val("");
+    $("#mother_name").val("");
+    $("#personal_id").val("");
+    $("#personal_id_type").val("");
     var listUsers = [];
     if ($(this).val() != "" && $(this).val().length > 2) {
       listUsers = Receiptvoucher($(this).val());
-
       $("#search").autocomplete({
         source: listUsers,
         select: function (event, ui) {
-          const item = ui.item.bullet_id;
+          const item = ui.item.rv_id;
           const value = ui.item.value;
           if (value != "") {
-            $("#search").attr("userid", item);
+            $("#search").attr("rv_id", item);
             customer(item);
           }
         },
@@ -115,8 +118,8 @@ $(document).ready(function () {
       async: false,
       headers: { "X-CSRFToken": csrftoken },
       success: function (data) {
-        data.Message.forEach((bullet) => {
-          list.push(bullet);
+        data.Message.forEach((receipt_voucher) => {
+          list.push(receipt_voucher);
         });
       },
     });
@@ -124,10 +127,10 @@ $(document).ready(function () {
     return list;
   }
 
-  function customer(ID) {
+  function customer(id) {
     $.ajax({
       method: "GET",
-      url: "/customer/receipt_voucher/" + id,
+      url: "/customer/customer_info/" + id,
       async: false,
       headers: { "X-CSRFToken": csrftoken },
       success: function (data) {
@@ -136,8 +139,7 @@ $(document).ready(function () {
           $("#mother_name").val(data.Message.mother_name);
           $("#personal_id").val(data.Message.personal_id);
           $("#personal_id_type").val(data.Message.personal_id_type);
-          $("#licence_no").val(data.Message.license);
-          
+       
         } else {
           Swal.fire( data.title, data.Message,  data.type);
         }
