@@ -155,7 +155,16 @@ def profile(request):
 def register_customer(request):
 
     context = {
-        'pageTitle': 'Register Customer'
+        'pageTitle': 'Register'
     }
 
     return render(request, 'Customer/register.html', context)
+
+
+def activate_customer(request):
+
+    context = {
+        'pageTitle': 'Activate'
+    }
+
+    return render(request, 'Customer/activate.html', context)

@@ -53,39 +53,36 @@
                             <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Model Brand</th>
-                                        <th scope="col">Owner</th>
-                                        <th scope="col">Vin</th>
-                                        <th scope="col">Plate</th>
-                                        <th scope="col">status</th>
-                                        <th scope="col">action</th>
+                                        <th>vehicle_model</th>
+                                        <th>vin</th>
+                                        <th>year</th>
+                                        <th>hp</th>
+                                        <th>color</th>
+                                        <th>weight</th>
+                                        <th>Passenger</th>
+                                        <th>Engine No</th>
+                                        <th>owner</th>
+                                        <th>Rv number</th>
+                                        
                                     </tr>
                                 </thead>
-                                <tbody>
-                                {% if page_obj %}
-                                    {% for item in page_obj %}
-                                    <tr>
-                                        <td>{{item.Model_brand}}</td>
-                                        <td>{{item.ownner}}</td>
-                                        <td>{{item.vin}}</td>
-                                        <td>{{item.plate}}</td>
-                                        
-                                    <td>
-                                        <span
-                                            class="badge bg-{% if item.status == 'UnBlocked' %}success{% elif item.status == 'jghh'%}warning{% else %}danger{% endif %}">{{item.status}}</span>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="badge bg-{% if item.action == 'Edit' %}dark{% endif %}">{{item.action}}</span>
-                                    </td>
-                                    </tr>
-                                    {% endfor %}
-                                    {% else %}
-                                    <tr>
-                                        <td class='text-center' colspan='4'>no customered registered</td>
-                                    </tr>
-                                    {% endif %}
-                                </tbody>
+                                    <tbody>
+                                        {% for veh in vehicles %}
+                                        <tr>
+                                            <td>{{veh.vehicle_model}}</td>
+                                            <td>{{veh.vin}}</td>
+                                            <td>{{veh.hp}}</td>
+                                            <td>{{veh.year}}</td>
+                                            <td>{{veh.color}}</td>
+                                            <td>{{veh.weight}}</td>
+                                            <td>{{veh.pessenger_seat}}</td>
+                                            <td>{{veh.enginer_no}}</td>
+                                            <td>{{veh.owner}}</td>
+                                            <td>{{veh.rv_number}}</td>
+                                            
+                                       </tr>
+                                            {% endfor %}
+                                        </tbody>
                             </table>
                         </div>
     
@@ -133,40 +130,3 @@
 {% block scriptData %}
 <script src={% static "scripts/vehic/vehicles.js" %}></script>
 {% endblock scriptData %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
