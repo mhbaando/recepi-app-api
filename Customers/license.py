@@ -8,6 +8,7 @@ from datetime import date, datetime
 from django.db.models import Q, OuterRef, Exists
 from Finance import models as finance_model
 from Customers import models as customer_model
+from Finance import models as finance_model
 current_date = date.today()
 years_to_add = current_date.year + 4
 expired_year = current_date.replace(year=years_to_add)
@@ -15,9 +16,11 @@ expired_year = current_date.replace(year=years_to_add)
 
 def NewLicense(request):
     FederalState = customer_model.federal_state.objects.all()
+
     context = {
         'FederalState': FederalState,
         'expired_year': expired_year,
+        'last_license': GenerateLicenseNumber,
         'pageTitle': 'Register License'
 
     }
@@ -113,26 +116,25 @@ def customer_info(request, id):
     if request.method == 'GET':
         try:
             vouchers = finance_model.receipt_voucher.objects.get(
-                rv_number=id)
+                rv_id=id)
             license = customer_model.license.objects.filter(
-                license_id=id).exists
+                owner__customer_id=vouchers.rv_from.customer_id, status="Active").exists()
+            x = license
             if license:
                 license = customer_model.license.objects.get(
-                    license_id=id)
-            message = []
-            message.append(
-                {
-                    'ownar_name': f"{vouchers.rv_from.full_name}",
-                    'mother_name': f"{vouchers.rv_from.mother_name}",
-                    'personal_id': f"{vouchers.rv_from.personal_id}",
-                    'personal_id_type': f"{vouchers.rv_from.personal_id_type.personal_name}",
-                    'license': f"{license.reg_no}" if license else 'no Lecenses'
-                }
-            )
+                    owner__customer_id=vouchers.rv_from.customer_id, status="Active")
+            message = {
+                'ownar_name': f"{vouchers.rv_from.full_name}",
+                'mother_name': f"{vouchers.rv_from.mother_name}",
+                'personal_id': f"{vouchers.rv_from.personal_id}",
+                'personal_id_type': f"{vouchers.rv_from.personal_id_type.personal_name}",
+                'license': f"{license.reg_no}" if license else 'no Lecenses'
+            }
+
             return JsonResponse({'Message': message}, status=200)
         except Exception as error:
-            username = request.user.username
-            name = request.user.first_name + ' ' + request.user.last_name
+            # username = request.user.username
+            # name = request.user.first_name + ' ' + request.user.last_name
             message = {
                 'title': "Server Error",
                 'type': "error",
@@ -142,16 +144,16 @@ def customer_info(request, id):
             return JsonResponse(message, status=200)
 
 
-@login_required(login_url='Login')
 def manage_license(request, id):
     try:
         if id == 0:
             # Post new  Weapon model and check if the user is allowed to create
             if request.method == 'POST':
-                owner = request.POST.get('owner')
+                # owner = request.POST.get('owner')
                 federal_state = request.POST.get('federal_state')
                 place_of_issue = request.POST.get('place_of_issue')
-                rv_number = request.POST.get('rv_number')
+                rv_number = request.POST.get('receipt_voucher')
+                rv_id = request.POST.get('rv_id')
 
                 # if customer_model.license.objects.filter(rv_number=rv_number).exists():
                 #     message = {
@@ -163,9 +165,13 @@ def manage_license(request, id):
                 #     return JsonResponse(message, status=200)
                 # else:
 
+                # get instance of receipt voucher
+                get_rv_number = finance_model.receipt_voucher.objects.get(
+                    rv_id=rv_id)
+
                 # get instance of owner
                 get_owner = customer_model.customer.objects.get(
-                    customer_id=owner)
+                    customer_id=get_rv_number.rv_from)
 
                 # get instance of federal state
                 get_federal_state = customer_model.federal_state.objects.get(
@@ -174,7 +180,7 @@ def manage_license(request, id):
                     federal_state=get_federal_state,
                     owner=get_owner,
                     place_of_issue=get_federal_state.state_name,
-                    reg_user=request.user
+                    # reg_user=request.user
                 )
                 save_license.save()
                 # TODO: Add to Trial
@@ -198,3 +204,22 @@ def manage_license(request, id):
             'Message': 'On Error Occurs . Please try again or contact system administrator'
         }
         return JsonResponse(message, status=200)
+
+
+# License Generator
+def GenerateLicenseNumber():
+    last_id = customer_model.license.objects.filter(~Q(reg_no=None)).last()
+    serial = 0
+
+    if last_id is not None:
+        serial = last_id.reg_no
+    serial = serial + 1
+
+    if serial < 10:
+        serial = '000' + str(serial)
+    elif serial < 100:
+        serial = '00' + str(serial)
+    elif serial < 1000:
+        serial = '0' + str(serial)
+
+    return f"{serial}"
