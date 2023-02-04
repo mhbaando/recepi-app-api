@@ -141,6 +141,8 @@ class license(models.Model):
     document = models.FileField(
         null=True, blank=True, upload_to='comapny_document')
     owner = models.ForeignKey(customer, on_delete=models.RESTRICT)
+    receipt_voucher = models.ForeignKey(
+        to="Finance.receipt_voucher", on_delete=models.RESTRICT, null=True, blank=True, related_name="receipt_voucher")
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 

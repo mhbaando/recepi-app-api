@@ -139,7 +139,7 @@ $(document).ready(function () {
           $("#mother_name").val(data.Message.mother_name);
           $("#personal_id").val(data.Message.personal_id);
           $("#personal_id_type").val(data.Message.personal_id_type);
-          $("#licence_no").val(data.Message.license);
+       
         } else {
           Swal.fire( data.title, data.Message,  data.type);
         }

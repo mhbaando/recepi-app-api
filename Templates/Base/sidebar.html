@@ -62,97 +62,170 @@
         <li class="menu-item {% if pageTitle == 'detail_company' %}active{% endif %}">
           <a href="{% url 'detail_company' %}" class="menu-link">
             <div data-i18n="CRM">Company details</div>
+          </a> -->
+        </li>
+      </ul>
+    </li>
+    <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' %}active open{% endif %}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-car"></i>
+        <div data-i18n="Dashboards">Vehicles</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item {% if pageTitle == 'Register vehicle' %}active{% endif %}">
+          <a href="{% url 'register-vehicle' %}" class="menu-link">
+            <div data-i18n="CRM">Register Vehicle</div>
           </a>
         </li>
-      </li>
-    </ul>
-  </li>
-  <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' %}active open{% endif %}">
-    <a href="javascript:void(0);" class="menu-link menu-toggle">
-      <i class="menu-icon tf-icons bx bx-car"></i>
-      <div data-i18n="Dashboards">Vehicles</div>
-    </a>
-    <ul class="menu-sub">
-      <li class="menu-item {% if pageTitle == 'Register vehicle' %}active{% endif %}">
-        <a href="{% url 'register-vehicle' %}" class="menu-link">
-          <div data-i18n="CRM">Register Vehicle</div>
-        </a>
-      </li>
-      <li class="menu-item {% if pageTitle == 'Assign Aplate' %}active{% endif %}">
-        <a href="{% url 'asign-plate' %}" class="menu-link">
-          <div data-i18n="CRM">Assign Plate</div>
-        </a>
-      </li>
-      <li class="menu-item {% if pageTitle == 'Transfer Vehicle' %}active{% endif %}">
-        <a href="{% url 'transfer' %}" class="menu-link">
-          <div data-i18n="CRM">Transfer Vehicles</div>
-        </a>
-      </li>
-      <li class="menu-item {% if pageTitle == 'View Vehicles' %}active{% endif %}">
-        <a href="{% url 'veiw-vehicle' %}" class="menu-link">
-          <div data-i18n="CRM">View Vehicles</div>
-        </a>
-      </li>
-    </ul>
-  </li>
-  <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' or pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active open{% endif %}">
-    <a href="javascript:void(0);" class="menu-link menu-toggle">
-      <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
-      <div data-i18n="Dashboards">Payments</div>
-    </a>
-    <ul class="menu-sub">
-      <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' %}active{% endif %}">
-        <a href={% url 'AccountsPage' %} class="menu-link">
-          <div data-i18n="Analytics">Accounts</div>
-        </a>
-      </li>
-      <li class="menu-item {% if pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active{% endif %}">
-        <a href={% url 'ReceiptsPage' %} class="menu-link">
-          <div data-i18n="Analytics">Receipts</div>
-        </a>
-      </li>
-    </ul>
-  </li>
-  <li class="menu-item {% if pageTitle == 'Register License' or pageTitle == 'Renew License' or  pageTitle == 'license Lists' %}active open{% endif %}">
-    <a href="javascript:void(0);" class="menu-link menu-toggle">
-      <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
-      <div data-i18n="Dashboards">License</div>
-    </a>
-    <ul class="menu-sub">
-      <li class="menu-item {% if pageTitle == 'Register License' %}active{% endif %}">
-        <a href={% url 'NewLicense' %} class="menu-link">
-          <div data-i18n="Analytics">New License</div>
-        </a>
-      </li>
-      <li class="menu-item {% if pageTitle == 'Renew License' %}active{% endif %}">
-        <a href={% url 'ReNewLicense' %} class="menu-link">
-          <div data-i18n="Analytics">Re-new License</div>
-        </a>
-      </li>
-      <li class="menu-item {% if pageTitle == 'license Lists' %}active{% endif %}">
-        <a href={% url 'LicenseLists' %} class="menu-link">
-          <div data-i18n="Analytics">License Lists</div>
-        </a>
-      </li>
-    </ul>
-  </li>
-  <li class="menu-item">
-    <a href="javascript:void(0);" class="menu-link menu-toggle">
-      <i class="menu-icon tf-icons bx bx-home-circle"></i>
-      <div data-i18n="Dashboards">Users</div>
-    </a>
-    <ul class="menu-sub">
-      <li class="menu-item">
-        <a href="dashboards-analytics.html" class="menu-link">
-          <div data-i18n="Analytics">Create</div>
-        </a>
-      </li>
-      <li class="menu-item">
-        <a href="dashboards-crm.html" class="menu-link">
-          <div data-i18n="CRM">Users List</div>
-        </a>
-      </li>
-    </ul>
-  </li>
-</ul>
+        <li class="menu-item {% if pageTitle == 'Assign Aplate' %}active{% endif %}">
+          <a href="{% url 'asign-plate' %}" class="menu-link">
+            <div data-i18n="CRM">Assign Plate</div>
+          </a>
+        </li>
+   
+        <li class="menu-item {% if pageTitle == 'Transfer Vehicle' %}active{% endif %}">
+          <a href="{% url 'transfer' %}" class="menu-link">
+            <div data-i18n="CRM">Transfer Vehicles</div>
+          </a>
+        </li>
+        <li class="menu-item {% if pageTitle == 'View Vehicles' %}active{% endif %}">
+          <a href="{% url 'veiw-vehicle' %}" class="menu-link">
+            <div data-i18n="CRM">View Vehicles</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+
+    <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' or pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active open{% endif %}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
+        <div data-i18n="Dashboards">Payments</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' %}active{% endif %}">
+          <a href={% url 'AccountsPage' %} class="menu-link">
+            <div data-i18n="Analytics">Accounts</div>
+          </a>
+        </li>
+        <li class="menu-item {% if pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active{% endif %}">
+          <a href={% url 'ReceiptsPage' %} class="menu-link">
+            <div data-i18n="Analytics">Receipts</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="menu-item {% if pageTitle == 'Register License' or pageTitle == 'Renew License' or  pageTitle == 'license Lists' %}active open{% endif %}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
+        <div data-i18n="Dashboards">License</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item {% if pageTitle == 'Register License' %}active{% endif %}">
+          <a href={% url 'NewLicense' %} class="menu-link">
+            <div data-i18n="Analytics">New License</div>
+          </a>
+        </li>
+        <li class="menu-item {% if pageTitle == 'Renew License' %}active{% endif %}">
+          <a href={% url 'ReNewLicense' %} class="menu-link">
+            <div data-i18n="Analytics">Re-new License</div>
+          </a>
+        </li>
+        <li class="menu-item {% if pageTitle == 'license Lists' %}active{% endif %}">
+          <a href={% url 'LicenseLists' %} class="menu-link">
+            <div data-i18n="Analytics">License Lists</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    {% if perms.Users.add_users or perms.Users.view_users %}
+    <li class="menu-item {% if pageTitle == 'Users List' or pageTitle == 'Add New User' %}active open{% endif %}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <div data-i18n="Dashboards">Users</div>
+      </a>
+      <ul class="menu-sub">
+        {% if perms.Users.add_users %}
+        <li class="menu-item {% if pageTitle == 'Add New User' %}active{% endif %}">
+          <a href={% url 'Users' %} class="menu-link">
+            <div data-i18n="Analytics">Create</div>
+          </a>
+        </li>
+        {% endif %}
+        {% if perms.Users.view_users %}
+        <li class="menu-item {% if pageTitle == 'Users List' %}active{% endif %}">
+          <a href={% url "UsersList" %} class="menu-link">
+            <div data-i18n="CRM">Users List</div>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </li>
+    {% endif %}
+
+    {% if perms.Users.role_report or perms.auth.view_permission and perms.auth.add_permission or perms.auth.view_group or perms.Users.assign_user_to_group %}
+    <li class="menu-item {% if pageTitle == 'Search Role' or pageTitle == 'Assign Role To User' or pageTitle == 'Create Groups' or pageTitle == 'Assign User To A Group Role' or pageTitle == 'Roles Report' or pageTitle == 'User Roles Report' %}active open{% endif %}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <div data-i18n="Dashboards">Roles</div>
+      </a>
+      <ul class="menu-sub">
+        {% if  perms.auth.view_permission and perms.auth.add_permission or perms.Users.manage_role_groups %}
+            <li class="menu-item  {% if pageTitle == 'Search Role' %}active{% endif %}">
+                <a href={% url 'SearchRole' %} class="menu-link">Search Role</a>
+            </li>
+            {% endif %}
+            {% if  perms.auth.view_permission and perms.auth.add_permission %}
+            <li class="menu-item  {% if pageTitle == 'Assign Role To User' %}active{% endif %}">
+                <a href={% url 'SingleRoles' %} class="menu-link">Assign Role</a>
+            </li>
+            {% endif %}
+            {% if perms.auth.view_group %}
+            <li class="menu-item  {% if pageTitle == 'Create Groups' %}active{% endif %}">
+                <a href={% url 'ManageGroup' %} class="menu-link">Create Groups</a>
+            </li>
+            {% endif %}
+            {% if perms.Users.assign_user_to_group %}
+            <li class="menu-item  {% if pageTitle == 'Assign User To A Group Role' %}active{% endif %}">
+                <a href={% url 'GroupRoles' %} class="menu-link">Assign To Group</a>
+            </li>
+            {% endif %}
+            {% if perms.Users.role_report %}
+            <li class="menu-item  {% if pageTitle == 'Roles Report' %}active{% endif %}">
+                <a href={% url 'RolesReport' %} class="menu-link">Role Reports</a>
+            </li>
+            {% endif %}
+            {% if perms.Users.role_report %}
+            <li class="menu-item  {% if pageTitle == 'User Roles Report' %}active{% endif %}">
+                <a href={% url 'UserRolesReport' %} class="menu-link">User Roles Report</a>
+            </li>
+            {% endif %}
+      </ul>
+    </li>
+    {% endif %}
+
+    {% if perms.Users.view_audittrials or perms.Users.view_errorlogs %}
+    <li class="menu-item {% if pageTitle == 'Audit Trials' or pageTitle == 'Error Logs' %}open active{% endif %}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <div data-i18n="Dashboards">Logs</div>
+      </a>
+      <ul class="menu-sub">
+        {% if perms.Users.view_audittrials %}
+        <li class="menu-item {% if pageTitle == 'Audit Trials' %}active{% endif %}">
+            <a href={% url 'AuditTrials' %} class="menu-link"> Audit Trials
+            </a>
+        </li>
+        {% endif %}
+        {% if perms.Users.view_errorlogs %}
+        <li class="menu-item {% if pageTitle == 'Error Logs' %}active{% endif %}">
+            <a href={% url 'ErrorLogs' %} class="menu-link"> Error Logs </a>
+        </li>
+        {% endif %}
+      </ul>
+    </li>  
+    {% endif %}
+
+  </ul>
 </aside>

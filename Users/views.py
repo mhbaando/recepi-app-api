@@ -17,7 +17,7 @@ from django.contrib.contenttypes.models import ContentType
 
 # Create your views here.
 
-
+@login_required(login_url='Login')
 def Dashboard(request):
     context = {
         'pageTitle': 'Dashboard',
@@ -60,7 +60,7 @@ def Login(request):
                 else:
                     return render(request, 'Auth/login.html', {'Message': 'Email or Password is invalid'})
 
-        return render(request, 'Auth/login.html' , {'pageTitle': 'Login'})
+        return render(request, 'Auth/login.html', {'pageTitle': 'Login'})
     else:
         return redirect('Dashboard')
 
@@ -79,7 +79,6 @@ def Logout(request):
 
 def LoggedOut(request):
     return render(request, 'Base/logoged_out.html')
-
 
 
 def sendTrials(request, username, name, avatar, action, module, path, model='', brand=''):
@@ -289,86 +288,220 @@ def CustomersList(request):
 @login_required(login_url='Login')
 def ManageUsers(request, action):
     try:
-         # action : Holds the action to be performed
+        # action : Holds the action to be performed
 
         # TODO
+        # Check the action to be performed
         # First check if the request matches your need [POST,GET. etc]
         # Then check if the user has the required permission
-        if id == 0:
+
+        if action == "AddNewUser":
             if request.method == 'POST':
-                Type = request.POST.get('type')
-                fname = request.POST.get('fname')
-                lname = request.POST.get('lname')
-                phone = request.POST.get('phone')
-                email = request.POST.get('email').lower()
-                gender = request.POST.get('gender')
-                image = request.FILES['image']
+                if request.user.has_perm('Users.add_users'):
+                    Type = request.POST.get('type')
+                    fname = request.POST.get('fname')
+                    lname = request.POST.get('lname')
+                    phone = request.POST.get('phone')
+                    email = request.POST.get('email').lower()
+                    gender = request.POST.get('gender')
 
-                extention = image.name.split(".")[-1]
-                extension_types = ['JPEG', 'jpeg', 'JPG', 'jpg', 'png', "PNG"]
+                    try:
+                        image = request.FILES['image']
+                    except KeyError:
+                        image = None
 
-                if not extention in extension_types:
-                    return JsonResponse({'isError': True, 'Message': 'This ' + image.name+'  does not support image extentions.Please upload Image'})
+                    authorized_types = ['Admin', 'Superuser', 'State']
+                    authorized_gender = ['Male', 'Female']
 
-                if image.size > 2621440:
-                    return JsonResponse({'isError': True, 'Message': image.name+'  file is more than 2mb size'})
+                    if fname == 'null' or fname is None or fname == '':
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message': "Please enter first name"
+                            }
+                        )
 
-                if models.Users.objects.filter(email=email).exists():
-                    return JsonResponse({'isError': True, 'Message': email+' already exists'})
+                    if lname == 'null' or lname is None or lname == '':
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message': "Please enter last name"
+                            }
+                        )
 
-                if models.Users.objects.filter(phone=phone).exists():
-                    return JsonResponse({'isError': True, 'Message': 'This Phone already exists'})
+                    if phone == 'null' or phone is None or phone == '':
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message': "Please enter phone number"
+                            }
+                        )
+                    if email == 'null' or email is None or email == '':
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message': "Please enter email"
+                            }
+                        )
 
-                is_agents = True if Type == 'Employee' else False
-                is_admins = True if Type == 'Admin' else False
-                is_supers = True if Type == 'Super' else False
+                    if Type == 'null' or Type is None or Type == '':
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message': "Please select a type"
+                            }
+                        )
 
-                if Type == 'Admin' and request.user.has_perm('Users.add_users'):
-                    response = models.Users.create_user(
-                        fname, lname, email, phone, gender, image, is_admins, is_agents, is_supers, request)
+                    if Type not in authorized_types:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message': "Invalid Type"
+                            }
+                        )
 
-                    if response['isError'] == False:
-                        username = request.user.username
-                        names = request.user.first_name + ' ' + request.user.last_name
-                        avatar = str(request.user.avatar)
-                        module = "Users Module / users Table"
-                        action = f"Created new {Type.lower()} name of " + \
-                            fname+" "+lname
-                        path = request.path
-                        sendTrials(request, username, names,
-                                   avatar, action, module, path)
+                    if gender == 'null' or gender is None or gender == '':
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message': "Please select a gender"
+                            }
+                        )
+
+                    if gender not in authorized_gender:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message': "Invalid Gender"
+                            }
+                        )
+
+                    if image is None:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message': "Please select an image to upload"
+                            }
+                        )
+
+                    extention = image.name.split(".")[-1]
+                    extension_types = ['JPEG', 'jpeg',
+                                       'JPG', 'jpg', 'png', "PNG"]
+
+                    if not extention in extension_types:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message': 'This ' + image.name+'  does not support image extentions.Please upload Image'
+                            }
+                        )
+
+                    if image.size > 2621440:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message': image.name+'  file is more than 2mb size'
+                            }
+                        )
+
+                    if models.Users.objects.filter(email=email).exists():
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message':  email+' already exists'
+                            }
+                        )
+
+                    if models.Users.objects.filter(phone=phone).exists():
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'warning',
+                                'Message':  'This Phone already exists'
+                            }
+                        )
+
+                    is_state = True if Type == 'State' else False
+                    is_admins = True if Type == 'Admin' else False
+                    is_supers = True if Type == 'Super' else False
+
+                    if Type in ['Admin', 'State'] and request.user.has_perm('Users.add_users'):
+                        response = models.Users.create_user(
+                            fname, lname, email, phone, gender, image, is_admins, is_state, is_supers, request)
+
+                        if response['isError'] == False:
+                            username = request.user.username
+                            names = request.user.first_name + ' ' + request.user.last_name
+                            avatar = str(request.user.avatar)
+                            module = "Users Module / users Table"
+                            action = f"Created new {Type.lower()} name of " + \
+                                fname+" "+lname
+                            path = request.path
+                            sendTrials(request, username, names,
+                                       avatar, action, module, path)
+                            message = {
+                                'isError': False,
+                                'Message': fname+' has been successfully added'
+                            }
+                            return JsonResponse(message, status=200)
+                        else:
+                            return JsonResponse(response, status=200)
+
+                    elif Type == 'Super' and request.user.is_superuser:
+                        response = models.Users.create_user(
+                            fname, lname, email, phone, gender,  image, is_admins, is_state, is_supers, request)
+
+                        if response['isError'] == False:
+                            username = request.user.username
+                            names = request.user.first_name + ' ' + request.user.last_name
+                            avatar = str(request.user.avatar)
+                            module = "Users Module / users Table"
+                            action = "Created new superuser name of " + fname+" "+lname
+                            path = request.path
+                            sendTrials(request, username, names,
+                                       avatar, action, module, path)
+                            message = {
+                                'isError': False,
+                                'Message': fname+' has been successfully added'
+                            }
+                            return JsonResponse(message, status=200)
+                        else:
+                            return JsonResponse(response, status=200)
+                    else:
                         message = {
-                            'isError': False,
-                            'Message': fname+' has been successfully added'
+                            'isError': True,
+                            'Message': '403-Unauthorized access.you do not have permission to access this page.'
                         }
                         return JsonResponse(message, status=200)
-                    else:
-                        return JsonResponse(response, status=200)
-
-                elif Type == 'Super' and request.user.is_superuser:
-                    response = models.Users.create_user(
-                        fname, lname, email, phone, gender,  image, is_admins, is_agents, is_supers, request)
-
-                    if response['isError'] == False:
-                        username = request.user.username
-                        names = request.user.first_name + ' ' + request.user.last_name
-                        avatar = str(request.user.avatar)
-                        module = "Users Module / users Table"
-                        action = "Created new superuser name of " + fname+" "+lname
-                        path = request.path
-                        sendTrials(request, username, names,
-                                   avatar, action, module, path)
-                        message = {
-                            'isError': False,
-                            'Message': fname+' has been successfully added'
-                        }
-                        return JsonResponse(message, status=200)
-                    else:
-                        return JsonResponse(response, status=200)
                 else:
                     message = {
                         'isError': True,
-                        'Message': '403-Unauthorized access.you do not have permission to access this page.'
+                        'Message': '404-Unauthorized access.you do not have permission to access this page.'
                     }
                     return JsonResponse(message, status=200)
         else:
@@ -442,7 +575,6 @@ def ManageUsers(request, action):
             'Message': 'On Error Occurs . Please try again or contact system administrator'
         }
         return JsonResponse(message, status=200)
-
 
 
 # User Roles Report
@@ -1111,7 +1243,7 @@ def ManageGroup(request, id):
                         'approve_employee_user',
                         'logistic_directorate_approve',
                         'logistic_assistant_approve'
-                        
+
                     ]
                     perms = Permission.objects.filter(
                         ~Q(codename__in=unauthorized_perms),
@@ -1298,76 +1430,30 @@ def RenameGroup(request):
 
 # Search Query
 @login_required(login_url='Login')
-def SearchEngine(request, search, type):
-    # type = yes if student else no => staff and admins
-    if ',' in type:
-        type = type.split(',')
-    else:
-        type = [type]
-
-    # Searching the users from users table
-    # Goes like this:
-
-    if 'FromEmployee' not in type:
-        CheckAdmin = False if 'AD' not in type else True
-        CheckAgent = False if 'EM' not in type else True
-        # CheckEmployee = False if type != 'EMM' else True # If Employee Existed Or Diactivated! The Student's Results Of Marks And Attendance Should Be Seen
-
-        searchFields = {}
-
-        if CheckAdmin:
-            searchFields['is_admin'] = True
-            searchFields['is_superuser'] = True
-
-        if CheckAgent:
-            searchFields['is_staff'] = True
-
-        # search_filter = Q(**searchFields, _connector=Q.OR)
-
-        if request.method == 'GET':
-            searchQuery = models.Users.objects.filter(Q(**searchFields, _connector=Q.OR), Q(username__icontains=search) | Q(email__icontains=search) | Q(phone__icontains=search) | Q(
-                first_name__icontains=search) | Q(last_name__icontains=search), is_active=True)
-
-            message = []
-            userType = ''
-            for xSearch in range(0, len(searchQuery)):
-                if searchQuery[xSearch].is_superuser:
-                    userType = 'Superuser'
-                elif searchQuery[xSearch].is_admin:
-                    userType = 'Admin'
-                elif searchQuery[xSearch].is_staff:
-                    userType = 'Employee'
-
-                if searchQuery[xSearch].is_active == True:
-                    message.append({
-                        'label': f"{searchQuery[xSearch].username} - {searchQuery[xSearch].first_name} {searchQuery[xSearch].last_name} ({searchQuery[xSearch].email} - {searchQuery[xSearch].phone})",
-                        'value': f"{searchQuery[xSearch].username} - {searchQuery[xSearch].first_name} {searchQuery[xSearch].last_name}",
-                        'username': searchQuery[xSearch].username,
-                        'userid': searchQuery[xSearch].id,
-                    },
-                    )
-            return JsonResponse({'Message': message}, status=200)
-
-    # Searching the users from employee table
-    # Goes like this:
-
+def SearchEngine(request, search):
     if request.method == 'GET':
-        searchQuery = employee_models.employees.objects.filter(
-            Q(emp_full_name__istartswith=search) | Q(employee_id__icontains=search), is_active=True, is_emp_exit=False, is_emp_dead=False)
+        searchQuery = models.Users.objects.filter(Q(username__icontains=search) | Q(first_name__icontains=search) | Q(last_name__icontains=search) | Q(
+            email__icontains=search) | Q(phone__icontains=search), is_active=True)
 
         message = []
-        userType = ''
         for xSearch in range(0, len(searchQuery)):
-            message.append(
-                {
-                    'label': f"{searchQuery[xSearch].employee_id} - {searchQuery[xSearch].emp_full_name}",
-                    'value': f"{searchQuery[xSearch].employee_id} - {searchQuery[xSearch].emp_full_name}",
-                    'username': searchQuery[xSearch].employee_id,
-                    'userid': searchQuery[xSearch].emp_number,
-
-                }
+            if searchQuery[xSearch].is_superuser:
+                userType = 'Superuser'
+            elif searchQuery[xSearch].is_admin:
+                userType = 'Admin'
+            elif searchQuery[xSearch].is_state:
+                userType = 'State'
+            else:
+                userType = 'Anonymous'
+            message.append({
+                'label': f"{searchQuery[xSearch].username} - {searchQuery[xSearch].first_name} {searchQuery[xSearch].last_name} ({searchQuery[xSearch].email} - {searchQuery[xSearch].phone})",
+                'value': f"{searchQuery[xSearch].username} - {searchQuery[xSearch].first_name} {searchQuery[xSearch].last_name}",
+                'username': searchQuery[xSearch].username,
+                'userid': searchQuery[xSearch].id,
+            },
             )
         return JsonResponse({'Message': message}, status=200)
+
 
 # Audit and logs
 

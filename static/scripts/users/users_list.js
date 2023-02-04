@@ -29,12 +29,12 @@ $(document).ready(function () {
     // then do not send the search to the server
     if (search == "") {
       window.location.replace(
-        `/users/user_lists?DataNumber=${entries}&page=${page}`
+        `/user_lists?DataNumber=${entries}&page=${page}`
       );
     } else {
       window.location.replace(
      
-          `/users/user_lists?DataNumber=${entries}&SearchQuery=${search}&page=${page}`
+          `/user_lists?DataNumber=${entries}&SearchQuery=${search}&page=${page}`
       );
     }
   }
