@@ -1,0 +1,167 @@
+{% extends "Base/index.html" %}
+{% load static %}
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Users /</span> {{ pageTitle }}</h4>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+            
+                <div class="card-body">
+
+                    <div class="row mb-2 g-4 align-items-center">
+                    <div class="col-sm-3">
+                            {% if perms.Users.add_users %}
+                        <a href={% url 'Users' %}
+                            class="btn btn-primary waves-effect waves-light">
+                            Add Users
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-auto ms-auto">
+                        <div class="hstack gap-2">
+                            
+                            <div class="form-group">
+
+                                <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber }}
+                                    class="form-control select2 w-100">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="30">30</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+
+
+                            <form autocomplete='off'>
+                            <div class="input-group mr-0">
+                                <input id="SearchQuery" type="text" placeholder="Search..." value='{{SearchQuery}}'
+
+                                    class="form-control" aria-label="Recipient's username"
+                                    aria-describedby="button-addon2">
+                                <button class="btn btn-primary" type="button" id="button-addon2">
+                                    <i class="bx bx-search"></i>
+                                </button>
+                            </div>
+                        </form>
+
+
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="row table-responsive">
+                        
+
+                        <div class="col-md-12">
+                            <table id="users_table"
+                                class="table table-bordered dt-responsive nowrap table-striped align-middle w-100">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Gender</th>
+                                        <th>Phone</th>
+                                        <th>Created Date</th>
+                                        <th>Modified Date</th>
+                                        {% if perms.Users.change_users  or perms.Users.change_password %}
+                                        <th>Action</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if page_obj %}
+                                    {% for users in page_obj %}
+                                    <tr>
+                                        <td>{{forloop.counter}}.</td>
+                                        <td>{{users.first_name}} {{ users.last_name }} ({{users.getUserType}})</td>
+                                        <td>{{users.username}}</td>
+                                        <td>{{users.email}}</td>
+                                        <td>{{users.gender}}</td>
+                                        <td>{{users.phone}}</td>
+                                        <td>{{users.date_joined}}</td>
+                                        <td>{{users.get_modified_date}}</td>
+                                        {% if perms.Users.change_users or perms.Users.change_password%}
+                                        <td>
+
+                                            <div class="dropdown d-inline-block">
+                                                <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="ri-more-fill align-middle"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    {% if perms.Users.change_users %}
+                                                    <li>
+                                                        <a class="dropdown-item edit-item-btn edit-user" id='{{users.id}}'>
+                                                            <i class="ri-pencil-fill align-bottom me-2 text-muted" ></i> Edit
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                    <a class="dropdown-item edit-item-btn profile-user" id='{{users.id}}'>
+                                                        <i class="ri-pencil-fill align-bottom me-2 text-muted" ></i> Change Profile
+                                                    </a>
+                                                </li>
+                                                    {% endif %}
+                                                   
+                                                    {% if perms.Users.change_password   %}
+                                                    <li>
+                                                        <a class="dropdown-item remove-item-btn password-user" id='{{users.id}}'>
+                                                            <i class="ri-lock-password-line align-bottom me-2 text-muted"></i> Change Password
+                                                        </a>
+                                                    </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td class='text-center' colspan='{% if perms.Users.change_users or perms.Users.delete_users %}11{% else %}10{% endif %}'>No client available</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
+                            <div activePage = {{ page_obj.number }} class="col-md-6 activePage">
+                                Showing {{ page_obj.number }} to {{ page_obj.paginator.num_pages }} of {{ TotalUsers }}.
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                <ul class="pagination listjs-pagination">
+                                    <a class="cursor-pointer page-item pagination-prev {% if not page_obj.has_previous %}disabled{% endif %}" page="1">
+                                            <i class="bx bx-chevrons-left"></i>
+                                    </a>
+                                    <a class="cursor-pointer page-item pagination-prev {% if not page_obj.has_previous %}disabled{% endif %}" page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
+                                        Previous
+                                    </a>
+                                    
+                                    {% for page in Pages %}
+                                    <li class="{% if page_obj.number == page %}active{% endif %}">
+                                        <a class="page-item cursor-pointer page {% if page == '…' %}disabled{% endif %}" page="{{page}}">{{page}}</a>
+                                    </li>
+                                    {% endfor %}
+
+                                    <a class="cursor-pointer page-item pagination-next {% if not page_obj.has_next %}disabled{% endif %}" page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
+                                            Next
+                                    </a>
+                                    <a class="cursor-pointer page-item pagination-next {% if not page_obj.has_next %}disabled{% endif %}" page="{{ page_obj.paginator.num_pages}}">
+                                        <i class="bx bx-chevrons-right"></i>
+                                    </a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,156 +1,157 @@
-{% extends 'Base/index.html' %}
-{% load static %}
-{% block content %}
- 
+{% extends 'Base/index.html' %} {% load static %} {% block content %}
+
 <!--End Page header-->
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">License /</span> {{pageTitle}}</h4>   
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Licence Lists</div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <div class="row mb-2 g-4 align-items-center">
-    
-                            <div class="col-sm-auto ms-auto">
-                                <div class="hstack gap-2">
-    
-                                    <div class="form-group">
-                                       
-                                        <select id="Status" name="Status" Status={{ Status }}
-                                            class="form-control select2 w-100">
-                                            <option value="Active">Active</option>
-                                            <option value="Lost">Lost</option>
-                                            <option value="Suspended">Suspended</option>
-                                          
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber }}
-                                            class="form-control select2 w-100">
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                            <option value="30">30</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select>
-                                    </div>
-    
-                                    <form autocomplete='off'>
-                                        <div class="input-group mr-0">
-                                            <input id="SearchQuery" type="text" placeholder="Search..."
-                                                value='{{SearchQuery}}' class="form-control"
-                                                aria-label="Recipient's username" aria-describedby="button-addon2">
-                                            <button class="btn btn-primary" type="button" id="button-addon2">
-                                                <i class="bx bx-search"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-    
-                                </div>
-                            </div>
-                        </div>
-                        <table class="table table-bordered text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th class="wd-15p border-bottom-0">License No</th>
-                                    <th class="wd-15p border-bottom-0">Ownar Name</th>
-                                    <th class="wd-20p border-bottom-0">Registered Date</th>
-                                    <th class="wd-15p border-bottom-0">Expire Date</th>
-                                    <th class="wd-10p border-bottom-0">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% if licenselist %}
-                                {% for item in licenselist %}
-                                <tr>
-                
-                                <td>{{item.lno}}</td>
-                                <td>{{item.ownar}}</td>
-                                <td>{{item.register}}</td>
-                                <td>{{item.expire}}</td>
-                
-                                <td>
-                                    <span
-                                        class="badge bg-{% if item.status == 'Active' %}success{% elif item.status == 'suspended'%}warning{% else %}danger{% endif %}">{{item.status}}</span>
-                                </td>
-                               
-                               
-                                 </tr>
-                            {% endfor %}
-                            {% else %}
-                            <tr>
-                                <td class='text-center' colspan='9'>No license available</td>
-                            </tr>
-                            {% endif %}
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+  <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">License /</span> {{pageTitle}}
+  </h4>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Licence Lists</div>
         </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <div class="row mb-2 g-4 align-items-center">
+              <div class="col-sm-auto ms-auto">
+                <div class="hstack gap-2">
+                  <div class="form-group">
+                    <select
+                      id="Status"
+                      name="Status"
+                      Status="{{"
+                      Status
+                      }}
+                      class="form-control select2 w-100"
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Lost">Lost</option>
+                      <option value="Suspended">Suspended</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <select
+                      id="DataNumber"
+                      name="DataNumber"
+                      DataNumber="{{"
+                      DataNumber
+                      }}
+                      class="form-control select2 w-100"
+                    >
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="30">30</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+
+                  <form autocomplete="off">
+                    <div class="input-group mr-0">
+                      <input
+                        id="SearchQuery"
+                        type="text"
+                        placeholder="Search..."
+                        value="{{SearchQuery}}"
+                        class="form-control"
+                        aria-label="Recipient's username"
+                        aria-describedby="button-addon2"
+                      />
+                      <button
+                        class="btn btn-primary"
+                        type="button"
+                        id="button-addon2"
+                      >
+                        <i class="bx bx-search"></i>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <table class="table table-bordered text-nowrap">
+              <thead>
+                <tr>
+                  <th class="wd-15p border-bottom-0">License No</th>
+                  <th class="wd-15p border-bottom-0">Ownar Name</th>
+                  <th class="wd-20p border-bottom-0">Registered Date</th>
+                  <th class="wd-15p border-bottom-0">Expire Date</th>
+                  <th class="wd-10p border-bottom-0">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if licenselist %} {% for item in licenselist %}
+                <tr>
+                  <td>{{item.lno}}</td>
+                  <td>{{item.ownar}}</td>
+                  <td>{{item.register}}</td>
+                  <td>{{item.expire}}</td>
+
+                  <td>
+                    <span
+                      class="badge bg-{% if item.status == 'Active' %}success{% elif item.status == 'suspended'%}warning{% else %}danger{% endif %}"
+                      >{{item.status}}</span
+                    >
+                  </td>
+                </tr>
+                {% endfor %} {% else %}
+                <tr>
+                  <td class="text-center" colspan="9">No license available</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-   
+  </div>
 </div>
 
-{% endblock content %}
-{% block scriptData %}
-
+{% endblock content %} {% block scriptData %}
 
 <script>
-    
-   
-    
-    $("#DataNumber").val($("#DataNumber").attr("DataNumber"));
-    $("#Status").val($("#Status").attr("Status"));
-   
-    $("#DataNumber").change(function () {
-        RefreshPage();
-    });
-    $("#Status").change(function () {
-        RefreshPage();
-      });
-      
+  $("#DataNumber").val($("#DataNumber").attr("DataNumber"));
+  $("#Status").val($("#Status").attr("Status"));
 
-    $("#SearchQuery").on("change", function () {
-        RefreshPage();
-    });
+  $("#DataNumber").change(function () {
+    RefreshPage();
+  });
+  $("#Status").change(function () {
+    RefreshPage();
+  });
 
-    $("#SearchQueryBTN").on("click", function () {
-        RefreshPage();
-    });
+  $("#SearchQuery").on("change", function () {
+    RefreshPage();
+  });
 
-    $(".pagination .page-item").on("click", function () {
-        const pageNumber = $(this).attr("page");
-        $(".activePage").attr("activePage", pageNumber);
-        RefreshPage();
-    });
+  $("#SearchQueryBTN").on("click", function () {
+    RefreshPage();
+  });
 
-    function RefreshPage() {
-        let page = $(".activePage").attr("activePage");
-        let search = $("#SearchQuery").val();
-        let entries = $("#DataNumber").val();
-        let Status = $("#Status").val();
+  $(".pagination .page-item").on("click", function () {
+    const pageNumber = $(this).attr("page");
+    $(".activePage").attr("activePage", pageNumber);
+    RefreshPage();
+  });
 
-        let url = ''
+  function RefreshPage() {
+    let page = $(".activePage").attr("activePage");
+    let search = $("#SearchQuery").val();
+    let entries = $("#DataNumber").val();
+    let Status = $("#Status").val();
 
-        if (search != '') {
-            url = 
-                `/vehicles/license_lists?DataNumber=${entries}&Status=${Status}&SearchQuery=${search}&page=${page}`
-        }
+    let url = "";
 
-        else {
-            url = 
-                `/vehicles/license_lists?DataNumber=${entries}&Status=${Status}&page=${page}`
-        }
-
-        window.location.replace(url);
+    if (search != "") {
+      url = `/customer/license_lists?DataNumber=${entries}&Status=${Status}&SearchQuery=${search}&page=${page}`;
+    } else {
+      url = `/customer/license_lists?DataNumber=${entries}&Status=${Status}&page=${page}`;
     }
 
+    window.location.replace(url);
+  }
 </script>
 <!-- Data tables -->
 <!-- <script src={% static "assets/plugins/datatable/js/jquery.dataTables.min.js"%}></script>

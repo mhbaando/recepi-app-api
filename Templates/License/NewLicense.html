@@ -1,6 +1,8 @@
 {% extends 'Base/index.html' %}
 {% load static %}
 {% block  cssData %}
+
+
 <!-- autocomplete -->
 <link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
 <style>
@@ -8,6 +10,7 @@
 </style>
 {% endblock  %}
 {% block content %}
+{% csrf_token %}
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">License /</span> {{pageTitle}}</h4>   
      <!-- Basic Layout -->
@@ -19,12 +22,15 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        
+                       
                         <div class="col-md-6 mb-0">
                             <div class="mb-3">
                                 <label class="form-label">Search Invoice</label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
                                     <input
+                                    id="search"
                                       type="text"
                                       class="form-control"
                                       placeholder="Search..."
@@ -94,7 +100,7 @@
                         </div>
                         <div class="col-md-12 mb-0">
                             <div class="mb-3">
-                                <button class="btn btn-primary">Save</button>
+                                <button class="btn btn-primary" id="submit">Save</button>
                               
                            
                             </div>
@@ -113,11 +119,7 @@
 
 {% endblock content %}
 {% block scriptData %}
-<script>
-    {% comment %} let x=x.toString({{expired_year}})
-    $("#expire_date").val(x); {% endcomment %}
-   </script>
+
 <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
 <script src={% static 'scripts/license/newlicense.js' %}></script>
-
 {% endblock %}
