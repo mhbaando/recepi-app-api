@@ -1,0 +1,72 @@
+{% extends "Base/index.html" %}
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet"
+          href="{% static "assets/css/register-customer.css" %}"/>
+{% endblock cssData %}
+{% block content %}
+    {% csrf_token %}
+    <div class="container-xxl flex-grow-1">
+        <div>
+            <h4 class="fw-bold py-3 mb-4">
+                <span class="text-muted fw-light">Home / Customer /</span> {{ pageTitle }}
+            </h4>
+        </div>
+        {% comment %} Personal Info {% endcomment %}
+        <div class="row">
+            <div class="col">
+                <div class="card mb-4">
+                    <h5 class="card-header">Customer Info</h5>
+                    <p class="card-subheading">Select a Customer to Activate</p>
+                    <div class="card-body row">
+                        <div class="col-12 mb-3">
+                            <label for="defaultFormControlInput" class="form-label">Customer Name</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="defaultFormControlInput"
+                                   placeholder="Magaca Qofka"
+                                   aria-describedby="defaultFormControlHelp"/>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="defaultFormControlInput" class="form-label">Mother’s name</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="defaultFormControlInput"
+                                   placeholder="Magaca Qofka"
+                                   aria-describedby="defaultFormControlHelp"
+                                   disabled/>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="defaultFormControlInput" class="form-label">Personnel ID</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="defaultFormControlInput"
+                                   placeholder="Magaca Qofka"
+                                   aria-describedby="defaultFormControlHelp"
+                                   disabled/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-4">
+                    <h5 class="card-header"></h5>
+                    <p class="card-subheading"></p>
+                    <div class="card-body row">
+                        <div class="col mb-3">
+                            <label for="defaultFormControlInput" class="form-label">Customer Name</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="defaultFormControlInput"
+                                   placeholder="Magaca Qofka"
+                                   aria-describedby="defaultFormControlHelp"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    <script src="{% static "scripts/customer/uppload.js" %}"></script>
+{% endblock scriptData %}
