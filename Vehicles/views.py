@@ -8,19 +8,19 @@ from django.core.paginator import Paginator
 
 # @login_required
 def register_vehicle(request):
-    context = {"pageTitle": "register_vehicle"}
+    context = {"pageTitle": "Register vehicle"}
     return render(request, "Vehicles/register_vehicle.html", context)
 
 
 # @login_required
 def assign_aplate(request):
-    context = {"pageTitle": "assign aplate"}
+    context = {"pageTitle": "Assign Aplate"}
     return render(request, "Vehicles/asign_plate.html", context)
 
 
 # @login_required
 def tranfer(request):
-    context = {"pageTitle": "tranfer_vehicle"}
+    context = {"pageTitle": "Transfer Vehicle"}
     return render(request, "Vehicles/transfer.html", context)
 
 
@@ -161,7 +161,7 @@ def view_vehicle(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
-        'pageTitle': 'view_vehicles',
+        'pageTitle': 'View Vehicles',
         'page_obj': page_obj,
         'SearchQuery': SearchQuery,
         'DataNumber': DataNumber,

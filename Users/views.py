@@ -287,8 +287,13 @@ def CustomersList(request):
 
 # Manage Users
 @login_required(login_url='Login')
-def ManageUsers(request, id):
+def ManageUsers(request, action):
     try:
+         # action : Holds the action to be performed
+
+        # TODO
+        # First check if the request matches your need [POST,GET. etc]
+        # Then check if the user has the required permission
         if id == 0:
             if request.method == 'POST':
                 Type = request.POST.get('type')

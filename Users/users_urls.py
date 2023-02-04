@@ -7,7 +7,7 @@ urlpatterns = [
     path('add_users', Users, name='Users'),
     path('user_lists', UsersList, name='UsersList'),
     path('customers_list', CustomersList, name='CustomersList'),
-    path('manage_users/<int:id>',
+    path('manage_users/<str:action>',
          ManageUsers, name='ManageUsers'),
 
 
