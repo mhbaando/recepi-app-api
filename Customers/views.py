@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 
 def register_company(request):
     context = {
-        'pageTitle': 'register company'
+        'pageTitle': 'Register Company'
     }
     return render(request, 'Company/register.html', context)
 
@@ -135,7 +135,7 @@ def view_company(request):
 
 def detail_company(request):
     context = {
-        'pageTitle': 'detail company'
+        'pageTitle': 'Company Details'
     }
     return render(request, 'company/comp_details.html', context)
 

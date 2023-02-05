@@ -1,7 +1,8 @@
 {% extends 'Base/index.html' %}
 {% load static %}
 {% block content %}
-  <div class="container-xxl flex-grow-1">
+  
+<div class="container-xxl flex-grow-1">
     <div class="container">
       <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">Home /</span> {{ pageTitle }}
@@ -17,9 +18,9 @@
                   <a href="#">Home</a>
                 </li>
                 <li class="breadcrumb-item">
-                  <a href="#">User</a>
+                  <a href="#">Company</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                <li class="breadcrumb-item active" aria-current="page">View</li>
               </ol>
             </nav>
           </div>
@@ -28,11 +29,11 @@
           <div class="col-lg-4">
             <div class="card mb-4">
               <div class="card-body text-center">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                <img src="https://th.bing.com/th/id/OIP.elzAzVV8qRRIzIxwrd3FVgHaHa?pid=ImgDet&rs=1"
                      alt="avatar"
                      class="rounded-circle img-fluid"
                      style="width: 150px">
-                <h5 class="my-3">John Smith</h5>
+                <h5 class="my-3">Mohamoud Ali</h5>
                 <p class="text-muted mb-1">Full Stack Developer</p>
                 <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
                 <div class="d-flex justify-content-center mb-2">
@@ -46,37 +47,19 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-sm-3">
-                    <p class="mb-0">Full Name</p>
+                    <p class="mb-0">Name</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0">Halima Hussein</p>
+                    <p class="text-muted mb-0">Mohamoud Ali</p>
                   </div>
                 </div>
                 <hr>
                 <div class="row">
                   <div class="col-sm-3">
-                    <p class="mb-0">Email</p>
+                    <p class="mb-0">Webiste</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0">example@example.com</p>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Phone</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">(097) 234-5678</p>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Mobile</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">(098) 765-4321</p>
+                    <p class="text-muted mb-0">https://sissim.so</p>
                   </div>
                 </div>
                 <hr>
@@ -88,10 +71,65 @@
                     <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
                   </div>
                 </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Registration No</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0">87856758</p>
+                  </div>
+                </div>
+                <hr>
+               
+                </div>
+
+
+                {% comment %} pagination {% endcomment %}
+
+
+
+
+                <div class="col d-flex justify-content-end align-items-end  pe-2">
+
+                  <nav aria-label="Page navigation mb-5">
+                      <ul class="pagination">
+                        <li class="page-item first {% if not page_obj.has_previous %}disabled{% endif %}" page="1">
+                          <a class="page-link" href="javascript:void(0);"
+                            ><i class="tf-icon bx bx-chevrons-left"></i
+                          ></a>
+                        </li>
+                        <li class="page-item prev {% if not page_obj.has_previous %}disabled{% endif %}" page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
+                          <a class="page-link" href="javascript:void(0);"
+                            ><i class="tf-icon bx bx-chevron-left"></i
+                          ></a>
+                        </li>
+                      
+                        <li class="page-item next {% if not page_obj.has_next %}disabled{% endif %}" page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
+                          <a class="page-link" href="javascript:void(0);"
+                            ><i class="tf-icon bx bx-chevron-right"></i
+                          ></a>
+                        </li>
+                        <li class="page-item last {% if not page_obj.has_next %}disabled{% endif %}" page="{{ page_obj.paginator.num_pages}}">
+                          <a class="page-link" href="javascript:void(0);"
+                            ><i class="tf-icon bx bx-chevrons-right"></i
+                          ></a>
+                        </li>
+                      </ul>
+                    </nav>
               </div>
+              </div>
+
+              
             </div>
           </div>
         </div>
       </div>
+
+      
     </section>
+
+
+
   {% endblock %}
+
