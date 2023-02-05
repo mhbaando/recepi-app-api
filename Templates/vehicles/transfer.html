@@ -50,27 +50,38 @@
                         
             
                         <div class="col-md-6 mb-0">
-                            <div class="mb-3">
+                          <div class="mb-3">
                                 <label class="form-label">Personal ID</label>
                                 <input type="text" class="form-control"  disabled id="personal_id" placeholder="PersonalID">
                             </div>
                         </div>
-                        <div>
-                          <label for="doc" class="uppload-btn btn btn-primary">
-                              <i class="bx bx-upload"></i>
-                              Click to Upload
-                          </label>
-                          <input type="file" id="doc" hidden/>
-                      </div>
-                       
-                        </div>
                         <div class="col-md-6 mb-0">
                           <div class="mb-3">
-                                <button class="btn btn-primary">Save</button>
-                              
-                           
-                            </div>
-                        </div>
+                          <label for="exampleFormControlTextarea1" class="form-label">Transfer Reason</label>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                      </div>
+                      </div>
+                      <div class="col-md-6 mb-0">
+                        <div class="col mt-5">
+                          
+                              <label for="doc" class="uppload-btn btn btn-primary">
+                                  <i class="bx bx-upload"></i>
+                                  Click to Upload
+                              </label>
+                              <input type="file" id="doc" hidden/>
+                          </div>
+                    </div>
+                    <div class="col-md-6 mb-1">
+                      <div class="col mt-2">
+                        <button class="btn btn-primary">Save</button>
+                      </div>
+                    </div>  
+                     
+                      
+                       
+                        
+                    
+                      </div>
                     </div>
                     
                     
@@ -99,7 +110,7 @@
             #
           </th>
           <th>
-            Plate Numer
+            RV Numer
           </th>
           <th>
             Old Owner
@@ -110,115 +121,22 @@
           <th>
             Vehicle Brand
           </th>
-          <th>
-            Vin
-          </th>
         </tr>
       </thead>
       <tbody>
+        {% for trans in Transfer %}
         <tr>
-          <th scope="row">
-            5
-          </th>
-          <td>
-            pt-65456
-          </td>
-          <td>
-            aisha ahmed
-          </td>
-          <td>
-            maxamed cilmi farah
-          </td>
-          <td>
-            Toyota
-          </td>
-          <td>
-            v-9847658
-          </td>
-        </tr>
-        <tr>
-            <th scope="row">
-              4
-            </th>
-            <td>
-              pt-65456
-            </td>
-            <td>
-              ali ahmed farah
-            </td>
-            <td>
-               fadumo ali
-            </td>
-            <td>
-              lambargini
-            </td>
-            <td>
-              v-9847658
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">
-              3
-            </th>
-            <td>
-              pt-65456
-            </td>
-            <td>
-              fartun ahamed cilmi
-            </td>
-            <td>
-              farhan ahmed cilmi
-            </td>
-            <td>
-              lambargini
-            </td>
-            <td>
-              v-9847658
-            </td>
+            <td>{{trans.rv_number}}</td>
+            <td>{{trans.old_number}}</td>
+            <td>{{trans.new_number}}</td>
+            <td>{{trans.vehicle}}</td>
+          
             
-          </tr>
-          <tr>
-            <th scope="row">
-              2
-            </th>
-            <td>
-              pt-65456
-            </td>
-            <td>
-              ali ahmed maxamed
-            </td>
-            <td>
-              farhan ahmed cilmi
-            </td>
-            <td>
-              lambargini
-            </td>
-            <td>
-              v-9847658
-            </td>
+       </tr>
+            {% endfor %}
+    
             
-          </tr>
-          <tr>
-            <th scope="row">
-              1
-            </th>
-            <td>
-              pt-65456
-            </td>
-            <td>
-              ali ahmed DAHIR
-            </td>
-            <td>
-              maxamed ahmed cilmi
-            </td>
-            <td>
-              lambargini
-            </td>
-            <td>
-              v-9847658
-            </td>
-            
-          </tr>
+          
       </tbody>
     </table>
   </div>

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import Assign_create
+# from .views import Assign_create
 urlpatterns = [
     # vehicle Urls
     # path("asignplate/", views.assign_aplate, name="asign-plate"),
@@ -9,7 +9,7 @@ urlpatterns = [
     path("registervehicle",views.register_vehicle,name="register-vehicle"),
     # path("registervehicle",views.register_vehicle,name="register-vehicle"),
     
-    path("asignplate/",Assign_create.as_view(),name="asign-plate"),
+    path("asignplate/",views.assign_plate,name="asign-plate"),
     
 
 

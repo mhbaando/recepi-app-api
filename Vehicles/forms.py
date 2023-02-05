@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import vehicle,transfare_vehicles
+from .models import vehicle,transfare_vehicles,plate
 
 
 
@@ -13,4 +13,10 @@ class Vehicleform(ModelForm):
 class Transferform(ModelForm):
     class Meta:
         model =transfare_vehicles
-        fields = "__all__"        
+        fields = "__all__"   
+
+
+class Plateform(ModelForm):
+    class Meta:
+        model =plate
+        fields = "__all__" 

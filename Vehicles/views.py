@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from Customers.models import countries,customer
 from django.contrib import messages
-from .forms import Vehicleform,Transferform
+from .forms import Vehicleform,Transferform,Plateform
 
 # Create your views here.
 
@@ -31,7 +31,7 @@ def register_vehicle(request):
             return redirect("veiw-vehicle")
         else:
             messages.error(request, "error accured")
-    context = {"form": form}
+    context = {"form": form,'pageTitle': 'Register vehicle'}
     return render(request, "Vehicles/register_vehicle.html", context)
 
 
@@ -40,11 +40,18 @@ def register_vehicle(request):
 # def assign_aplate(request):
 #     context = {"pageTitle": "Assign Aplate"}
 #     return render(request, "Vehicles/asign_plate.html", context)
-class Assign_create(CreateView):
-    model=plate
-    fields='__all__'
-    success_url=reverse_lazy('veiw-vehicle')
-    template_name='Vehicles/asign_plate.html'
+def assign_plate(request):
+    form = Plateform()
+    if request.method == "POST":
+        form = Plateform(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "assigned anew plate to a new vehicle")
+            return redirect("veiw-vehicle")
+        else:
+            messages.error(request, "error accured")
+    context = {"form": form,'pageTitle': 'Assign Aplate'}
+    return render(request, "Vehicles/asign_plate.html", context)
 
 
 # @login_required
@@ -54,6 +61,7 @@ class Assign_create(CreateView):
 
 
 def tranfercreate(request):
+    transfer=transfare_vehicles.objects.all()
     form = Transferform()
     if request.method == "POST":
         form = Transferform(request.POST)
@@ -63,7 +71,7 @@ def tranfercreate(request):
             return redirect("veiw-vehicle")
         else:
             messages.error(request, "error accured")
-    context = {"form": form}
+    context = {"form": form,"transfer":transfer,'pageTitle': 'Transfer Vehicle'}
     return render(request, "Vehicles/transfer.html", context)
 
 class Assign_create(CreateView):
