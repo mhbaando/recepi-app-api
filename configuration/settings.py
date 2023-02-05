@@ -147,7 +147,7 @@ AUTH_USER_MODEL = 'Users.Users'
 
 
 #session expiration
-SESSION_EXPIRE_SECONDS = 60  # session will expire after 15 minutes of Inactivity.
+SESSION_EXPIRE_SECONDS = 900  # session will expire after 15 minutes of Inactivity.
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 # group by minute
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60 
