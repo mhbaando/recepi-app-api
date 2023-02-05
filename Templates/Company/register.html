@@ -32,11 +32,11 @@
               <div class="row mt-4">
                 <div class="col">
                   <label for="company">Website</label>
-                  <input type="text" class="form-control" placeholder="https://sissim.so"/>
+                  <input type="text" class="form-control" placeholder="website"/>
                 </div>
                 <div class="col">
                   <label for="company">Owner</label>
-                  <select class="form-select" aria-label="Default select example">
+                  {% comment %} <select class="form-select" aria-label="Default select example">
                     <option selected>
                       select a customer
                     </option>
@@ -49,7 +49,12 @@
                     <option value="3">
                       Yusra Ahmed
                     </option>
-                  </select>
+                  </select> {% endcomment %}
+                  {% comment %} <input type="text" class="form-control" placeholder="search customer name"/> {% endcomment %}
+                  <div class="input-group">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                    
+                  </div>
                 </div>
               </div>
             </form>
