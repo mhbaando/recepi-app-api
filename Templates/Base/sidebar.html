@@ -14,7 +14,8 @@
         <div data-i18n="Dashboard">Dashboard</div>
       </a>
     </li>
-    <li class="menu-item {% if pageTitle == 'Register' or pageTitle == 'Activate' %} active open{% endif %}">
+    {% comment %} customers {% endcomment %}
+    <li class="menu-item {% if pageTitle == 'Register' or pageTitle == 'Activate' or pageTitle == 'List' %} active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon bx bx-user"></i>
         <div data-i18n="Customers">Customer</div>
@@ -31,7 +32,7 @@
           </a>
         </li>
         <li class="menu-item {% if pageTitle == 'List' %} active{% endif %}">
-          <a href="dashboards-crm.html" class="menu-link">
+          <a href="{% url 'customer_list' %}" class="menu-link">
             <div data-i18n="Customer">Customer List</div>
           </a>
         </li>

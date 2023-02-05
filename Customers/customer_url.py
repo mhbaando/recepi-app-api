@@ -22,5 +22,6 @@ urlpatterns = [
     # customers
     # register customer
     path('', views.register_customer, name='register_customer'),
-    path('activate', views.activate_customer, name='activate_customer',)
+    path('activate', views.activate_customer, name='activate_customer'),
+    path('list', views.customer_list, name="customer_list")
 ]
