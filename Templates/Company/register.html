@@ -36,7 +36,7 @@
                 </div>
                 <div class="col">
                   <label for="company">Owner</label>
-                  <select class="form-select" aria-label="Default select example">
+                  {% comment %} <select class="form-select" aria-label="Default select example">
                     <option selected>
                       select a customer
                     </option>
@@ -49,7 +49,12 @@
                     <option value="3">
                       Yusra Ahmed
                     </option>
-                  </select>
+                  </select> {% endcomment %}
+                  {% comment %} <input type="text" class="form-control" placeholder="search customer name"/> {% endcomment %}
+                  <div class="input-group">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                    
+                  </div>
                 </div>
               </div>
             </form>
@@ -78,7 +83,7 @@
               <label for="company">Address</label>
               <input type="text"
                      class="form-control"
-                     placeholder="hodan digfer street mogadisu-Somalia"/>
+                     placeholder="Bay Area, San Francisco, CA"/>
             </div>
             <div class="col">
               <label for="company">Owner</label>
@@ -102,11 +107,11 @@
       </div>
     </div>
     <div class="card">
-      <div class="card-header">
+      <div class="card-header ">
         <h2>Identification Info</h2>
       </div>
       <div class="card-body">
-        <h5 class="card-title">fill all required field to register new customer</h5>
+        <h6 class="card-title"> fill all required field to register new customer</h6>
         <div class="row">
           <div class="col">
             <label for="defaultFormControlInput" class="form-label">Logo</label>
@@ -141,18 +146,19 @@
               <input type="file" id="doc" hidden class="form-control custom-input-file" />
             </div>
           </br>
-        </br>
-        <div class="form-outline">
-          <label class="form-label" for="textAreaExample">Description</label>
-          <textarea class="form-control"
-                    id="textAreaExample"
-                    placeholder="write your description here"
-                    rows="4"></textarea>
-        </br>
-      </br>
-    </div>
+     
+       
   </div>
-  <div class="d-flex justify-content-end align-items-end mt-4">
+  <div class="form-outline"><br><br>
+    <label class="form-label" for="textAreaExample">Description</label>
+    <textarea class="form-control"
+              id="textAreaExample"
+              placeholder="write your description here"
+              rows="4"></textarea>
+  </br>
+</br>
+</div>
+  <div class="d-flex justify-content-end align-items-end mb-6">
     <a href="#"
        class="btn btn-primary btn-lg active"
        role="button"
