@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import vehicle
+from .models import vehicle,plate,transfare_vehicles,model_brand,color,cylinder
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
+from Customers.models import countries,customer
+from django.contrib import messages
+from .forms import Vehicleform,Transferform
 
 # Create your views here.
 
@@ -12,34 +15,91 @@ from django.urls import reverse_lazy
 # @login_required
 
 
-class Register_create(CreateView):
-    model=vehicle
+# class Register_create(CreateView):
+#     model=vehicle
+#     fields='__all__'
+#     success_url=reverse_lazy('veiw-vehicle')
+#     template_name='Vehicles/register_vehicle.html'
+
+def register_vehicle(request):
+    form = Vehicleform()
+    if request.method == "POST":
+        form = Vehicleform(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Vehicle was registered successfully")
+            return redirect("veiw-vehicle")
+        else:
+            messages.error(request, "error accured")
+    context = {"form": form}
+    return render(request, "Vehicles/register_vehicle.html", context)
+
+
+
+# @login_required
+# def assign_aplate(request):
+#     context = {"pageTitle": "Assign Aplate"}
+#     return render(request, "Vehicles/asign_plate.html", context)
+class Assign_create(CreateView):
+    model=plate
     fields='__all__'
-    success_url=reverse_lazy('vehicles')
-    template_name='Vehicles/register_vehicle.html'
+    success_url=reverse_lazy('veiw-vehicle')
+    template_name='Vehicles/asign_plate.html'
 
 
 # @login_required
-def assign_aplate(request):
-    context = {"pageTitle": "Assign Aplate"}
-    return render(request, "Vehicles/asign_plate.html", context)
+# def tranfer(request):
+#     context = {"pageTitle": "Transfer Vehicle"}
+#     return render(request, "Vehicles/transfer.html", context)
 
 
-# @login_required
-def tranfer(request):
-    context = {"pageTitle": "Transfer Vehicle"}
+def tranfercreate(request):
+    form = Transferform()
+    if request.method == "POST":
+        form = Transferform(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "anew transfer happened ")
+            return redirect("veiw-vehicle")
+        else:
+            messages.error(request, "error accured")
+    context = {"form": form}
     return render(request, "Vehicles/transfer.html", context)
 
-
+class Assign_create(CreateView):
+    model=plate
+    fields='__all__'
+    success_url=reverse_lazy('veiw-vehicle')
+    template_name='Vehicles/asign_plate.html'
 
 
 def view_vehicle(request):
     vehicles=vehicle.objects.all()
-    context = {"vehicles": vehicles}
+    CheckSearchQuery = 'SearchQuery' in request.GET
+    CheckDataNumber = 'DataNumber' in request.GET
+    DataNumber = 10
+    SearchQuery = ''
+    if CheckDataNumber:
+       DataNumber = int(request.GET['DataNumber'])
+
+    if CheckSearchQuery:
+      SearchQuery = request.GET['SearchQuery']
+    else:
+         pass
+
+ 
+    paginator = Paginator(vehicles, DataNumber)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'pageTitle': 'View Vehicles',
+         'page_obj': page_obj,
+         'SearchQuery': SearchQuery,
+         'DataNumber': DataNumber,
+         "vehicles":vehicles
+         }
     return render(request, 'Vehicles/veiw_vehicles.html', context)
-
-
-
+   
 
 # def view_vehicle(request):
 #     CheckSearchQuery = 'SearchQuery' in request.GET

@@ -55,10 +55,17 @@
                                 <input type="text" class="form-control"  disabled id="personal_id" placeholder="PersonalID">
                             </div>
                         </div>
+                        <div>
+                          <label for="doc" class="uppload-btn btn btn-primary">
+                              <i class="bx bx-upload"></i>
+                              Click to Upload
+                          </label>
+                          <input type="file" id="doc" hidden/>
+                      </div>
                        
                         </div>
-                        <div class="col-md-12 mb-0">
-                            <div class="mb-3">
+                        <div class="col-md-6 mb-0">
+                          <div class="mb-3">
                                 <button class="btn btn-primary">Save</button>
                               
                            
@@ -106,9 +113,6 @@
           <th>
             Vin
           </th>
-          <th>
-            Status
-          </th>
         </tr>
       </thead>
       <tbody>
@@ -131,9 +135,6 @@
           <td>
             v-9847658
           </td>
-          <td>
-            <span class="badge bg-label-success">Unblocked</span>
-          </td>
         </tr>
         <tr>
             <th scope="row">
@@ -153,9 +154,6 @@
             </td>
             <td>
               v-9847658
-            </td>
-            <td>
-              <span class="badge bg-label-danger">blocked</span>
             </td>
           </tr>
           <tr>
@@ -177,9 +175,7 @@
             <td>
               v-9847658
             </td>
-            <td>
-              <span class="badge bg-label-success">Unblocked</span>
-            </td>
+            
           </tr>
           <tr>
             <th scope="row">
@@ -200,9 +196,7 @@
             <td>
               v-9847658
             </td>
-            <td>
-              <span class="badge bg-label-danger">blocked</span>
-            </td>
+            
           </tr>
           <tr>
             <th scope="row">
@@ -223,9 +217,7 @@
             <td>
               v-9847658
             </td>
-            <td>
-              <span class="badge bg-label-danger">blocked</span>
-            </td>
+            
           </tr>
       </tbody>
     </table>
