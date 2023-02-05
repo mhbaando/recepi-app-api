@@ -69,6 +69,7 @@ class vehicle(models.Model):
 
     class Meta:
         db_table = 'vehicle'
+        
 
 
 class plate(models.Model):

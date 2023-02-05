@@ -45,6 +45,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
 
 ROOT_URLCONF = 'configuration.urls'
@@ -143,3 +144,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Change the default user
 AUTH_USER_MODEL = 'Users.Users'
+
+
+#session expiration
+SESSION_EXPIRE_SECONDS = 900  # session will expire after 15 minutes of Inactivity.
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+# group by minute
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60 
+SESSION_TIMEOUT_REDIRECT = 'Login'

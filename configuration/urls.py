@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from Users.views import Login , Logout
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('',  include('Users.users_urls')),
     path('login' , Login , name='Login'),
     path('logout' , Logout , name='Logout'),

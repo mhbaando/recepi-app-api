@@ -2,7 +2,7 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <div class="app-brand demo mt-3 mb-5">
     <a href="{% url 'Dashboard' %}" class="app-brand-link">
-      <img src={% static "brand/logo.png" %} alt="Logo" width="100%"/>
+      <img src={% static "brand/logo.png" %} alt="Logo" width="100%">
     </a>
   </div>
   <div class="menu-inner-shadow"></div>
@@ -14,23 +14,23 @@
         <div data-i18n="Dashboard">Dashboard</div>
       </a>
     </li>
-    <li class="menu-item {% if pageTitle == 'Register' or pageTitle == 'Activate' %} active open{% endif %}">
+    <li class="menu-item {% if pageTitle == 'Register Customer' %} active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon bx bx-user"></i>
+        <i class='menu-icon bx bx-user'></i>
         <div data-i18n="Customers">Customer</div>
       </a>
       <ul class="menu-sub ">
-        <li class="menu-item {% if pageTitle == 'Register' %} active{% endif %}">
+        <li class="menu-item {% if pageTitle == 'Register Customer' %} active{% endif %}">
           <a href="{% url 'register_customer' %}" class="menu-link">
             <div data-i18n="Register">Register</div>
           </a>
         </li>
-        <li class="menu-item {% if pageTitle == 'Activate' %} active{% endif %}">
-          <a href="{% url "activate_customer" %}" class="menu-link">
-            <div data-i18n="Actiavte">Activate</div>
+        <li class="menu-item {% if pageTitle == 'Actiavte Customer' %} active{% endif %}">
+          <a href="dashboards-crm.html" class="menu-link">
+            <div data-i18n="Actiavte">Actiavte</div>
           </a>
         </li>
-        <li class="menu-item {% if pageTitle == 'List' %} active{% endif %}">
+        <li class="menu-item {% if pageTitle == 'Customer List' %} active{% endif %}">
           <a href="dashboards-crm.html" class="menu-link">
             <div data-i18n="Customer">Customer List</div>
           </a>
@@ -59,7 +59,7 @@
             <div data-i18n="CRM">Company View</div>
           </a>
         </li>
-        <li class="menu-item {% if pageTitle == 'detail_company' %}active{% endif %}">
+        <li class="menu-item {% if pageTitle == 'detail company' %}active{% endif %}">
           <a href="{% url 'detail_company' %}" class="menu-link">
             <div data-i18n="CRM">Company details</div>
           </a>
