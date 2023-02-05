@@ -103,41 +103,31 @@
 
 
     <div class="row table-responsive">
-    <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
-      <thead>
-        <tr class="text-nowrap">
-          <th>
-            #
-          </th>
-          <th>
-            RV Numer
-          </th>
-          <th>
-            Old Owner
-          </th>
-          <th>
-            New Owner
-          </th>
-          <th>
-            Vehicle Brand
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for trans in Transfer %}
-        <tr>
-            <td>{{trans.rv_number}}</td>
-            <td>{{trans.old_number}}</td>
-            <td>{{trans.new_number}}</td>
-            <td>{{trans.vehicle}}</td>
-          
-            
-       </tr>
-            {% endfor %}
-    
-            
-          
-      </tbody>
+      <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
+        <thead>
+            <tr>
+                <th>rv_number</th>
+                <th>old_owner</th>
+                <th>new_owner</th>
+                <th>vehicle_type</th>
+                
+               
+                
+            </tr>
+        </thead>
+            <tbody>
+                {% for trans in transfer %}
+                <tr>
+                    <td>{{trans.rv_number}}</td>
+                    <td>{{trans.old_owner}}</td>
+                    <td>{{trans.new_owner}}</td>
+                    <td>{{trans.vehicle}}</td>
+                    
+                   
+                    
+               </tr>
+                    {% endfor %}
+                </tbody>
     </table>
   </div>
   </div>
