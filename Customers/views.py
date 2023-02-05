@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 # Create your views here.
 # company
@@ -152,6 +151,7 @@ def profile(request):
 
 
 # customers
+@login_required(login_url='Login')
 def register_customer(request):
 
     context = {
@@ -161,6 +161,7 @@ def register_customer(request):
     return render(request, 'Customer/register.html', context)
 
 
+@login_required(login_url='Login')
 def activate_customer(request):
 
     context = {
@@ -168,3 +169,12 @@ def activate_customer(request):
     }
 
     return render(request, 'Customer/activate.html', context)
+
+
+@login_required(login_url='Login')
+def customer_list(request):
+
+    context = {
+        'pageTitle': 'List'
+    }
+    return render(request, 'Customer/customerview.html', context)
