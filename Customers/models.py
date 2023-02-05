@@ -24,7 +24,7 @@ class personal_id_type(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'personal_id'
+        db_table = 'personal_id_type'
 
     def __str__(self):
         return self.personal_name
