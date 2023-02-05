@@ -3,7 +3,7 @@
 {% block content %}
   <div class="container-xxl flex-grow-1">
     <div class="container">
-      <h4 class="fw-bold py-3 mb-4">
+      <h4 class="fw-bold py-3 mb-4 >
         <span class="text-muted fw-light">Home /</span> {{ pageTitle }}
       </h4>
     </div>
@@ -17,7 +17,7 @@
                   <h1>Company Info</h1>
                   <label for="customer name">Customer Name</label>
                   <select class="form-select" aria-label="Default select example">
-                    <option selected>
+                    <option selected><br><br>
                       select comapny to block
                     </option>
                     <option value="1">
@@ -62,9 +62,19 @@
                   <label for="comapy">upload all necessary documents to block company</label>
                   <br>
                   <br>
-                  <button type="button" class="btn btn-primary">
+                  {% comment %} <button type="button" class="btn btn-primary">
                     <span class="bi bi-cloud-arrow-up"></span> Click to Upload
-                  </button>
+                  </button> {% endcomment %}
+
+                  <div class="card-body row">
+                    <div class="col mb-3">
+                        <div>
+                            <label for="doc" class="uppload-btn btn btn-primary">
+                                <i class="bx bx-upload"></i>
+                                Click to Upload
+                            </label>
+                            <input type="file" id="doc" hidden/>
+                        </div>
                   <div>
                     <div class="form-outline">
                       <br>
