@@ -61,7 +61,7 @@ def assign_plate(request):
 
 
 def tranfercreate(request):
-    transfer=transfare_vehicles.objects.all()
+    transfer=transfare_vehicles.objects.all()[:4]
     form = Transferform()
     if request.method == "POST":
         form = Transferform(request.POST)
@@ -74,11 +74,11 @@ def tranfercreate(request):
     context = {"form": form,"transfer":transfer,'pageTitle': 'Transfer Vehicle'}
     return render(request, "Vehicles/transfer.html", context)
 
-class Assign_create(CreateView):
-    model=plate
-    fields='__all__'
-    success_url=reverse_lazy('veiw-vehicle')
-    template_name='Vehicles/asign_plate.html'
+# class Assign_create(CreateView):
+#     model=plate
+#     fields='__all__'
+#     success_url=reverse_lazy('veiw-vehicle')
+#     template_name='Vehicles/asign_plate.html'
 
 
 def view_vehicle(request):
