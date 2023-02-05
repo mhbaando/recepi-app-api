@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import vehicle
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
+from .forms import Vehicleform
+from django.contrib import messages
 
 # Create your views here.
 
@@ -12,11 +14,18 @@ from django.urls import reverse_lazy
 # @login_required
 
 
-class Register_create(CreateView):
-    model=vehicle
-    fields='__all__'
-    success_url=reverse_lazy('vehicles')
-    template_name='Vehicles/register_vehicle.html'
+def register_vehicle(request):
+    form = Vehicleform()
+    if request.method == "POST":
+        form = Vehicleform(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "a Vehicle was registerd")
+            return redirect("veiw-vehicle")
+        else:
+            messages.error(request, "error accured")
+    context = {"form": form}
+    return render(request, "Vehicles/register_vehicle.html", context)
 
 
 # @login_required
