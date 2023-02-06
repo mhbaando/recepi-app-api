@@ -7,9 +7,12 @@ from .models import vehicle,plate,transfare_vehicles,model_brand,color,cylinder
 from .models import vehicle,plate,transfare_vehicles,model_brand,color,cylinder
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
-from Customers.models import countries,customer
+from Customers.models import countries,customer,blood_group
 from django.contrib import messages
 from .forms import Vehicleform,Transferform,Plateform
+from datetime import datetime
+
+from Finance.models import receipt_voucher
 
 # Create your views here.
 
@@ -23,18 +26,102 @@ from .forms import Vehicleform,Transferform,Plateform
 #     success_url=reverse_lazy('veiw-vehicle')
 #     template_name='Vehicles/register_vehicle.html'
 
+# def register_vehicle(request):
+#     form = Vehicleform()
+#     if request.method == "POST":
+#         form = Vehicleform(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Vehicle was registered successfully")
+#             return redirect("veiw-vehicle")
+#         else:
+#             messages.error(request, "error accured")
+#     context = {"form": form,'pageTitle': 'Register vehicle'}
+#     return render(request, "Vehicles/register_vehicle.html", context)
+
+
+# def register_vehicle(request):
+#     vehicle_model1=model_brand.objects.all()
+#     color1=color.objects.all()
+#     origin1=countries.objects.all()
+#     cylinder1=cylinder.objects.all()
+#     owner1=customer.objects.all()
+
+#     if request.method=="POST":
+#         a=request.POST['vehicle_model']
+#         b=request.POST['year']
+#         c=request.POST['origin']
+#         d=request.POST['color']
+#         e=request.POST['cylinder']
+#         f=request.POST['hp']
+#         g=request.POST['pessenger_seat']
+#         h=request.POST['vin']
+#         i=request.POST['enginer_no']
+#         j=request.POST['rv_number']
+#         k=request.POST['owner']
+#         vehicles=model_brand.objects.filter(name=a).first()
+#         colors=color.objects.filter(name=b).first()
+#         origin=countries.objects.filter(name=c).first()
+#         cylenders=cylinder.objects.filter(name=d).first()
+#         owner=customer.objects.filter(name=e).first()
+#         vehicle.objects.create(vehicles=vehicles,year=b,origin=c,color=color1,cylinders=e,hp=f,pessenger_seat=g,vin=h,enginer_no=i,rv_number=j,owner=k)
+    
+#     else:
+#             messages.error(request, "error accured")
+#     context = {"vehicles":vehicle_model1,"colors":color1,"origin":origin1,"cylinders":cylinder1,"owner":owner1}
+#     return render(request, "Vehicles/register_vehicle.html", context)
+
+
+
 def register_vehicle(request):
-    form = Vehicleform()
-    if request.method == "POST":
-        form = Vehicleform(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Vehicle was registered successfully")
-            return redirect("veiw-vehicle")
-        else:
-            messages.error(request, "error accured")
-    context = {"form": form,'pageTitle': 'Register vehicle'}
-    return render(request, "Vehicles/register_vehicle.html", context)
+     vehicle_model1=model_brand.objects.all()
+     color1=color.objects.all()
+     origin1=countries.objects.all()
+     cylinder1=cylinder.objects.all()
+     owner1=customer.objects.all()
+     year = []
+     
+     for i in range(1960, datetime.now().year):
+            year.append(i)
+    
+     year.reverse()
+
+     if request.method == "POST":
+        n = request.POST.get("vehicle_model")
+        new_color = request.POST.get("color")
+        n_origin=request.POST.get("origin")
+        n_cylinder=request.POST.get('cylinder')
+        nowner=request.POST.get('owner')
+        new_year=request.POST.get('year')
+        new_vin=request.POST.get('vin')
+        new_weight=request.POST.get('weight')
+        new_hp =request.POST.get('hp')
+        new_pessenger_seat=request.POST.get('pessenger_seat')
+        new_rv_number=request.POST.get('rv_number')
+
+
+        vehiclemodel=model_brand.objects.filter(brand_name=n).first()
+        colo = color.objects.filter(color_name=new_color).first()
+        oro = countries.objects.filter(country_name=n_origin).first()
+        cyle = cylinder.objects.filter(cylinder_name=n_cylinder).first()
+
+        rv_num = receipt_voucher.objects.get(rv_number=new_rv_number)
+        ow = rv_num.rv_from
+        
+        
+
+        vehicle.objects.create(
+            vehiclemodel=vehiclemodel,
+            colo=colo,oro=oro,cyle=cyle,ow=ow,year=new_year,vin=new_vin,weight=new_weight,hp=new_hp,pessenger_seat=new_pessenger_seat,rv_number=new_rv_number)
+           
+        messages.success(request, "a new vehicle registerered")
+        return redirect("veiw-vehicles")
+     else:
+        messages.error(request, "error occured")
+     context = {"vehiclemodel": vehicle_model1, "colo": color1,"oro":origin1,"cyle":cylinder1,"ow":owner1, 'year':year}
+     return render(request, "Vehicles/register_vehicle.html", context)
+
+
 
 
 
