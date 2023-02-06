@@ -50,10 +50,10 @@
           <form action="" method="post">
             {% csrf_token %}
             <label class="form-label">Model Brand</label>
+            {% for vehicle in vehicle_model %}
             <select name="state_name" id="place_issue" class="form-control form-select select2">
-                <option value="">Select a Model</option>
-                <option value="pt">Toyota</option>
-                <option value="br">.....</option>
+              <option value="{{vehicle.name}}">{{vehicle.name}}</option>
+              {% endfor %}
                
             </select>
         </div>
