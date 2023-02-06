@@ -25,7 +25,7 @@
             </nav>
           </div>
         </div>
-        <div class="row">
+        {% comment %} <div class="row">
           <div class="col-lg-4">
             <div class="card mb-4">
               <div class="card-body text-center">
@@ -84,40 +84,6 @@
                
                 </div>
 
-
-                {% comment %} pagination {% endcomment %}
-
-
-
-
-                <div class="col d-flex justify-content-end align-items-end  pe-2">
-
-                  <nav aria-label="Page navigation mb-5">
-                      <ul class="pagination">
-                        <li class="page-item first {% if not page_obj.has_previous %}disabled{% endif %}" page="1">
-                          <a class="page-link" href="javascript:void(0);"
-                            ><i class="tf-icon bx bx-chevrons-left"></i
-                          ></a>
-                        </li>
-                        <li class="page-item prev {% if not page_obj.has_previous %}disabled{% endif %}" page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
-                          <a class="page-link" href="javascript:void(0);"
-                            ><i class="tf-icon bx bx-chevron-left"></i
-                          ></a>
-                        </li>
-                      
-                        <li class="page-item next {% if not page_obj.has_next %}disabled{% endif %}" page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
-                          <a class="page-link" href="javascript:void(0);"
-                            ><i class="tf-icon bx bx-chevron-right"></i
-                          ></a>
-                        </li>
-                        <li class="page-item last {% if not page_obj.has_next %}disabled{% endif %}" page="{{ page_obj.paginator.num_pages}}">
-                          <a class="page-link" href="javascript:void(0);"
-                            ><i class="tf-icon bx bx-chevrons-right"></i
-                          ></a>
-                        </li>
-                      </ul>
-                    </nav>
-              </div>
               </div>
 
               
@@ -127,9 +93,93 @@
       </div>
 
       
-    </section>
+    </section> {% endcomment %}
 
 
+    <div class="container rounded bg-white mt-5 mb-5">
+      <div class="row">
+          <div class="col-md-3 border-right">
+              <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">Edogaru</span><span class="text-black-50">edogaru@mail.com.my</span><span> </span></div>
+          </div>
+          <div class="col-md-5 border-right">
+              <div class="p-3 py-5">
+                  <div class="d-flex justify-content-between align-items-center mb-3">  
+                      <h4 class="text-right">Profile</h4>
+                  </div>
+                 
+                  <div class="row mt-3">
+                      <div class="col-md-12"><label class="labels">Name</label><input type="text" class="form-control" placeholder="enter phone number" value=""></div>
+                      <div class="col-md-12"><label class="labels">Website</label><input type="text" class="form-control" placeholder="enter address line 1" value=""></div>
+                      <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
+                      <div class="col-md-12"><label class="labels">Registration No</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
+                      
+                  </div>
+                 
+                  <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
+              </div>
+              <br>
+           
+          </div>
+          <div class="col-md-4">
+              <div class="p-3 py-5">
+                  <div class="d-flex justify-content-between align-items-center experience"><span>Edit Profile</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Edit</span></div><br>
+                 
+              </div>
+          </div>
+      </div>
 
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Mohamoud Ali</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Webiste</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">https://sissim.so</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Address</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Registration No</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">87856758</p>
+              </div>
+            </div>
+            <hr>
+           
+            </div>
+
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  </div>
+  </div>
   {% endblock %}
 
