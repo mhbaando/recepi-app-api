@@ -61,7 +61,7 @@ def assign_plate(request):
 
 
 def tranfercreate(request):
-    transfer=transfare_vehicles.objects.all()[:4]
+    transfer=transfare_vehicles.objects.all()[:5]
     form = Transferform()
     if request.method == "POST":
         form = Transferform(request.POST)
