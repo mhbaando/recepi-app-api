@@ -49,35 +49,37 @@
                 <div class="mb-3">
           <form action="" method="post">
             {% csrf_token %}
-            <label class="form-label">Model Brand</label>
-            {% for vehicle in vehicle_model %}
-            <select name="state_name" id="place_issue" class="form-control form-select select2">
-              <option value="{{vehicle.name}}">{{vehicle.name}}</option>
-              {% endfor %}
-               
-            </select>
-        </div>
-      </div>
-          
-      <div class="col-md-6 mb-0">
-            <div class="mb-3">
-        <label class="form-label">Model Year</label>
+           
+          <label class="form-label">Model Brand</label>
           <select name="state_name" id="place_issue" class="form-control form-select select2">
-              <option value="">Select a Model Year</option>
-              <option value="pt">1960</option>
-              <option value="br">.....</option>
+            {% for i in  vehiclemodel%}
+              <option value="{{i.brand_name}}">{{i.brand_name }}</option>   
+              {% endfor %}
              
           </select>
       </div>
       </div>
+          
+      
+     <div class="col-md-6 mb-0">
+      <div class="mb-3">
+  <label class="form-label">Year</label>
+        <select name="state_name" id="place_issue" class="form-control form-select select2">
+        <option value="pt">Select a year</option>
+       {% for y in year %}
+       <option value="{{y}}">{{y}}</option>
+       {% endfor %}
+      </select>
+    </div>
+</div>
 
      <div class="col-md-6 mb-0">
             <div class="mb-3">
         <label class="form-label">Origin</label>
         <select name="state_name" id="place_issue" class="form-control form-select select2">
-            <option value="">Select Origin</option>
-            <option value="pt">1960</option>
-            <option value="br">.....</option>
+          {% for i in oro %}
+            <option value="{{i.country_name}} text-black">{{i.country_name }}</option>
+            {% endfor %}
            
         </select>
     </div>
@@ -88,9 +90,10 @@
             <div class="mb-3">
         <label class="form-label">Color</label>
       <select name="state_name" id="place_issue" class="form-control form-select select2">
-          <option value="">Select a Color</option>
-          <option value="pt">Red</option>
-          <option value="br">.....</option>
+        {% for i in colo %}
+          <option value="{{i.name}}">{{i.color_name}}</option>
+
+          {% endfor %}
          
       </select>
   </div>
@@ -99,12 +102,13 @@
   <div class="col-md-6 mb-0">
     <div class="mb-3">
 <label class="form-label">Acylender</label>
-    <select name="state_name" id="place_issue" class="form-control form-select select2">
-        <option value="">Select a Cylender</option>
-        <option value="pt">6 wheeler</option>
-        <option value="br">.....</option>
-       
-    </select>
+<select name="state_name" id="place_issue" class="form-control form-select select2">
+  {% for i in cyle %}
+    <option value="{{i.cylinder_name }}">{{i.cylinder_name }}</option>
+
+    {% endfor %}
+   
+</select>
 </div>
 </div>
 
@@ -138,9 +142,15 @@
 
 <div class="col-md-6 mb-0">
   <div class="mb-3">
-      <label class="form-label">Engine Number</label>
-      <input type="text" class="form-control" id="personalID"  placeholder="Engine number">
-  </div>
+<label class="form-label">Owner</label>
+<select name="state_name" id="place_issue" class="form-control form-select select2">
+{% for i in ow %}
+  <option value="{{i.name}}">{{i.name}}</option>
+
+  {% endfor %}
+ 
+</select>
+</div>
 </div>
 <div class="form-group col-md-12">
   <div class="mt-3">
