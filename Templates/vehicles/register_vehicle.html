@@ -48,28 +48,84 @@
           <div class="row">
               <div class="col-md-6 mb-0">
                 <div class="mb-3">
-    <!-- <form action="" method="POST">
+    <form action="" method="POST">
       {% csrf_token %}
-          {{form.as_p}}
+      <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>model_brand</label>
+<select name="model_brand" class="form-control">
+{% for i in vehicles %}
+<option value="{{i.Name}}">{{i.Name}}</option>
+{% endfor %}
+</select>
+<div class="form-row">
+  <div class="form-group col-md-6">
+      <label>COLOR</label>
+<select name="doctor" class="form-control">
+{% for i in colors %}
+<option value="{{i.name}}">{{i.name}}</option>
+{% endfor %}
+</select>
+
+  <select class="form-control" value="{{vehicle.cylinder}}" name="gender">
+    <option value="male">2wheler</option>
+    <option value="female">4</option>
+    <option value="others">Other</option>
+</select>
+    <div class="form-group col-md-6">
+        <label for="age">weigh</label>
+        <input type="text" value="{{patient.age}}" placeholder="Age" class="form-control" name="age">
+    </div>
+    <div class="form-group col-md-6">
+        <label for="phone">hp</label>
+        <input type="text" placeholder="Phone" value="{{patient.phone}}" class="form-control" name="phone">
+   </div>
+   <div class="form-group col-md-6">
+       <label for="address">passenger seats</label>
+       <input type="text" value="{{patient.address}}" placeholder="address" class="form-control" name="address">
+    </div>
+   <div class="form-group col-md-6">
+       <label for="address">vin</label>
+       <input type="text" value="{{patient.patient_type}}" placeholder="patient_type" class="form-control" name="patient_type">
+   </div>
+   <div class="form-group col-md-6">
+    <label for="address">engine no</label>
+    <input type="text" value="{{patient.patient_type}}" placeholder="patient_type" class="form-control" name="patient_type">
+</div>
+<div class="form-group col-md-6">
+  <label for="address">Rv no</label>
+  <input type="text" value="{{patient.patient_type}}" placeholder="patient_type" class="form-control" name="patient_type">
+</div>
+   <div class="form-group col-md-6">
+    <label for="gender">Owner</label>
+     <select class="form-control" value="{{vehicle.owner}}" name="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="others">Other</option>
+    </select>
           <button class="btn btn-primary">Save</button>
-    </form> -->
+    </form>
 
 
-<form action="" method="POST">
+<!-- <form action="" method="POST">
             {% csrf_token %}
             
-            <label class="form-label">{{form.vehicle_model}}</label>
-            <select name="state_name" id="place_issue" class="form-control form-select select2">
-                <option value=""></option>
-                
-               
-            </select>
+            <div class="col-md-6 mb-0">
+              <div class="mb-3">
+              <label for="gender">select a Model</label>
+               <select class="form-control" value="{vehicle.model}}" name="gender">
+                  <option value="">toyota</option>
+                  <option value="">lambargini</option>
+                  <option value="others">Other</option>
+              </select>
+              </div>
+              </div>
         
           
       <div class="col-md-6 mb-0">
             <div class="mb-3">
         <label class="form-label">Model Year</label>
-          <select name="state_name" id="place_issue" class="form-control form-select select2">
+          <select name="state_name" id="place_issue" value="{{vehicle.year}}"  class="form-control form-select select2">
               <option value="">Select a Model Year</option>
               <option value="pt">1960</option>
               <option value="br">.....</option>
@@ -81,7 +137,7 @@
      <div class="col-md-6 mb-0">
             <div class="mb-3">
         <label class="form-label">Origin</label>
-        <select name="state_name" id="place_issue" class="form-control form-select select2">
+        <select name="state_name" id="place_issue" value="{{vehicle.origin}}" class="form-control form-select select2">
             <option value="">Select Origin</option>
             <option value="pt">1960</option>
             <option value="br">.....</option>
@@ -94,7 +150,7 @@
   <div class="col-md-6 mb-0">
             <div class="mb-3">
         <label class="form-label">Color</label>
-      <select name="state_name" id="place_issue" class="form-control form-select select2">
+      <select name="state_name" id="place_issue"  value="{{vehicle.color}}" class="form-control form-select select2">
           <option value="">Select a Color</option>
           <option value="pt">Red</option>
           <option value="br">.....</option>
@@ -106,7 +162,7 @@
   <div class="col-md-6 mb-0">
     <div class="mb-3">
 <label class="form-label">Acylender</label>
-    <select name="state_name" id="place_issue" class="form-control form-select select2">
+    <select name="state_name" id="place_issue"  value="{{vehicle.cylinder}}" class="form-control form-select select2">
         <option value="">Select a Cylender</option>
         <option value="pt">6 wheeler</option>
         <option value="br">.....</option>
@@ -118,7 +174,7 @@
 <div class="col-md-6 mb-0">
   <div class="mb-3">
 <label class="form-label">Weight</label>
-      <input type="text" class="form-control" id="weight"  placeholder="Enter a weight">
+      <input type="text" class="form-control" id="weight"  value="{{vehicle.weigh}}"  placeholder="Enter a weight">
   </div>
 </div>
 
@@ -156,7 +212,7 @@
  
   </div>
 </div>
-</form>
+</form> -->
 <div class="col-sm-auto ms-auto">
   <div class="hstack gap-2">
       <a href="{% url 'veiw-vehicle' %}" class="btn btn-danger">
