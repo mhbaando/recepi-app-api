@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 # company
 
 
+@login_required(login_url='Login')
 def register_company(request):
     context = {
         'pageTitle': 'Register Company'
@@ -12,6 +13,7 @@ def register_company(request):
     return render(request, 'Company/register.html', context)
 
 
+@login_required(login_url='Login')
 def view_company(request):
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
@@ -132,6 +134,7 @@ def view_company(request):
     return render(request, 'company/view_company.html', context)
 
 
+@login_required(login_url='Login')
 def detail_company(request):
     context = {
         'pageTitle': 'Company Details'
@@ -139,6 +142,7 @@ def detail_company(request):
     return render(request, 'company/comp_details.html', context)
 
 
+@login_required(login_url='Login')
 def block_company(request):
     context = {
         'pageTitle': 'block company'

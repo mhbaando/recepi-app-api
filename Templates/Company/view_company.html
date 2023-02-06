@@ -1,125 +1,162 @@
 {% extends "Base/index.html" %}
 {% load static %}
-
+{% block cssData %}
+{% endblock cssData %}
 {% block content %}
-<div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Company/</span> {{ pageTitle }}</h4>
-
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row mb-2 g-4 align-items-center">
-                        <!-- <div class="col-sm-3">
-                            <a href ={% url 'AddAccount' %} class="btn btn-primary">
-                                Add new account
-                            </a>
-                        </div> -->
-                        <div class="col-sm-auto ms-auto">
-                            <div class="hstack gap-2">
-                                
-                                    
-                                <div class="form-group">
-                                        <select id="DataNumber" name="DataNumber" DataNumber={{ DataNumber }}
-                                            class="form-control select2 w-100">
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                            <option value="30">30</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select>
-                                    </div>
-    
-                                    <form autocomplete='off'>
-                                        <div class="input-group mr-0">
-                                            <input id="SearchQuery" type="text" placeholder="Search..."
-                                                value='{{SearchQuery}}' class="form-control"
-                                                aria-label="Recipient's username" aria-describedby="button-addon2">
-                                            <button class="btn btn-primary" type="button" id="button-addon2">
-                                                <i class="bx bx-search"></i>
-                                            </button>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4">
+            <span class="text-muted fw-light">Home / Company /</span> {{ pageTitle }}
+        </h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="row mb-2 g-4 align-items-center">
+                                <div class="col-sm-auto ms-auto">
+                                    <div class="hstack gap-2">
+                                        <div class="form-group">
+                                            <select id="DataNumber"
+                                                    name="DataNumber"
+                                                    DataNumber="{{ DataNumber }}"
+                                                    class="form-control select2 w-100">
+                                                <option value="5">
+                                                    5
+                                                </option>
+                                                <option value="10">
+                                                    10
+                                                </option>
+                                                <option value="30">
+                                                    30
+                                                </option>
+                                                <option value="50">
+                                                    50
+                                                </option>
+                                                <option value="100">
+                                                    100
+                                                </option>
+                                            </select>
                                         </div>
-                                    </form>
-                            
-    
+                                        <form autocomplete="off">
+                                            <div class="input-group mr-0">
+                                                <input id="SearchQuery"
+                                                       type="text"
+                                                       placeholder="Search..."
+                                                       value="{{ SearchQuery }}"
+                                                       class="form-control"
+                                                       aria-label="Recipient's"
+                                                       aria-describedby="button-addon2"/>
+                                                <button class="btn btn-primary" type="button" id="button-addon2">
+                                                    <i class="bx bx-search"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-    
-                    <div class="row table-responsive">
-                        <div class="col-md-12">
-                            <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Owner</th>
-                                        <th scope="col">Register No</th>
-                                        <th scope="col">Phone</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% if page_obj %}
-                                    {% for item in page_obj %}
-                                    <tr>
-                                        <td>{{item.Name}}</td>
-                                        <td>{{item.ownner}}</td>
-                                        <td>{{item.Register}}</td>
-                                        <td>{{item.Phone}}</td>
-                                        <td>
-                                            <span
-                                                class="badge bg-{% if item.status == 'UnBlocked' %}success{% elif item.status == 'Blocked'%}danger{% else %}danger{% endif %}">{{item.status}}</span>
-                                        </td>
-                                        <td>
-                                            <span
-                                                class="badge bg-{% if item.action == 'Edit' %}dark{% endif %}">{{item.action}}</span>
-                                        </td>
-                                        
-                                       
-                                    </tr>
-                                    {% endfor %}
-                                    {% else %}
-                                    <tr>
-                                        <td class='text-center' colspan='4'>No company view available</td>
-                                    </tr>
-                                    {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
-    
-                        <div class="mt-3 col-md-12 d-flex justify-content-between align-items-center">
-                            <div activePage = {{ page_obj.number }} class="col-md-6 activePage">
-                                
+                            <div class="row px-4 py-4">
+                                <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="wd-15p border-bottom-0">Name</th>
+                                            <th class="wd-15p border-bottom-0">Owner</th>
+                                            <th class="wd-15p border-bottom-0">Registration No</th>
+                                            <th class="wd-15p border-bottom-0">Phone</th>
+                                            <th class="wd-15p border-bottom-0">Status</th>
+                                            <th class="wd-15p border-bottom-0">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Al Taqwa</td>
+                                            <td>Mohamoud Ali</td>
+                                            <td>35746-5316768</td>
+                                            <td>06154796874</td>
+                                            <td>
+                                                <span class="badge bg-danger text-white p-2">Blocked</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary">Edit</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Al Taqwa</td>
+                                            <td>Mohamoud Ali</td>
+                                            <td>35746-5316768</td>
+                                            <td>06154796874</td>
+                                            <td>
+                                                <span class="badge bg-success text-white p-2">Un-Blocked</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary">Edit</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Al Taqwa</td>
+                                            <td>Mohamoud Ali</td>
+                                            <td>35746-5316768</td>
+                                            <td>06154796874</td>
+                                            <td>
+                                                <span class="badge bg-danger text-white p-2">Blocked</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary">Edit</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Al Taqwa</td>
+                                            <td>
+                                                Mohamoud Ali
+                                            </td>
+                                            <td>
+                                                35746-5316768
+                                            </td>
+                                            <td>
+                                                06154796874
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success text-white p-2">Un-Blocked</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary">
+                                                    Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="col-md-6 d-flex justify-content-end align-items-center">
-
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination">
-                                      <li class="page-item first {% if not page_obj.has_previous %}disabled{% endif %}" page="1">
-                                        <a class="page-link" href="javascript:void(0);"
-                                          ><i class="tf-icon bx bx-chevrons-left"></i
-                                        ></a>
-                                      </li>
-                                      <li class="page-item prev {% if not page_obj.has_previous %}disabled{% endif %}" page="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}No Page{% endif %}">
-                                        <a class="page-link" href="javascript:void(0);"
-                                          ><i class="tf-icon bx bx-chevron-left"></i
-                                        ></a>
-                                      </li>
-                                    
-                                      <li class="page-item next {% if not page_obj.has_next %}disabled{% endif %}" page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}No Page{% endif %}">
-                                        <a class="page-link" href="javascript:void(0);"
-                                          ><i class="tf-icon bx bx-chevron-right"></i
-                                        ></a>
-                                      </li>
-                                      <li class="page-item last {% if not page_obj.has_next %}disabled{% endif %}" page="{{ page_obj.paginator.num_pages}}">
-                                        <a class="page-link" href="javascript:void(0);"
-                                          ><i class="tf-icon bx bx-chevrons-right"></i
-                                        ></a>
-                                      </li>
-                                    </ul>
-                                  </nav>
+                            <div class="mb-3 col-md-12 d-flex justify-content-between align-items-center">
+                                <div activePage = {{ licenselist.number }} class="col-md-6 activePage">
+                                    Showing {{ licenselist.number }} to {{ licenselist.paginator.num_pages }} of {{ total }}.
+                                </div>
+                                <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
+                                            <li class="page-item first {% if not licenselist.has_previous %}disabled{% endif %}"
+                                                page="1">
+                                                <a class="page-link" href="javascript:void(0);">
+                                                    <i class="tf-icon bx bx-chevrons-left"></i>
+                                                </a>
+                                            </li>
+                                            <li class="page-item prev {% if not licenselist.has_previous %}disabled{% endif %}"
+                                                page="{% if licenselist.has_previous %}{{ licenselist.previous_page_number }}{% else %}No Page{% endif %}">
+                                                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i
+                                                ></a>
+                                            </li>
+                                            <li class="page-item next {% if not licenselist.has_next %}disabled{% endif %}"
+                                                page="{% if licenselist.has_next %}{{ licenselist.next_page_number }}{% else %}No Page{% endif %}">
+                                                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i
+                                                ></a>
+                                            </li>
+                                            <li class="page-item last {% if not licenselist.has_next %}disabled{% endif %}"
+                                                page="{{ licenselist.paginator.num_pages }}">
+                                                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i
+                                                ></a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -127,9 +164,6 @@
             </div>
         </div>
     </div>
-</div>
 {% endblock content %}
-
 {% block scriptData %}
-<script src={% static "scripts/company/comp_list.js" %}></script>
 {% endblock scriptData %}
