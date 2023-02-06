@@ -181,4 +181,14 @@ def customer_list(request):
     context = {
         'pageTitle': 'List'
     }
-    return render(request, 'Customer/customerview.html', context)
+    return render(request, 'Customer/view.html', context)
+
+
+@login_required(login_url="Login")
+def customer_profile(request, id):
+
+    context = {
+        'pageTitle': 'Profile'
+    }
+
+    return render(request, 'Customer/profile.html', context)

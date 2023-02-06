@@ -15,7 +15,7 @@
       </a>
     </li>
     {% comment %} customers {% endcomment %}
-    <li class="menu-item {% if pageTitle == 'Register' or pageTitle == 'Activate' or pageTitle == 'List' %} active open{% endif %}">
+    <li class="menu-item {% if pageTitle == 'Register' or pageTitle == 'Activate' or pageTitle == 'List' or pageTitle == 'Profile' %} active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon bx bx-user"></i>
         <div data-i18n="Customers">Customer</div>
@@ -31,7 +31,7 @@
             <div data-i18n="Actiavte">Activate</div>
           </a>
         </li>
-        <li class="menu-item {% if pageTitle == 'List' %} active{% endif %}">
+        <li class="menu-item {% if pageTitle == 'List' or pageTitle == 'Profile' %} active{% endif %}">
           <a href="{% url 'customer_list' %}" class="menu-link">
             <div data-i18n="Customer">Customer List</div>
           </a>
