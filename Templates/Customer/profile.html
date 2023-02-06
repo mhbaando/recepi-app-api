@@ -1,0 +1,461 @@
+{% extends "Base/index.html" %}
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet"
+          href="{% static "assets/css/customer/profile.css" %}"/>
+{% endblock cssData %}
+{% block content %}
+    <div class="container-xxl flex-grow-1 mb-4">
+        <div class="d-flex">
+            <h4 class="fw-bold col-2 py-3 mb-4 w-100">
+                <span class="text-muted fw-light">Home / Customer /</span> {{ pageTitle }}
+            </h4>
+        </div>
+        <div class="container row gap-3">
+            <div class="col-sm-12 col-lg-3 h-50 bg-white rounded p-4 d-flex  justify-content-center">
+                <div class="d-flex flex-column align-items-center justify-content-center ">
+                    <img class="customer-img mb-5"
+                         src="{% static "assets/img/customers/placeholder.png" %}"
+                         alt="customer"
+                         width="160"
+                         height="160"/>
+                    <h3>Aziza Rage Ahmed</h3>
+                    <p class="text-muted mb-3">ID: 14587899557755</p>
+                    <button class="btn btn-primary btn-large w-100">
+                        <i class='bx bxs-edit-alt me-3'></i>
+                        Edit
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg bg-white rounded pt-4">
+                <div class="nav-align-top mb-4">
+                    <ul class="nav nav-pills mb-3 px-3" role="tablist">
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="nav-link active"
+                                    role="tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#navs-pills-top-home"
+                                    aria-controls="navs-pills-top-home"
+                                    aria-selected="true">
+                                Basic Info
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="nav-link"
+                                    role="tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#navs-pills-top-profile"
+                                    aria-controls="navs-pills-top-profile"
+                                    aria-selected="false">
+                                Vehicles
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="nav-link"
+                                    role="tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#navs-pills-top-messages"
+                                    aria-controls="navs-pills-top-messages"
+                                    aria-selected="false">
+                                Licenses
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="nav-link"
+                                    role="tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#navs-pills-top-messages"
+                                    aria-controls="navs-pills-top-messages"
+                                    aria-selected="false">
+                                Transfer
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="nav-link"
+                                    role="tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#navs-pills-top-messages"
+                                    aria-controls="navs-pills-top-messages"
+                                    aria-selected="false">
+                                Payment
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="nav-link"
+                                    role="tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#navs-pills-top-messages"
+                                    aria-controls="navs-pills-top-messages"
+                                    aria-selected="false">
+                                Companies
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active"
+                             id="navs-pills-top-home"
+                             role="tabpanel">
+                            <div >
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">Full Name</p>
+                                    <p class="text-uppercase col">Caziiza Rage Axmed</p>
+                                </div>
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">Mother’s Name</p>
+                                    <p class="text-uppercase col">Caasho Cabdi Salax</p>
+                                </div>
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">Personal ID</p>
+                                    <p class="text-uppercase col">1324158789895450</p>
+                                </div>
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">Gender</p>
+                                    <p class="text-uppercase col">Female</p>
+                                </div>
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">Blood group</p>
+                                    <p class="text-uppercase col">O+</p>
+                                </div>
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">Nationality</p>
+                                    <p class="text-uppercase col">Ethiopian</p>
+                                </div>
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">Email</p>
+                                    <p class="text-uppercase col">caziza@gmail.com</p>
+                                </div>
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">Phone</p>
+                                    <p class="text-uppercase col">+252 617 123 132</p>
+                                </div>
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">Date of Birth</p>
+                                    <p class="text-uppercase col">
+                                        Jun / 19 / 2000
+                                    </p>
+                                </div>
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">
+                                        State
+                                    </p>
+                                    <p class="text-uppercase col">
+                                        Banaadir
+                                    </p>
+                                </div>
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">
+                                        Address
+                                    </p>
+                                    <p class="text-uppercase col">
+                                        Jamhuriya, Kaaran, BN, Mogadishu Somalia
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="navs-pills-top-profile" role="tabpanel">
+                            <div class="table-responsive">
+                                <div class="row mb-2 g-4 align-items-center">
+                                    <div class="col-sm-auto ms-auto">
+                                        <div class="hstack gap-2">
+                                            <div class="form-group">
+                                                <select id="Status"
+                                                        name="Status"
+                                                        Status="{{ Status }}"
+                                                        class="form-control select2 w-100">
+                                                    <option value="Active">
+                                                        Active
+                                                    </option>
+                                                    <option value="Lost">
+                                                        In Active
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select id="DataNumber"
+                                                        name="DataNumber"
+                                                        DataNumber="{{ DataNumber }}"
+                                                        class="form-control select2 w-100">
+                                                    <option value="5">
+                                                        5
+                                                    </option>
+                                                    <option value="10">
+                                                        10
+                                                    </option>
+                                                    <option value="30">
+                                                        30
+                                                    </option>
+                                                    <option value="50">
+                                                        50
+                                                    </option>
+                                                    <option value="100">
+                                                        100
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <form autocomplete="off">
+                                                <div class="input-group mr-0">
+                                                    <input id="SearchQuery"
+                                                           type="text"
+                                                           placeholder="Search..."
+                                                           value="{{ SearchQuery }}"
+                                                           class="form-control"
+                                                           aria-label="Recipient's"
+                                                           aria-describedby="button-addon2"/>
+                                                    <button class="btn btn-primary" type="button" id="button-addon2">
+                                                        <i class="bx bx-search"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row px-4 py-4">
+                                    <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="wd-15p border-bottom-0">
+                                                    Model Brand
+                                                </th>
+                                                <th class="wd-15p border-bottom-0">
+                                                    VIN
+                                                </th>
+                                                <th class="wd-15p border-bottom-0">
+                                                    Registered Data
+                                                </th>
+                                                <th class="wd-15p border-bottom-0">
+                                                    Plate
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        12345648797
+                                                    </td>
+                                                    <td>
+                                                        Mariam Mohamed Ahmed Hassen
+                                                    </td>
+                                                    <td>
+                                                        Maariya Cali Axmed
+                                                    </td>
+                                                    <td>
+                                                        06154796874
+                                                    </td>
+                                                    <td>
+                                                        Banaadir
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        12345648797
+                                                    </td>
+                                                    <td>
+                                                        Mariam Mohamed Ahmed Hassen
+                                                    </td>
+                                                    <td>
+                                                        Maariya Cali Axmed
+                                                    </td>
+                                                    <td>
+                                                        06154796874
+                                                    </td>
+                                                    <td>
+                                                        Banaadir
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="mb-3 col-md-12 d-flex justify-content-between align-items-center">
+                                        <div activePage = {{ licenselist.number }} class="col-md-6 activePage">
+                                            Showing {{ licenselist.number }} to {{ licenselist.paginator.num_pages }} of {{ total }}.
+                                        </div>
+                                        <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                            <nav aria-label="Page navigation">
+                                                <ul class="pagination">
+                                                    <li class="page-item first {% if not licenselist.has_previous %}disabled{% endif %}"
+                                                        page="1">
+                                                        <a class="page-link" href="javascript:void(0);">
+                                                            <i class="tf-icon bx bx-chevrons-left"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item prev {% if not licenselist.has_previous %}disabled{% endif %}"
+                                                        page="{% if licenselist.has_previous %}{{ licenselist.previous_page_number }}{% else %}No Page{% endif %}">
+                                                        <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i
+                                                        ></a>
+                                                    </li>
+                                                    <li class="page-item next {% if not licenselist.has_next %}disabled{% endif %}"
+                                                        page="{% if licenselist.has_next %}{{ licenselist.next_page_number }}{% else %}No Page{% endif %}">
+                                                        <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i
+                                                        ></a>
+                                                    </li>
+                                                    <li class="page-item last {% if not licenselist.has_next %}disabled{% endif %}"
+                                                        page="{{ licenselist.paginator.num_pages }}">
+                                                        <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i
+                                                        ></a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="navs-pills-top-messages" role="tabpanel">
+                                <div class="table-responsive">
+                                    <div class="row mb-2 g-4 align-items-center">
+                                        <div class="col-sm-auto ms-auto">
+                                            <div class="hstack gap-2">
+                                                <div class="form-group">
+                                                    <select id="Status"
+                                                            name="Status"
+                                                            Status="{{ Status }}"
+                                                            class="form-control select2 w-100">
+                                                        <option value="Active">
+                                                            Active
+                                                        </option>
+                                                        <option value="Lost">
+                                                            In Active
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select id="DataNumber"
+                                                            name="DataNumber"
+                                                            DataNumber="{{ DataNumber }}"
+                                                            class="form-control select2 w-100">
+                                                        <option value="5">
+                                                            5
+                                                        </option>
+                                                        <option value="10">
+                                                            10
+                                                        </option>
+                                                        <option value="30">
+                                                            30
+                                                        </option>
+                                                        <option value="50">
+                                                            50
+                                                        </option>
+                                                        <option value="100">
+                                                            100
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <form autocomplete="off">
+                                                    <div class="input-group mr-0">
+                                                        <input id="SearchQuery"
+                                                               type="text"
+                                                               placeholder="Search..."
+                                                               value="{{ SearchQuery }}"
+                                                               class="form-control"
+                                                               aria-label="Recipient's"
+                                                               aria-describedby="button-addon2"/>
+                                                        <button class="btn btn-primary" type="button" id="button-addon2">
+                                                            <i class="bx bx-search"></i>
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row px-4 py-4">
+                                        <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th class="wd-15p border-bottom-0">
+                                                        Model Brand
+                                                    </th>
+                                                    <th class="wd-15p border-bottom-0">
+                                                        VIN
+                                                    </th>
+                                                    <th class="wd-15p border-bottom-0">
+                                                        Registered Data
+                                                    </th>
+                                                    <th class="wd-15p border-bottom-0">
+                                                        Plate
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            12345648797
+                                                        </td>
+                                                        <td>
+                                                            Mariam Mohamed Ahmed Hassen
+                                                        </td>
+                                                        <td>
+                                                            Maariya Cali Axmed
+                                                        </td>
+                                                        <td>
+                                                            06154796874
+                                                        </td>
+                                                        <td>
+                                                            Banaadir
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            12345648797
+                                                        </td>
+                                                        <td>
+                                                            Mariam Mohamed Ahmed Hassen
+                                                        </td>
+                                                        <td>
+                                                            Maariya Cali Axmed
+                                                        </td>
+                                                        <td>
+                                                            06154796874
+                                                        </td>
+                                                        <td>
+                                                            Banaadir
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="mb-3 col-md-12 d-flex justify-content-between align-items-center">
+                                            <div activePage = {{ licenselist.number }} class="col-md-6 activePage">
+                                                Showing {{ licenselist.number }} to {{ licenselist.paginator.num_pages }} of {{ total }}.
+                                            </div>
+                                            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                                <nav aria-label="Page navigation">
+                                                    <ul class="pagination">
+                                                        <li class="page-item first {% if not licenselist.has_previous %}disabled{% endif %}"
+                                                            page="1">
+                                                            <a class="page-link" href="javascript:void(0);">
+                                                                <i class="tf-icon bx bx-chevrons-left"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li class="page-item prev {% if not licenselist.has_previous %}disabled{% endif %}"
+                                                            page="{% if licenselist.has_previous %}{{ licenselist.previous_page_number }}{% else %}No Page{% endif %}">
+                                                            <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i
+                                                            ></a>
+                                                        </li>
+                                                        <li class="page-item next {% if not licenselist.has_next %}disabled{% endif %}"
+                                                            page="{% if licenselist.has_next %}{{ licenselist.next_page_number }}{% else %}No Page{% endif %}">
+                                                            <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i
+                                                            ></a>
+                                                        </li>
+                                                        <li class="page-item last {% if not licenselist.has_next %}disabled{% endif %}"
+                                                            page="{{ licenselist.paginator.num_pages }}">
+                                                            <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i
+                                                            ></a>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}
+    {% block scriptData %}
+    {% endblock scriptData %}

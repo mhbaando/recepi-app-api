@@ -23,5 +23,6 @@ urlpatterns = [
     # register customer
     path('', views.register_customer, name='register_customer'),
     path('activate', views.activate_customer, name='activate_customer'),
-    path('list', views.customer_list, name="customer_list")
+    path('list', views.customer_list, name="customer_list"),
+    path('profile/<int:id>', views.customer_profile, name="customer_profile")
 ]

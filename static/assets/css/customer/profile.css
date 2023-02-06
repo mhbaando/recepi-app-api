@@ -1,0 +1,18 @@
+p {
+    margin-bottom: 0rem !important;
+}
+
+.tab-content {
+    background: transparent !important;
+}
+
+
+.customer-img {    
+    overflow: hidden;
+    border-radius: 50%;
+
+    background-color: rgb(213, 213, 213);
+
+    object-fit: cover;
+    object-position: top;
+}
