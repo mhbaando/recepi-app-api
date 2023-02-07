@@ -18,7 +18,7 @@ from django.db.models import Q
 # Create your views here.
 
 
-# @login_required
+
 
 
 # class Register_create(CreateView):
