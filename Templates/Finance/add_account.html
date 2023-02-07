@@ -13,9 +13,10 @@
                     
                     <div class="row">
                         <div class="col-xl-12">
-                            <form id="create_new_account">
+                            <form id="create_new_account" method="POST" action="{% url 'AddAccount' %}">
+                                {% csrf_token %}
                                 <div class="mb-3">
-                                    <label class="form-label" for="account-number">Account Number</label>
+                                    <label class="form-label" for="account-number">Account Name</label>
                                     <input type="numebr" class="form-control" id="account-number" placeholder="Account Number" required/>
                                 </div>
                                 <div class="mb-3">
@@ -23,13 +24,9 @@
                                     <select name="" id="account-type" class="form-select select2">
                                         <option value="">Select account type</option>
                                         {% for item in account_types %}
-                                        <option value={{item.type_id}}>{{item.name}}</option>
+                                        <option value={{item.name}}>{{item.name}}</option>
                                         {% endfor %}
                                     </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="account-name">Account Name</label>
-                                    <input type="text" class="form-control" id="account-name" placeholder="Account Name" required/>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="account-amount">Amount</label>

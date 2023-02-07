@@ -73,6 +73,7 @@ from django.db.models import Q
 #     return render(request, "Vehicles/register_vehicle.html", context)
 
 
+@login_required(login_url="Login")
 def register_vehicle(request):
     vehicle_model1 = model_brand.objects.all()
     color1 = color.objects.all()
@@ -134,6 +135,7 @@ def register_vehicle(request):
 # def assign_aplate(request):
 #     context = {"pageTitle": "Assign Aplate"}
 #     return render(request, "Vehicles/asign_plate.html", context)
+@login_required(login_url="Login")
 def assign_plate(request):
     form = Plateform()
     if request.method == "POST":
@@ -153,7 +155,7 @@ def assign_plate(request):
 #     context = {"pageTitle": "Transfer Vehicle"}
 #     return render(request, "Vehicles/transfer.html", context)
 
-
+@login_required(login_url="Login")
 def tranfercreate(request):
     transfer = transfare_vehicles.objects.all()[:5]
     form = Transferform()
@@ -175,7 +177,7 @@ def tranfercreate(request):
 #     success_url=reverse_lazy('veiw-vehicle')
 #     template_name='Vehicles/asign_plate.html'
 
-
+@login_required(login_url="Login")
 def view_vehicle(request):
     vehicles = vehicle.objects.all()
     CheckSearchQuery = 'SearchQuery' in request.GET
@@ -232,3 +234,24 @@ def view_vehicle(request):
 #         "Vehicle_list":Vehicle_list,
 #     }
 #     return render(request, 'Vehicles/veiw_vehicles.html', context)
+
+
+@login_required(login_url="Login")
+def vehicle_profile(request, pk):
+    vehic_id=vehicle.objects.get(id=pk)
+    vehicles=vehicle.objects.filter(id=vehic_id).first()
+
+
+    context = {
+        'pageTitle': 'Profile',"vehicles":vehicles
+    }
+
+    return render(request, 'Vehicles/vehicle_profile.html', context)
+
+
+
+
+
+
+
+

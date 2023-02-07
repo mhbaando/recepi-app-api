@@ -16,6 +16,7 @@ urlpatterns = [
     # path("registervehicle",views.register_vehicle,name="register-vehicle"),
     
     path("asignplate/",views.assign_plate,name="asign-plate"),
+    path("vehicle-profile/<str:pk>/",views.vehicle_profile,name="vehicle-profile"),
     
 
 
