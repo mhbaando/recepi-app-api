@@ -118,7 +118,7 @@ def register_vehicle(request):
         return redirect("veiw-vehicles")
      else:
         messages.error(request, "error occured")
-     context = {"vehiclemodel": vehicle_model1, "colo": color1,"oro":origin1,"cyle":cylinder1,"ow":owner1, 'year':year}
+     context = {"vehiclemodel": vehicle_model1, "colo": color1,"oro":origin1,"cyle":cylinder1,"ow":owner1, 'year':year,"pageTitle":'Register vehicle'}
      return render(request, "Vehicles/register_vehicle.html", context)
 
 

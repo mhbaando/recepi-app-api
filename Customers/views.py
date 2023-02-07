@@ -1,6 +1,9 @@
 from django.shortcuts import render
+from Customers import models as customer_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from Users import models as user_model
+from django.db.models import Q
 # Create your views here.
 # company
 
@@ -165,9 +168,23 @@ def company_profile(request, id):
 
 @login_required(login_url='Login')
 def register_customer(request):
+    states = []
+    bload_group = customer_model.blood_group.objects.all()
+    nationalities = customer_model.countries.objects.all()
+    doc_types = customer_model.personal_id_type.objects.all()  # personal id types
+
+    if request.user.is_state and request.user.federal_state is not None:
+        states = customer_model.federal_state.objects.filter(
+            Q(state_name=request.user.federal_state))
+    else:
+        states = customer_model.federal_state.objects.all()
 
     context = {
-        'pageTitle': 'Register'
+        'pageTitle': 'Register',
+        'bload_group': bload_group,
+        'nationalities': nationalities,
+        'states': states,
+        'doc_types': doc_types
     }
 
     return render(request, 'Customer/register.html', context)

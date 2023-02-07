@@ -5,7 +5,7 @@
 {% endblock cssData %}
 {% block content %}
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Register a Vehicle /</span> {{pageTitle}}</h4>   
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Home / Vehicle  /</span> {{pageTitle}}</h4>   
      <!-- Basic Layout -->
      <div class="row">
       <div class="card mb-3">
@@ -52,6 +52,7 @@
            
           <label class="form-label">Model Brand</label>
           <select name="state_name" id="place_issue" class="form-control form-select select2">
+            <option>Select a Brand Name</option>
             {% for i in  vehiclemodel%}
               <option value="{{i.brand_name}}">{{i.brand_name }}</option>   
               {% endfor %}
@@ -77,6 +78,7 @@
             <div class="mb-3">
         <label class="form-label">Origin</label>
         <select name="state_name" id="place_issue" class="form-control form-select select2">
+          <option>Select Origin</option>
           {% for i in oro %}
             <option value="{{i.country_name}} text-black">{{i.country_name }}</option>
             {% endfor %}
@@ -90,8 +92,9 @@
             <div class="mb-3">
         <label class="form-label">Color</label>
       <select name="state_name" id="place_issue" class="form-control form-select select2">
+        <option>Select a Color</option>
         {% for i in colo %}
-          <option value="{{i.name}}">{{i.color_name}}</option>
+          <option value="{{i.color_name}}">{{i.color_name}}</option>
 
           {% endfor %}
          
@@ -103,6 +106,7 @@
     <div class="mb-3">
 <label class="form-label">Acylender</label>
 <select name="state_name" id="place_issue" class="form-control form-select select2">
+  <option>Select a Cylender</option>
   {% for i in cyle %}
     <option value="{{i.cylinder_name }}">{{i.cylinder_name }}</option>
 
