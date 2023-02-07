@@ -50,11 +50,11 @@
             <div data-i18n="Analytics">Register</div>
           </a>
         </li>
-        <li class="menu-item {% if pageTitle == 'block company' %}active{% endif %}">
+        {% comment %} <li class="menu-item {% if pageTitle == 'block company' %}active{% endif %}">
           <a href="{% url 'comapny_block' %}" class="menu-link">
             <div data-i18n="Analytics">Block Company</div>
           </a>
-        </li>
+        </li> {% endcomment %}
         <li class="menu-item {% if pageTitle == 'view_Company' %}active{% endif %}">
           <a href="{% url 'view_company' %}" class="menu-link">
             <div data-i18n="CRM">Company View</div>
