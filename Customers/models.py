@@ -14,7 +14,10 @@ class blood_group(models.Model):
         db_table = 'blood_group'
 
     def __str__(self):
-        return self.blood_group_name
+        return {
+            'blood_group_id': self.blood_group_id,
+            'blood_group_name': self.blood_group_name
+        }
 
 
 class personal_id_type(models.Model):
@@ -27,7 +30,10 @@ class personal_id_type(models.Model):
         db_table = 'personal_id_type'
 
     def __str__(self):
-        return self.personal_name
+        return {
+            'personal_id': self.personal_id,
+            'personal_name': self.personal_name
+        }
 
 
 class countries(models.Model):
@@ -40,7 +46,10 @@ class countries(models.Model):
         db_table = 'countries'
 
     def __str__(self):
-        return self.country_name
+        return {
+            'country_id': self.country_id,
+            'country_name': self.country_name
+        }
 
 
 class federal_state(models.Model):
@@ -53,12 +62,14 @@ class federal_state(models.Model):
         db_table = 'federal_state'
 
     def __str__(self):
-        return self.state_name
+        return {
+            'state_id': self.state_id,
+            'state_name': self.state_name
+        }
 
 
 class customer(models.Model):
     customer_id = models.AutoField(primary_key=True)
-    full_name = models.CharField(max_length=100, null=True, blank=True)
     firstname = models.CharField(max_length=100, null=True, blank=True)
     middle_name = models.CharField(max_length=100, null=True, blank=True)
     lastname = models.CharField(max_length=100, null=True, blank=True)
@@ -83,7 +94,7 @@ class customer(models.Model):
                              blank=True, upload_to='customer_images')
     document = models.FileField(
         null=True, blank=True, upload_to='customer_document')
-    description = models.TextField(null=True, blank=True)
+
     is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

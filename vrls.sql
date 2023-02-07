@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 05, 2023 at 12:49 PM
+-- Generation Time: Feb 07, 2023 at 07:35 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -48,6 +48,15 @@ CREATE TABLE `account_types` (
   `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `account_types`
+--
+
+INSERT INTO `account_types` (`type_id`, `name`) VALUES
+(1, 'Vehicle'),
+(2, 'Liecense'),
+(3, 'Plate');
+
 -- --------------------------------------------------------
 
 --
@@ -77,7 +86,33 @@ INSERT INTO `audittrials` (`id`, `Avatar`, `Username`, `path`, `Name`, `Actions`
 (1, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-05 06:37:33.641467', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
 (2, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-05 06:40:50.380835', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
 (3, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-05 07:55:57.275960', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(4, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-05 11:36:55.256624', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge');
+(4, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-05 11:36:55.256624', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(5, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 05:38:03.752829', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(6, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 06:55:47.086387', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(7, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 07:39:08.729059', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(8, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 09:40:46.136168', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(9, '', 'AD00002', '/manage_group/0', ' ', 'Added new Group with Name of:_aff', 'Users-Permission Module', '2023-02-06 09:55:13.089328', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(10, '', 'AD00002', '/manage_group/1', ' ', 'add_logentry Added to the group of aff', 'Users-Permission Module', '2023-02-06 09:55:19.828475', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(11, '', 'AD00002', '/manage_group/1', ' ', 'add_users Added to the group of aff', 'Users-Permission Module', '2023-02-06 09:55:36.968754', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(12, '', 'AD00002', '/manage_group/1', ' ', 'change_users Added to the group of aff', 'Users-Permission Module', '2023-02-06 09:55:41.276210', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(13, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 10:51:29.078634', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(14, 'Avatars/7309681.jpg', 'AD00002', '/logout/', ' ', '  Logged out the System', 'Users Module', '2023-02-06 11:51:34.756602', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(15, 'Avatars/7309681.jpg', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 11:51:40.662874', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(16, 'Avatars/7309681.jpg', 'AD00002', '/logout/', ' ', '  Logged out the System', 'Users Module', '2023-02-06 11:51:43.077839', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(17, 'Avatars/7309681.jpg', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 11:51:55.908174', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(18, 'Avatars/7309681.jpg', 'AD00002', '/manage_users/AddNewUser', ' ', 'Created new state name of Abshir  xasan', 'Users Module / users Table', '2023-02-06 12:00:46.723585', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(19, 'Avatars/7309681.jpg', 'AD00002', '/logout/', ' ', '  Logged out the System', 'Users Module', '2023-02-06 12:01:22.090164', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(20, 'Avatars/7309681.jpg', 'AD00002', '/manage_users/AddNewUser', ' ', 'Created new state name of state user', 'Users Module / users Table', '2023-02-06 12:36:40.268889', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(21, 'Avatars/7309681_T8Gk5cr.jpg', 'AD00003', '/login', 'state user', 'state user logged into the System', 'Users Module', '2023-02-06 12:37:12.758754', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(22, 'Avatars/7309681.jpg', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 13:18:29.504819', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(23, 'Avatars/7309681.jpg', 'AD00002', '/manage_group_permission/0/0', ' ', 'User with username of:_AD00003 added group of aff', 'Users-Permission Module', '2023-02-06 13:19:49.719926', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(24, 'Avatars/7309681.jpg', 'AD00002', '/manage_group_permission/0/0', ' ', 'User with username of:_AD00003 removed group of aff', 'Users-Permission Module', '2023-02-06 13:19:54.866309', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(25, 'Avatars/7309681.jpg', 'AD00002', '/manage_group_permission/0/0', ' ', 'User with username of:_AD00003 added group of aff', 'Users-Permission Module', '2023-02-06 13:19:59.138119', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(26, 'Avatars/7309681_T8Gk5cr.jpg', 'AD00003', '/login', 'state user', 'state user logged into the System', 'Users Module', '2023-02-06 13:20:09.936058', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(27, 'Avatars/7309681.jpg', 'AD00002', '/manage_group_permission/0/0', ' ', 'User with username of:_AD00003 removed group of aff', 'Users-Permission Module', '2023-02-06 13:20:22.499653', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(28, 'Avatars/7309681.jpg', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-07 06:05:35.484485', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(29, 'Avatars/7309681.jpg', 'AD00002', '/logout/', ' ', '  Logged out the System', 'Users Module', '2023-02-07 06:15:34.203490', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(30, 'Avatars/7309681_T8Gk5cr.jpg', 'AD00003', '/login', 'state user', 'state user logged into the System', 'Users Module', '2023-02-07 06:15:40.911331', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge');
 
 -- --------------------------------------------------------
 
@@ -90,6 +125,13 @@ CREATE TABLE `auth_group` (
   `name` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `auth_group`
+--
+
+INSERT INTO `auth_group` (`id`, `name`) VALUES
+(1, 'aff');
+
 -- --------------------------------------------------------
 
 --
@@ -101,6 +143,15 @@ CREATE TABLE `auth_group_permissions` (
   `group_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `auth_group_permissions`
+--
+
+INSERT INTO `auth_group_permissions` (`id`, `group_id`, `permission_id`) VALUES
+(1, 1, 1),
+(2, 1, 29),
+(3, 1, 30);
 
 -- --------------------------------------------------------
 
@@ -730,6 +781,26 @@ CREATE TABLE `django_admin_log` (
   `user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `django_admin_log`
+--
+
+INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
+(1, '2023-02-06 11:48:34.738803', '1', 'mo@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Phone\", \"Avatar\", \"Is admin\"]}}]', 8, 1),
+(2, '2023-02-06 12:01:56.831682', '2', 'ab@nisa.com', 3, '', 8, 1),
+(3, '2023-02-06 12:07:54.422326', '3', 'ab@nisa.com', 1, '[{\"added\": {}}]', 8, 1),
+(4, '2023-02-06 12:16:58.726403', '3', 'ab@nisa.com', 3, '', 8, 1),
+(5, '2023-02-06 12:17:43.030190', '4', 'ab@nisa.com', 1, '[{\"added\": {}}]', 8, 1),
+(6, '2023-02-06 12:18:46.067408', '4', 'ab@nisa.com', 2, '[]', 8, 1),
+(7, '2023-02-06 12:21:54.624727', '4', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Password\"]}}]', 8, 1),
+(8, '2023-02-06 12:26:11.251220', '4', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Staff status\", \"Is admin\"]}}]', 8, 1),
+(9, '2023-02-06 12:30:42.878288', '4', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Username\"]}}]', 8, 1),
+(10, '2023-02-06 12:36:06.783950', '4', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Is admin\"]}}]', 8, 1),
+(11, '2023-02-06 12:36:28.519451', '4', 'ab@nisa.com', 3, '', 8, 1),
+(12, '2023-02-06 12:37:06.135874', '5', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Active\"]}}]', 8, 1),
+(13, '2023-02-06 12:42:13.194309', '5', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Federal state\"]}}]', 8, 1),
+(14, '2023-02-06 12:52:37.722882', '5', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Federal state\"]}}]', 8, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -835,8 +906,8 @@ CREATE TABLE `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('hoo13xn688p2owss9di91dpvq11fbled', '.eJxVjDkOwyAURO9CHSG2D8Zl-pwBYT7EZIHI4CrK3WNLLpJmivdm5k2cX_vs1hYXl5GMhJPTL5t8uMeyC7z5cq001NKXPNG9Qg_b6KVifJyP7t_B7Nu8rdWAWiYNghvNIldohdlCB29lGMDKKSiI3iiWkhcC0kaYEYgcQ9Io99MWW8u1uFxydz0_Y-v--XJk5NoAWMM4UKFBMoDPFz3lRgc:1pOdKJ:KQ1BsNH13gNlrfSGNi6pIgX_p2YXOsU2SYlGGRzDy8c', '2023-02-19 11:36:55.280879'),
-('xpa2lj1epjqnzlhbv2rmu3s5qdnc85pj', '.eJxVjDkOwyAURO9CHSGzfnCZPmdAmA8xWSAyuIpy99iSi6SZ4r2ZeRPn1z67tcXFZSQjYeT0yyYf7rHsAm--XCsNtfQlT3Sv0MM2eqkYH-ej-3cw-zZva2lQi6QVZ6CHyCRaDlvo4K0IRlkxBamiBzmk5DlXaSMDcESGIWkU-2mLreVaXC65u56fsXX_fDkyMg1KgWWcUQkgjDWfLz4nRhk:1pOYfh:Gj_4ePeN_ady_05Bh3Zgw0_XUpeFxEaXm9JDHI9k7Uw', '2023-02-19 06:38:41.484397');
+('ddaiu8s30tkkecvr3ss6dgir09ad78s2', '.eJxVjMsOwiAQRf-FtSGlUwrTpXu_gcwAWnyAKXRl_Hdt0oVu7zn3vISjtc1urXFxKYhJaHH43Zj8LeYNhCvlS5G-5LYklpsid1rlqYR4P-7uX2CmOn_fHaserOnQY9DUa1QDIwwcmc5owQ7QE3hvwRACIwceVYfKMoPRdqQtWmOtqWSXcmqupUesjR5PJyY1Gm20AgMSOqss9u8PL69Fpg:1pPHTx:wRj78quOaS9BIUlhgcuJe6vrIsYOOvs2ifEVW3Slyu8', '2023-02-21 06:29:33.318200'),
+('okf6z2fh6eqpetqk699elfkkb3lyxmu9', '.eJxVjMsOwiAQRf-FtSGlFDrTpXu_gcwAWnyAKXRl_Hdt0oVu7zn3vISjtc1urXFxKYhJGHH43Zj8LeYNhCvlS5G-5LYklpsid1rlqYR4P-7uX2CmOn_fHatew9ihx2CoN6gGRj1wZDojaBh0T9p70COhZuTAVnWogFmPBixt0RprTSW7lFNzLT1ibfR4OjEpOxoLaDuUOCiA3r4_MH1FuQ:1pP1Pl:ff7Xg5GQsFqUQHyuyFnBD814u3MyOm23yF67TI5ssK8', '2023-02-20 13:20:09.949892');
 
 -- --------------------------------------------------------
 
@@ -858,6 +929,16 @@ CREATE TABLE `errorlogs` (
   `user_agent` longtext NOT NULL,
   `Avatar` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `errorlogs`
+--
+
+INSERT INTO `errorlogs` (`id`, `Username`, `Name`, `Expected_error`, `field_error`, `trace_back`, `line_number`, `date_recorded`, `browser`, `ip_address`, `user_agent`, `Avatar`) VALUES
+(1, 'AD00002', ' ', '<class \'ValueError\'>', 'invalid literal for int() with base 10: \'ateuser\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Users\\models.py\", line 47, in create_user\n    username = generateUsername()\n               ^^^^^^^^^^^^^^^^^^\n  File \"D:\\gaadiidka\\Users\\models.py\", line 131, in generateUsername\n    serial = int(username[2:])\n             ^^^^^^^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: \'ateuser\'\n', 47, '2023-02-06 12:24:58.375445', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681.jpg'),
+(2, 'AD00002', ' ', '<class \'ValueError\'>', 'invalid literal for int() with base 10: \'ateuser\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Users\\models.py\", line 47, in create_user\n    username = generateUsername()\n               ^^^^^^^^^^^^^^^^^^\n  File \"D:\\gaadiidka\\Users\\models.py\", line 131, in generateUsername\n    serial = int(username[2:])\n             ^^^^^^^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: \'ateuser\'\n', 47, '2023-02-06 12:25:08.495595', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681.jpg'),
+(3, 'AD00002', ' ', '<class \'ValueError\'>', 'invalid literal for int() with base 10: \'ateuser\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Users\\models.py\", line 47, in create_user\n    username = generateUsername()\n               ^^^^^^^^^^^^^^^^^^\n  File \"D:\\gaadiidka\\Users\\models.py\", line 131, in generateUsername\n    serial = int(username[2:])\n             ^^^^^^^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: \'ateuser\'\n', 47, '2023-02-06 12:25:19.995268', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681.jpg'),
+(4, 'AD00002', ' ', '<class \'ValueError\'>', 'invalid literal for int() with base 10: \'ateuser\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Users\\models.py\", line 47, in create_user\n    username = generateUsername()\n               ^^^^^^^^^^^^^^^^^^\n  File \"D:\\gaadiidka\\Users\\models.py\", line 131, in generateUsername\n    serial = int(username[2:])\n             ^^^^^^^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: \'ateuser\'\n', 47, '2023-02-06 12:25:40.808250', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681.jpg');
 
 -- --------------------------------------------------------
 
@@ -1090,7 +1171,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `is_staff`, `is_active`, `date_joined`, `email`, `phone`, `gender`, `avatar`, `is_admin`, `modified_at`, `federal_state_id`, `is_state`) VALUES
-(1, 'pbkdf2_sha256$390000$ebQQsOG9GRkAUvPKmTMr3z$bUSd+dRO5rmmPSOHFTZEvuETHKxVT2db2APp6FOiO6w=', '2023-02-05 11:36:55.254619', 1, 'AD00002', '', '', 1, 1, '2023-02-05 06:37:12.364771', 'mo@nisa.com', '', NULL, '', 0, '2023-02-05 06:37:12.470694', NULL, 0);
+(1, 'pbkdf2_sha256$390000$ebQQsOG9GRkAUvPKmTMr3z$bUSd+dRO5rmmPSOHFTZEvuETHKxVT2db2APp6FOiO6w=', '2023-02-07 06:05:35.481394', 1, 'AD00002', '', '', 1, 1, '2023-02-05 06:37:12.000000', 'mo@nisa.com', '124', NULL, 'Avatars/7309681.jpg', 1, '2023-02-06 11:48:34.734603', NULL, 0),
+(5, 'pbkdf2_sha256$390000$XU02GF30aDZXRXXtXrHTVU$d3DYgXL9TSvxcD7l1Z0+zxtdjWK4I2jS0bT2rLaFkuo=', '2023-02-07 06:15:40.908254', 0, 'AD00003', 'state', 'user', 0, 1, '2023-02-06 12:36:40.000000', 'ab@nisa.com', '1231', 'Male', 'Avatars/7309681_T8Gk5cr.jpg', 0, '2023-02-06 12:52:37.717032', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -1401,25 +1483,25 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT for table `account_types`
 --
 ALTER TABLE `account_types`
-  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `audittrials`
 --
 ALTER TABLE `audittrials`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `auth_group`
 --
 ALTER TABLE `auth_group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `auth_group_permissions`
 --
 ALTER TABLE `auth_group_permissions`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `auth_permission`
@@ -1467,7 +1549,7 @@ ALTER TABLE `cylinder`
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `django_content_type`
@@ -1485,7 +1567,7 @@ ALTER TABLE `django_migrations`
 -- AUTO_INCREMENT for table `errorlogs`
 --
 ALTER TABLE `errorlogs`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `federal_state`
@@ -1533,13 +1615,13 @@ ALTER TABLE `receipt_voucher`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users_user_permissions`

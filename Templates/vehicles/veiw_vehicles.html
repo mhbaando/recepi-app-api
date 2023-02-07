@@ -58,11 +58,11 @@
                                         <th>year</th>
                                         <th>hp</th>
                                         <th>color</th>
-                                        <th>weight</th>
                                         <th>Passenger</th>
                                         <th>Engine No</th>
                                         <th>owner</th>
                                         <th>Rv number</th>
+                                        <th>Action</th>
                                         
                                     </tr>
                                 </thead>
@@ -74,11 +74,17 @@
                                             <td>{{veh.hp}}</td>
                                             <td>{{veh.year}}</td>
                                             <td>{{veh.color}}</td>
-                                            <td>{{veh.weight}}</td>
+                                           
                                             <td>{{veh.pessenger_seat}}</td>
                                             <td>{{veh.enginer_no}}</td>
                                             <td>{{veh.owner}}</td>
                                             <td>{{veh.rv_number}}</td>
+                          <td>
+                            <a href ="{% url 'vehicle-profile' veh.vehicle_id %}" class="btn btn-primary">
+                                View Profile
+                            </a>
+                        </td>
+                      
                                             
                                        </tr>
                                             {% endfor %}

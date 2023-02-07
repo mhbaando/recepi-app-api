@@ -5,7 +5,6 @@
           href="{% static "assets/css/customer/register-customer.css" %}"/>
 {% endblock cssData %}
 {% block content %}
-    {% csrf_token %}
     <div class="container-xxl flex-grow-1 mb-4">
         <div>
             <h4 class="fw-bold py-3 mb-4">
@@ -13,7 +12,8 @@
             </h4>
         </div>
         <div>
-            <form >
+            <form id="reg_form" enctype="multipart/form-data">
+                {% csrf_token %}
                 {% comment %} Personal Info {% endcomment %}
                 <div class="card mb-4">
                     <h5 class="card-header">Personal Info</h5>
@@ -23,33 +23,38 @@
                             <label for="defaultFormControlInput" class="form-label">First Name</label>
                             <input type="text"
                                    class="form-control"
-                                   id="defaultFormControlInput"
+                                   id="fname"
                                    placeholder="Magaca 1aad"
-                                   aria-describedby="defaultFormControlHelp"/>
+                                   aria-describedby="defaultFormControlHelp"
+                                   required="required"/>
+                            <p id="namerror" class="text-danger"></p>
                         </div>
                         <div class="col-sm-12 col-lg-3 mb-3">
                             <label for="defaultFormControlInput" class="form-label">Second Name</label>
                             <input type="text"
                                    class="form-control"
-                                   id="defaultFormControlInput"
+                                   id="sname"
                                    placeholder="Magaca 2aad"
-                                   aria-describedby="defaultFormControlHelp"/>
+                                   aria-describedby="defaultFormControlHelp"
+                                   required="required"/>
                         </div>
                         <div class="col-sm-12 col-lg-3 mb-3">
                             <label for="defaultFormControlInput" class="form-label">Third Name</label>
                             <input type="text"
                                    class="form-control"
-                                   id="defaultFormControlInput"
+                                   id="thname"
                                    placeholder="Magaca 3aad"
-                                   aria-describedby="defaultFormControlHelp"/>
+                                   aria-describedby="defaultFormControlHelp"
+                                   required="required"/>
                         </div>
                         <div class="col-sm-12 col-lg-3 mb-3">
                             <label for="defaultFormControlInput" class="form-label">Fourth Name</label>
                             <input type="text"
                                    class="form-control"
-                                   id="defaultFormControlInput"
+                                   id="foname"
                                    placeholder="magaca 4aad"
-                                   aria-describedby="defaultFormControlHelp"/>
+                                   aria-describedby="defaultFormControlHelp"
+                                   required="required"/>
                         </div>
                     </div>
                     <div class="row card-body-custom">
@@ -58,40 +63,30 @@
                                 <label for="defaultFormControlInput" class="form-label">Mother's Name</label>
                                 <input type="text"
                                        class="form-control"
-                                       id="defaultFormControlInput"
+                                       id="mname"
                                        placeholder="Magaca hooyo"
-                                       aria-describedby="defaultFormControlHelp"/>
+                                       aria-describedby="defaultFormControlHelp"
+                                       required="required"/>
                             </div>
-                            <div class="my-4 d-flex flex-column">
+                            <div class="my-4 d-flex flex-column ">
                                 <label for="defaultFormControlInput" class="form-label">Gender</label>
-                                <div>
+                                <div class="gender">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input"
-                                               type="radio"
-                                               name="inlineRadioOptions"
-                                               id="inlineRadio1"
-                                               value="Male"/>
-                                        <label class="form-check-label" for="inlineRadio1">Male</label>
+                                        <input class="form-check-input" type="radio" name="gender" value="Male"/>
+                                        <label class="form-check-label" for="gender">Male</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input"
-                                               type="radio"
-                                               name="inlineRadioOptions"
-                                               id="inlineRadio2"
-                                               value="option2"/>
-                                        <label class="form-check-label" for="inlineRadio2">Female</label>
+                                        <input class="form-check-input" type="radio" name="gender" value="Female"/>
+                                        <label class="form-check-label" for="gender">Female</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-lg mb-3">
                             <div>
-                                <label for="defaultFormControlInput" class="form-label">Date</label>
+                                <label for="defaultFormControlInput" class="form-label">Date of Birth</label>
                                 <div class="col">
-                                    <input class="form-control"
-                                           type="date"
-                                           value="2021-06-18"
-                                           id="html5-date-input"/>
+                                    <input class="form-control" type="date" id="dob"/>
                                 </div>
                             </div>
                             <div class="row my-4">
@@ -99,14 +94,15 @@
                                     <div>
                                         <label for="exampleFormControlSelect1" class="form-label">Blood Group</label>
                                         <select class="form-select"
-                                                id="exampleFormControlSelect1"
-                                                aria-label="Default select example">
+                                                id="bload_group"
+                                                aria-label="bload group"
+                                                name="bload_group">
                                             <option selected>
                                                 Select Bload Group
                                             </option>
                                             {% for group in bload_group %}
-                                                <option value="{{ group }}">
-                                                    {{ group }}
+                                                <option value="{{ group.blood_group_id }}">
+                                                    {{ group.blood_group_name }}
                                                 </option>
                                             {% endfor %}
                                         </select>
@@ -114,16 +110,14 @@
                                 </div>
                                 <div class="col-sm-12 col-lg-6">
                                     <div>
-                                        <label for="exampleFormControlSelect1" class="form-label">Nationality</label>
-                                        <select class="form-select"
-                                                id="exampleFormControlSelect1"
-                                                aria-label="Default select example">
+                                        <label for="nation" class="form-label">Nationality</label>
+                                        <select class="form-select" id="nation" aria-label="nation">
                                             <option selected>
-                                                Select Nationality
+                                                Select a Nationality
                                             </option>
                                             {% for nation in nationalities %}
-                                                <option value="{{ nation.id }}">
-                                                    {{ nation }}
+                                                <option value="{{ nation.country_id }}">
+                                                    {{ nation.country_name }}
                                                 </option>
                                             {% endfor %}
                                         </select>
@@ -142,37 +136,45 @@
                             <label for="defaultFormControlInput" class="form-label">Phone</label>
                             <input type="number"
                                    class="form-control"
-                                   id="defaultFormControlInput"
+                                   id="phone"
                                    placeholder="Telephone number"
-                                   aria-describedby="defaultFormControlHelp"/>
+                                   aria-describedby="phone"
+                                   required="required"/>
                         </div>
                         <div class="col-sm-12 col-lg-6 mb-4">
                             <label for="defaultFormControlInput" class="form-label">Email</label>
                             <input type="email"
                                    class="form-control"
-                                   id="defaultFormControlInput"
+                                   id="email"
                                    placeholder="email"
-                                   aria-describedby="defaultFormControlHelp"/>
+                                   aria-describedby="defaultFormControlHelp"
+                                   required="required"/>
                         </div>
                         <div class="col-sm-12 col-lg-6 mb-4">
                             <label for="defaultFormControlInput" class="form-label">Address</label>
                             <input type="text"
                                    class="form-control"
-                                   id="defaultFormControlInput"
+                                   id="address"
                                    placeholder="cinwaanka"
-                                   aria-describedby="defaultFormControlHelp"/>
+                                   aria-describedby="defaultFormControlHelp"
+                                   required="required"/>
                         </div>
                         <div class="col-sm-12 col-lg-6 mb-4">
-                            <label for="exampleFormControlSelect1" class="form-label">State</label>
+                            <label for="state" class="form-label">State</label>
                             <select class="form-select"
-                                    id="exampleFormControlSelect1"
-                                    aria-label="Default select example">
+                                    id="state"
+                                    aria-label="state"
+                                    {% if states == 'No State Found' %} disabled{% endif %}>
                                 <option selected>
-                                    Select State
+                                    {% if states == 'No State Found' %}
+                                        No State Found
+                                    {% else %}
+                                        Select State
+                                    {% endif %}
                                 </option>
                                 {% for state in states %}
-                                    <option value="{{ state }}">
-                                        {{ state }}
+                                    <option value="{{ state.state_id }}">
+                                        {{ state.state_name }}
                                     </option>
                                 {% endfor %}
                             </select>
@@ -189,21 +191,20 @@
                                 <label for="defaultFormControlInput" class="form-label">Personal ID</label>
                                 <input type="text"
                                        class="form-control"
-                                       id="defaultFormControlInput"
+                                       id="perid"
                                        placeholder="ID Number"
-                                       aria-describedby="defaultFormControlHelp"/>
+                                       aria-describedby="defaultFormControlHelp"
+                                       required="required"/>
                             </div>
                             <div class="mb-4">
-                                <label for="exampleFormControlSelect1" class="form-label">ID Type</label>
-                                <select class="form-select"
-                                        id="exampleFormControlSelect1"
-                                        aria-label="Default select example">
+                                <label for="doctype" class="form-label">ID Type</label>
+                                <select class="form-select" id="doctype" aria-label="Default select example">
                                     <option selected>
                                         Select Type
                                     </option>
                                     {% for type in doc_types %}
-                                        <option value="{{ type }}">
-                                            {{ type }}
+                                        <option value="{{ type.personal_id }}">
+                                            {{ type.personal_name }}
                                         </option>
                                     {% endfor %}
                                 </select>
@@ -214,8 +215,15 @@
                                      alt="Vheicle"
                                      width="auto"
                                      height="40"/>
-                                <label for="doc">Click To Upload</label>
-                                <input type="file" id="doc" class="form-control custom-input-file" />
+                                <label for="doc">
+                                    Click To Upload
+                                </label>
+                                <input type="file"
+                                       id="doc"
+                                       class="form-control custom-input-file"
+                                       accept="application/pdf"/>
+                                <p id="doc-name">
+                                </p>
                             </div>
                         </div>
                         <div class=" col-sm-12 col-lg-6 ">
@@ -249,6 +257,10 @@
                             </div>
                         </div>
                     </div>
+                    <div class="container mt-4">
+                        <p id="errordispaly" class="text-danger">
+                        </p>
+                    </div>
                 </div>
                 {% comment %} action buttons {% endcomment %}
                 <div class="mt-4 d-flex align-items-end justify-content-end col">
@@ -256,10 +268,10 @@
                         <a href={% url 'Dashboard' %} class="btn btn-danger">
                             Go Back
                         </a>
-                        <button type="button"
+                        <button type="submit"
                                 class="btn btn-primary text-right"
                                 id="add_new_customer">
-                            Send
+                            Save
                         </button>
                     </div>
                 </div>
@@ -269,4 +281,5 @@
 {% endblock content %}
 {% block scriptData %}
     <script src="{% static "scripts/customer/uppload.js" %}"></script>
+    <script src="{% static "scripts/customer/register.js" %}"></script>
 {% endblock scriptData %}

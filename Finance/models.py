@@ -11,6 +11,9 @@ class account_types(models.Model):
     class Meta:
         db_table = 'account_types'
 
+    def __str__(self):
+        return self.name
+
 
 class account(models.Model):
     account_id = models.AutoField(primary_key=True)

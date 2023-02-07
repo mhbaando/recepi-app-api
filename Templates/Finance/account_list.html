@@ -52,26 +52,21 @@
                             <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Acc Number</th>
-                                        <th scope="col">Acc Type</th>
                                         <th scope="col">Acc Name</th>
+                                        <th scope="col">Acc Type</th>
                                         <th scope="col">Amount</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {% if page_obj %}
-                                    {% for item in page_obj %}
+                                    {% for item in accounts %}
                                     <tr>
-                                        <td>{{item.number}}</td>
-                                        <td>{{item.type}}</td>
-                                        <td>{{item.name}}</td>
+                                        <td>{{item.account_name}}</td>
+                                        <td>{{item.account_type}}</td>
                                         <td>{{item.amount}}</td>
                                     </tr>
                                     {% endfor %}
-                                    {% else %}
-                                    <tr>
-                                        <td class='text-center' colspan='4'>No accounts available</td>
-                                    </tr>
                                     {% endif %}
                                 </tbody>
                             </table>

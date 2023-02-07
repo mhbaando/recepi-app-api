@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from Customers import models as customer_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from Users import models as user_model
 from django.db.models import Q
+from django.http import JsonResponse
+
 # Create your views here.
 # company
 
@@ -217,11 +219,14 @@ def register_customer(request):
     nationalities = customer_model.countries.objects.all()
     doc_types = customer_model.personal_id_type.objects.all()  # personal id types
 
+    # check the user state
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
-            Q(state_name=request.user.federal_state))
-    else:
+            Q(state_id=request.user.federal_state.state_id))
+    elif request.user.is_superuser:
         states = customer_model.federal_state.objects.all()
+    else:
+        states = "No State Found"
 
     context = {
         'pageTitle': 'Register',
@@ -230,6 +235,62 @@ def register_customer(request):
         'states': states,
         'doc_types': doc_types
     }
+
+    # check if the request is post
+    if request.method == 'POST':
+
+        # TODO: check permision
+        customerImg = request.FILES["img"]
+        dob = request.POST.get('dob', None)
+        fName = request.POST.get('fname', None)
+        sName = request.POST.get('sName', None)
+        mName = request.POST.get('mName', None)
+        phone = request.POST.get('phone', None)
+        email = request.POST.get('email', None)
+        state = request.POST.get('state', None)
+        gender = request.POST.get('gender', None)
+        foName = request.POST.get('foName', None)
+        thName = request.POST.get('thName', None)
+        customerDoc = request.FILES["customerDoc"]
+        address = request.POST.get('address, None')
+        docType = request.POST.get('docType', None)
+        personalID = request.POST.get('perid', None)
+        bload_group = request.POST.get('bload_group', None)
+        nationality = request.POST.get('nationality', None)
+
+        # check data
+        # if dob is None or fName is None or sName is None or mName is None or phone is None or email is None or state is None or gender is None or foName is None or thName is None or address is None or personalID is None or bload_group is None or nationality is None:
+        #     return JsonResponse(
+        #         {
+        #             'isError': True,
+        #             'title': 'Validate Error',
+        #             'type': 'danger',
+        #             'Message':  'Fill All Required Fields'
+        #         }
+        #     )
+
+        customer_model.customer.objects.create(
+            firstname=fName,
+            middle_name=sName,
+            lastname=thName,
+            fourth_name=foName,
+            mother_name=mName,
+            gender=gender,
+            date_of_birth=dob,
+            blood_group=bload_group,
+            personal_id_type=docType,
+            nationality=nationality,
+            personal_id=personalID,
+            email=email,
+            address=address,
+            federal_state=state,
+            phone=phone,
+            document=customerDoc,
+            photo=customerImg,
+            reg_user=request.user.id,
+        )
+
+        return redirect('customer_list')
 
     return render(request, 'Customer/register.html', context)
 

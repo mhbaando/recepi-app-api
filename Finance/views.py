@@ -1,15 +1,18 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
 from . import models
+from . models import account,receipt_voucher
+from . forms import accountform
+from django.contrib import messages
 
 
 def AccountsPage(request):
+    accounts=account.objects.all()
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
     SearchQuery = ''
-    AccountList = []
 
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
@@ -19,98 +22,33 @@ def AccountsPage(request):
     else:
         pass
 
-    # Demo data
-    AccountList = [
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
 
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-    ]
-
-    paginator = Paginator(AccountList, DataNumber)
+    paginator = Paginator(accounts, DataNumber)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {
-        'pageTitle': 'Accounts',
-        'page_obj': page_obj,
-        'SearchQuery': SearchQuery,
-        'DataNumber': DataNumber,
-    }
+    context = {'pageTitle': 'Accounts',
+               'page_obj': page_obj,
+               'SearchQuery': SearchQuery,
+               'DataNumber': DataNumber,
+               "accounts": accounts
+               }
     return render(request, 'Finance/account_list.html', context)
 
 
 def AddAccount(request):
-    context = {
+    form = accountform()
+    if request.method == "POST":
+        form = accountform(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "created a new account")
+            return redirect("AccountsPage")
+        else:
+            messages.error(request, "error accured")
+
+
+    context = {"form":form,
         'pageTitle': 'Create Account',
         'account_types': models.account_types.objects.all()
     }
@@ -187,11 +125,11 @@ def ManageAccounts(request, action):
 
 # This will display the receipts list
 def ReceiptPage(request):
+    receipt_vouchers=receipt_voucher.objects.all()
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
     SearchQuery = ''
-    AccountList = []
 
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
@@ -201,87 +139,12 @@ def ReceiptPage(request):
     else:
         pass
 
-    # Demo data
-    AccountList = [
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-    ]
-
-    paginator = Paginator(AccountList, DataNumber)
+    paginator = Paginator(receipt_vouchers, DataNumber)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
+        "receipt_vouchers":receipt_vouchers,
         'pageTitle': 'Receipts',
         'page_obj': page_obj,
         'SearchQuery': SearchQuery,
