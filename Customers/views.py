@@ -137,12 +137,12 @@ def view_company(request):
     return render(request, 'company/view_company.html', context)
 
 
-@login_required(login_url='Login')
-def detail_company(request):
-    context = {
-        'pageTitle': 'Company Details'
-    }
-    return render(request, 'company/comp_details.html', context)
+# @login_required(login_url='Login')
+# def detail_company(request):
+#     context = {
+#         'pageTitle': 'Company Details'
+#     }
+#     return render(request, 'company/comp_details.html', context)
 
 
 @login_required(login_url='Login')
@@ -153,11 +153,19 @@ def block_company(request):
     return render(request, 'company/block_company.html', context)
 
 
-def profile(request):
-    return render(request, 'company/comp_details.html')
+@login_required(login_url="Login")
+def company_profile(request, id):
+
+    context = {
+        'pageTitle': 'Company / Profile'
+    }
+
+    return render(request, 'Company/comp_profile.html', context)
 
 
 # customers
+
+
 @login_required(login_url='Login')
 def register_customer(request):
     states = []
