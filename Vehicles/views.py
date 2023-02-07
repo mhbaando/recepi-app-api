@@ -238,10 +238,12 @@ def view_vehicle(request):
 
 @login_required(login_url="Login")
 def vehicle_profile(request, pk):
-    vehic=vehicle.objects.all()
+    vehic_id=vehicle.objects.get(id=pk)
+    vehicles=vehicle.objects.filter(id=vehic_id).first()
+
 
     context = {
-        'pageTitle': 'Profile',"vehic":vehic
+        'pageTitle': 'Profile',"vehicles":vehicles
     }
 
     return render(request, 'Vehicles/vehicle_profile.html', context)

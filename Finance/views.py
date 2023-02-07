@@ -2,14 +2,15 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from . import models
+from . models import account
 
 
 def AccountsPage(request):
+    accounts=account.objects.all()
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
     SearchQuery = ''
-    AccountList = []
 
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
@@ -19,93 +20,17 @@ def AccountsPage(request):
     else:
         pass
 
-    # Demo data
-    AccountList = [
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
 
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-        {
-            'number': 4647238673832,
-            'type': 'Gaari',
-            'name': 'My account',
-            'amount': 9084747,
-        },
-    ]
-
-    paginator = Paginator(AccountList, DataNumber)
+    paginator = Paginator(accounts, DataNumber)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {
-        'pageTitle': 'Accounts',
-        'page_obj': page_obj,
-        'SearchQuery': SearchQuery,
-        'DataNumber': DataNumber,
-    }
+    context = {'pageTitle': 'Accounts',
+               'page_obj': page_obj,
+               'SearchQuery': SearchQuery,
+               'DataNumber': DataNumber,
+               "accounts": accounts
+               }
     return render(request, 'Finance/account_list.html', context)
 
 
