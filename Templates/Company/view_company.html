@@ -8,6 +8,9 @@
             <span class="text-muted fw-light">Home / Company /</span> {{ pageTitle }}
         </h4>
         <div class="row">
+            <a href="{% url 'register_company' %}">
+                <button type="button" class="btn btn-primary btn-lg mb-3">Addnew</button>
+            </a>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -64,6 +67,7 @@
                                             <th class="wd-15p border-bottom-0">Phone</th>
                                             <th class="wd-15p border-bottom-0">Status</th>
                                             <th class="wd-15p border-bottom-0">Action</th>
+                                            <th class="wd-15p border-bottom-0">Block Company</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -80,91 +84,99 @@
                                                     <button class="btn btn-outline-primary">View</button>
                                                 </a>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Al Taqwa</td>
-                                            <td>Mohamoud Ali</td>
-                                            <td>35746-5316768</td>
-                                            <td>06154796874</td>
-                                            <td>
-                                                <span class="badge bg-success text-white p-2">Un-Blocked</span>
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'company_profile' 1 %}">
-                                                    <button class="btn btn-outline-primary">View</button>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Al Taqwa</td>
-                                            <td>Mohamoud Ali</td>
-                                            <td>35746-5316768</td>
-                                            <td>06154796874</td>
-                                            <td>
-                                                <span class="badge bg-danger text-white p-2">Blocked</span>
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'company_profile' 1 %}">
-                                                    <button class="btn btn-outline-primary">View</button>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Al Taqwa</td>
-                                            <td>
-                                                Mohamoud Ali
-                                            </td>
-                                            <td>
-                                                35746-5316768
-                                            </td>
-                                            <td>
-                                                06154796874
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-success text-white p-2">Un-Blocked</span>
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'company_profile' 1 %}">
-                                                    <button class="btn btn-outline-primary">
-                                                        View
-                                                    </button>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                            <td/>
+                                            <a href="{% url 'comapny_block' %}">
+                                                <button class="btn btn-outline-primary">Block</button>
+                                            </a>
+                                        </td
+                                    </tr>
+                                    <tr>
+                                        <td>Al Taqwa</td>
+                                        <td>Mohamoud Ali</td>
+                                        <td>35746-5316768</td>
+                                        <td>06154796874</td>
+                                        <td>
+                                            <span class="badge bg-success text-white p-2">Un-Blocked</span>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'company_profile' 1 %}">
+                                                <button class="btn btn-outline-primary">View</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Al Taqwa</td>
+                                        <td>Mohamoud Ali</td>
+                                        <td>35746-5316768</td>
+                                        <td>06154796874</td>
+                                        <td>
+                                            <span class="badge bg-danger text-white p-2">Blocked</span>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'company_profile' 1 %}">
+                                                <button class="btn btn-outline-primary">
+                                                    View
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Al Taqwa
+                                        </td>
+                                        <td>
+                                            Mohamoud Ali
+                                        </td>
+                                        <td>
+                                            35746-5316768
+                                        </td>
+                                        <td>
+                                            06154796874
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-success text-white p-2">Un-Blocked</span>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'company_profile' 1 %}">
+                                                <button class="btn btn-outline-primary">
+                                                    View
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mb-3 col-md-12 d-flex justify-content-between align-items-center">
+                            <div activePage = {{ licenselist.number }} class="col-md-6 activePage">
+                                Showing {{ licenselist.number }} to {{ licenselist.paginator.num_pages }} of {{ total }}.
                             </div>
-                            <div class="mb-3 col-md-12 d-flex justify-content-between align-items-center">
-                                <div activePage = {{ licenselist.number }} class="col-md-6 activePage">
-                                    Showing {{ licenselist.number }} to {{ licenselist.paginator.num_pages }} of {{ total }}.
-                                </div>
-                                <div class="col-md-6 d-flex justify-content-end align-items-center">
-                                    <nav aria-label="Page navigation">
-                                        <ul class="pagination">
-                                            <li class="page-item first {% if not licenselist.has_previous %}disabled{% endif %}"
-                                                page="1">
-                                                <a class="page-link" href="javascript:void(0);">
-                                                    <i class="tf-icon bx bx-chevrons-left"></i>
-                                                </a>
-                                            </li>
-                                            <li class="page-item prev {% if not licenselist.has_previous %}disabled{% endif %}"
-                                                page="{% if licenselist.has_previous %}{{ licenselist.previous_page_number }}{% else %}No Page{% endif %}">
-                                                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i
-                                                ></a>
-                                            </li>
-                                            <li class="page-item next {% if not licenselist.has_next %}disabled{% endif %}"
-                                                page="{% if licenselist.has_next %}{{ licenselist.next_page_number }}{% else %}No Page{% endif %}">
-                                                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i
-                                                ></a>
-                                            </li>
-                                            <li class="page-item last {% if not licenselist.has_next %}disabled{% endif %}"
-                                                page="{{ licenselist.paginator.num_pages }}">
-                                                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i
-                                                ></a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
+                            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination">
+                                        <li class="page-item first {% if not licenselist.has_previous %}disabled{% endif %}"
+                                            page="1">
+                                            <a class="page-link" href="javascript:void(0);">
+                                                <i class="tf-icon bx bx-chevrons-left"></i>
+                                            </a>
+                                        </li>
+                                        <li class="page-item prev {% if not licenselist.has_previous %}disabled{% endif %}"
+                                            page="{% if licenselist.has_previous %}{{ licenselist.previous_page_number }}{% else %}No Page{% endif %}">
+                                            <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i
+                                            ></a>
+                                        </li>
+                                        <li class="page-item next {% if not licenselist.has_next %}disabled{% endif %}"
+                                            page="{% if licenselist.has_next %}{{ licenselist.next_page_number }}{% else %}No Page{% endif %}">
+                                            <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i
+                                            ></a>
+                                        </li>
+                                        <li class="page-item last {% if not licenselist.has_next %}disabled{% endif %}"
+                                            page="{{ licenselist.paginator.num_pages }}">
+                                            <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i
+                                            ></a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
@@ -172,6 +184,7 @@
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}
 {% block scriptData %}
 {% endblock scriptData %}
