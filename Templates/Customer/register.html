@@ -13,7 +13,7 @@
             </h4>
         </div>
         <div>
-            <form action="">
+            <form >
                 {% comment %} Personal Info {% endcomment %}
                 <div class="card mb-4">
                     <h5 class="card-header">Personal Info</h5>
@@ -104,27 +104,11 @@
                                             <option selected>
                                                 Select Bload Group
                                             </option>
-                                            <option value="A+">
-                                                A+
-                                            </option>
-                                            <option value="A-">
-                                                A-
-                                            </option>
-                                            <option value="B-">
-                                                B-
-                                            </option>
-                                            <option value="O+">
-                                                O+
-                                            </option>
-                                            <option value="O-">
-                                                O-
-                                            </option>
-                                            <option value="AB+">
-                                                AB+
-                                            </option>
-                                            <option value="AB-">
-                                                AB-
-                                            </option>
+                                            {% for group in bload_group %}
+                                                <option value="{{ group }}">
+                                                    {{ group }}
+                                                </option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                 </div>
@@ -137,15 +121,11 @@
                                             <option selected>
                                                 Select Nationality
                                             </option>
-                                            <option value="1">
-                                                Somalia
-                                            </option>
-                                            <option value="2">
-                                                Sudan
-                                            </option>
-                                            <option value="3">
-                                                Turkey
-                                            </option>
+                                            {% for nation in nationalities %}
+                                                <option value="{{ nation.id }}">
+                                                    {{ nation }}
+                                                </option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                 </div>
@@ -190,27 +170,11 @@
                                 <option selected>
                                     Select State
                                 </option>
-                                <option value="1">
-                                    Banaadir
-                                </option>
-                                <option value="2">
-                                    Hirshabeelle
-                                </option>
-                                <option value="3">
-                                    Koonfur Galbeed
-                                </option>
-                                <option value="3">
-                                    Galmudug
-                                </option>
-                                <option value="3">
-                                    Puntland
-                                </option>
-                                <option value="3">
-                                    Jubba land
-                                </option>
-                                <option value="3">
-                                    Somali land
-                                </option>
+                                {% for state in states %}
+                                    <option value="{{ state }}">
+                                        {{ state }}
+                                    </option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -237,15 +201,11 @@
                                     <option selected>
                                         Select Type
                                     </option>
-                                    <option value="1">
-                                        Passbort
-                                    </option>
-                                    <option value="2">
-                                        License
-                                    </option>
-                                    <option value="3">
-                                        Dhalasho iyo Sugnaan
-                                    </option>
+                                    {% for type in doc_types %}
+                                        <option value="{{ type }}">
+                                            {{ type }}
+                                        </option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <label for="defaultFormControlInput" class="form-label">Uppload</label>

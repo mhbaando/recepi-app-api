@@ -60,11 +60,6 @@
             <div data-i18n="CRM">Company View</div>
           </a>
         </li>
-        <li class="menu-item {% if pageTitle == 'Company Details' %}active{% endif %}">
-          <a href="{% url 'detail_company' %}" class="menu-link">
-            <div data-i18n="CRM">Company details</div>
-          </a>
-        </li>
       </ul>
     </li>
     <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' %}active open{% endif %}">
@@ -164,9 +159,7 @@
       <li class="menu-item {% if pageTitle == 'Search Role' or pageTitle == 'Assign Role To User' or pageTitle == 'Create Groups' or pageTitle == 'Assign User To A Group Role' or pageTitle == 'Roles Report' or pageTitle == 'User Roles Report' %}active open{% endif %}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-home-circle"></i>
-          <div data-i18n="Dashboards">
-            Roles
-          </div>
+          <div data-i18n="Dashboards">Roles</div>
         </a>
         <ul class="menu-sub">
           {% if  perms.auth.view_permission and perms.auth.add_permission or perms.Users.manage_role_groups %}
