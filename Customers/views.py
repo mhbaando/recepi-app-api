@@ -3,6 +3,7 @@ from Customers import models as customer_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from Users import models as user_model
+from django.db.models import Q
 # Create your views here.
 # company
 
@@ -163,10 +164,12 @@ def register_customer(request):
     bload_group = customer_model.blood_group.objects.all()
     nationalities = customer_model.countries.objects.all()
     doc_types = customer_model.personal_id_type.objects.all()  # personal id types
-    # check if the user's state
-    if request.user.federal_state:
-        states.append(customer_model.federal_state.objects.filter(
-            Q(id=request.user.federal_state.state_id)))
+
+    if request.user.is_state and request.user.federal_state is not None:
+        states = customer_model.federal_state.objects.filter(
+            Q(state_name=request.user.federal_state))
+    else:
+        states = customer_model.federal_state.objects.all()
 
     context = {
         'pageTitle': 'Register',
