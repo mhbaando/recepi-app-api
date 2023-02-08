@@ -75,11 +75,11 @@ from django.db.models import Q
 
 @login_required(login_url="Login")
 def register_vehicle(request):
-    vehicle_model1 = model_brand.objects.all()
-    color1 = color.objects.all()
-    origin1 = countries.objects.all()
-    cylinder1 = cylinder.objects.all()
-    owner1 = customer.objects.all()
+    vehicle_models = model_brand.objects.all()
+    colors = color.objects.all()
+    origins = countries.objects.all()
+    cylinders = cylinder.objects.all()
+    owners = customer.objects.all()
     year = []
 
     for i in range(1960, datetime.now().year):
@@ -87,47 +87,47 @@ def register_vehicle(request):
 
     year.reverse()
 
-    if request.method == "POST":
-        n = request.POST.get("vehicle_model")
-        new_color = request.POST.get("color")
-        n_origin = request.POST.get("origin")
-        n_cylinder = request.POST.get('cylinder')
-        nowner = request.POST.get('owner')
-        new_year = request.POST.get('year')
-        new_vin = request.POST.get('vin')
-        new_weight = request.POST.get('weight')
-        new_hp = request.POST.get('hp')
-        new_pessenger_seat = request.POST.get('pessenger_seat')
-        new_rv_number = request.POST.get('rv_number')
+    # if request.method == "POST":
+    #     n = request.POST.get("vehicle_model")
+    #     new_color = request.POST.get("color")
+    #     n_origin = request.POST.get("origin")
+    #     n_cylinder = request.POST.get('cylinder')
+    #     nowner = request.POST.get('owner')
+    #     new_year = request.POST.get('year')
+    #     new_vin = request.POST.get('vin')
+    #     new_weight = request.POST.get('weight')
+    #     new_hp = request.POST.get('hp')
+    #     new_pessenger_seat = request.POST.get('pessenger_seat')
+    #     new_rv_number = request.POST.get('rv_number')
 
-        rv = receipt_voucher.objects.filter(Q(rv_num=new_rv_number))
+    #     rv = receipt_voucher.objects.filter(Q(rv_num=new_rv_number))
 
-        check_used_rv = vehicle.objects.filter(Q(rv_num=new_rv_number))
+    #     check_used_rv = vehicle.objects.filter(Q(rv_num=new_rv_number))
 
-        if rv is not None:
-            owner = rv.rv_from
+    #     if rv is not None:
+    #         owner = rv.rv_from
 
-        else:
-            # error handling
-            pass
-        vehiclemodel = model_brand.objects.filter(brand_name=n).first()
-        colo = color.objects.filter(color_name=new_color).first()
-        oro = countries.objects.filter(country_name=n_origin).first()
-        cyle = cylinder.objects.filter(cylinder_name=n_cylinder).first()
+    #     else:
+    #         # error handling
+    #         pass
+    #     vehiclemodel = model_brand.objects.filter(brand_name=n).first()
+    #     colo = color.objects.filter(color_name=new_color).first()
+    #     oro = countries.objects.filter(country_name=n_origin).first()
+    #     cyle = cylinder.objects.filter(cylinder_name=n_cylinder).first()
 
-        rv_num = receipt_voucher.objects.get(rv_number=new_rv_number)
-        ow = rv_num.rv_from
+    #     rv_num = receipt_voucher.objects.get(rv_number=new_rv_number)
+    #     ow = rv_num.rv_from
 
-        vehicle.objects.create(
-            vehiclemodel=vehiclemodel,
-            colo=colo, oro=oro, cyle=cyle, ow=ow, year=new_year, vin=new_vin, weight=new_weight, hp=new_hp, pessenger_seat=new_pessenger_seat, rv_number=new_rv_number)
+    #     vehicle.objects.create(
+    #         vehiclemodel=vehiclemodel,
+    #         colo=colo, oro=oro, cyle=cyle, ow=ow, year=new_year, vin=new_vin, weight=new_weight, hp=new_hp, pessenger_seat=new_pessenger_seat, rv_number=new_rv_number)
 
-        messages.success(request, "a new vehicle registerered")
-        return redirect("veiw-vehicles")
-    else:
-        messages.error(request, "error occured")
-    context = {"vehiclemodel": vehicle_model1, "colo": color1, "oro": origin1,
-               "cyle": cylinder1, "ow": owner1, 'year': year, "pageTitle": 'Register vehicle'}
+    #     messages.success(request, "a new vehicle registerered")
+    #     return redirect("veiw-vehicles")
+    # else:
+    #     messages.error(request, "error occured")
+    context = {"vehicle_models": vehicle_models, "colors": colors, "origins": origins,
+               "cylenders": cylinders,"owners":owners, 'year': year, "pageTitle": 'Register vehicle'}
     return render(request, "Vehicles/register_vehicle.html", context)
 
 
@@ -238,12 +238,12 @@ def view_vehicle(request):
 
 @login_required(login_url="Login")
 def vehicle_profile(request, pk):
-    vehic_id=vehicle.objects.get(id=pk)
-    vehicles=vehicle.objects.filter(id=vehic_id).first()
+    # vehic_id=vehicle.objects.get(id=pk)
+    # vehicles=vehicle.objects.filter(id=vehic_id).first()
 
 
     context = {
-        'pageTitle': 'Profile',"vehicles":vehicles
+        'pageTitle': 'Profile'
     }
 
     return render(request, 'Vehicles/vehicle_profile.html', context)
