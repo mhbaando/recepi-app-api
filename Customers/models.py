@@ -14,10 +14,7 @@ class blood_group(models.Model):
         db_table = 'blood_group'
 
     def __str__(self):
-        return {
-            'blood_group_id': self.blood_group_id,
-            'blood_group_name': self.blood_group_name
-        }
+        return self.blood_group_name
 
 
 class personal_id_type(models.Model):
@@ -30,10 +27,7 @@ class personal_id_type(models.Model):
         db_table = 'personal_id_type'
 
     def __str__(self):
-        return {
-            'personal_id': self.personal_id,
-            'personal_name': self.personal_name
-        }
+        return self.personal_name
 
 
 class countries(models.Model):
@@ -46,10 +40,7 @@ class countries(models.Model):
         db_table = 'countries'
 
     def __str__(self):
-        return {
-            'country_id': self.country_id,
-            'country_name': self.country_name
-        }
+        return self.country_name
 
 
 class federal_state(models.Model):
@@ -62,10 +53,7 @@ class federal_state(models.Model):
         db_table = 'federal_state'
 
     def __str__(self):
-        return {
-            'state_id': self.state_id,
-            'state_name': self.state_name
-        }
+        return self.state_name
 
 
 class customer(models.Model):
@@ -102,6 +90,9 @@ class customer(models.Model):
 
     class Meta:
         db_table = 'customers'
+
+    def __str__(self) -> str:
+        return f"{self.firstname} {self.middle_name} {self.lastname}"
 
 
 class customer_fingers(models.Model):
