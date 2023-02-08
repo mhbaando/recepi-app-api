@@ -14,7 +14,7 @@ from Users.views import sendException, sendTrials
 
 @login_required(login_url='Login')
 def register_company(request):
-  
+
     states = []
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
@@ -285,8 +285,8 @@ def register_customer(request):
                 if group is None or docs_type is None or nation is None or selected_satate is None:
                     return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
 
-                if request.user.federal_state.state_id != state:
-                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register another state'}, status=401)
+                if request.user.is_state or request.user.is_admin and request.user.federal_state is None:
+                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
 
                 new_customer = customer_model.customer(
                     firstname=fName,
