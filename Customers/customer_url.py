@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('company_block/', views.block_company, name='comapny_block'),
     path('company/profile/<int:id>', views.company_profile, name="company_profile"),
+    path('r', views. r_company, name='r-company'),
 
     # License Urls
     path('register_license', license.NewLicense, name='NewLicense'),

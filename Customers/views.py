@@ -14,10 +14,54 @@ from Users.views import sendException, sendTrials
 
 @login_required(login_url='Login')
 def register_company(request):
+  
+    states = []
+    if request.user.is_state and request.user.federal_state is not None:
+        states = customer_model.federal_state.objects.filter(
+            Q(state_name=request.user.federal_state))
+    else:
+        states = customer_model.federal_state.objects.all()
+
     context = {
-        'pageTitle': 'Register Company'
+        'pageTitle': 'Register Company',
+        'states': states
     }
     return render(request, 'Company/register.html', context)
+
+
+# registration company
+
+
+@login_required(login_url='Login')
+def register_customer(request):
+    states = []
+    bload_group = customer_model.blood_group.objects.all()
+    nationalities = customer_model.countries.objects.all()
+    doc_types = customer_model.personal_id_type.objects.all()  # personal id types
+
+    if request.user.is_state and request.user.federal_state is not None:
+        states = customer_model.federal_state.objects.filter(
+            Q(state_name=request.user.federal_state))
+    else:
+        states = customer_model.federal_state.objects.all()
+
+    context = {
+        'pageTitle': 'Register',
+        'bload_group': bload_group,
+        'nationalities': nationalities,
+        'states': states,
+        'doc_types': doc_types
+    }
+
+    return render(request, 'Customer/register.html', context)
+
+
+@login_required(login_url='Login')
+def r_company(request):
+    context = {
+        'pageTitle': 'R comapny'
+    }
+    return render(request, 'Company/re.html', context)
 
 
 @login_required(login_url='Login')
