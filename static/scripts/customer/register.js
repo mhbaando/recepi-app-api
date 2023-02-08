@@ -124,7 +124,6 @@ $(document).ready(function () {
         formData.append("docType", docType);
         formData.append("customerDoc", customerDoc);
         
-        console.log(formData)
 
         $.ajax({
             method: "POST",
@@ -135,12 +134,36 @@ $(document).ready(function () {
             data: formData,
             async: true,
             success: function(response){
-                // handle success
-                
+                if (!response.isError) {
+                    Swal.fire({
+                      title: "Success",
+                      text: response.Message,
+                      icon: "success",
+                      confirmButtonText: "Ok",
+                      confirmButtonClass: "btn btn-success mt-2",
+                      buttonsStyling: !1,
+                    }).then(function (e) {
+                      if (e.value) {
+                        Swal.DismissReason.cancel;
+                        location.replace('/customer/list')
+                      }
+                    });
+
+                    // resete the form 
+                    $("#reg_form")[0].reset()
+                   
+                  } else {
+                    Swal.fire("Error", response.Message, "error");
+                  }
             },
             error: function(error){
                 // handle error 
+                console.log(error)
+
             }
         })
+
+      
+            
     })
 })

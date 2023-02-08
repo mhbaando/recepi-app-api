@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 from Customers import models as customer_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from Users import models as user_model
 from django.db.models import Q
 from django.http import JsonResponse
+
+from Users.views import sendException, sendTrials
+
 
 # Create your views here.
 # company
@@ -236,63 +238,104 @@ def register_customer(request):
         'doc_types': doc_types
     }
 
-    # check if the request is post
-    if request.method == 'POST':
-
+    try:
         # TODO: check permision
-        customerImg = request.FILES["img"]
-        dob = request.POST.get('dob', None)
-        fName = request.POST.get('fname', None)
-        sName = request.POST.get('sName', None)
-        mName = request.POST.get('mName', None)
-        phone = request.POST.get('phone', None)
-        email = request.POST.get('email', None)
-        state = request.POST.get('state', None)
-        gender = request.POST.get('gender', None)
-        foName = request.POST.get('foName', None)
-        thName = request.POST.get('thName', None)
-        customerDoc = request.FILES["customerDoc"]
-        address = request.POST.get('address, None')
-        docType = request.POST.get('docType', None)
-        personalID = request.POST.get('perid', None)
-        bload_group = request.POST.get('bload_group', None)
-        nationality = request.POST.get('nationality', None)
+        if request.user.has_perm('Customers.add_customer'):
+            # check if the request is post
+            if request.method == 'POST':
+                customerImg = request.FILES["img"]
+                dob = request.POST.get('dob', None)
+                fName = request.POST.get('fname', None)
+                sName = request.POST.get('sname', None)
+                mName = request.POST.get('mname', None)
+                phone = request.POST.get('phone', None)
+                email = request.POST.get('email', None)
+                state = request.POST.get('state', None)
+                gender = request.POST.get('gender', None)
+                foName = request.POST.get('foname', None)
+                thName = request.POST.get('thname', None)
+                customerDoc = request.FILES["customerDoc"]
+                customer_address = request.POST.get('address', None)
+                docType = request.POST.get('docType', None)
+                personalID = request.POST.get('perid', None)
+                bload_group = request.POST.get('bload_group', None)
+                nationality = request.POST.get('nationality', None)
 
-        # check data
-        # if dob is None or fName is None or sName is None or mName is None or phone is None or email is None or state is None or gender is None or foName is None or thName is None or address is None or personalID is None or bload_group is None or nationality is None:
-        #     return JsonResponse(
-        #         {
-        #             'isError': True,
-        #             'title': 'Validate Error',
-        #             'type': 'danger',
-        #             'Message':  'Fill All Required Fields'
-        #         }
-        #     )
+                # check data
+                if dob is None or fName is None or sName is None or mName is None or phone is None or email is None or state is None or gender is None or foName is None or thName is None or customer_address is None or personalID is None or bload_group is None or nationality is None:
 
-        customer_model.customer.objects.create(
-            firstname=fName,
-            middle_name=sName,
-            lastname=thName,
-            fourth_name=foName,
-            mother_name=mName,
-            gender=gender,
-            date_of_birth=dob,
-            blood_group=bload_group,
-            personal_id_type=docType,
-            nationality=nationality,
-            personal_id=personalID,
-            email=email,
-            address=address,
-            federal_state=state,
-            phone=phone,
-            document=customerDoc,
-            photo=customerImg,
-            reg_user=request.user.id,
-        )
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': 'Validate Error',
+                            'type': 'danger',
+                            'Message':  'Fill All Required Fields'
+                        }
+                    )
 
-        return redirect('customer_list')
+                group = customer_model.blood_group.objects.filter(
+                    Q(blood_group_id=bload_group)).first()
+                docs_type = customer_model.personal_id_type.objects.filter(
+                    Q(personal_id=docType)).first()
+                nation = customer_model.countries.objects.filter(
+                    Q(country_id=nationality)).first()
+                selected_satate = customer_model.federal_state.objects.filter(
+                    Q(state_id=state)).first()
 
-    return render(request, 'Customer/register.html', context)
+                if group is None or docs_type is None or nation is None or selected_satate is None:
+                    return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
+
+                if request.user.federal_state.state_id != state:
+                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register another state'}, status=401)
+
+                new_customer = customer_model.customer(
+                    firstname=fName,
+                    middle_name=sName,
+                    lastname=thName,
+                    fourth_name=foName,
+                    mother_name=mName,
+                    gender=gender,
+                    date_of_birth=dob,
+                    blood_group=group,
+                    personal_id_type=docs_type,
+                    nationality=nation,
+                    personal_id=personalID,
+                    email=email,
+                    address=customer_address,
+                    federal_state=selected_satate,
+                    phone=phone,
+                    document=customerDoc,
+                    photo=customerImg,
+                    reg_user=request.user,
+                )
+
+                new_customer.save()
+                username = request.user.username
+                names = request.user.first_name + ' ' + request.user.last_name
+                avatar = str(request.user.avatar)
+                module = "Customer / Register"
+                action = 'Registered A Customer'
+                path = request.path
+                sendTrials(request, username, names,
+                           avatar, action, module, path)
+                # return for post method
+                return JsonResponse({'isError': False, 'Message': 'Customer has been successfully Saved'}, status=200)
+
+            # return for get method
+            return render(request, 'Customer/register.html', context)
+        else:
+            return redirect('un_authorized')
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + ' ' + request.user.last_name
+        # register the error
+        sendException(
+            request, username, name, error)
+        message = {
+            'isError': True,
+            'Message': 'On Error Occurs . Please try again or contact system administrator'
+        }
+        return JsonResponse(message, status=200)
 
 
 @login_required(login_url='Login')
