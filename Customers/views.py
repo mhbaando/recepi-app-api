@@ -47,7 +47,7 @@ def register_company(request):
                 state = request.POST.get('state', None)
                 # identification info
                 logo = request.FILES["logo"]
-                document = request.FILES["file"]
+                document = request.FILES["companyDoc"]
 
                 # check data
                 if cname is None or rnumber is None or website is None or owner is None or phone is None or email is None or state is None or address is None:
@@ -108,7 +108,6 @@ def register_company(request):
             'Message': 'On Error Occurs . Please try again or contact system administrator'
         }
         return JsonResponse(message, status=200)
-        return render(request, 'Company/register.html', context)
 
 
 @login_required(login_url='Login')
