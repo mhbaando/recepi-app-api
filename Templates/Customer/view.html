@@ -81,34 +81,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>12345648797</td>
-                                            <td>Mariam Mohamed Ahmed Hassen</td>
-                                            <td>Maariya Cali Axmed</td>
-                                            <td>06154796874</td>
-                                            <td>Banaadir</td>
-                                            <td>
-                                                <span class="badge bg-success text-black p-2">Verified</span>
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'customer_profile' 1 %}">
-                                                    <button class="btn btn-outline-primary">View</button>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>12345648797</td>
-                                            <td>Mariam Mohamed Ahmed Hassen</td>
-                                            <td>Maariya Cali Axmed</td>
-                                            <td>06154796874</td>
-                                            <td>Banaadir</td>
-                                            <td>
-                                                <span class="badge bg-danger text-white p-2">An Verified</span>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-outline-primary">View</button>
-                                            </td>
-                                        </tr>
+                                        {% for customer in customers %}
+                                            <tr>
+                                                <td>{{ customer.customer_id }}</td>
+                                                <td>{{ customer.firstname }} {{ customer.middle_name }} {{ customer.lastname }} {{ customer.fourth_name }}</td>
+                                                <td>{{ customer.mother_name }}</td>
+                                                <td>{{ customer.phone }}</td>
+                                                <td>{{ customer.federal_state }}</td>
+                                                <td>
+                                                    <span class="badge bg-success text-black p-2">{{ customer.is_verified }}</span>
+                                                </td>
+                                                <td>
+                                                    <a href="{% url 'customer_profile' 1 %}">
+                                                        <button class="btn btn-outline-primary">View</button>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
