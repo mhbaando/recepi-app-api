@@ -3,7 +3,7 @@ from Customers import models as customer_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, request
 
 from Users.views import sendException, sendTrials
 
@@ -26,10 +26,89 @@ def register_company(request):
         'pageTitle': 'Register Company',
         'states': states
     }
-    return render(request, 'Company/register.html', context)
 
+    # modal fucntion
 
-# registration company
+    # registration company
+    try:
+        # TODO: check permision
+        if request.user.has_perm('Company.add_company'):
+            # check if the request is post
+            if request.method == 'POST':
+
+                cname = request.POST.get('cname', None)
+                rnumber = request.POST.get('rnumber', None)
+                website = request.POST.get('website', None)
+                owner = request.POST.get('phone', None)
+                # contact info
+                phone = request.POST.get('phone', None)
+                email = request.POST.get('email', None)
+                address = request.POST.get('address', None)
+                state = request.POST.get('state', None)
+                # identification info
+                logo = request.FILES["logo"]
+                document = request.FILES["file"]
+
+                # check data
+                if cname is None or rnumber is None or website is None or owner is None or phone is None or email is None or state is None or address is None:
+
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': 'Validate Error',
+                            'type': 'danger',
+                            'Message':  'Fill All Required Fields'
+                        }
+                    )
+
+                selected_satate = customer_model.federal_state.objects.filter(
+                    Q(state_id=state)).first()
+
+                if request.user.is_state or request.user.is_admin and request.user.federal_state is None:
+                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
+
+                new_company = customer_model.customer(
+                    comapnyname=cname,
+                    registrationnumber=rnumber,
+                    website=website,
+                    owner=owner,
+                    phone=phone,
+                    email=email,
+                    address=address,
+                    logo=logo,
+                    document=document,
+                    federal_state=selected_satate,
+                    reg_user=request.user,
+                )
+
+                new_company.save()
+                username = request.user.username
+                names = request.user.first_name + ' ' + request.user.last_name
+                avatar = str(request.user.avatar)
+                module = "Company / Register"
+                action = 'Registered A Company'
+                path = request.path
+                sendTrials(request, username, names,
+                           avatar, action, module, path)
+                # return for post method
+                return JsonResponse({'isError': False, 'Message': 'Company has been successfully Saved'}, status=200)
+
+            # return for get method
+            return render(request, 'Company/register.html', context)
+        else:
+            return redirect('un_authorized')
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + ' ' + request.user.last_name
+        # register the error
+        sendException(
+            request, username, name, error)
+        message = {
+            'isError': True,
+            'Message': 'On Error Occurs . Please try again or contact system administrator'
+        }
+        return JsonResponse(message, status=200)
+        return render(request, 'Company/register.html', context)
 
 
 @login_required(login_url='Login')
