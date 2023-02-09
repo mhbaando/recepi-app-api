@@ -1,0 +1,64 @@
+.overlay {
+    position: absolute;
+    
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 20;
+}
+
+.model-container{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+    max-width: 950px;
+
+    margin: auto;
+    z-index: 21;
+
+}
+.model {
+    background-color: white;
+    border-radius: 10px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    
+    padding: 1rem
+}
+
+.hidden {
+    display: none;
+}
+
+.cursor {
+    cursor: pointer;
+
+    font-weight: bold;
+
+    border-radius: 50%;
+    border: 1px solid red;
+    
+    width: 25px;
+    height: 25px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* disbale arrows form number input */
+textarea{
+    resize: none;
+}

@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // get user image and uppload doc
-    let customerImage = ""
-    let customerDoc = ""
+    let companyImage = ""
+    let companyDoc = ""
     $('#upload').change(function(){
         const file = this.files[0];
         if (file){

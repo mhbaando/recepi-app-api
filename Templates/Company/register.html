@@ -11,86 +11,95 @@
       <span class="text-muted fw-light">Home /</span> {{ pageTitle }}
     </h4>
   </div>
-  <div class="card">
-    <div class="card-header">
-      <h2>Basic Info</h2>
-    </div>
-    <div class="card-body">
-      <div class="col-md-12 mb-0">
-        <div class="mb-3">
-          <form>
-            <div class="row">
-              <div class="col">
-                <label for="company">Company Name</label>
-                <input type="text" class="form-control" placeholder="Al taqwa"/>
-              </div>
-              <div class="col">
-                <label for="company">Registration No</label>
-                <input type="text" class="form-control" placeholder="563748"/>
+  <form id="re_form">
+    {% csrf_token %}
+    <div class="card">
+      <div class="card-header">
+        <h3>Basic Info</h3>
+      </div>
+      <div class="card-body">
+        <div class="col-md-12 mb-0">
+          <div class="row mb-3">
+            <div class="col">
+              <label for="company">Company Name</label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="Al Taqwa"
+                     required="required"
+                     id="cname"/>
+            </div>
+            <div class="col">
+              <label for="company">Registration No</label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="563748"
+                     required="required"
+                     id="rnumber"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label for="company">Website</label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="website"
+                     required="required"
+                     id="website"/>
+            </div>
+            <div class="col">
+              <label for="company">Owner</label>
+              <div class="input-group">
+                <input type="search"
+                       class="form-control rounded"
+                       placeholder="Search"
+                       aria-label="Search"
+                       aria-describedby="search-addon"
+                       required="required"
+                       id="owner"/>
               </div>
             </div>
-            <div class="row mt-4">
-              <div class="col">
-                <label for="company">Website</label>
-                <input type="text" class="form-control" placeholder="website"/>
-              </div>
-              <div class="col">
-                <label for="company">Owner</label>
-                {% comment %} <select class="form-select" aria-label="Default select example">
-                    <option selected>
-                      select a customer
-                    </option>
-                    <option value="1">
-                      Halima Hussein
-                    </option>
-                    <option value="2">
-                      Mohamoud Ali
-                    </option>
-                    <option value="3">
-                      Yusra Ahmed
-                    </option>
-                </select> {% endcomment %}
-                {% comment %} <input type="text" class="form-control" placeholder="search customer name"/> {% endcomment %}
-                <div class="input-group">
-                  <input type="search"
-                         class="form-control rounded"
-                         placeholder="Search"
-                         aria-label="Search"
-                         aria-describedby="search-addon"/>
-                </div>
-              </div>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="card my-5">
-    <div class="card-header">
-      <h2>Contact Info</h2>
-    </div>
-    <div class="card-body">
-      <form>
-        <div class="row">
+    <div class="card my-4">
+      <div class="card-header">
+        <h3>Contact Info</h3>
+      </div>
+      <div class="card-body">
+        <div class="row mb-4">
           <div class="col">
             <label for="company">Phone</label>
-            <input type="text" class="form-control" placeholder="546576"/>
+            <input type="text"
+                   class="form-control"
+                   placeholder="546576"
+                   required="required"
+                   id="phone"/>
           </div>
           <div class="col">
             <label for="company">Email</label>
-            <input type="text" class="form-control" placeholder="halima123@gmail.com"/>
+            <input type="text"
+                   class="form-control"
+                   placeholder="halima123@gmail.com "
+                   required="required"
+                   id="email"/>
           </div>
         </div>
-        <div class="row mt-4">
+        <div class="row mb-4">
           <div class="col">
             <label for="company">Address</label>
             <input type="text"
                    class="form-control"
-                   placeholder="Bay Area, San Francisco, CA"/>
+                   placeholder="Bay Area, San Francisco, CA"
+                   required="required"
+                   id="address"/>
           </div>
           <div class="col">
             <label for="company">State</label>
-            <select class="form-select" aria-label="Default select example">
+            <select class="form-select"
+                    id="state"
+                    aria-label="Default select example"
+                    required="required">
               <option selected>
                 select a state
               </option>
@@ -102,66 +111,74 @@
             </select>
           </div>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
-  <div class="card"/>
-  <div class="card-header ">
-    <h2>Identification Info</h2>
-  </div>
-  <div class="card-body"/>
-  <h6 class="card-title">fill all required field to register new customer</h6>
-  <div class="row">
-    <div class="col">
-      <label for="defaultFormControlInput" class="form-label">Logo</label>
-      <div class="d-flex align-items-end justify-content-start gap-4">
-        <img src="{% static "assets/img/customers/plusupload.png" %}"
-             alt="user-avatar"
-             class="d-block rounded"
-             height="180"
-             width="180"
-             id="uploadedAvatar"/>
-        <div class="button-wrapper">
-          <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-            <span class="d-none d-sm-block">Upload new photo</span>
-            <i class="bx bx-upload d-block d-sm-none"></i>
-            <input type="file"
-                   id="upload"
-                   class="account-file-input"
-                   hidden
-                   accept="image/png, image/jpeg"/>
-          </label>
+    <div class="card">
+      <div class="card-header ">
+        <h3>Identification Info</h3>
+        <p class="card-title">fill all required field to register new customer</p>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <label for="defaultFormControlInput" class="form-label" required="required">Logo</label>
+            <div class="d-flex align-items-end justify-content-start gap-4">
+              <img src="{% static "assets/img/customers/plusupload.png" %}"
+                   alt="user-avatar"
+                   class="d-block rounded"
+                   height="180"
+                   width="180"
+                   id="uploadedAvatar"
+                   required="required"/>
+              <div class="button-wrapper">
+                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                  <span class="d-none d-sm-block">Upload new photo</span>
+                  <i class="bx bx-upload d-block d-sm-none"></i>
+                  <input type="file"
+                         id="upload"
+                         class="account-file-input"
+                         hidden
+                         accept="image/png, image/jpeg"/>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <label for="company">Documents</label>
+            <div class="custom-input-file">
+              <img src="{% static "assets/img/customers/uppload.png" %}"
+                   alt=""
+                   width="auto"
+                   height="50"/>
+              <label for="doc">Click To Upload</label>
+              <p id="doc-name"></p>
+              <input type="file"
+                     id="doc"
+                     hidden
+                     name="doc"
+                     class="form-control custom-input-file"
+                     accept="application/pdf"/>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="form-outline">
+            <label class="form-label" for="desc">Description</label>
+            <textarea class="form-control"
+                      id="desc"
+                      placeholder="write your description here"
+                      rows="4"
+                      required="required"></textarea>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col">
-      <label for="company">Documents</label>
-      <div class="custom-input-file">
-        <img src="{% static "assets/img/customers/uppload.png" %}"
-             alt=""
-             width="auto"
-             height="50"/>
-        <label for="doc">Click To Upload</label>
-        <input type="file" id="doc" hidden class="form-control custom-input-file" />
-      </div>
-    </br>
-  </div>
-  <div class="form-outline">
-  </br>
-  <br/>
-  <label class="form-label" for="textAreaExample">Description</label>
-  <textarea class="form-control"
-            id="textAreaExample"
-            placeholder="write your description here"
-            rows="4"></textarea>
-</br>
-</br>
-</div>
-<div class="d-flex justify-content-end align-items-end mb-6">
-  <a href="#"
-     class="btn btn-primary btn-lg active"
-     role="button"
-     aria-pressed="true">Save Company</a>
-</div>
-</div>
+    <div class="d-flex justify-content-end align-items-end mb-4 mt-4">
+      <button type="submit" class="btn btn-primary btn-lg active">Save Company</button>
+    </div>
+  </form>
+  {% block scriptData %}
+    <script src="{% static "scripts/company/upload.js" %}"></script>
+    <script src="{% static "scripts/company/register.js" %}"></script>
+  {% endblock scriptData %}
 {% endblock content %}

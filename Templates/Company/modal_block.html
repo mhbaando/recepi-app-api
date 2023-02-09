@@ -1,0 +1,37 @@
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/company/model.css" %}"/>
+{% endblock cssData %}
+<div class="overlay hidden"></div>
+<div class="model-container hidden">
+    <div class="model">
+        <div class="w-100">
+            <div class="d-flex align-items-end justify-content-end ">
+                <span class="text-danger cursor">X</span>
+            </div>
+            {% comment %} model content {% endcomment %}
+            <div>
+                <h4 class="card-header">Upload Documents</h4>
+                <p class="card-subheading p-4 ">Upload all necessary to block company</p>
+                <div>
+                    <label for="doc" class="uppload-btn btn btn-primary">
+                        <i class="bx bx-upload"></i>
+                        Click to Upload
+                    </label>
+                    <input type="file" id="doc" hidden/>
+                </div>
+                <div class="mt-4">
+                    <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                    <div class="modal-footer p-4">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal ">Close</button>
+                        <button type="button" class="btn btn-primary">Block Company</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block scriptData %}
+    <script src="{% static "scripts/company/modal.js" %}"></script>
+{% endblock scriptData %}

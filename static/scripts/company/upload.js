@@ -9,4 +9,16 @@ $(document).ready(()=>{
 		reader.readAsDataURL(file);
 		}
 	});
+
+
+	// company doc
+	$("#doc").on("change",function(){
+		let file = this.files[0]
+		console.log(file)
+		if(file){
+			$("#doc-name").text(file.name)
+		}
+	})
 	});
+
+	
