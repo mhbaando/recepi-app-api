@@ -16,20 +16,22 @@
           <div class="col-md-6 mb-0">
             <div class="mb-3">
               <label class="form-label">Rv No</label>
-              <input type="text"
-                     class="form-control"
-                     id="personal_id"
-                     placeholder="RV-563636">
+              <input type="text" class="form-control" id="rv_num" placeholder="RV-563636">
             </div>
           </div>
           <div class="col-md-6 mb-0">
             <div class="mb-3">
+              <input type="text"
+                     class="form-control"
+                     id="owner_id"
+                     hidden
+                     placeholder="Owner's Name"/>
               <label class="form-label">Ownar's Name</label>
               <input type="text"
                      class="form-control"
                      id="ownar_name"
                      disabled
-                     placeholder="maxamed hashi">
+                     placeholder="Owner's Name"/>
             </div>
           </div>
           <div class="col-md-6 mb-0">
@@ -37,19 +39,19 @@
               <label class="form-label">Owner Mother's Name</label>
               <input type="text"
                      class="form-control"
-                     id="ownar_name"
+                     id="ownar_mother"
                      disabled
-                     placeholder="asho ali maxamed">
+                     placeholder="Owner's Mother Name"/>
             </div>
           </div>
           <div class="col-md-6 mb-0">
             <div class="mb-3">
               <label class="form-label">Personal ID</label>
               <input type="text"
-                     class="form-control"
+                     class="form-control uppercase"
                      id="personalID"
                      disabled
-                     placeholder="p-645267">
+                     placeholder="Owner's Personal ID"/>
             </div>
           </div>
         </div>
@@ -148,7 +150,8 @@
                        class="form-control"
                        name="weight"
                        id="weight"
-                       placeholder="Enter a weight">
+                       placeholder="Enter a weight"
+                       required="required"/>
               </div>
             </div>
             <div class="col-md-6 mb-0">
@@ -156,9 +159,10 @@
                 <label class="form-label">Hours Power(HP)</label>
                 <input type="text"
                        class="form-control"
-                       id="Hp"
+                       id="hp"
                        name="hp"
-                       placeholder="Hours Power">
+                       placeholder="Hours Power"
+                       required="required"/>
               </div>
             </div>
             <div class="col-md-6 mb-0">
@@ -168,7 +172,8 @@
                        class="form-control"
                        id="passenger_seats"
                        name="passenger_seats"
-                       placeholder="Passenger seats">
+                       placeholder="Passenger seats"
+                       required="required"/>
               </div>
             </div>
             <div class="col-md-6 mb-0">
@@ -178,7 +183,8 @@
                        class="form-control"
                        id="registration_number"
                        name="registration_number"
-                       placeholder="VIN">
+                       placeholder="VIN"
+                       required="required"/>
               </div>
             </div>
             <div class="col-md-6 mb-0">
@@ -188,7 +194,8 @@
                        class="form-control"
                        id="engine_number"
                        name="engine_number"
-                       placeholder="engine_no">
+                       placeholder="engine_no"
+                       required="required"/>
               </div>
             </div>
           </div>

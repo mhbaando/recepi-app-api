@@ -19,7 +19,7 @@ urlpatterns = [
     path("asignplate/", views.assign_plate, name="asign-plate"),
     path("vehicle-profile/<str:pk>/",
          views.vehicle_profile, name="vehicle-profile"),
-
+    path('owner-search/<str:search>', views.seach_owner)
 
 
 ]

@@ -14,9 +14,9 @@ class model_brand(models.Model):
 
     class Meta:
         db_table = 'model_brand'
-        
+
     def __str__(self):
-        return self.model_name
+        return self.brand_name
 
 
 class color(models.Model):
@@ -31,9 +31,8 @@ class color(models.Model):
     class Meta:
         db_table = 'color'
 
-    
     def __str__(self):
-        return self.color_name    
+        return self.color_name
 
 
 class cylinder(models.Model):
@@ -47,7 +46,7 @@ class cylinder(models.Model):
 
     class Meta:
         db_table = 'cylinder'
-        
+
     def __str__(self):
         return self.cylinder_name
 
@@ -79,10 +78,9 @@ class vehicle(models.Model):
 
     class Meta:
         db_table = 'vehicle'
-        
+
     def __str__(self):
-        return self.vehicle_model
-        
+        return str(self.vehicle_model)
 
 
 class plate(models.Model):
@@ -114,9 +112,9 @@ class transfare_vehicles(models.Model):
     description = models.TextField(null=True, blank=True)
 
     new_owner = models.ForeignKey(
-        customer_model.customer, on_delete=models.RESTRICT , related_name ='customer_for_new_owner')
+        customer_model.customer, on_delete=models.RESTRICT, related_name='customer_for_new_owner')
     old_owner = models.ForeignKey(
-        customer_model.customer, on_delete=models.RESTRICT , related_name ='customer_for_old_owner')
+        customer_model.customer, on_delete=models.RESTRICT, related_name='customer_for_old_owner')
     transfare_reason = models.TextField()
 
     created_at = models.DateTimeField(auto_now_add=True)
