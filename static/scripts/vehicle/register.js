@@ -12,11 +12,11 @@ $(document).ready(function () {
     })
     let year = ""
     $("#year").on("change",()=>{
-        year = $("#color option:selected").val()
+        year = $("#year option:selected").val()
     })
     let origin = ""
     $("#origin").on("change",()=>{
-        origin = $("#color option:selected").val()
+        origin = $("#origin option:selected").val()
     })
     let cylinders = ""
     $("#cylinders").on("change",()=>{
@@ -28,68 +28,46 @@ $(document).ready(function () {
         e.preventDefault();
         let formData = new FormData(this);
 
-        const hp = $("#hp").val();
-        const weight = $("#weight").val();
+        const Hp = $("#hp").val();
+        const Weight = $("#weight").val();
         const registration_number = $("#registration_number").val();
         const  passenger_seats= $("#passenger_seats").val();
         const engine_number= $("#engine_number").val()
         
-        formData.append("weight", weight);
-        formData.append("hp",hp);
-        formData.append("passenger_seats", passenger_seats);
+        formData.append("hp", Hp);
+        formData.append("weight", Weight);
         formData.append("registration_number", registration_number);
+        formData.append("passenger_seats", passenger_seats);
         formData.append("engine_number", engine_number);
-        formData.append("year", year);
-        formData.append("color", color);
+        formData.append("weight", weight);
         formData.append("model_brand", model_brand);
-        formData.append("origin", origin);
+        formData.append("color",color );
+        formData.append("year", year);
         formData.append("cylinders", cylinders);
         
 
-        $.ajax({
-            method: "POST",
-            url: "/vehicles/",
-            headers: { "X-CSRFToken": csrftoken },
-            processData: false,
-            contentType: false,
-            data: formData,
-            async: true,
-            success: function(response){
-                if (!response.isError) {
-                    Swal.fire({
-                      title: "Success",
-                      text: response.Message,
-                      icon: "success",
-                      confirmButtonText: "Ok",
-                      confirmButtonClass: "btn btn-success mt-2",
-                      buttonsStyling: !1,
-                    }).then(function (e) {
-                      if (e.value) {
-                        Swal.DismissReason.cancel;
-                        // location.replace('/customer/list')
-                      }
-                    });
+        $(document).on('submit', 'form', function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+          
+            $.ajax({
+              type: 'POST',
+              url: '/vehicles/',
+              data: formData,
+              cache: false,
+              contentType: false,
+              processData: false, 
+              success: function (data) {
+                if (data == 1) {
+                  debugger;
+                } else {
+                  debugger;
+                }
+              }
+            });
+          })
 
-                    // resete the form 
-                    $("#reg_form")[0].reset()
-                   
-                  } else {
-                    Swal.fire("Error", response.Message, "error");
-                  }
-            },
-            error: function(error){
-                // handle error 
-                console.log(error)
-
-            }
         })
-
-      
-            
-    })
-})
-
-
 
 
 
@@ -211,9 +189,4 @@ $(document).ready(function () {
       
             
 //     })
-// })
-
-
-
-
-
+// }

@@ -3,17 +3,18 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import vehicle, plate, transfare_vehicles, model_brand, color, cylinder
-from .models import vehicle, plate, transfare_vehicles, model_brand, color, cylinder
+from .models import vehicle, plate, transfare_vehicles,model_brand, color, cylinder
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from Customers.models import countries, customer, blood_group
 from django.contrib import messages
 from .forms import Vehicleform, Transferform, Plateform
 from datetime import datetime
+from Vehicles.models import vehicle
 
 from Finance.models import receipt_voucher
 from django.db.models import Q
+
 
 # Create your views here.
 
@@ -128,8 +129,92 @@ def register_vehicle(request):
     #     messages.error(request, "error occured")
     context = {"vehicle_models": vehicle_models, "colors": colors, "origins": origins,
                "cylenders": cylinders,"owners":owners, 'year': year, "pageTitle": 'Register vehicle'}
-    return render(request, "Vehicles/register_vehicle.html", context)
 
+    try:
+        # TODO: check permision
+          if request.user.has_perm('Vehicles.add_vehicle'):
+            # check if the request is post
+            if request.method == 'POST':
+                model_brand= request.POST.get('model_brand', None)
+                color= request.POST.get('color', None)
+                origin = request.POST.get('origin', None)
+                year = request.POST.get('year', None)
+                cylinder = request.POST.get('cylinder', None)
+                hp = request.POST.get('hp', None)
+                weight=request.POST.get('weight', None)
+                passenger_seats = request.POST.get('passenger_seats', None)
+                registration_number = request.POST.get('registration_number', None)
+                engine_number = request.POST.get('engine_number', None)
+
+                # check data
+                # if dob is None or fName is None or sName is None or mName is None or phone is None or email is None or state is None or gender is None or foName is None or thName is None or customer_address is None or personalID is None or bload_group is None or nationality is None:
+
+                return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': 'Validate Error',
+                            'type': 'danger',
+                            'Message':  'Fill All Required Fields'
+                        }
+                    )
+
+            # model_bra=model_brand.objects.filter(
+            #         Q(model_brand_id=model_brand)).first()
+            colors=color.objects.filter(
+                    Q(color_id=color)).first()
+               
+           
+           
+
+                # if group is None or docs_type is None or nation is None or selected_satate is None:
+                #     return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
+
+                # if request.user.is_state or request.user.is_admin and request.user.federal_state is None:
+                #     return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
+
+            new_vehicle = vehicle(
+                    model=model_brand,
+                    color=color,
+                    cylinder=cylinder,
+                    year=year,
+                    origin=origin,
+                    Hp=hp,
+                  
+                )
+
+            new_vehicle.save()
+                # username = request.user.username
+                # names = request.user.first_name + ' ' + request.user.last_name
+                # avatar = str(request.user.avatar)
+                # module = "Customer / Register"
+                # action = 'Registered A Customer'
+                # path = request.path
+                # sendTrials(request, username, names,
+                #            avatar, action, module, path)
+                # return for post method
+            return JsonResponse({'isError': False, 'Message': 'Customer has been successfully Saved'}, status=200)
+
+            # return for get method
+            
+    
+    except:
+        pass
+    #     else:
+    #    return redirect('un_authorized')
+    #     except Exception as error:
+    #     username = request.user.username
+    #     name = request.user.first_name + ' ' + request.user.last_name
+    #     # register the error
+    #     sendException(
+    #         request, username, name, error)
+    #     message = {
+    #         'isError': True,
+    #         'Message': 'On Error Occurs . Please try again or contact system administrator'
+    #     }
+    #     return JsonResponse(message, status=200)
+
+
+    return render(request, "Vehicles/register_vehicle.html", context)   
 
 # @login_required
 # def assign_aplate(request):

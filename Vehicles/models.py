@@ -14,6 +14,9 @@ class model_brand(models.Model):
 
     class Meta:
         db_table = 'model_brand'
+        
+    def __str__(self):
+        return self.model_name
 
 
 class color(models.Model):
@@ -28,6 +31,10 @@ class color(models.Model):
     class Meta:
         db_table = 'color'
 
+    
+    def __str__(self):
+        return self.color_name    
+
 
 class cylinder(models.Model):
     cylinder_id = models.AutoField(primary_key=True)
@@ -40,6 +47,9 @@ class cylinder(models.Model):
 
     class Meta:
         db_table = 'cylinder'
+        
+    def __str__(self):
+        return self.cylinder_name
 
 
 class vehicle(models.Model):
@@ -69,6 +79,9 @@ class vehicle(models.Model):
 
     class Meta:
         db_table = 'vehicle'
+        
+    def __str__(self):
+        return self.vehicle_model
         
 
 
