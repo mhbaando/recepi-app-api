@@ -429,10 +429,38 @@ def activate_customer(request):
 
 @login_required(login_url='Login')
 def customer_list(request):
-
+    CheckDataNumber = 'DataNumber' in request.GET
+    DataNumber = 10
+    customers = []
     context = {
         'pageTitle': 'List'
     }
+
+    if request.user.is_superuser:
+        customers = customer_model.customer.objects.all().order_by('-created_at')
+
+    if request.user.is_state or request.user.is_admin and request.user.federal_state is None:
+        return JsonResponse(
+            {
+                'isError': True,
+                'title': 'State Error',
+                'type': 'danger',
+                'Message':  'Update your state to view the customers'
+            }
+        )
+
+    # paginate data
+    paginator = Paginator(customers, DataNumber)
+    page_number = request.GET.get('page')
+    customers_obj = paginator.get_page(page_number)
+
+    # pass cutomers and data number down to the context
+    context['customers'] = customers_obj
+    context['DataNumber'] = DataNumber
+    context['total'] = len(customers)
+
+    print(customers)
+
     return render(request, 'Customer/view.html', context)
 
 
