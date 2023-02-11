@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2023 at 01:00 PM
+-- Generation Time: Feb 07, 2023 at 07:35 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -30,10 +30,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `account` (
   `account_id` int(11) NOT NULL,
   `account_name` varchar(100) NOT NULL,
+  `account_type_id` int(11) NOT NULL,
   `amount` int(11) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `account_type_id` int(11) NOT NULL,
   `reg_user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -83,7 +83,36 @@ CREATE TABLE `audittrials` (
 --
 
 INSERT INTO `audittrials` (`id`, `Avatar`, `Username`, `path`, `Name`, `Actions`, `Module`, `date_of_action`, `operating_system`, `browser`, `ip_address`, `user_agent`) VALUES
-(1, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-11 11:58:36.878453', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge');
+(1, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-05 06:37:33.641467', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(2, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-05 06:40:50.380835', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(3, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-05 07:55:57.275960', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(4, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-05 11:36:55.256624', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(5, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 05:38:03.752829', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(6, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 06:55:47.086387', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(7, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 07:39:08.729059', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(8, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 09:40:46.136168', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(9, '', 'AD00002', '/manage_group/0', ' ', 'Added new Group with Name of:_aff', 'Users-Permission Module', '2023-02-06 09:55:13.089328', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(10, '', 'AD00002', '/manage_group/1', ' ', 'add_logentry Added to the group of aff', 'Users-Permission Module', '2023-02-06 09:55:19.828475', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(11, '', 'AD00002', '/manage_group/1', ' ', 'add_users Added to the group of aff', 'Users-Permission Module', '2023-02-06 09:55:36.968754', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(12, '', 'AD00002', '/manage_group/1', ' ', 'change_users Added to the group of aff', 'Users-Permission Module', '2023-02-06 09:55:41.276210', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(13, '', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 10:51:29.078634', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(14, 'Avatars/7309681.jpg', 'AD00002', '/logout/', ' ', '  Logged out the System', 'Users Module', '2023-02-06 11:51:34.756602', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(15, 'Avatars/7309681.jpg', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 11:51:40.662874', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(16, 'Avatars/7309681.jpg', 'AD00002', '/logout/', ' ', '  Logged out the System', 'Users Module', '2023-02-06 11:51:43.077839', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(17, 'Avatars/7309681.jpg', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 11:51:55.908174', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(18, 'Avatars/7309681.jpg', 'AD00002', '/manage_users/AddNewUser', ' ', 'Created new state name of Abshir  xasan', 'Users Module / users Table', '2023-02-06 12:00:46.723585', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(19, 'Avatars/7309681.jpg', 'AD00002', '/logout/', ' ', '  Logged out the System', 'Users Module', '2023-02-06 12:01:22.090164', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(20, 'Avatars/7309681.jpg', 'AD00002', '/manage_users/AddNewUser', ' ', 'Created new state name of state user', 'Users Module / users Table', '2023-02-06 12:36:40.268889', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(21, 'Avatars/7309681_T8Gk5cr.jpg', 'AD00003', '/login', 'state user', 'state user logged into the System', 'Users Module', '2023-02-06 12:37:12.758754', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(22, 'Avatars/7309681.jpg', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-06 13:18:29.504819', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(23, 'Avatars/7309681.jpg', 'AD00002', '/manage_group_permission/0/0', ' ', 'User with username of:_AD00003 added group of aff', 'Users-Permission Module', '2023-02-06 13:19:49.719926', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(24, 'Avatars/7309681.jpg', 'AD00002', '/manage_group_permission/0/0', ' ', 'User with username of:_AD00003 removed group of aff', 'Users-Permission Module', '2023-02-06 13:19:54.866309', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(25, 'Avatars/7309681.jpg', 'AD00002', '/manage_group_permission/0/0', ' ', 'User with username of:_AD00003 added group of aff', 'Users-Permission Module', '2023-02-06 13:19:59.138119', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(26, 'Avatars/7309681_T8Gk5cr.jpg', 'AD00003', '/login', 'state user', 'state user logged into the System', 'Users Module', '2023-02-06 13:20:09.936058', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(27, 'Avatars/7309681.jpg', 'AD00002', '/manage_group_permission/0/0', ' ', 'User with username of:_AD00003 removed group of aff', 'Users-Permission Module', '2023-02-06 13:20:22.499653', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(28, 'Avatars/7309681.jpg', 'AD00002', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-07 06:05:35.484485', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(29, 'Avatars/7309681.jpg', 'AD00002', '/logout/', ' ', '  Logged out the System', 'Users Module', '2023-02-07 06:15:34.203490', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(30, 'Avatars/7309681_T8Gk5cr.jpg', 'AD00003', '/login', 'state user', 'state user logged into the System', 'Users Module', '2023-02-07 06:15:40.911331', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge');
 
 -- --------------------------------------------------------
 
@@ -96,6 +125,13 @@ CREATE TABLE `auth_group` (
   `name` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `auth_group`
+--
+
+INSERT INTO `auth_group` (`id`, `name`) VALUES
+(1, 'aff');
+
 -- --------------------------------------------------------
 
 --
@@ -107,6 +143,15 @@ CREATE TABLE `auth_group_permissions` (
   `group_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `auth_group_permissions`
+--
+
+INSERT INTO `auth_group_permissions` (`id`, `group_id`, `permission_id`) VALUES
+(1, 1, 1),
+(2, 1, 29),
+(3, 1, 30);
 
 -- --------------------------------------------------------
 
@@ -158,74 +203,74 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (30, 'Can change users', 8, 'change_users'),
 (31, 'Can delete users', 8, 'delete_users'),
 (32, 'Can view users', 8, 'view_users'),
-(33, 'Can add account', 9, 'add_account'),
-(34, 'Can change account', 9, 'change_account'),
-(35, 'Can delete account', 9, 'delete_account'),
-(36, 'Can view account', 9, 'view_account'),
-(37, 'Can add account_types', 10, 'add_account_types'),
-(38, 'Can change account_types', 10, 'change_account_types'),
-(39, 'Can delete account_types', 10, 'delete_account_types'),
-(40, 'Can view account_types', 10, 'view_account_types'),
-(41, 'Can add receipt_voucher', 11, 'add_receipt_voucher'),
-(42, 'Can change receipt_voucher', 11, 'change_receipt_voucher'),
-(43, 'Can delete receipt_voucher', 11, 'delete_receipt_voucher'),
-(44, 'Can view receipt_voucher', 11, 'view_receipt_voucher'),
-(45, 'Can add blood_group', 12, 'add_blood_group'),
-(46, 'Can change blood_group', 12, 'change_blood_group'),
-(47, 'Can delete blood_group', 12, 'delete_blood_group'),
-(48, 'Can view blood_group', 12, 'view_blood_group'),
-(49, 'Can add company', 13, 'add_company'),
-(50, 'Can change company', 13, 'change_company'),
-(51, 'Can delete company', 13, 'delete_company'),
-(52, 'Can view company', 13, 'view_company'),
-(53, 'Can add countries', 14, 'add_countries'),
-(54, 'Can change countries', 14, 'change_countries'),
-(55, 'Can delete countries', 14, 'delete_countries'),
-(56, 'Can view countries', 14, 'view_countries'),
-(57, 'Can add customer', 15, 'add_customer'),
-(58, 'Can change customer', 15, 'change_customer'),
-(59, 'Can delete customer', 15, 'delete_customer'),
-(60, 'Can view customer', 15, 'view_customer'),
-(61, 'Can add customer_fingers', 16, 'add_customer_fingers'),
-(62, 'Can change customer_fingers', 16, 'change_customer_fingers'),
-(63, 'Can delete customer_fingers', 16, 'delete_customer_fingers'),
-(64, 'Can view customer_fingers', 16, 'view_customer_fingers'),
-(65, 'Can add federal_state', 17, 'add_federal_state'),
-(66, 'Can change federal_state', 17, 'change_federal_state'),
-(67, 'Can delete federal_state', 17, 'delete_federal_state'),
-(68, 'Can view federal_state', 17, 'view_federal_state'),
-(69, 'Can add personal_id_type', 18, 'add_personal_id_type'),
-(70, 'Can change personal_id_type', 18, 'change_personal_id_type'),
-(71, 'Can delete personal_id_type', 18, 'delete_personal_id_type'),
-(72, 'Can view personal_id_type', 18, 'view_personal_id_type'),
-(73, 'Can add license', 19, 'add_license'),
-(74, 'Can change license', 19, 'change_license'),
-(75, 'Can delete license', 19, 'delete_license'),
-(76, 'Can view license', 19, 'view_license'),
-(77, 'Can add color', 20, 'add_color'),
-(78, 'Can change color', 20, 'change_color'),
-(79, 'Can delete color', 20, 'delete_color'),
-(80, 'Can view color', 20, 'view_color'),
-(81, 'Can add cylinder', 21, 'add_cylinder'),
-(82, 'Can change cylinder', 21, 'change_cylinder'),
-(83, 'Can delete cylinder', 21, 'delete_cylinder'),
-(84, 'Can view cylinder', 21, 'view_cylinder'),
-(85, 'Can add model_brand', 22, 'add_model_brand'),
-(86, 'Can change model_brand', 22, 'change_model_brand'),
-(87, 'Can delete model_brand', 22, 'delete_model_brand'),
-(88, 'Can view model_brand', 22, 'view_model_brand'),
-(89, 'Can add vehicle', 23, 'add_vehicle'),
-(90, 'Can change vehicle', 23, 'change_vehicle'),
-(91, 'Can delete vehicle', 23, 'delete_vehicle'),
-(92, 'Can view vehicle', 23, 'view_vehicle'),
-(93, 'Can add transfare_vehicles', 24, 'add_transfare_vehicles'),
-(94, 'Can change transfare_vehicles', 24, 'change_transfare_vehicles'),
-(95, 'Can delete transfare_vehicles', 24, 'delete_transfare_vehicles'),
-(96, 'Can view transfare_vehicles', 24, 'view_transfare_vehicles'),
-(97, 'Can add plate', 25, 'add_plate'),
-(98, 'Can change plate', 25, 'change_plate'),
-(99, 'Can delete plate', 25, 'delete_plate'),
-(100, 'Can view plate', 25, 'view_plate');
+(33, 'Can add receipt_voucher', 9, 'add_receipt_voucher'),
+(34, 'Can change receipt_voucher', 9, 'change_receipt_voucher'),
+(35, 'Can delete receipt_voucher', 9, 'delete_receipt_voucher'),
+(36, 'Can view receipt_voucher', 9, 'view_receipt_voucher'),
+(37, 'Can add account', 10, 'add_account'),
+(38, 'Can change account', 10, 'change_account'),
+(39, 'Can delete account', 10, 'delete_account'),
+(40, 'Can view account', 10, 'view_account'),
+(41, 'Can add blood_group', 11, 'add_blood_group'),
+(42, 'Can change blood_group', 11, 'change_blood_group'),
+(43, 'Can delete blood_group', 11, 'delete_blood_group'),
+(44, 'Can view blood_group', 11, 'view_blood_group'),
+(45, 'Can add countries', 12, 'add_countries'),
+(46, 'Can change countries', 12, 'change_countries'),
+(47, 'Can delete countries', 12, 'delete_countries'),
+(48, 'Can view countries', 12, 'view_countries'),
+(49, 'Can add customer', 13, 'add_customer'),
+(50, 'Can change customer', 13, 'change_customer'),
+(51, 'Can delete customer', 13, 'delete_customer'),
+(52, 'Can view customer', 13, 'view_customer'),
+(53, 'Can add federal_state', 14, 'add_federal_state'),
+(54, 'Can change federal_state', 14, 'change_federal_state'),
+(55, 'Can delete federal_state', 14, 'delete_federal_state'),
+(56, 'Can view federal_state', 14, 'view_federal_state'),
+(57, 'Can add personal_id_type', 15, 'add_personal_id_type'),
+(58, 'Can change personal_id_type', 15, 'change_personal_id_type'),
+(59, 'Can delete personal_id_type', 15, 'delete_personal_id_type'),
+(60, 'Can view personal_id_type', 15, 'view_personal_id_type'),
+(61, 'Can add license', 16, 'add_license'),
+(62, 'Can change license', 16, 'change_license'),
+(63, 'Can delete license', 16, 'delete_license'),
+(64, 'Can view license', 16, 'view_license'),
+(65, 'Can add customer_fingers', 17, 'add_customer_fingers'),
+(66, 'Can change customer_fingers', 17, 'change_customer_fingers'),
+(67, 'Can delete customer_fingers', 17, 'delete_customer_fingers'),
+(68, 'Can view customer_fingers', 17, 'view_customer_fingers'),
+(69, 'Can add company', 18, 'add_company'),
+(70, 'Can change company', 18, 'change_company'),
+(71, 'Can delete company', 18, 'delete_company'),
+(72, 'Can view company', 18, 'view_company'),
+(73, 'Can add color', 19, 'add_color'),
+(74, 'Can change color', 19, 'change_color'),
+(75, 'Can delete color', 19, 'delete_color'),
+(76, 'Can view color', 19, 'view_color'),
+(77, 'Can add cylinder', 20, 'add_cylinder'),
+(78, 'Can change cylinder', 20, 'change_cylinder'),
+(79, 'Can delete cylinder', 20, 'delete_cylinder'),
+(80, 'Can view cylinder', 20, 'view_cylinder'),
+(81, 'Can add model_brand', 21, 'add_model_brand'),
+(82, 'Can change model_brand', 21, 'change_model_brand'),
+(83, 'Can delete model_brand', 21, 'delete_model_brand'),
+(84, 'Can view model_brand', 21, 'view_model_brand'),
+(85, 'Can add vehicle', 22, 'add_vehicle'),
+(86, 'Can change vehicle', 22, 'change_vehicle'),
+(87, 'Can delete vehicle', 22, 'delete_vehicle'),
+(88, 'Can view vehicle', 22, 'view_vehicle'),
+(89, 'Can add transfare_vehicles', 23, 'add_transfare_vehicles'),
+(90, 'Can change transfare_vehicles', 23, 'change_transfare_vehicles'),
+(91, 'Can delete transfare_vehicles', 23, 'delete_transfare_vehicles'),
+(92, 'Can view transfare_vehicles', 23, 'view_transfare_vehicles'),
+(93, 'Can add plate', 24, 'add_plate'),
+(94, 'Can change plate', 24, 'change_plate'),
+(95, 'Can delete plate', 24, 'delete_plate'),
+(96, 'Can view plate', 24, 'view_plate'),
+(97, 'Can add account_types', 25, 'add_account_types'),
+(98, 'Can change account_types', 25, 'change_account_types'),
+(99, 'Can delete account_types', 25, 'delete_account_types'),
+(100, 'Can view account_types', 25, 'view_account_types');
 
 -- --------------------------------------------------------
 
@@ -665,12 +710,12 @@ INSERT INTO `countries` (`country_id`, `country_name`, `created_at`, `modified_a
 
 CREATE TABLE `customers` (
   `customer_id` int(11) NOT NULL,
+  `full_name` varchar(100) DEFAULT NULL,
   `firstname` varchar(100) DEFAULT NULL,
   `middle_name` varchar(100) DEFAULT NULL,
   `lastname` varchar(100) DEFAULT NULL,
   `fourth_name` varchar(100) DEFAULT NULL,
   `mother_name` varchar(100) DEFAULT NULL,
-  `full_name` longtext NOT NULL,
   `gender` varchar(100) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `place_of_birth` varchar(100) DEFAULT NULL,
@@ -680,6 +725,7 @@ CREATE TABLE `customers` (
   `phone` varchar(100) DEFAULT NULL,
   `photo` varchar(100) DEFAULT NULL,
   `document` varchar(100) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
   `is_verified` tinyint(1) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
@@ -735,6 +781,26 @@ CREATE TABLE `django_admin_log` (
   `user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `django_admin_log`
+--
+
+INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
+(1, '2023-02-06 11:48:34.738803', '1', 'mo@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Phone\", \"Avatar\", \"Is admin\"]}}]', 8, 1),
+(2, '2023-02-06 12:01:56.831682', '2', 'ab@nisa.com', 3, '', 8, 1),
+(3, '2023-02-06 12:07:54.422326', '3', 'ab@nisa.com', 1, '[{\"added\": {}}]', 8, 1),
+(4, '2023-02-06 12:16:58.726403', '3', 'ab@nisa.com', 3, '', 8, 1),
+(5, '2023-02-06 12:17:43.030190', '4', 'ab@nisa.com', 1, '[{\"added\": {}}]', 8, 1),
+(6, '2023-02-06 12:18:46.067408', '4', 'ab@nisa.com', 2, '[]', 8, 1),
+(7, '2023-02-06 12:21:54.624727', '4', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Password\"]}}]', 8, 1),
+(8, '2023-02-06 12:26:11.251220', '4', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Staff status\", \"Is admin\"]}}]', 8, 1),
+(9, '2023-02-06 12:30:42.878288', '4', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Username\"]}}]', 8, 1),
+(10, '2023-02-06 12:36:06.783950', '4', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Is admin\"]}}]', 8, 1),
+(11, '2023-02-06 12:36:28.519451', '4', 'ab@nisa.com', 3, '', 8, 1),
+(12, '2023-02-06 12:37:06.135874', '5', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Active\"]}}]', 8, 1),
+(13, '2023-02-06 12:42:13.194309', '5', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Federal state\"]}}]', 8, 1),
+(14, '2023-02-06 12:52:37.722882', '5', 'ab@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Federal state\"]}}]', 8, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -756,27 +822,27 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (3, 'auth', 'group'),
 (2, 'auth', 'permission'),
 (4, 'contenttypes', 'contenttype'),
-(12, 'Customers', 'blood_group'),
-(13, 'Customers', 'company'),
-(14, 'Customers', 'countries'),
-(15, 'Customers', 'customer'),
-(16, 'Customers', 'customer_fingers'),
-(17, 'Customers', 'federal_state'),
-(19, 'Customers', 'license'),
-(18, 'Customers', 'personal_id_type'),
-(9, 'Finance', 'account'),
-(10, 'Finance', 'account_types'),
-(11, 'Finance', 'receipt_voucher'),
+(11, 'Customers', 'blood_group'),
+(18, 'Customers', 'company'),
+(12, 'Customers', 'countries'),
+(13, 'Customers', 'customer'),
+(17, 'Customers', 'customer_fingers'),
+(14, 'Customers', 'federal_state'),
+(16, 'Customers', 'license'),
+(15, 'Customers', 'personal_id_type'),
+(10, 'Finance', 'account'),
+(25, 'Finance', 'account_types'),
+(9, 'Finance', 'receipt_voucher'),
 (5, 'sessions', 'session'),
 (6, 'Users', 'audittrials'),
 (7, 'Users', 'errorlogs'),
 (8, 'Users', 'users'),
-(20, 'Vehicles', 'color'),
-(21, 'Vehicles', 'cylinder'),
-(22, 'Vehicles', 'model_brand'),
-(25, 'Vehicles', 'plate'),
-(24, 'Vehicles', 'transfare_vehicles'),
-(23, 'Vehicles', 'vehicle');
+(19, 'Vehicles', 'color'),
+(20, 'Vehicles', 'cylinder'),
+(21, 'Vehicles', 'model_brand'),
+(24, 'Vehicles', 'plate'),
+(23, 'Vehicles', 'transfare_vehicles'),
+(22, 'Vehicles', 'vehicle');
 
 -- --------------------------------------------------------
 
@@ -796,31 +862,32 @@ CREATE TABLE `django_migrations` (
 --
 
 INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
-(1, 'contenttypes', '0001_initial', '2023-02-11 11:51:40.158588'),
-(2, 'contenttypes', '0002_remove_content_type_name', '2023-02-11 11:51:40.189760'),
-(3, 'auth', '0001_initial', '2023-02-11 11:51:40.299122'),
-(4, 'auth', '0002_alter_permission_name_max_length', '2023-02-11 11:51:40.314735'),
-(5, 'auth', '0003_alter_user_email_max_length', '2023-02-11 11:51:40.314735'),
-(6, 'auth', '0004_alter_user_username_opts', '2023-02-11 11:51:40.330358'),
-(7, 'auth', '0005_alter_user_last_login_null', '2023-02-11 11:51:40.330358'),
-(8, 'auth', '0006_require_contenttypes_0002', '2023-02-11 11:51:40.330358'),
-(9, 'auth', '0007_alter_validators_add_error_messages', '2023-02-11 11:51:40.345992'),
-(10, 'auth', '0008_alter_user_username_max_length', '2023-02-11 11:51:40.345992'),
-(11, 'auth', '0009_alter_user_last_name_max_length', '2023-02-11 11:51:40.345992'),
-(12, 'auth', '0010_alter_group_name_max_length', '2023-02-11 11:51:40.361605'),
-(13, 'auth', '0011_update_proxy_permissions', '2023-02-11 11:51:40.361605'),
-(14, 'auth', '0012_alter_user_first_name_max_length', '2023-02-11 11:51:40.361605'),
-(15, 'Finance', '0001_initial', '2023-02-11 11:51:40.392851'),
-(16, 'Customers', '0001_initial', '2023-02-11 11:51:40.487478'),
-(17, 'Customers', '0002_initial', '2023-02-11 11:51:40.519043'),
-(18, 'Users', '0001_initial', '2023-02-11 11:51:40.690886'),
-(19, 'Customers', '0003_initial', '2023-02-11 11:51:40.983887'),
-(20, 'Finance', '0002_initial', '2023-02-11 11:51:41.140037'),
-(21, 'Vehicles', '0001_initial', '2023-02-11 11:51:41.608725'),
-(22, 'admin', '0001_initial', '2023-02-11 11:51:41.671485'),
-(23, 'admin', '0002_logentry_remove_auto_add', '2023-02-11 11:51:41.687505'),
-(24, 'admin', '0003_logentry_add_action_flag_choices', '2023-02-11 11:51:41.687505'),
-(25, 'sessions', '0001_initial', '2023-02-11 11:51:41.703247');
+(1, 'contenttypes', '0001_initial', '2023-02-02 12:11:31.688392'),
+(2, 'contenttypes', '0002_remove_content_type_name', '2023-02-02 12:11:31.720537'),
+(3, 'auth', '0001_initial', '2023-02-02 12:11:31.846672'),
+(4, 'auth', '0002_alter_permission_name_max_length', '2023-02-02 12:11:31.893529'),
+(5, 'auth', '0003_alter_user_email_max_length', '2023-02-02 12:11:31.893529'),
+(6, 'auth', '0004_alter_user_username_opts', '2023-02-02 12:11:31.893529'),
+(7, 'auth', '0005_alter_user_last_login_null', '2023-02-02 12:11:31.893529'),
+(8, 'auth', '0006_require_contenttypes_0002', '2023-02-02 12:11:31.909166'),
+(9, 'auth', '0007_alter_validators_add_error_messages', '2023-02-02 12:11:31.909166'),
+(10, 'auth', '0008_alter_user_username_max_length', '2023-02-02 12:11:31.909166'),
+(11, 'auth', '0009_alter_user_last_name_max_length', '2023-02-02 12:11:31.909166'),
+(12, 'auth', '0010_alter_group_name_max_length', '2023-02-02 12:11:31.924786'),
+(13, 'auth', '0011_update_proxy_permissions', '2023-02-02 12:11:31.924786'),
+(14, 'auth', '0012_alter_user_first_name_max_length', '2023-02-02 12:11:31.924786'),
+(15, 'Users', '0001_initial', '2023-02-02 12:11:32.127908'),
+(16, 'Customers', '0001_initial', '2023-02-02 12:11:32.518461'),
+(17, 'Finance', '0001_initial', '2023-02-02 12:11:32.612285'),
+(18, 'Users', '0002_users_federal_state_users_is_state', '2023-02-02 12:11:32.674707'),
+(19, 'Vehicles', '0001_initial', '2023-02-02 12:11:33.206333'),
+(20, 'admin', '0001_initial', '2023-02-02 12:11:33.268827'),
+(21, 'admin', '0002_logentry_remove_auto_add', '2023-02-02 12:11:33.284438'),
+(22, 'admin', '0003_logentry_add_action_flag_choices', '2023-02-02 12:11:33.300147'),
+(23, 'sessions', '0001_initial', '2023-02-02 12:11:33.315723'),
+(24, 'Finance', '0002_account_types_alter_account_account_type', '2023-02-02 12:17:46.330581'),
+(25, 'Customers', '0002_license_receipt_voucher', '2023-02-04 11:04:14.544705'),
+(26, 'Customers', '0003_alter_personal_id_type_table', '2023-02-05 08:54:41.349408');
 
 -- --------------------------------------------------------
 
@@ -839,8 +906,8 @@ CREATE TABLE `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('3h90xe7pgnz9i72lbhwftybmvhle2m3c', 'eyJfc2Vzc2lvbl9pbml0X3RpbWVzdGFtcF8iOjE2NzYxMTY3MzQuMzE2Njg4M30:1pQoWs:VMYTixDLDBJnCOkAuA7yTQvycxNierctmYS5XZHUKYU', '2023-02-25 11:58:54.323663'),
-('xlwej9sq616n1ijwab51879uuu4c7qpu', '.eJxVjDsOwyAQRO9CHSHAfF2mzxnQLpCYJIbI4CrK3WNLbtxMMe_NfIlvqbVci88ld9_znFqH-ePJyLXRfAtmqOSCmwvxsPbJry0tPkcyEk5OHUJ4pbKD-ITyqDTU0peMdFfoQRu91Zje18M9HUzQpm2NEhiGIWrlApcsKYGWgZTBWK0tRgHOKncfBqO4YTI6DTjwaAIGsSmC_P6P4UUs:1pQoWa:SE_KFKUp0hq7xP1f9fDKQ_-Ly-PoW2LTngLLhIiTV1g', '2023-02-25 11:58:36.880078');
+('ddaiu8s30tkkecvr3ss6dgir09ad78s2', '.eJxVjMsOwiAQRf-FtSGlUwrTpXu_gcwAWnyAKXRl_Hdt0oVu7zn3vISjtc1urXFxKYhJaHH43Zj8LeYNhCvlS5G-5LYklpsid1rlqYR4P-7uX2CmOn_fHaserOnQY9DUa1QDIwwcmc5owQ7QE3hvwRACIwceVYfKMoPRdqQtWmOtqWSXcmqupUesjR5PJyY1Gm20AgMSOqss9u8PL69Fpg:1pPHTx:wRj78quOaS9BIUlhgcuJe6vrIsYOOvs2ifEVW3Slyu8', '2023-02-21 06:29:33.318200'),
+('okf6z2fh6eqpetqk699elfkkb3lyxmu9', '.eJxVjMsOwiAQRf-FtSGlFDrTpXu_gcwAWnyAKXRl_Hdt0oVu7zn3vISjtc1urXFxKYhJGHH43Zj8LeYNhCvlS5G-5LYklpsid1rlqYR4P-7uX2CmOn_fHatew9ihx2CoN6gGRj1wZDojaBh0T9p70COhZuTAVnWogFmPBixt0RprTSW7lFNzLT1ibfR4OjEpOxoLaDuUOCiA3r4_MH1FuQ:1pP1Pl:ff7Xg5GQsFqUQHyuyFnBD814u3MyOm23yF67TI5ssK8', '2023-02-20 13:20:09.949892');
 
 -- --------------------------------------------------------
 
@@ -862,6 +929,16 @@ CREATE TABLE `errorlogs` (
   `user_agent` longtext NOT NULL,
   `Avatar` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `errorlogs`
+--
+
+INSERT INTO `errorlogs` (`id`, `Username`, `Name`, `Expected_error`, `field_error`, `trace_back`, `line_number`, `date_recorded`, `browser`, `ip_address`, `user_agent`, `Avatar`) VALUES
+(1, 'AD00002', ' ', '<class \'ValueError\'>', 'invalid literal for int() with base 10: \'ateuser\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Users\\models.py\", line 47, in create_user\n    username = generateUsername()\n               ^^^^^^^^^^^^^^^^^^\n  File \"D:\\gaadiidka\\Users\\models.py\", line 131, in generateUsername\n    serial = int(username[2:])\n             ^^^^^^^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: \'ateuser\'\n', 47, '2023-02-06 12:24:58.375445', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681.jpg'),
+(2, 'AD00002', ' ', '<class \'ValueError\'>', 'invalid literal for int() with base 10: \'ateuser\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Users\\models.py\", line 47, in create_user\n    username = generateUsername()\n               ^^^^^^^^^^^^^^^^^^\n  File \"D:\\gaadiidka\\Users\\models.py\", line 131, in generateUsername\n    serial = int(username[2:])\n             ^^^^^^^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: \'ateuser\'\n', 47, '2023-02-06 12:25:08.495595', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681.jpg'),
+(3, 'AD00002', ' ', '<class \'ValueError\'>', 'invalid literal for int() with base 10: \'ateuser\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Users\\models.py\", line 47, in create_user\n    username = generateUsername()\n               ^^^^^^^^^^^^^^^^^^\n  File \"D:\\gaadiidka\\Users\\models.py\", line 131, in generateUsername\n    serial = int(username[2:])\n             ^^^^^^^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: \'ateuser\'\n', 47, '2023-02-06 12:25:19.995268', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681.jpg'),
+(4, 'AD00002', ' ', '<class \'ValueError\'>', 'invalid literal for int() with base 10: \'ateuser\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Users\\models.py\", line 47, in create_user\n    username = generateUsername()\n               ^^^^^^^^^^^^^^^^^^\n  File \"D:\\gaadiidka\\Users\\models.py\", line 131, in generateUsername\n    serial = int(username[2:])\n             ^^^^^^^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: \'ateuser\'\n', 47, '2023-02-06 12:25:40.808250', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681.jpg');
 
 -- --------------------------------------------------------
 
@@ -919,8 +996,8 @@ CREATE TABLE `license` (
   `modified_at` datetime(6) NOT NULL,
   `federal_state_id` int(11) NOT NULL,
   `owner_id` int(11) NOT NULL,
-  `receipt_voucher_id` int(11) DEFAULT NULL,
-  `reg_user_id` bigint(20) NOT NULL
+  `reg_user_id` bigint(20) NOT NULL,
+  `receipt_voucher_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -1084,17 +1161,18 @@ CREATE TABLE `users` (
   `gender` varchar(10) DEFAULT NULL,
   `avatar` varchar(100) NOT NULL,
   `is_admin` tinyint(1) NOT NULL,
-  `is_state` tinyint(1) NOT NULL,
   `modified_at` datetime(6) DEFAULT NULL,
-  `federal_state_id` int(11) DEFAULT NULL
+  `federal_state_id` int(11) DEFAULT NULL,
+  `is_state` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `is_staff`, `is_active`, `date_joined`, `email`, `phone`, `gender`, `avatar`, `is_admin`, `is_state`, `modified_at`, `federal_state_id`) VALUES
-(1, 'pbkdf2_sha256$390000$sKaDcWtVLU6KzjGeJ8p6tj$QnKAkFcFuIAhSNg7EOSu9s90br8//2V7CTgPAtU5tP0=', '2023-02-11 11:58:36.876638', 1, 'admin', '', '', 1, 1, '2023-02-11 11:58:20.424718', 'mo@nisa.com', '', NULL, '', 0, 0, '2023-02-11 11:58:20.518314', NULL);
+INSERT INTO `users` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `is_staff`, `is_active`, `date_joined`, `email`, `phone`, `gender`, `avatar`, `is_admin`, `modified_at`, `federal_state_id`, `is_state`) VALUES
+(1, 'pbkdf2_sha256$390000$ebQQsOG9GRkAUvPKmTMr3z$bUSd+dRO5rmmPSOHFTZEvuETHKxVT2db2APp6FOiO6w=', '2023-02-07 06:05:35.481394', 1, 'AD00002', '', '', 1, 1, '2023-02-05 06:37:12.000000', 'mo@nisa.com', '124', NULL, 'Avatars/7309681.jpg', 1, '2023-02-06 11:48:34.734603', NULL, 0),
+(5, 'pbkdf2_sha256$390000$XU02GF30aDZXRXXtXrHTVU$d3DYgXL9TSvxcD7l1Z0+zxtdjWK4I2jS0bT2rLaFkuo=', '2023-02-07 06:15:40.908254', 0, 'AD00003', 'state', 'user', 0, 1, '2023-02-06 12:36:40.000000', 'ab@nisa.com', '1231', 'Male', 'Avatars/7309681_T8Gk5cr.jpg', 0, '2023-02-06 12:52:37.717032', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -1174,8 +1252,8 @@ CREATE TABLE `vehicles_transfare_vehicles` (
 --
 ALTER TABLE `account`
   ADD PRIMARY KEY (`account_id`),
-  ADD KEY `account_account_type_id_e4045757_fk_account_types_type_id` (`account_type_id`),
-  ADD KEY `account_reg_user_id_f7e09af6_fk_users_id` (`reg_user_id`);
+  ADD KEY `account_reg_user_id_f7e09af6_fk_users_id` (`reg_user_id`),
+  ADD KEY `account_account_type_id_e4045757` (`account_type_id`);
 
 --
 -- Indexes for table `account_types`
@@ -1244,11 +1322,11 @@ ALTER TABLE `countries`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`customer_id`),
-  ADD KEY `customers_blood_group_id_a8459ea3_fk_blood_group_blood_group_id` (`blood_group_id`),
   ADD KEY `customers_federal_state_id_6038d4df_fk_federal_state_state_id` (`federal_state_id`),
   ADD KEY `customers_nationality_id_ae515b28_fk_countries_country_id` (`nationality_id`),
   ADD KEY `customers_personal_id_type_id_71309a38_fk_personal_` (`personal_id_type_id`),
-  ADD KEY `customers_reg_user_id_eeb8baac_fk_users_id` (`reg_user_id`);
+  ADD KEY `customers_reg_user_id_eeb8baac_fk_users_id` (`reg_user_id`),
+  ADD KEY `customers_blood_group_id_a8459ea3_fk_blood_group_blood_group_id` (`blood_group_id`);
 
 --
 -- Indexes for table `cylinder`
@@ -1311,8 +1389,8 @@ ALTER TABLE `license`
   ADD PRIMARY KEY (`license_id`),
   ADD KEY `license_federal_state_id_3830e544_fk_federal_state_state_id` (`federal_state_id`),
   ADD KEY `license_owner_id_f487e78c_fk_customers_customer_id` (`owner_id`),
-  ADD KEY `license_receipt_voucher_id_4942b888_fk_receipt_voucher_rv_id` (`receipt_voucher_id`),
-  ADD KEY `license_reg_user_id_946be48d_fk_users_id` (`reg_user_id`);
+  ADD KEY `license_reg_user_id_946be48d_fk_users_id` (`reg_user_id`),
+  ADD KEY `license_receipt_voucher_id_4942b888_fk_receipt_voucher_rv_id` (`receipt_voucher_id`);
 
 --
 -- Indexes for table `model_brand`
@@ -1411,19 +1489,19 @@ ALTER TABLE `account_types`
 -- AUTO_INCREMENT for table `audittrials`
 --
 ALTER TABLE `audittrials`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `auth_group`
 --
 ALTER TABLE `auth_group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `auth_group_permissions`
 --
 ALTER TABLE `auth_group_permissions`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `auth_permission`
@@ -1459,7 +1537,7 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `cylinder`
@@ -1471,7 +1549,7 @@ ALTER TABLE `cylinder`
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `django_content_type`
@@ -1483,13 +1561,13 @@ ALTER TABLE `django_content_type`
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `errorlogs`
 --
 ALTER TABLE `errorlogs`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `federal_state`
@@ -1537,13 +1615,13 @@ ALTER TABLE `receipt_voucher`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users_user_permissions`
