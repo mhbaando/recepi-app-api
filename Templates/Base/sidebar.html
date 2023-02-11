@@ -24,18 +24,13 @@
         <div data-i18n="Customers">Customer</div>
       </a>
       <ul class="menu-sub ">
-        {% if perms.Users.add_customer %}
+        {% if perms.Customers.add_customer %}
           <li class="menu-item {% if pageTitle == 'Register' %} active{% endif %}">
             <a href="{% url 'register_customer' %}" class="menu-link">
               <div data-i18n="Register">Register</div>
             </a>
           </li>
         {% endif %}
-        <li class="menu-item {% if pageTitle == 'Activate' %} active{% endif %}">
-          <a href="{% url "activate_customer" %}" class="menu-link">
-            <div data-i18n="Actiavte">Activate</div>
-          </a>
-        </li>
         <li class="menu-item {% if pageTitle == 'List' or pageTitle == 'Profile' %} active{% endif %}">
           <a href="{% url 'customer_list' %}" class="menu-link">
             <div data-i18n="Customer">Customer List</div>

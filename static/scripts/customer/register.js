@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // get user image and uppload doc
-    let companyImage = ""
-    let companyDoc = ""
+    let customerImage = ""
+    let customerDoc = ""
     $('#upload').change(function(){
         const file = this.files[0];
         if (file){
@@ -159,6 +159,7 @@ $(document).ready(function () {
             error: function(error){
                 // handle error 
                 console.log(error)
+                Swal.fire("Error", error.responseText, "error");
 
             }
         })

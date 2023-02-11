@@ -363,7 +363,7 @@ def register_customer(request):
                 if group is None or docs_type is None or nation is None or selected_satate is None:
                     return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
 
-                if request.user.is_state or request.user.is_admin and request.user.federal_state is None:
+                if request.user.is_superuser == False and request.user.federal_state is None:
                     return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
 
                 new_customer = customer_model.customer(
@@ -428,17 +428,19 @@ def activate_customer(request):
 
 @login_required(login_url='Login')
 def customer_list(request):
+    CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
+    CheckStatus = 'Status' in request.GET
+
+    Status = 'Verified'
+    SearchQuery = ''
     DataNumber = 10
     customers = []
     context = {
         'pageTitle': 'List'
     }
 
-    if request.user.is_superuser:
-        customers = customer_model.customer.objects.all().order_by('-created_at')
-
-    if request.user.is_state or request.user.is_admin and request.user.federal_state is None:
+    if not request.user.is_superuser and request.user.federal_state is None:
         return JsonResponse(
             {
                 'isError': True,
@@ -448,22 +450,49 @@ def customer_list(request):
             }
         )
 
+    if CheckDataNumber:
+        DataNumber = int(request.GET['DataNumber'])
+
+    if CheckStatus:
+        Status = request.GET.get('Status')
+
+    if CheckSearchQuery:
+        SearchQuery = request.GET['SearchQuery']
+        # verified = True if Status == 'Verified'else False
+
+        # for state user
+        if request.user.is_state or request.user.is_admin:
+            customers = customer_model.customer.objects.filter(federal_state=request.user.federal_state
+                                                               ).filter(Q(firstname__icontains=SearchQuery)).order_by('-created_at')
+        # for admin users
+        else:
+            customers = customer_model.customer.objects.filter(
+                Q(firstname__icontains=SearchQuery)).order_by('-created_at')
+
+    else:
+
+        if request.user.is_superuser:
+            customers = customer_model.customer.objects.all().order_by('-created_at')
+        else:
+            customers = customer_model.customer.objects.filter(
+                Q(federal_state=request.user.federal_state)).order_by('-created_at')
+
     # paginate data
     paginator = Paginator(customers, DataNumber)
     page_number = request.GET.get('page')
     customers_obj = paginator.get_page(page_number)
 
     # pass cutomers and data number down to the context
-    context['customers'] = customers_obj
-    context['DataNumber'] = DataNumber
     context['total'] = len(customers)
-
-    print(customers)
+    context['DataNumber'] = DataNumber
+    context['customers'] = customers_obj
+    context['SearchQuery'] = SearchQuery
+    # context['Status'] = Status
 
     return render(request, 'Customer/view.html', context)
 
 
-@login_required(login_url="Login")
+@ login_required(login_url="Login")
 def customer_profile(request, id):
 
     context = {

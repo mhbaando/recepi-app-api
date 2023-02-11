@@ -63,6 +63,7 @@ class customer(models.Model):
     lastname = models.CharField(max_length=100, null=True, blank=True)
     fourth_name = models.CharField(max_length=100, null=True, blank=True)
     mother_name = models.CharField(max_length=100, null=True, blank=True)
+    full_name = models.TextField()
     gender = models.CharField(max_length=100, null=True, blank=True)
     date_of_birth = models.DateField(max_length=100, null=True, blank=True)
     place_of_birth = models.CharField(max_length=100, null=True, blank=True)
@@ -93,6 +94,13 @@ class customer(models.Model):
 
     def __str__(self) -> str:
         return f"{self.firstname} {self.middle_name} {self.lastname}"
+
+    def show_verify(self):
+        return {
+            'verified_status': 'Not Verified' if not self.is_verified else 'Verified',
+            'verified_color': 'danger text-white' if not self.is_verified else 'success',
+            'show_btn': True if not self.is_verified else False,
+        }
 
 
 class customer_fingers(models.Model):
