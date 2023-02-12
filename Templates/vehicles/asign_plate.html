@@ -1,169 +1,163 @@
-{% extends 'Base/index.html' %} {% load static %} {% block content %}
-
-<div class="container-xxl  px-4">
-  <div>
+{% extends 'Base/index.html' %}
+{% load static %}
+{% block content %}
+  <div class="container-xxl  px-4">
+    <div>
       <h4 class="fw-bold py-3 mb-4">
-          <span class="text-muted fw-light">Home / Vehicle /</span> {{ pageTitle }}
+        <span class="text-muted fw-light">Home / Vehicle /</span> {{ pageTitle }}
       </h4>
-  </div>
-  {% comment %} Personal Info {% endcomment %}
-  <div class="row gap-3 px-3">
+    </div>
+    {% comment %} Personal Info {% endcomment %}
+    <div class="row gap-3 px-3">
       <div class="col-sm-12 col-md bg-white rounded p-3">
-          <div class="mb-4">
-              <h5 class="card-header">Basic Info</h5>
-              <div class="card-body row">
-                <div class="col-md-12 mb-0">
-                  <div class="mb-3">
-                  <label for="vehicle id">Vehicle ID</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value=""
-                    placeholder="648738"
-                    name="name"
-                  />
-                </div>
-                </div>
-        
-          <div class="col-md-12 mb-0">
-                  <div class="mb-3">
-                  <label for="mother's name">Owner's Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value=""
-                    placeholder="asho ahmed ali"
-                    disabled
-                    name="name"
-                  />
-                </div>
-            </div>
-      
+        <div class="mb-4">
+          <h5 class="card-header">Basic Info</h5>
+          <div class="card-body row">
             <div class="col-md-12 mb-0">
               <div class="mb-3">
-              <label for="mother's name">Owner's Name</label>
-              <input
-                type="text"
-                class="form-control"
-                value=""
-                placeholder="asho ahmed ali"
-                disabled
-                name="name"
-              />
-            </div>
-        </div>
-        <div class="col-md-12 mb-0">
-          <div class="mb-3">
-              <label for="vehicle id">Registered Date</label>
-              <input
-                type="date"
-                class="form-control"
-                value=""
-                disabled placeholder="12/4/2022"
-                name="name"
-              />
-            </div>
-        </div>
+                <label for="vehicle id">Vehicle ID</label>
+                <input type="text"
+                       class="form-control"
+                       value=""
+                       placeholder="648738"
+                       name="name"/>
               </div>
+            </div>
+            <div class="col-md-12 mb-0">
+              <div class="mb-3">
+                <label for="mother's name">Owner's Name</label>
+                <input type="text"
+                       class="form-control"
+                       value=""
+                       placeholder="asho ahmed ali"
+                       disabled
+                       name="name"/>
+              </div>
+            </div>
+            <div class="col-md-12 mb-0">
+              <div class="mb-3">
+                <label for="mother's name">Owner's Name</label>
+                <input type="text"
+                       class="form-control"
+                       value=""
+                       placeholder="asho ahmed ali"
+                       disabled
+                       name="name"/>
+              </div>
+            </div>
+            <div class="col-md-12 mb-0">
+              <div class="mb-3">
+                <label for="vehicle id">Registered Date</label>
+                <input type="date"
+                       class="form-control"
+                       value=""
+                       disabled
+                       placeholder="12/4/2022"
+                       name="name"/>
+              </div>
+            </div>
           </div>
+        </div>
       </div>
       <div class="col-sm-12 col-md bg-white rounded">
-          <div class="mb-4">
-              <h5 class="card-header">Plate Info</h5>
-              <div class="card-body row">
-                <div class="col-md-12 mb-0">
-                  <div class="mb-3">
-                        <label class="form-label">Plate Type</label>
-                        <select name="state_name" id="place_issue" class="form-control form-select select2">
-                            <option value="">Select a Type</option>
-                            <option value="pt">Putland</option>
-                            <option value="br">.....</option>
-                           
-                        </select>
-                    </div>
-                    </div>
-               
-                <div class="col-md-12 mb-0">
-                      <div class="mb-3">
-                    <label>Code</label>
-                    <select name="model" class="form-control">
-                      <option value="year">select a code</option>
-                      <option value="pt">pt</option>
-                      <option value="br">.....</option>
-                    </select>
-                  </div>
+        <div class="mb-4">
+          <h5 class="card-header">Plate Info</h5>
+          <div class="card-body row">
+            <div class="col-md-12 mb-0">
+              <div class="mb-3">
+                <label class="form-label">Plate Type</label>
+                <select name="state_name"
+                        id="place_issue"
+                        class="form-control form-select select2">
+                  <option value="">
+                    Select a Type
+                  </option>
+                  <option value="pt">
+                    Putland
+                  </option>
+                  <option value="br">
+                    .....
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12 mb-0">
+              <div class="mb-3">
+                <label>Code</label>
+                <select name="model" class="form-control">
+                  <option value="year">
+                    select a code
+                  </option>
+                  <option value="pt">
+                    pt
+                  </option>
+                  <option value="br">
+                    .....
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12 mb-0">
+              <div class="mb-3">
+                <label>State</label>
+                <select class="form-select"
+                        id="exampleFormControlSelect1"
+                        aria-label="Default select example">
+                  <option selected>
+                    Select State
+                  </option>
+                  <option value="1">
+                    Banaadir
+                  </option>
+                  <option value="2">
+                    Hirshabeelle
+                  </option>
+                  <option value="3">
+                    Koonfur Galbeed
+                  </option>
+                  <option value="3">
+                    Galmudug
+                  </option>
+                  <option value="3">
+                    Puntland
+                  </option>
+                  <option value="3">
+                    Jubba land
+                  </option>
+                  <option value="3">
+                    Somali land
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12 mb-0">
+              <div class="mb-3">
+                <div class="form-group col-md-12">
+                  <label>plate number</label>
+                  <select name="model" class="form-control">
+                    <option value="">
+                      select a plate
+                    </option>
+                    <option value="pt">
+                      Pt
+                    </option>
+                    <option value="br">
+                      .....
+                    </option>
+                  </select>
+                </div>
               </div>
               <div class="col-md-12 mb-0">
                 <div class="mb-3">
-                    <label>State</label>
-                    <select class="form-select"
-                                    id="exampleFormControlSelect1"
-                                    aria-label="Default select example">
-                                <option selected>
-                                    Select State
-                                </option>
-                                <option value="1">
-                                    Banaadir
-                                </option>
-                                <option value="2">
-                                    Hirshabeelle
-                                </option>
-                                <option value="3">
-                                    Koonfur Galbeed
-                                </option>
-                                <option value="3">
-                                    Galmudug
-                                </option>
-                                <option value="3">
-                                    Puntland
-                                </option>
-                                <option value="3">
-                                    Jubba land
-                                </option>
-                                <option value="3">
-                                    Somali land
-                                </option>
-                            </select>
+                  <div class="form-group col-md-12">
+                    <button class="btn btn-primary">Save</button>
                   </div>
-                  </div>
-      
-                  <div class="col-md-12 mb-0">
-                    <div class="mb-3">
-                    <div class="form-group col-md-12">
-                      <label>plate number</label>
-                      <select name="model" class="form-control">
-                        <option value="">select a plate</option>
-                        <option value="pt">Pt</option>
-                        <option value="br">.....</option>
-                      </select>
-                    </div>
-            </div>
-            <div class="col-md-12 mb-0">
-              <div class="mb-3">
-              <div class="form-group col-md-12">
-            <button class="btn btn-primary">Save</button>
-  
-          </div>
-        </div>
-        </div>
-          </div>
+                </div>
               </div>
+            </div>
           </div>
+        </div>
       </div>
+    </div>
   </div>
-</div>
-
 {% endblock content %}
-
-
-
-
-
-
-
-
-
-
-
-
-

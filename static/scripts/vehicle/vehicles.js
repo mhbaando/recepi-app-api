@@ -14,6 +14,10 @@ $(document).ready(function () {
     RefreshPage();
   });
 
+  $("#Status").change(function () {
+      RefreshPage();
+    });
+
   $(".pagination .page-item").on("click", function () {
     const pageNumber = $(this).attr("page");
     $(".activePage").attr("activePage", pageNumber);
@@ -24,8 +28,9 @@ $(document).ready(function () {
     let page = $(".activePage").attr("activePage");
     let search = $("#SearchQuery").val();
     let entries = $("#DataNumber").val();
-
-    let url = `/vehicles/viewvehicle?DataNumber=${entries}&page=${page}`;
+    let Status = $("#Status").val();
+    
+    let url = `/vehicles/viewvehicle?DataNumber=${entries}&page=${page}&Status=${Status}`;
 
     if (search != "") {
       url += `&SearchQuery=${search}`;
@@ -34,3 +39,4 @@ $(document).ready(function () {
     window.location.replace(url);
   }
 });
+

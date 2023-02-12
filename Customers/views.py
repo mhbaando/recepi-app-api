@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.http import JsonResponse, request
 
 from Users.views import sendException, sendTrials
-
+from datetime import datetime
 
 # Create your views here.
 # company
@@ -15,99 +15,134 @@ from Users.views import sendException, sendTrials
 @login_required(login_url='Login')
 def register_company(request):
 
+    #  read all states for the users
     states = []
+    customers = []
+
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
             Q(state_name=request.user.federal_state))
     else:
+        # admins can view all users
         states = customer_model.federal_state.objects.all()
 
-    context = {
-        'pageTitle': 'Register Company',
-        'states': states
-    }
+    if not request.user.is_superuser and request.user.federal_state is None:
+        return JsonResponse({
+            'isError': True,
+            'title': 'Validate Error',
+            'type': 'danger',
+            'Message':  'Update your state to register a compnay'
+        })
 
-    # modal fucntion
+    if request.user.is_superuser:
+        customers = customer_model.customer.objects.all()
 
-    # registration company
-    try:
-        # TODO: check permision
-        if request.user.has_perm('Company.add_company'):
-            # check if the request is post
-            if request.method == 'POST':
+    else:
+        customers = customer_model.customer.objects.filter(
+            Q(federal_state__state_name=request.user.federal_state))
 
-                cname = request.POST.get('cname', None)
-                rnumber = request.POST.get('rnumber', None)
-                website = request.POST.get('website', None)
-                owner = request.POST.get('phone', None)
-                # contact info
-                phone = request.POST.get('phone', None)
-                email = request.POST.get('email', None)
-                address = request.POST.get('address', None)
-                state = request.POST.get('state', None)
-                # identification info
-                logo = request.FILES["logo"]
-                document = request.FILES["companyDoc"]
+    if request.method == 'POST':
+        try:
+            # get data from the request
+            c_name = request.POST.get('cname', None)
+            c_rnum = request.POST.get('rnumber', None)
+            c_webiste = request.POST.get('website', None)
+            c_owner = request.POST.get('owner', None)
+            c_phone = request.POST.get('phone', None)
+            c_email = request.POST.get('email', None)
+            c_address = request.POST.get('address', None)
+            c_state = request.POST.get('state', None)
+            c_logo = request.FILES['logo']
+            c_companyDoc = request.FILES['companyDoc']
+            c_desc = request.POST.get('desc')
 
-                # check data
-                if cname is None or rnumber is None or website is None or owner is None or phone is None or email is None or state is None or address is None:
-
-                    return JsonResponse(
-                        {
-                            'isError': True,
-                            'title': 'Validate Error',
-                            'type': 'danger',
-                            'Message':  'Fill All Required Fields'
-                        }
-                    )
-
-                selected_satate = customer_model.federal_state.objects.filter(
-                    Q(state_id=state)).first()
-
-                if request.user.is_state or request.user.is_admin and request.user.federal_state is None:
-                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
-
-                new_company = customer_model.customer(
-                    comapnyname=cname,
-                    registrationnumber=rnumber,
-                    website=website,
-                    owner=owner,
-                    phone=phone,
-                    email=email,
-                    address=address,
-                    logo=logo,
-                    document=document,
-                    federal_state=selected_satate,
-                    reg_user=request.user,
+            if c_name is None or c_rnum is None or c_webiste is None or c_owner is None or c_phone is None or c_email is None or c_address is None or c_state is None or c_desc is None:
+                return JsonResponse(
+                    {
+                        'isError': True,
+                        'title': 'Validate Error',
+                        'type': 'danger',
+                        'Message':  'Fill All Required Fields'
+                    }
                 )
 
+            if not request.user.is_superuser and request.user.federal_state != states:
+                return JsonResponse({'isError': True, 'Message': 'You cant register another state'}, status=401)
+
+            selected_satate = customer_model.federal_state.objects.filter(
+                Q(state_id=c_state)).first()
+
+            # find owner by splitn the name and personal id
+            c_owner_id = c_owner.split('-')[1].strip()
+            found_owner = customer_model.customer.objects.filter(
+                Q(personal_id=c_owner_id)).first()
+
+            if found_owner is not None:
+                # register new compnay
+                new_company = customer_model.company(
+                    company_name=c_name,
+                    email=c_email,
+                    address=c_address,
+                    federal_state=selected_satate,
+                    phone=c_phone,
+                    logo=c_logo,
+                    website=c_webiste,
+                    reg_no=c_rnum,
+                    document=c_companyDoc,
+                    description=c_desc,
+                    owner=found_owner,
+                    reg_user=request.user
+                )
                 new_company.save()
+
                 username = request.user.username
                 names = request.user.first_name + ' ' + request.user.last_name
                 avatar = str(request.user.avatar)
-                module = "Company / Register"
-                action = 'Registered A Company'
+                module = "Customer / Register"
+                action = f'Registered A Company {c_name} at {datetime.now()}'
                 path = request.path
                 sendTrials(request, username, names,
                            avatar, action, module, path)
                 # return for post method
                 return JsonResponse({'isError': False, 'Message': 'Company has been successfully Saved'}, status=200)
+            else:
+                return JsonResponse({'isError': True, 'Message': 'Owner didnt extist'}, status=404)
+        except Exception as error:
+            username = request.user.username
+            name = request.user.first_name + ' ' + request.user.last_name
+            # register the error
+            sendException(
+                request, username, name, error)
+            message = {
+                'isError': True,
+                'Message': 'On Error Occurs . Please try again or contact system administrator'
+            }
+            return JsonResponse(message, status=200)
 
-            # return for get method
-            return render(request, 'Company/register.html', context)
-        else:
-            return redirect('un_authorized')
-    except Exception as error:
-        username = request.user.username
-        name = request.user.first_name + ' ' + request.user.last_name
-        # register the error
-        sendException(
-            request, username, name, error)
-        message = {
-            'isError': True,
-            'Message': 'On Error Occurs . Please try again or contact system administrator'
-        }
-        return JsonResponse(message, status=200)
+    context = {
+        'pageTitle': 'Register Company',
+        'states': states,
+        'customers': customers
+    }
+    return render(request, 'Company/register.html', context)
+
+
+# search
+def search_engine(request, search):
+    if request.method == 'GET':
+        customers = customer_model.customer.objects.filter(
+            Q(full_name__icontains=search))
+        owner = []
+
+        for customer in customers:
+            owner = [{
+                'owner_name': customer.full_name,
+                'owner_id': customer.personal_id
+            }]
+
+        return JsonResponse({'owner': owner}, status=200)
+    else:
+        return JsonResponse()
 
 
 @login_required(login_url='Login')
@@ -348,7 +383,7 @@ def register_customer(request):
                             'title': 'Validate Error',
                             'type': 'danger',
                             'Message':  'Fill All Required Fields'
-                        }
+                        },
                     )
 
                 group = customer_model.blood_group.objects.filter(
