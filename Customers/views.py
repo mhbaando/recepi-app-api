@@ -372,6 +372,7 @@ def register_customer(request):
                     lastname=thName,
                     fourth_name=foName,
                     mother_name=mName,
+                    full_name=f"{fName} {sName} {thName} {foName}",
                     gender=gender,
                     date_of_birth=dob,
                     blood_group=group,
