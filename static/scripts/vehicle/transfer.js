@@ -120,25 +120,22 @@ new_number.on("input",function(){
           newownermother_name.attr('value', data?.newownermother_name)
           new_owner_id.attr('value', data?.new_owner_id)
           new_hid_id.attr('value', data?.new_hid_id)
-         
         },
-        
         error:function(err){
-
         }
       });
     }
   });
 })
+
 let formData = new FormData();
       
-
-formData.append("reason",reason);
-formData.append("description",description);
-formData.append("doc",doc);
-formData.append("new_hid_id",new_hid_id);
-formData.append("olold_hid_id",old_hid_idd);
-formData.append("old_vehicle_id",old_vehicle_id);
+formData.append("reason",reason.val());
+formData.append("description",description.val());
+formData.append("doc",transfare_document);
+formData.append("new_hid_id",new_hid_id.val());
+formData.append("olold_hid_id",old_hid_idd.val());
+formData.append("old_vehicle_id",old_vehicle_id.val());
 
 $("#reg_form").on('submit',function(e){
   e.preventDefault();

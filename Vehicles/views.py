@@ -205,31 +205,29 @@ def tranfercreate(request):
     if request.method == 'POST':
         old_owner_id = request.POST.get('old_owner', None)
         new_owner_id = request.POST.get('new_owner', None)
-        vehicle_id=request.POST.get('vehicle',None)
-        description=request.POST.get('description',None)
-        document = request.POST.get('document',None)
-        rv_number=request.POST.get('',None)
+        vehicle_id = request.POST.get('vehicle', None)
+        description = request.POST.get('description', None)
+        document = request.POST.get('document', None)
+        rv_number = request.POST.get('rv_number', None)
+        reason = request.POST.get('reason', None)
 
+        vehicle_to_transfare = vehicle_model.vehicle.objects.filter(
+            Q(owner__customer_id=old_owner_id)).first()
+
+        old_customer = customer_model.customer.objects.filter(
+            Q(customer_id=old_owner_id)).first()
 
         new_transfering = vehicle_model.transfare_vehicles(
-            old_owner_id=old_owner_id,
+            old_owner_id=old_customer,
             new_owner_id=new_owner_id,
-            vehicle_id=vehicle_id,
+            vehicle=vehicle_to_transfare,
             description=description,
-            document=document
-            rv_number=rv_number
-            )
-            
-        
+            document=document,
+            rv_number=rv_number,
+            transfare_reason=reason
+        )
 
         new_transfering.save()
-
-
-
-
-
-
-
 
     return render(request, "Vehicles/transfer.html", context)
 
