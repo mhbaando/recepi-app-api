@@ -1,19 +1,15 @@
 from django.shortcuts import render, redirect
-from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import vehicle, plate, transfare_vehicles, model_brand, color, cylinder
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from Customers.models import countries, customer, blood_group
 from django.contrib import messages
-from .forms import Vehicleform, Transferform, Plateform
 from datetime import datetime
 from Vehicles import models as vehicle_model
 from Customers import models as customer_model
 from Finance import models as finance_model
-
 from Finance.models import receipt_voucher
 from django.db.models import Q
 
@@ -112,30 +108,86 @@ def seach_owner(request, search):
 
 
 @login_required(login_url="Login")
-def assign_plate(request):
-    form = Plateform()
-    if request.method == "POST":
-        form = Plateform(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "assigned anew plate to a new vehicle")
-            return redirect("veiw-vehicle")
-        else:
-            messages.error(request, "error accured")
-    context = {"form": form, 'pageTitle': 'Assign Aplate'}
-    return render(request, "Vehicles/asign_plate.html", context)
+def seach_transfer(request, search):
+
+    if request.method == 'GET':
+        # look up the rv
+        find_rv = finance_model.receipt_voucher.objects.filter(
+            Q(rv_number__icontains=search)).first()
+        find_vehicle_id = vehicle_model.vehicle.objects.filter(
+            Q(owner=search)).first()
+
+        if find_rv is not None:
+            return JsonResponse({
+                'isError': False,
+                "old_hid_id": find_rv.rv_from.customer_id,
+                'owner_name': f"{ find_rv.rv_from.firstname} {find_rv.rv_from.middle_name} {find_rv.rv_from.lastname} ",
+                'mother_name': find_rv.rv_from.mother_name,
+                'personal_id': find_rv.rv_from.personal_id,
+
+
+            })
+
+        if find_vehicle_id is not None:
+            return JsonResponse({
+                'isError': False,
+                'old_vehicle_id': find_vehicle_id.vin,
+
+            })
+
+        return JsonResponse({
+            'isError': True,
+            'message': 'RV Not Found'
+        })
+    return JsonResponse({
+        'isError': True,
+        'message': 'Method not allowd'
+    })
+
+
+@login_required(login_url="Login")
+def seach_transferrr(request, search):
+
+    if request.method == 'GET':
+        # look up the rv
+        # find_rv = finance_model.receipt_voucher.objects.filter(
+        #     Q(rv_number__icontains=search)).first()
+        find_owner_name = customer_model.customer.objects.filter(
+            Q(firstname__icontains=search)).first()
+
+        if find_owner_name is not None:
+            return JsonResponse({
+                'isError': False,
+                "new_hid_id": find_owner_name.customer_id,
+                "newowner_name":  f"{ find_owner_name.firstname} {find_owner_name.middle_name} {find_owner_name.lastname} ",
+                "newownermother_name": find_owner_name.mother_name,
+                "new_owner_id": find_owner_name.personal_id,
+
+            })
+
+        return JsonResponse({
+            'isError': True,
+            'message': 'owner name Not Found'
+        })
+    return JsonResponse({
+        'isError': True,
+        'message': 'Method not allowd'
+    })
 
 
 @login_required(login_url="Login")
 def tranfercreate(request):
-    transfer = transfare_vehicles.objects.all()
+    transfer = vehicle_model.transfare_vehicles.objects.all()
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 5
     SearchQuery = ''
+
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
 
+    if CheckSearchQuery:
+        SearchQuery = request.GET['SearchQuery']
     else:
         pass
 
@@ -145,19 +197,51 @@ def tranfercreate(request):
     page_obj = paginator.get_page(page_number)
     context = {'pageTitle': 'Transfer Vehicle',
                'page_obj': page_obj,
+               'SearchQuery': SearchQuery,
                'DataNumber': DataNumber,
                "transfer": transfer
                }
+
+    if request.method == 'POST':
+        old_owner_id = request.POST.get('old_owner', None)
+        new_owner_id = request.POST.get('new_owner', None)
+        vehicle_id=request.POST.get('vehicle',None)
+        description=request.POST.get('description',None)
+        document = request.POST.get('document',None)
+        rv_number=request.POST.get('',None)
+
+
+        new_transfering = vehicle_model.transfare_vehicles(
+            old_owner_id=old_owner_id,
+            new_owner_id=new_owner_id,
+            vehicle_id=vehicle_id,
+            description=description,
+            document=document
+            rv_number=rv_number
+            )
+            
+        
+
+        new_transfering.save()
+
+
+
+
+
+
+
+
     return render(request, "Vehicles/transfer.html", context)
 
 
 @login_required(login_url="Login")
 def view_vehicle(request):
-    vehicles = vehicle.objects.all()
+    vehicles = vehicle_model.vehicle.objects.all()
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
     SearchQuery = ''
+
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
 
@@ -182,10 +266,18 @@ def view_vehicle(request):
 @login_required(login_url="Login")
 def vehicle_profile(request, pk):
     # vehic_id=vehicle.objects.get(id=pk)
-    # vehicles=vehicle.objects.filter(id=vehic_id).first()
+    vehicles = vehicle_model.vehicle.objects.filter(vehicle_id=pk).all()
 
     context = {
-        'pageTitle': 'Profile'
+        'pageTitle': 'Profile',
+        "vehicles": vehicles
     }
 
     return render(request, 'Vehicles/vehicle_profile.html', context)
+
+
+# @login_required(login_url="Login")
+# def Asign_plate(request):
+
+#     context = {}
+#     return render(request, "vehicles/assign_mo.html", context)

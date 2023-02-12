@@ -73,11 +73,11 @@
             <div data-i18n="CRM">Register Vehicle</div>
           </a>
         </li>
-        <li class="menu-item {% if pageTitle == 'Assign Aplate' %}active{% endif %}">
+        {% comment %} <li class="menu-item {% if pageTitle == 'Assign Aplate' %}active{% endif %}">
           <a href="{% url 'asign-plate' %}" class="menu-link">
             <div data-i18n="CRM">Assign Plate</div>
           </a>
-        </li>
+        </li> {% endcomment %}
         <li class="menu-item {% if pageTitle == 'Transfer Vehicle' %}active{% endif %}">
           <a href="{% url 'transfer' %}" class="menu-link">
             <div data-i18n="CRM">Transfer Vehicles</div>

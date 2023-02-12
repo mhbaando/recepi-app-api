@@ -3,23 +3,16 @@ from . import views
 # from .views import Assign_create,Transfercreate
 # from .views import Assign_create
 urlpatterns = [
-    # vehicle Urls
-    # path("asignplate/", views.assign_aplate, name="asign-plate"),
     path("", views.register_vehicle, name="register-vehicle"),
-    path("tranfer/", views.tranfercreate, name="transfer"),
+    path("register-tranfer/", views.tranfercreate, name="transfer"),
     path("viewvehicle/", views.view_vehicle, name="veiw-vehicle"),
-    # path("registervehicle",Register_create.as_view(),name="register-vehicle"),
-
-
-    # path("asignplate/",Assign_create.as_view(),name="asign-plate"),
-    # path("tranfer/",Transfercreate.as_view(),name="transfer"),
-    # path("", views.register_vehicle, name="register-vehicle"),
-    # path("registervehicle",views.register_vehicle,name="register-vehicle"),
-
-    path("asignplate/", views.assign_plate, name="asign-plate"),
+    # path("asignplate/", views.assign_plate, name="asign-plate"),
     path("vehicle-profile/<str:pk>/",
          views.vehicle_profile, name="vehicle-profile"),
-    path('owner-search/<str:search>', views.seach_owner)
+    path('owner-search/<str:search>', views.seach_owner),
+    path('transfer-search/<str:search>', views.seach_transfer),
+    path('transfer-searchh/<str:search>', views.seach_transferrr),
+    path("registervehicle", views.register_vehicle, name="register-vehicle"),
 
 
 ]
