@@ -1,6 +1,7 @@
 {% extends "Base/index.html" %}
 {% load static %}
 {% block cssData %}
+  <link rel="stylesheet" href={% static "assets/css/jquery-ui/ui.css" %}>
   <link rel="stylesheet"
         href="{% static "assets/css/company-register.css" %}"/>
 {% endblock cssData %}
@@ -11,7 +12,12 @@
       <span class="text-muted fw-light">Home /</span> {{ pageTitle }}
     </h4>
   </div>
-  <form id="re_form">
+  <form id="re_form"
+        method="POST"
+        autocomplete="off"
+        readonly
+        class="w-100"
+        action="">
     {% csrf_token %}
     <div class="card">
       <div class="card-header">
@@ -49,13 +55,18 @@
             <div class="col">
               <label for="company">Owner</label>
               <div class="input-group">
-                <input type="search"
+                <input list="customers"
+                       name="customers"
                        class="form-control rounded"
-                       placeholder="Search"
-                       aria-label="Search"
-                       aria-describedby="search-addon"
-                       required="required"
-                       id="owner"/>
+                       placeholder="Search Customer Name"
+                       size="50"/>
+                <datalist id="customers">
+                  {% for customer in customers %}
+                    <option>
+                      {{ customer.full_name }} -  {{ customer.personal_id }}
+                    </option>
+                  {% endfor %}
+                </datalist>
               </div>
             </div>
           </div>
@@ -104,7 +115,7 @@
                 select a state
               </option>
               {% for state in states %}
-                <option value="{{ state }}">
+                <option value="{{ state.state_id }}">
                   {{ state }}
                 </option>
               {% endfor %}
@@ -178,6 +189,7 @@
     </div>
   </form>
   {% block scriptData %}
+    <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
     <script src="{% static "scripts/company/upload.js" %}"></script>
     <script src="{% static "scripts/company/register.js" %}"></script>
   {% endblock scriptData %}
