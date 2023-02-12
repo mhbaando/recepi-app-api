@@ -27,22 +27,23 @@ $(document).ready(function () {
     })
 
 
+    let owner = ""
+    $("input[name=customers]").focusout(function(){
+        owner = $(this).val()
+    });
+
     $("#re_form").on('submit',function(e){
         e.preventDefault();
         
+        const desc = $("#desc").val()
         const cname = $("#cname").val();
-        const rnumber= $("#rnumber").val();
-        const website = $("#website").val();
-        const owner = $("#owner").val();
         const phone = $("#phone").val()
         const email = $("#email").val()
+        const rnumber= $("#rnumber").val();
+        const website = $("#website").val();
         const address = $("#address").val()
-        const desc = $("#desc").val()
-       
-        let formData = new FormData();
 
-        // check data integrity
-      
+        let formData = new FormData();
 
         if(!logoImage ){
             return Swal.fire("Error", "Uppload company Image", "error");
@@ -51,24 +52,23 @@ $(document).ready(function () {
         if(!companyDoc ){
             return Swal.fire("Error", "Uppload Comapny Document", "error");
         }
-
-    
-
+  
         if(!state || state === "Select State"){
             return Swal.fire("Error", "Select State", "error");
         }
         
+        formData.append("desc", desc);
         formData.append("cname", cname);
-        formData.append("rnumber", rnumber);
-        formData.append("website", website);
         formData.append("owner", owner);
         formData.append("phone", phone);
         formData.append("email", email);
-        formData.append("address", address);
         formData.append("state", state);
+        formData.append("owner", owner);
+        formData.append("website", website);
+        formData.append("rnumber", rnumber);
+        formData.append("address", address);
         formData.append("logo", logoImage);
         formData.append("companyDoc", companyDoc);
-        formData.append("desc", desc);
         
 
         $.ajax({
@@ -91,7 +91,7 @@ $(document).ready(function () {
                     }).then(function (e) {
                       if (e.value) {
                         Swal.DismissReason.cancel;
-                        location.replace('/company/company-views')
+                        location.replace('/customer/company-views/')
                       }
                     });
 
