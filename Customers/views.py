@@ -423,7 +423,17 @@ def activate_customer(request):
                 customer.save()
                 # customer.update(is_verified=True,
                 #                 document=c_doc, description=c_desc)
+                username = request.user.username
+                names = request.user.first_name + ' ' + request.user.last_name
+                avatar = str(request.user.avatar)
+                module = "Customer / Activate"
+                action = f'Activated A Customer {customer.full_name}'
+                path = request.path
+                sendTrials(request, username, names,
+                           avatar, action, module, path)
+
                 return JsonResponse({'isError': False, 'Message': 'Customer Verified'}, status=200)
+
             return JsonResponse({'isError': True, 'Message': 'Custmer not found'}, status=404)
 
         except Exception as error:

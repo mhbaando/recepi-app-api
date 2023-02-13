@@ -11,41 +11,43 @@
             <div class="d-flex align-items-end justify-content-end ">
                 <span class="text-danger cursor">X</span>
             </div>
-            {% comment %} model content {% endcomment %}
-            <div class="col">
-                <label for="company">Documents</label>
-                <div class="custom-input-file">
-                    <img src="{% static "assets/img/customers/uppload.png" %}"
-                         alt=""
-                         width="auto"
-                         height="50"/>
-                    <label for="doc">Click To Upload</label>
-                    <p id="doc-name"></p>
-                    <input type="file"
-                           id="doc"
-                           hidden
-                           name="doc"
-                           class="form-control custom-input-file"
-                           accept="application/pdf"/>
-                </div>
-                <div class="row mt-4">
-                    <div class="form-outline">
-                        <label class="form-label" for="desc">Description</label>
-                        <textarea class="form-control"
-                                  id="desc"
-                                  placeholder="write reason to block"
-                                  rows="4"
-                                  required="required"></textarea>
+            <form>
+                {% csrf_token %}
+                {% comment %} model content {% endcomment %}
+                <div class="col">
+                    <label for="company">Documents</label>
+                    <div class="custom-input-file">
+                        <img src="{% static "assets/img/customers/uppload.png" %}"
+                             alt=""
+                             width="auto"
+                             height="50"/>
+                        <label for="doc">Click To Upload</label>
+                        <p id="doc-name"></p>
+                        <input type="file"
+                               id="doc"
+                               hidden
+                               name="doc"
+                               class="form-control custom-input-file"
+                               accept="application/pdf"/>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="close">Close</button>
-                        <button type="button" class="btn btn-primary">Block Company</button>
+                    <div class="row mt-4">
+                        <div class="form-outline">
+                            <label class="form-label" for="desc">Description</label>
+                            <textarea class="form-control"
+                                      id="desc"
+                                      placeholder="write reason to block"
+                                      rows="4"
+                                      required="required"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary close">Close</button>
+                            <button type="button" class="btn btn-primary">Block Company</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-</div>
 </div>
 {% block scriptData %}
     <script src="{% static "scripts/company/modal.js" %}"></script>
