@@ -313,7 +313,6 @@ def register_customer(request):
                 gender = request.POST.get('gender', None)
                 foName = request.POST.get('foname', None)
                 thName = request.POST.get('thname', None)
-                customerDoc = request.FILES["customerDoc"]
                 customer_address = request.POST.get('address', None)
                 docType = request.POST.get('docType', None)
                 personalID = request.POST.get('perid', None)
@@ -353,6 +352,7 @@ def register_customer(request):
                     lastname=thName,
                     fourth_name=foName,
                     mother_name=mName,
+                    full_name=f"{fName} {sName} {thName} {foName}",
                     gender=gender,
                     date_of_birth=dob,
                     blood_group=group,
@@ -363,7 +363,6 @@ def register_customer(request):
                     address=customer_address,
                     federal_state=selected_satate,
                     phone=phone,
-                    document=customerDoc,
                     photo=customerImg,
                     reg_user=request.user,
                 )
@@ -399,12 +398,41 @@ def register_customer(request):
 
 @login_required(login_url='Login')
 def activate_customer(request):
+    if request.method == 'POST':
+        try:
+            c_personalID = request.POST.get('perosonalID').strip()
+            c_desc = request.POST.get('desc')
+            c_doc = request.FILES['customerDoc']
+            customer = ""
+            if c_personalID is None or c_desc is None or c_doc is None:
+                return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
 
-    context = {
-        'pageTitle': 'Activate'
-    }
+            # find the customer for admin
+            if request.user.is_superuser:
+                customer = customer_model.customer.objects.filter(
+                    Q(personal_id=c_personalID))
+            else:
+                # for regular users
+                customer = customer_model.customer.objects.filter(
+                    Q(personal_id=c_personalID), federal_state=request.user.federal_state)
 
-    return render(request, 'Customer/activate.html', context)
+            if customer is not None:
+                customer.update(is_verified=True,
+                                document=c_doc, description=c_desc)
+                return JsonResponse({'isError': False, 'Message': 'Customer Verified'}, status=200)
+            return JsonResponse({'isError': True, 'Message': 'Custmer not found'}, status=404)
+
+        except Exception as error:
+            username = request.user.username
+            name = request.user.first_name + ' ' + request.user.last_name
+            # register the error
+            sendException(
+                request, username, name, error)
+            message = {
+                'isError': True,
+                'Message': 'On Error Occurs . Please try again or contact system administrator'
+            }
+            return JsonResponse(message, status=200)
 
 
 @login_required(login_url='Login')

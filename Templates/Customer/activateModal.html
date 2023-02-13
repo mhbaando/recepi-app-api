@@ -1,0 +1,56 @@
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/customer/modal.css" %}"/>
+{% endblock cssData %}
+{% block content %}
+    <div class="overlay hidden"></div>
+    <div class="model-contaier hidden">
+        <div class="model">
+            <div class="model-content">
+                <div>
+                    <h4>Customer Verifictaion</h4>
+                    <hr/>
+                </div>
+                {% comment %} customer infor {% endcomment %}
+                <form id="verify-form">
+                    {% csrf_token %}
+                    <label for="defaultFormControlInput" class="form-label">Full Name</label>
+                    <input type="text" id='customer-info' disabled class="form-control" />
+                    <p class="text-muted m-0 p-0 mt-3">Uppload All Personal Document in one file as pdf</p>
+                    <div class="custom-input-file_container">
+                        <div class="custom-input-file">
+                            <img src="{% static "assets/img/customers/uppload.png" %}"
+                                 alt="Vheicle"
+                                 width="auto"
+                                 height="40"/>
+                            <label for="doc">Click To Upload</label>
+                            <input type="file" id="doc" class="form-control" accept="application/pdf"/>
+                            <p id="doc-name"></p>
+                        </div>
+                        <div class="finger-scan d-flex align-items-center">
+                            <img src="{% static "assets/img/customers/scan.png" %}"
+                                 alt="Vheicle"
+                                 width="auto"
+                                 height="40"/>
+                            <p>Scan Finger Print</p>
+                        </div>
+                    </div>
+                    {% comment %} scan finger {% endcomment %}
+                    <textarea class="form-control"
+                              name="desc"
+                              id="desc"
+                              cols="30"
+                              rows="5"
+                              placeholder="Description"></textarea>
+                    <div class="action-btn  ">
+                        <button type="button" class="btn btn-outline-danger me-4 cancle-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Verify</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% block scriptData %}
+        <script src="{% static "scripts/customer/model.js" %}"></script>
+    {% endblock scriptData %}
+{% endblock content %}

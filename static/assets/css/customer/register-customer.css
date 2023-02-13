@@ -57,21 +57,6 @@
     background-color: rgb(186, 186, 186);
 }
 
-.finger-scan {
-    width: 100%;
-    background-color: #F0F3F5;
-    border-radius: 5px;
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-
-    padding-top: 1.5rem;
-    margin-top: 33px;
-    height: 150px;
-
-}
 
 
 #uploadedAvatar {

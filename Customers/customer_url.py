@@ -9,7 +9,6 @@ urlpatterns = [
     path('company/profile/<int:id>', views.company_profile, name="company_profile"),
     path('search_owner/<str:search>', views.search_engine),
 
-    # ...,
 
     # License Urls
     path('register_license', license.NewLicense, name='NewLicense'),
