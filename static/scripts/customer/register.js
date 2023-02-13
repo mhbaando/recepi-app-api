@@ -1,7 +1,6 @@
 $(document).ready(function () {
     // get user image and uppload doc
     let customerImage = ""
-    let customerDoc = ""
     $('#upload').change(function(){
         const file = this.files[0];
         if (file){
@@ -10,16 +9,6 @@ $(document).ready(function () {
             customerImage = undefined
         }
     })
-
-    $("#doc").on('change', function(){
-        const file = this.files[0]
-        if(file){
-            customerDoc = file
-        }else {
-            customerDoc = undefined
-        }
-    })
-
 
     // set date of birth today
     // determain the max date
@@ -93,11 +82,7 @@ $(document).ready(function () {
         if(!customerImage ){
             return Swal.fire("Error", "Uppload Customer Image", "error");
         }
-        
-        if(!customerDoc ){
-            return Swal.fire("Error", "Uppload Identity Document", "error");
-        }
-
+    
         if(!docType || docType === "Select Type" ){
             return Swal.fire("Error", "Select Identity Document", "error");
         }
@@ -122,7 +107,6 @@ $(document).ready(function () {
         formData.append("perid", personalID);
         formData.append("img", customerImage);
         formData.append("docType", docType);
-        formData.append("customerDoc", customerDoc);
         
 
         $.ajax({
