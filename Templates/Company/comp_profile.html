@@ -21,10 +21,7 @@
                          height="160"/>
                     <h3>Aziza Rage Ahmed</h3>
                     <p class="text-muted mb-3">ID: 14587899557755</p>
-                    <button class="btn btn-primary btn-large w-100">
-                        <i class="bx bxs-edit-alt me-3"></i>
-                        Edit
-                    </button>
+                    <button class="btn btn-outline-primary" id="blockbtn">Edit</button>
                 </div>
             </div>
             <div class="col-sm-12 col-lg bg-white rounded pt-4">
@@ -135,7 +132,9 @@
                                     <p class="text-uppercase col">+252 617 123 132</p>
                                 </div>
                                 <div class="row mb-2">
-                                    <p class="fw-bold col-2">Date of Birth</p>
+                                    <p class="fw-bold col-2">
+                                        Date of Birth
+                                    </p>
                                     <p class="text-uppercase col">
                                         Jun / 19 / 2000
                                     </p>
@@ -680,4 +679,5 @@
 </div>
 {% endblock content %}
 {% block scriptData %}
+<script src="{% static "scripts/company/profile.js" %}"></script>
 {% endblock scriptData %}
