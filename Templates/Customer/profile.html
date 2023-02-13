@@ -15,12 +15,12 @@
             <div class="col-sm-12 col-lg-3 h-50 bg-white rounded p-4 d-flex  justify-content-center">
                 <div class="d-flex flex-column align-items-center justify-content-center ">
                     <img class="customer-img mb-5"
-                         src="{% static "assets/img/customers/placeholder.png" %}"
+                         src="{% if customer.photo %} {{ customer.photo.url }} {% else %} {% static "assets/img/customers/placeholder.png" %} {% endif %}"
                          alt="customer"
                          width="160"
                          height="160"/>
-                    <h3>Aziza Rage Ahmed</h3>
-                    <p class="text-muted mb-3">ID: 14587899557755</p>
+                    <h4 class="fs-5 text-center">{{ customer.full_name }}</h4>
+                    <p class="text-muted mb-3">ID: {{ customer.personal_id }}</p>
                     <button class="btn btn-primary btn-large w-100">
                         <i class="bx bxs-edit-alt me-3"></i>
                         Edit
@@ -104,40 +104,40 @@
                             <div >
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Full Name</p>
-                                    <p class="text-uppercase col">Caziiza Rage Axmed</p>
+                                    <p class="text-uppercase col">{{ customer.full_name }}</p>
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Mother’s Name</p>
-                                    <p class="text-uppercase col">Caasho Cabdi Salax</p>
+                                    <p class="text-uppercase col">{{ customer.mother_name }}</p>
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Personal ID</p>
-                                    <p class="text-uppercase col">1324158789895450</p>
+                                    <p class="text-uppercase col">{{ customer.personal_id }}</p>
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Gender</p>
-                                    <p class="text-uppercase col">Female</p>
+                                    <p class="text-uppercase col">{{ customer.gender }}</p>
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Blood group</p>
-                                    <p class="text-uppercase col">O+</p>
+                                    <p class="text-uppercase col">{{ customer.blood_group }}</p>
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Nationality</p>
-                                    <p class="text-uppercase col">Ethiopian</p>
+                                    <p class="text-uppercase col">{{ customer.nationality }}</p>
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Email</p>
-                                    <p class="text-uppercase col">caziza@gmail.com</p>
+                                    <p class="col">{{ customer.email }}</p>
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Phone</p>
-                                    <p class="text-uppercase col">+252 617 123 132</p>
+                                    <p class="text-uppercase col">{{ customer.phone }}</p>
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Date of Birth</p>
                                     <p class="text-uppercase col">
-                                        Jun / 19 / 2000
+                                        {{ customer.date_of_birth }}
                                     </p>
                                 </div>
                                 <div class="row mb-2">
@@ -145,7 +145,7 @@
                                         State
                                     </p>
                                     <p class="text-uppercase col">
-                                        Banaadir
+                                        {{ customer.federal_state }}
                                     </p>
                                 </div>
                                 <div class="row mb-2">
@@ -153,7 +153,15 @@
                                         Address
                                     </p>
                                     <p class="text-uppercase col">
-                                        Jamhuriya, Kaaran, BN, Mogadishu Somalia
+                                        {{ customer.address }}
+                                    </p>
+                                </div>
+                                <div class="row mb-2">
+                                    <p class="fw-bold col-2">
+                                        Status
+                                    </p>
+                                    <p class="text-uppercase col">
+                                        {{ customer.show_verify.verified_status }}
                                     </p>
                                 </div>
                             </div>
