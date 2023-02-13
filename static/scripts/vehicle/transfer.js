@@ -9,6 +9,7 @@ $(document).ready(function(){
   const ownar_name = $("#ownar_name")
   const owner_mother = $("#owner_mother")
   const old_hid_idd = $("#old_hid_id")
+  const receipt_number=$("#receipt_number")
 
 
   // event on input 
@@ -27,6 +28,7 @@ $(document).ready(function(){
           ownar_name.attr('value', `${data.owner_name} - ${data.personal_id}`)
           owner_mother.attr('value', data.mother_name)
           old_hid_idd.attr('value', data?.old_hid_id)
+          receipt_number.attr('value', data?.receipt_number)
         },
         error: function(err){
           alert(err);
@@ -45,6 +47,7 @@ $(document).ready(function(){
   const newOwnerMother = $("#newownermother_name")
   const new_owner_id = $("#new_owner_id")
   const phone = $("#phone")
+  
 
   // the other ones 
 
@@ -66,11 +69,13 @@ const description = $("#description")
       success: function (data) {
         newOwnerMother.attr('value', data.newownermother_name)
         phone.attr('value', data.phone)
+        new_owner_id.attr('value', data.new_owner_id)
+
       },
       error:function(err){
-        console.log(err)
-        alert('Not found');
+        alert(err);
       }
+      
   })
     
   })
@@ -86,6 +91,8 @@ const description = $("#description")
     formData.append("description",description.val());
     formData.append("doc",transfare_document);
     formData.append("olold_hid_id",old_hid_idd.val());
+    formData.append("receipt_number",receipt_number.val());
+    formData.append("new_owner_id",new_owner_id.val());
     
     $.ajax({
   method: "POST",
@@ -107,7 +114,7 @@ const description = $("#description")
           }).then(function (e) {
             if (e.value) {
               Swal.DismissReason.cancel;
-              // location.replace('/vehicles/register-tranfer')
+              location.replace('/vehicles/register-tranfer')
             }
           });
 

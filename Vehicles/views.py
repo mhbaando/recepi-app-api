@@ -122,6 +122,7 @@ def seach_transfer(request, search):
                 'owner_name': f"{ find_rv.rv_from.firstname} {find_rv.rv_from.middle_name} {find_rv.rv_from.lastname} ",
                 'mother_name': find_rv.rv_from.mother_name,
                 'personal_id': find_rv.rv_from.personal_id,
+                "receipt_number":find_rv.rv_number,
 
             })
 
@@ -150,13 +151,14 @@ def seach_transferrr(request, search):
                 'isError': False,
                 "newownermother_name": find_selected_owner.mother_name,
                 "phone": find_selected_owner.phone,
+                "new_owner_id":find_selected_owner.customer_id,
 
             })
 
         return JsonResponse({
             'isError': True,
             'message': 'owner name Not Found'
-        }, status=404)
+        })
     return JsonResponse({
         'isError': True,
         'message': 'Method not allowd'
@@ -194,16 +196,18 @@ def tranfercreate(request):
 
     if request.method == 'POST':
         old_owner_id = request.POST.get('olold_hid_id', None)
-        new_owner_id = request.POST.get('new_owner', None)
-
+        new_owner_id = request.POST.get('new_owner_id', None)
+        receipt_number = request.POST.get('receipt_number', None)
         description = request.POST.get('description', None)
         document = request.FILES.get('document', None)
-        rv_number = request.POST.get('rv_number', None)
         reason = request.POST.get('reason', None)
 
-        vehicle = vehicle_model.vehicle.objects.filter(
+        vehicle_old_id = vehicle_model.vehicle.objects.filter(
             Q(owner=old_owner_id)).first()
 
+        # vehicle_new_id = vehicle_model.vehicle.objects.filter(
+        #     Q(owner=new_owner_id)).first()
+        
         # vehicle_to_transfare = vehicle_model.vehicle.objects.filter(
         #     Q(owner__customer_id=old_owner_id)).first()
 
@@ -213,11 +217,12 @@ def tranfercreate(request):
         new_transfering = vehicle_model.transfare_vehicles(
             old_owner_id=old_customer.customer_id,
             new_owner_id=new_owner_id,
-            vehicle_id=vehicle.vehicle_id,
+            vehicle_id=vehicle_old_id.vehicle_id,
             description=description,
             document=document,
-            rv_number=rv_number,
-            transfare_reason=reason
+            rv_number=receipt_number,
+            transfare_reason=reason,
+            reg_user_id=request.user.id,
         )
 
         new_transfering.save()
