@@ -85,7 +85,7 @@
                                         {% for customer in customers %}
                                             <tr>
                                                 <td>{{ customer.customer_id }}</td>
-                                                <td>{{ customer.firstname }} {{ customer.middle_name }} {{ customer.lastname }} {{ customer.fourth_name }}</td>
+                                                <td>{{ customer.full_name }}</td>
                                                 <td>{{ customer.mother_name }}</td>
                                                 <td>{{ customer.phone }}</td>
                                                 <td>{{ customer.federal_state }}</td>
@@ -97,9 +97,11 @@
                                                         <button class="btn btn-primary">View</button>
                                                     </a>
                                                     {% if customer.show_verify.show_btn %}
-                                                        <a href="javascript:void(0);">
-                                                            <button class="btn btn-success text-white verify-btn">Verify</button>
-                                                        </a>
+                                                        <button class="btn btn-success text-white"
+                                                                id="verify-btn"
+                                                                data-customer="{{ customer.full_name }} -  {{ customer.personal_id }}">
+                                                            Verify
+                                                        </button>
                                                     {% endif %}
                                                 </td>
                                             </tr>

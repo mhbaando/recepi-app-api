@@ -1,8 +1,6 @@
 {% load static %}
 {% block cssData %}
     <link rel="stylesheet" href="{% static "assets/css/company/model.css" %}"/>
-    <link rel="stylesheet"
-          href="{% static "assets/css/company-register.css" %}"/>
 {% endblock cssData %}
 <div class="overlay hidden"></div>
 <div class="model-container hidden">
@@ -33,12 +31,12 @@
                         <label class="form-label" for="desc">Description</label>
                         <textarea class="form-control"
                                   id="desc"
-                                  placeholder="write reason to block"
+                                  placeholder="write your description here"
                                   rows="4"
                                   required="required"></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="close">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary">Block Company</button>
                     </div>
                 </div>
@@ -48,5 +46,5 @@
 </div>
 </div>
 {% block scriptData %}
-    <script src="{% static "scripts/company/modal.js" %}"></script>
+    <script src="{% static "scripts/company/profile.js" %}"></script>
 {% endblock scriptData %}

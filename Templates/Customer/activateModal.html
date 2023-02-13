@@ -15,16 +15,27 @@
                 <form id="verify-form">
                     {% csrf_token %}
                     <label for="defaultFormControlInput" class="form-label">Full Name</label>
-                    <input type="text" disabled class="form-control" id="fullName"/>
-                    <div class="custom-input-file">
-                        <img src="{% static "assets/img/customers/uppload.png" %}"
-                             alt="Vheicle"
-                             width="auto"
-                             height="40"/>
-                        <label for="doc">Click To Upload</label>
-                        <input type="file" id="doc" class="form-control" accept="application/pdf"/>
-                        <p id="doc-name"></p>
+                    <input type="text" id='customer-info' disabled class="form-control" />
+                    <p class="text-muted m-0 p-0 mt-3">Uppload All Personal Document in one file as pdf</p>
+                    <div class="custom-input-file_container">
+                        <div class="custom-input-file">
+                            <img src="{% static "assets/img/customers/uppload.png" %}"
+                                 alt="Vheicle"
+                                 width="auto"
+                                 height="40"/>
+                            <label for="doc">Click To Upload</label>
+                            <input type="file" id="doc" class="form-control" accept="application/pdf"/>
+                            <p id="doc-name"></p>
+                        </div>
+                        <div class="finger-scan d-flex align-items-center">
+                            <img src="{% static "assets/img/customers/scan.png" %}"
+                                 alt="Vheicle"
+                                 width="auto"
+                                 height="40"/>
+                            <p>Scan Finger Print</p>
+                        </div>
                     </div>
+                    {% comment %} scan finger {% endcomment %}
                     <textarea class="form-control"
                               name="desc"
                               id="desc"

@@ -86,14 +86,12 @@ class customer(models.Model):
 
     is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(null=True, blank=True)
     modified_at = models.DateTimeField(auto_now=True)
     reg_user = models.ForeignKey(Users, on_delete=models.RESTRICT)
 
     class Meta:
         db_table = 'customers'
-
-    def __str__(self) -> str:
-        return f"{self.firstname} {self.middle_name} {self.lastname}"
 
     def show_verify(self):
         return {
@@ -138,6 +136,13 @@ class company(models.Model):
 
     class Meta:
         db_table = 'company'
+
+    def show_status(self):
+        return {
+            'verified_status': 'Unblocked' if not self.is_blocked else 'Blocked',
+            'verified_color': 'success' if not self.is_blocked else 'danger text-white',
+            'show_btn': True if not self.is_blocked else False,
+        }
 
 
 class license(models.Model):
