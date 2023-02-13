@@ -9,8 +9,6 @@ $(document).ready(function(){
   const ownar_name = $("#ownar_name")
   const owner_mother = $("#owner_mother")
   const old_hid_idd = $("#old_hid_id")
-  const vehicle_id= $("#vehicle_id")
-
 
 
   // event on input 
@@ -46,54 +44,50 @@ $(document).ready(function(){
   const newOwnerName = $("#newowner_name")
   const newOwnerMother = $("#newownermother_name")
   const new_owner_id = $("#new_owner_id")
-  const new_hid_id = $("#new_hid_id")
+  const phone = $("#phone")
 
   // the other ones 
 
 const reason = $("#reason")
 const description = $("#description")
 
-$("#selected_owner").on('input',function(){
-  const value = $(this).val() 
-  // check if it's not empy and have more then 4 chars
-  if (value.trim().length && value.trim().length >= 4 ){
-    // request to the backeend 
+
+
+  // select new owner
+  
+  let customer = ""
+  $("input[name='Typelist']").on('input', function(e){
+    customer= $(this).val().split("-")[1]?.trim();  
     $.ajax({
       type: 'GET',
-      url: '/vehicles/transfer-searchh/'+value,
+      url: '/vehicles/transfer-searchh/'+customer,
       async: false,
       headers: { "X-CSRFToken": csrftoken },
       success: function (data) {
-        ownar_name.attr('value', `${data.owner_name} - ${data.personal_id}`)
-        owner_mother.attr('value', data.mother_name)
-        old_hid_idd.attr('value', data?.old_hid_id)
+        newOwnerMother.attr('value', data.newownermother_name)
+        phone.attr('value', data.phone)
       },
-      error: function(err){
-        alert(err);
+      error:function(err){
+        console.log(err)
+        alert('Not found');
       }
   })
-    }else{
-      // reset when chars are less than 4
-      newOwnerMother.attr('value', "")
-      new_owner_id.attr('value', "")
-    }
+    
   })
 
-
-let formData = new FormData();
-      
-formData.append("reason",reason);
-formData.append("description",description.val());
-formData.append("doc",transfare_document);
-formData.append("new_hid_id",new_hid_id.val());
-formData.append("olold_hid_id",old_hid_idd.val());
-
+  
   
   // submit form
   $('#reg_form').on('submit',function(e){
     e.preventDefault();
+    let formData = new FormData();
+          
+    formData.append("reason",reason);
+    formData.append("description",description.val());
+    formData.append("doc",transfare_document);
+    formData.append("olold_hid_id",old_hid_idd.val());
     
-$.ajax({
+    $.ajax({
   method: "POST",
   url: "/vehicles/register-tranfer/",
   headers: { "X-CSRFToken": csrftoken },

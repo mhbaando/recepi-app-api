@@ -142,16 +142,14 @@ def seach_transferrr(request, search):
         # look up the rv
         # find_rv = finance_model.receipt_voucher.objects.filter(
         #     Q(rv_number__icontains=search)).first()
-        find_owner_name = customer_model.customer.objects.filter(
-            Q(personal_id__icontains=search)).first()
+        find_selected_owner = customer_model.customer.objects.filter(
+            Q(personal_id=search)).first()
 
-        if find_owner_name is not None:
+        if find_selected_owner is not None:
             return JsonResponse({
                 'isError': False,
-                "new_hid_id": find_owner_name.customer_id,
-                "newowner_name":  f"{ find_owner_name.firstname} {find_owner_name.middle_name} {find_owner_name.lastname} ",
-                "newownermother_name": find_owner_name.mother_name,
-                "new_owner_id": find_owner_name.personal_id,
+                "newownermother_name": find_selected_owner.mother_name,
+                "phone": find_selected_owner.phone,
 
             })
 
@@ -195,24 +193,27 @@ def tranfercreate(request):
                }
 
     if request.method == 'POST':
-        old_owner_id = request.POST.get('old_owner', None)
+        old_owner_id = request.POST.get('olold_hid_id', None)
         new_owner_id = request.POST.get('new_owner', None)
-        vehicle_id = request.POST.get('vehicle_id', None)
+
         description = request.POST.get('description', None)
         document = request.FILES.get('document', None)
         rv_number = request.POST.get('rv_number', None)
         reason = request.POST.get('reason', None)
 
-        vehicle_to_transfare = vehicle_model.vehicle.objects.filter(
-            Q(owner__customer_id=old_owner_id)).first()
+        vehicle = vehicle_model.vehicle.objects.filter(
+            Q(owner=old_owner_id)).first()
+
+        # vehicle_to_transfare = vehicle_model.vehicle.objects.filter(
+        #     Q(owner__customer_id=old_owner_id)).first()
 
         old_customer = customer_model.customer.objects.filter(
             Q(customer_id=old_owner_id)).first()
 
         new_transfering = vehicle_model.transfare_vehicles(
-            old_owner_id=old_customer,
+            old_owner_id=old_customer.customer_id,
             new_owner_id=new_owner_id,
-            vehicle_id=vehicle_to_transfare,
+            vehicle_id=vehicle.vehicle_id,
             description=description,
             document=document,
             rv_number=rv_number,
