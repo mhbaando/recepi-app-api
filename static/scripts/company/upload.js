@@ -19,6 +19,6 @@ $(document).ready(()=>{
 			$("#doc-name").text(file.name)
 		}
 	})
-	});
+});
 
 	
