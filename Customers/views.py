@@ -464,15 +464,19 @@ def activate_customer(request):
             # find the customer for admin
             if request.user.is_superuser:
                 customer = customer_model.customer.objects.filter(
-                    Q(personal_id=c_personalID))
+                    Q(personal_id=c_personalID)).first()
             else:
                 # for regular users
                 customer = customer_model.customer.objects.filter(
-                    Q(personal_id=c_personalID), federal_state=request.user.federal_state)
+                    Q(personal_id=c_personalID), federal_state=request.user.federal_state).first()
 
             if customer is not None:
-                customer.update(is_verified=True,
-                                document=c_doc, description=c_desc)
+                customer.is_verified = True
+                customer.document = c_doc
+                customer.description = c_desc
+                customer.save()
+                # customer.update(is_verified=True,
+                #                 document=c_doc, description=c_desc)
                 return JsonResponse({'isError': False, 'Message': 'Customer Verified'}, status=200)
             return JsonResponse({'isError': True, 'Message': 'Custmer not found'}, status=404)
 
