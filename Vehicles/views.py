@@ -114,8 +114,6 @@ def seach_transfer(request, search):
         # look up the rv
         find_rv = finance_model.receipt_voucher.objects.filter(
             Q(rv_number__icontains=search)).first()
-        find_vehicle_id = vehicle_model.vehicle.objects.filter(
-            Q(owner=search)).first()
 
         if find_rv is not None:
             return JsonResponse({
@@ -124,14 +122,6 @@ def seach_transfer(request, search):
                 'owner_name': f"{ find_rv.rv_from.firstname} {find_rv.rv_from.middle_name} {find_rv.rv_from.lastname} ",
                 'mother_name': find_rv.rv_from.mother_name,
                 'personal_id': find_rv.rv_from.personal_id,
-
-
-            })
-
-        if find_vehicle_id is not None:
-            return JsonResponse({
-                'isError': False,
-                'old_vehicle_id': find_vehicle_id.vin,
 
             })
 
@@ -153,7 +143,7 @@ def seach_transferrr(request, search):
         # find_rv = finance_model.receipt_voucher.objects.filter(
         #     Q(rv_number__icontains=search)).first()
         find_owner_name = customer_model.customer.objects.filter(
-            Q(firstname__icontains=search)).first()
+            Q(personal_id__icontains=search)).first()
 
         if find_owner_name is not None:
             return JsonResponse({
@@ -168,16 +158,17 @@ def seach_transferrr(request, search):
         return JsonResponse({
             'isError': True,
             'message': 'owner name Not Found'
-        })
+        }, status=404)
     return JsonResponse({
         'isError': True,
         'message': 'Method not allowd'
-    })
+    }, status=400)
 
 
 @login_required(login_url="Login")
 def tranfercreate(request):
     transfer = vehicle_model.transfare_vehicles.objects.all()
+    customers = customer_model.customer.objects.all()
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 5
@@ -199,15 +190,16 @@ def tranfercreate(request):
                'page_obj': page_obj,
                'SearchQuery': SearchQuery,
                'DataNumber': DataNumber,
-               "transfer": transfer
+               "transfer": transfer,
+               "customers": customers
                }
 
     if request.method == 'POST':
         old_owner_id = request.POST.get('old_owner', None)
         new_owner_id = request.POST.get('new_owner', None)
-        vehicle_id = request.POST.get('vehicle', None)
+        vehicle_id = request.POST.get('vehicle_id', None)
         description = request.POST.get('description', None)
-        document = request.POST.get('document', None)
+        document = request.FILES.get('document', None)
         rv_number = request.POST.get('rv_number', None)
         reason = request.POST.get('reason', None)
 
@@ -220,7 +212,7 @@ def tranfercreate(request):
         new_transfering = vehicle_model.transfare_vehicles(
             old_owner_id=old_customer,
             new_owner_id=new_owner_id,
-            vehicle=vehicle_to_transfare,
+            vehicle_id=vehicle_to_transfare,
             description=description,
             document=document,
             rv_number=rv_number,

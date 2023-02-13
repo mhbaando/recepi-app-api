@@ -28,43 +28,46 @@
                                                name="old_hid_id"
                                                hidden
                                                placeholder="Owner's Name"/>
-                                        <input type="text"
-                                               class="form-control"
-                                               id="old_vehicle_id"
-                                               name="old_vehicle_id"
-                                               hidden
-                                               placeholder="Owner's Name"/>
                                         <input type="text" class="form-control" id="rv_num" placeholder="RV ID">
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-0">
-                                    <div class="mb-3">
-                                        <label class="form-label">new Ownar's Name</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               id="new_hid_id"
-                                               name="new_hid_id"
-                                               hidden
-                                               placeholder="Owner's Name"/>
-                                        <input type="text"
-                                               class="form-control"
-                                               id="newowner_number"
-                                               placeholder="Ownar Name">
+                                <div class="col">
+                                    <label for="company">New Owner's Name</label>
+                                    <div class="input-group">
+                                        <input list="customers"
+                                               name="customers"
+                                               id="selected_owner"
+                                               class="form-control rounded"
+                                               placeholder="Search Customer Name"
+                                               size="50"/>
+                                        <datalist id="customers">
+                                            {% for customer in customers %}
+                                                <option>
+                                                    {{ customer.full_name }} -  {{ customer.personal_id }}
+                                                </option>
+                                            {% endfor %}
+                                        </datalist>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
-                                        <label class="form-label">Owner Mother's Name</label>
+                                        <label class="form-label">Owner's Name</label>
                                         <input type="text"
                                                class="form-control"
-                                               id="ownar_mother"
+                                               id="ownar_name"
                                                disabled
-                                               placeholder="Mother's Name">
+                                               placeholder="Owner's Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
                                         <label class="form-label">NeW Ownar mothers Name</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="vehicle_id"
+                                               name="vehicle_id"
+                                               hidden
+                                               placeholder="Owner's Name"/>
                                         <input type="text"
                                                class="form-control"
                                                id="newownermother_name"
@@ -74,10 +77,10 @@
                                 </div>
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
-                                        <label class="form-label">Owner's Personal ID</label>
+                                        <label class="form-label">Owner's Mother Name</label>
                                         <input type="text"
                                                class="form-control"
-                                               id="personalID"
+                                               id="owner_mother"
                                                disabled
                                                placeholder="personal ID">
                                     </div>
@@ -115,7 +118,7 @@
                                 </div>
                                 <div class="col-md-4 mb-1">
                                     <div class="col mt-5">
-                                        <button class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary">Save</button>
                                     </div>
                                 </div>
                             </div>
