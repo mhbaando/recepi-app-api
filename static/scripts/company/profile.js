@@ -19,10 +19,13 @@ $(document).ready(function () {
         overlay.attr("class", "overlay hidden")
         modal.attr("class", "model-container hidden")
     })
+  
+    modal.on("click",()=>{
+        overlay.attr("class", "overlay hidden")
+        modal.attr("class", "model-container hidden")
+        
 
-   close.on("click",()=>{
-       overlay.attr("class", "overlay hidden")
-        modal.attr("class", "modal-footer hidden")
+        
     })
 
 

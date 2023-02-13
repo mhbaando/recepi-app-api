@@ -137,6 +137,13 @@ class company(models.Model):
     class Meta:
         db_table = 'company'
 
+    def show_status(self):
+        return {
+            'verified_status': 'Unblocked' if not self.is_blocked else 'Blocked',
+            'verified_color': 'success' if not self.is_blocked else 'danger text-white',
+            'show_btn': True if not self.is_blocked else False,
+        }
+
 
 class license(models.Model):
     license_id = models.AutoField(primary_key=True)

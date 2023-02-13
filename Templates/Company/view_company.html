@@ -8,10 +8,10 @@
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">Home / Company /</span> {{ pageTitle }}
         </h4>
+        <a href="{% url 'register_company' %}">
+            <button type="button" class="btn btn-primary btn-lg mb-3">Add New</button>
+        </a>
         <div class="row">
-            <a href="{% url 'register_company' %}">
-                <button type="button" class="btn btn-primary btn-lg mb-3">Add New</button>
-            </a>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -72,77 +72,29 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Al Taqwa</td>
-                                            <td>Mohamoud Ali</td>
-                                            <td>35746-5316768</td>
-                                            <td>06154796874</td>
-                                            <td>
-                                                <span class="badge bg-danger text-white p-2">Blocked</span>
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'company_profile' 1 %}">
-                                                    <button class="btn btn-outline-primary">View</button>
-                                                </a>
-                                            </td>
-                                            <td/>
-                                            <button class="btn btn-outline-primary" id="blockbtn">Block</button>
-                                        </td
-                                    </tr>
-                                    <tr>
-                                        <td>Al Taqwa</td>
-                                        <td>Mohamoud Ali</td>
-                                        <td>35746-5316768</td>
-                                        <td>06154796874</td>
-                                        <td>
-                                            <span class="badge bg-success text-white p-2">Un-Blocked</span>
-                                        </td>
-                                        <td>
-                                            <a href="{% url 'company_profile' 1 %}">
-                                                <button class="btn btn-outline-primary">View</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Al Taqwa</td>
-                                        <td>Mohamoud Ali</td>
-                                        <td>35746-5316768</td>
-                                        <td>06154796874</td>
-                                        <td>
-                                            <span class="badge bg-danger text-white p-2">Blocked</span>
-                                        </td>
-                                        <td>
-                                            <a href="{% url 'company_profile' 1 %}">
-                                                <button class="btn btn-outline-primary">
-                                                    View
-                                                </button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Al Taqwa
-                                        </td>
-                                        <td>
-                                            Mohamoud Ali
-                                        </td>
-                                        <td>
-                                            35746-5316768
-                                        </td>
-                                        <td>
-                                            06154796874
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-success text-white p-2">Un-Blocked</span>
-                                        </td>
-                                        <td>
-                                            <a href="{% url 'company_profile' 1 %}">
-                                                <button class="btn btn-outline-primary">
-                                                    View
-                                                </button>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                        {% for company in companies %}
+                                            <tr>
+                                                <td>{{ company.company_name }}</td>
+                                                <td>{{ company.owner }}</td>
+                                                <td>{{ company.reg_no }}</td>
+                                                <td>{{ company.phone }}</td>
+                                                <td>
+                                                    <span class="badge bg-{{ company.show_status.verified_color }} text-white p-2">{{ company.show_status.verified_status }}</span>
+                                                </td>
+                                                <td>
+                                                    <a href="{% url 'company_profile' 1 %}">
+                                                        <button class="btn btn-outline-primary">View</button>
+                                                    </a>
+                                                </td>
+                                                <td/>
+                                                {% if company.show_status.show_btn %}
+                                                    <button class="btn btn-outline-primary" id="blockbtn">Block</button>
+                                                {% else %}
+                                                    <button class="btn btn-outline-primary" id="blockbtn">Un Block</button>
+                                                {% endif %}
+                                            </td
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -186,4 +138,5 @@
 {% endblock content %}
 {% block scriptData %}
     <script src="{% static "scripts/company/modal.js" %}"></script>
+    <script src="{% static "scripts/company/cview.js" %}"></script>
 {% endblock scriptData %}
