@@ -1,4 +1,10 @@
-$(document).ready(function () {
+$(document).ready(function () { 
+  $("#doc").on("change",function(){
+  let file = this.files[0]
+  if(file){
+    $("#doc-name").text(file.name)
+  }
+})
   // Update The Entries Selection
   $("#DataNumber").val($("#DataNumber").attr("DataNumber"));
 
@@ -57,27 +63,17 @@ $(document).ready(function () {
 
     
 
-    $("#vehicle_hid_id").on('input',function(){
-      const value = $(this).val() 
-      // check if it's not empy and have more then 4 chars
-      if (value.trim().length && value.trim().length >= 4 ){
-        // request to the backeend 
-        $.ajax({
-          type: 'GET',
-          url: '/vehicles/assignplate/'+value,
-          async: false,
-          headers: { "X-CSRFToken": csrftoken },
-          success: function (data) {
-            vehicle_hid_id.attr('value', data.vehicle_hid_id)
-            
-          },
-          error: function(err){
-            alert(err);
-          }
-      })
-    
-    }
-  })
+    // show model on click
+    // const vreify_btn = document.querySelectorAll("#verify-btn")
+    // // loop over the node list
+    // vreify_btn.forEach(btn => {
+    //     btn.addEventListener('click', function(){
+    //         const vehicle_hid_id = $(this).data('vehicle_id')
+    //         customerInfo.attr('value', selectedCustomer)
+    //         overlay.attr('class', 'overlay')
+    //         modal.attr('class','model-contaier')
+    //     })
+    // });
 
     $('#reg_form').on('submit',function(e){
       e.preventDefault();

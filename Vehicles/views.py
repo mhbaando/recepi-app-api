@@ -12,6 +12,10 @@ from Customers import models as customer_model
 from Finance import models as finance_model
 from Finance.models import receipt_voucher
 from django.db.models import Q
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 @login_required(login_url="Login")
@@ -310,28 +314,42 @@ def vehicle_profile(request, pk):
 login_required(login_url="Login")
 
 
-def plate_vehicle_search(request, search):
+def plate_vehicle_search(self):
 
-    if request.method == 'GET':
+    plate_code = None
+    plate_no = None
+    searchQuery = self.request.GET.get('search')
 
-        find_selected_vehicle_id = vehicle_model.vehicle.objects.filter(
-            Q(vehicle_id=search)).first()
+    if searchQuery != '' and searchQuery != None:
 
-        if find_selected_vehicle_id is not None:
-            return JsonResponse({
-                'isError': False,
-                "vehicle_hid_id": find_selected_vehicle_id.vehicle_id
+        space_index = searchQuery.find(" ")
 
-            })
+        logger.error(space_index)
 
-        return JsonResponse({
-            'isError': True,
-            'message': 'owner name Not Found'
-        })
-    return JsonResponse({
-        'isError': True,
-        'message': 'Method not allowd'
-    }, status=400)
+        if space_index != -1:
+            plate_code = searchQuery[:space_index]
+            plate_no = searchQuery[space_index + 1:]
+
+            if plate_code and plate_no:
+
+                try:
+                    plate_code = vehicle_model.vehicle.objects.get(
+                        platecode__iexact=plate_code)
+                except:
+                    pass
+
+                if plate_code:
+                    try:
+                        plate = vehicle_model.vehicle.objects.filter(
+                            code=plate_code).get(plate_no__iexact=plate_no)
+                    except:
+                        pass
+                    if plate:
+
+                        vehicle = vehicle_model.vehicle.objects.filter(
+                            plate=plate)
+
+                        return vehicle
 
 
 @login_required(login_url="Login")

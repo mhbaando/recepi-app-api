@@ -87,11 +87,13 @@
                                                         <a href="{% url 'vehicle-profile' veh.vehicle_id %}"
                                                            class="btn btn-primary">View Profile</a>
                                                     </td>
+                                                    {% comment %} <td>
+                                                        <a href="{% url 'assignplate' veh.vehicle_id %}" class="btn btn-primary" id="vehicle_id" data-toggle="modal" data-target="#exampleModal">Assign plate</a>
+                                                    </td> {% endcomment %}
                                                     <td>
-                                                        <a href="{% url 'assignplate' veh.vehicle_id %}"
-                                                           class="btn btn-primary"
-                                                           data-toggle="modal"
-                                                           data-target="#exampleModal">Assign plate</a>
+                                                        <button class="btn btn-dark text-white"
+                                                                id="assignbtn"
+                                                                data-vehicle="{{ veh.vehicle_id }}">Assign plate</button>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -158,7 +160,9 @@
                                 <div class="card-body row">
                                     <div class="col-md-12 mb-0">
                                         <div class="mb-3">
-                                            <label class="form-label">Plate Type</label>
+                                            <label class="form-label">
+                                                Plate Type
+                                            </label>
                                             <select class="form-select"
                                                     id="type"
                                                     name="type"
@@ -402,7 +406,7 @@
                                     </div>
                                     <div class="col-md-12 mb-0">
                                         <div class="mb-3">
-                                            <label class="form-label">
+                                            <label>
                                                 Plate Number
                                             </label>
                                             <input type="text"
