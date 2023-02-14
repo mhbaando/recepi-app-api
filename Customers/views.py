@@ -240,9 +240,9 @@ def view_company(request):
 def block_company(request):
     if request.method == 'POST':
         try:
-            co_id = request.POST.get('companyid').strip()
-            co_desc = request.POST.get('desc')
-            c_doc = request.FILES['companyDoc']
+            co_id = request.POST.get('co_id').strip()
+            co_desc = request.POST.get('co_desc')
+            c_doc = request.FILES['co_doc']
             company = ""
             if co_id is None or co_desc is None or c_doc is None:
                 return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
@@ -267,7 +267,7 @@ def block_company(request):
                 names = request.user.first_name + ' ' + request.user.last_name
                 avatar = str(request.user.avatar)
                 module = "Customer / company_block"
-                action = f'Block  A Company {company.full_name}'
+                action = f'Block  A Company {company.company_name}'
                 path = request.path
                 sendTrials(request, username, names,
                            avatar, action, module, path)
