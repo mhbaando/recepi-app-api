@@ -8,10 +8,10 @@
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">Home / Company /</span> {{ pageTitle }}
         </h4>
+        <a href="{% url 'register_company' %}">
+            <button type="button" class="btn btn-primary btn-lg mb-3">Add New</button>
+        </a>
         <div class="row">
-            <a href="{% url 'register_company' %}">
-                <button type="button" class="btn btn-primary btn-lg mb-3">Add New</button>
-            </a>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
