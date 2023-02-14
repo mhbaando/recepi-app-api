@@ -11,7 +11,7 @@
             <div class="d-flex align-items-end justify-content-end ">
                 <span class="text-danger cursor">X</span>
             </div>
-            <form>
+            <form id="block-form">
                 {% csrf_token %}
                 {% comment %} model content {% endcomment %}
                 <div class="col">
@@ -41,7 +41,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary close">Close</button>
-                            <button type="button" class="btn btn-primary btn_block">Block Company</button>
+                            <button type="submit" class="btn btn-primary">Block Company</button>
                         </div>
                     </div>
                 </div>
