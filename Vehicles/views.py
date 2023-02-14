@@ -45,7 +45,6 @@ def register_vehicle(request):
         engine_number = request.POST.get('engine_number', None)
         rv_num = request.POST.get('rv_num', None)
         owner_id = request.POST.get('owner_id', None)
-        rv_num = request.POST.get('rv_num', None)
 
         owner = customer_model.customer.objects.filter(
             Q(customer_id=owner_id)).first()
@@ -122,7 +121,7 @@ def seach_transfer(request, search):
                 'owner_name': f"{ find_rv.rv_from.firstname} {find_rv.rv_from.middle_name} {find_rv.rv_from.lastname} ",
                 'mother_name': find_rv.rv_from.mother_name,
                 'personal_id': find_rv.rv_from.personal_id,
-                "receipt_number":find_rv.rv_number,
+                "receipt_number": find_rv.rv_number,
 
             })
 
@@ -134,6 +133,42 @@ def seach_transfer(request, search):
         'isError': True,
         'message': 'Method not allowd'
     })
+
+
+def get_receipt_owner_vehicle(request):
+
+    if request.method == 'GET':
+
+        receipt_no = request.GET.get('receiptNumber')
+        receipt = None
+        receipt_owner = None
+        message = None
+        receipt_is_new = ""
+        receipt_belongs_to_transfer_vehicle_account = ""
+
+        try:
+            receipt = finance_model.receipt_voucher.objects.get(
+                receipt_no=receipt_no)
+        except receipt.DoesNotExist:
+            pass
+
+        if receipt:
+
+            if receipt_is_new(receipt):
+
+                if receipt_belongs_to_transfer_vehicle_account(receipt):
+
+                   # check receipt does not belong to the same owner of vehicle that is about to be transfered.
+                    receipt_owner = receipt.rv_from.full_name + " " + \
+                        receipt.rv_from.personal_id, receipt.rv_from.customer_id
+
+                else:
+                    message = "Please provide the right receipt."
+            else:
+                message = "Receipt has been used before. Please provide new one."
+        else:
+            message = "Please provide correct receipt number"
+    return JsonResponse({'receipt_owner': receipt_owner, 'message': message})
 
 
 @login_required(login_url="Login")
@@ -151,7 +186,7 @@ def seach_transferrr(request, search):
                 'isError': False,
                 "newownermother_name": find_selected_owner.mother_name,
                 "phone": find_selected_owner.phone,
-                "new_owner_id":find_selected_owner.customer_id,
+                "new_owner_id": find_selected_owner.customer_id,
 
             })
 
@@ -207,7 +242,7 @@ def tranfercreate(request):
 
         # vehicle_new_id = vehicle_model.vehicle.objects.filter(
         #     Q(owner=new_owner_id)).first()
-        
+
         # vehicle_to_transfare = vehicle_model.vehicle.objects.filter(
         #     Q(owner__customer_id=old_owner_id)).first()
 
@@ -272,8 +307,34 @@ def vehicle_profile(request, pk):
     return render(request, 'Vehicles/vehicle_profile.html', context)
 
 
-@login_required(login_url="Login")
-def asign_plate(request,pk):
+login_required(login_url="Login")
 
-    
+
+def plate_vehicle_search(request, search):
+
+    if request.method == 'GET':
+
+        find_selected_vehicle_id = vehicle_model.vehicle.objects.filter(
+            Q(vehicle_id=search)).first()
+
+        if find_selected_vehicle_id is not None:
+            return JsonResponse({
+                'isError': False,
+                "vehicle_hid_id": find_selected_vehicle_id.vehicle_id
+
+            })
+
+        return JsonResponse({
+            'isError': True,
+            'message': 'owner name Not Found'
+        })
+    return JsonResponse({
+        'isError': True,
+        'message': 'Method not allowd'
+    }, status=400)
+
+
+@login_required(login_url="Login")
+def asign_plate(request, pk):
+
     return redirect("veiw-vehicle")

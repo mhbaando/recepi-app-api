@@ -22,7 +22,7 @@ $(document).ready(function(){
       // request to the backeend 
       $.ajax({
         type: 'GET',
-        url: '/vehicles/transfer-search/'+value,
+        url: '/vehicles/getreceipt/'+value,
         async: false,
         headers: { "X-CSRFToken": csrftoken },
         success: function (data) {
