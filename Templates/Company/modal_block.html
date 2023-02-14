@@ -11,7 +11,7 @@
             <div class="d-flex align-items-end justify-content-end ">
                 <span class="text-danger cursor">X</span>
             </div>
-            <form>
+            <form id="block-form">
                 {% csrf_token %}
                 {% comment %} model content {% endcomment %}
                 <div class="col">
@@ -39,9 +39,9 @@
                                       rows="4"
                                       required="required"></textarea>
                         </div>
-                        <div class="action-btn  ">
-                            <button type="button" class="btn btn-outline-danger me-4 cancle-btn">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Block</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary close">Close</button>
+                            <button type="submit" class="btn btn-primary">Block Company</button>
                         </div>
                     </div>
                 </div>
