@@ -5,6 +5,7 @@ $(document).ready(function(){
   $("#DataNumber").change(function () {
     RefreshPage();
   });
+  
 
   const ownar_name = $("#ownar_name")
   const owner_mother = $("#owner_mother")
@@ -93,6 +94,13 @@ const description = $("#description")
     formData.append("olold_hid_id",old_hid_idd.val());
     formData.append("receipt_number",receipt_number.val());
     formData.append("new_owner_id",new_owner_id.val());
+
+    $("#transfare_document").change(function(){
+      let file = this.files[0]
+      if(file){
+        $("#doc-name").text(file.name)
+      }
+    })
     
     $.ajax({
   method: "POST",

@@ -272,8 +272,8 @@ def vehicle_profile(request, pk):
     return render(request, 'Vehicles/vehicle_profile.html', context)
 
 
-# @login_required(login_url="Login")
-# def Asign_plate(request):
+@login_required(login_url="Login")
+def asign_plate(request,pk):
 
-#     context = {}
-#     return render(request, "vehicles/assign_mo.html", context)
+    
+    return redirect("veiw-vehicle")
