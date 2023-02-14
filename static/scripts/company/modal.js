@@ -1,28 +1,24 @@
 $(document).ready(function () {
     const overlay = $(".overlay")
     const modal = $(".model-container")
+    const form = $("#block-form")
     const cursor = $(".cursor")
-
-
-    // block company
-
+    let companyID;
+      // block company
       // show model on click
       const btn_block = document.querySelectorAll("#block-btn")
       // loop over the node list
       btn_block.forEach(btn => {
           btn.addEventListener('click', function(){
-              
-              companyInfo.attr('value', selectedcompany)
+            companyID = $(this).data('companyid')
               overlay.attr('class', 'overlay')
               modal.attr('class','model-contaier')
+             
           })
       });
-  
-   
 
-    $("#blockbtn").on("click",()=>{
-        // overlay.classList.remove("hidden")
-        // modal.classList.remove("hidden")
+    $(".btn_block").on("click",()=>{
+       
         overlay.attr("class", "overlay")
         modal.attr("class", "model-container")
     })
@@ -42,45 +38,46 @@ $(document).ready(function () {
         modal.attr("class", "modal-footer hidden")
     })
 
+   
 
-    $("#doc").on("change",function(){
+    let companyDoc=""
+  $("#doc").on("change",function(){
 		let file = this.files[0]
 		if(file){
+      companyDoc = file
 			$("#doc-name").text(file.name)
-		}
+		}else{
+      companyDoc = undefined
+    }
 	})
-
 
      // send data to the backend 
     // block company 
     form.on('submit',function(e){
         e.preventDefault()
         const desc = $('#desc').val()
-
-        // if(customerInfo.val().trim().length <= 0){
-        //     return Swal.fire("Error", "No Customer Selected", "error");
-        // }
-
+       
+       
         if(!companyDoc  ){
             return Swal.fire("Error", "Uppload Verification Document", "error");
         }
-
+       
         if(desc.trim().length <= 0){
             return Swal.fire("Error", "Description Is Required", "error");
         }
 
 
+        let companyInfo;
         
-        const companyID = companyInfo.val().split("-")[1]
         const formData = new FormData(this)
 
-        formData.append('perosonalID', companyID)
-        formData.append('desc',desc),
-        formData.append('companyDoc',companyDoc)
+        formData.append('co_id', companyID)
+        formData.append('co_desc',desc),
+        formData.append('co_doc',companyDoc)
 
         $.ajax({
             method: "POST",
-            url: "/Company/modal_block",
+            url: "/customer/company_block",
             headers: { "X-CSRFToken": csrftoken },
             processData: false,
             contentType: false,
