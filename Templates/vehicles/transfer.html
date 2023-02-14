@@ -28,6 +28,7 @@
                                                name="old_hid_id"
                                                hidden
                                                placeholder="Owner's Name"/>
+                                               
                                         <input type="text" class="form-control" id="rv_num" placeholder="RV ID">
                                     </div>
                                 </div>
@@ -35,7 +36,7 @@
                                     <label for="company">New Owner's Name</label>
                                     <div class="input-group">
                                         <input list="customers"
-                                               name="customers"
+                                               name="Typelist"
                                                id="selected_owner"
                                                class="form-control rounded"
                                                placeholder="Search Customer Name"
@@ -57,17 +58,24 @@
                                                id="ownar_name"
                                                disabled
                                                placeholder="Owner's Name">
+
+                                               <input type="text"
+                                               class="form-control"
+                                               id="receipt_number"
+                                               name="receipt_number"
+                                               hidden
+                                               placeholder="Owner's Name"/>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
                                         <label class="form-label">NeW Ownar mothers Name</label>
                                         <input type="text"
-                                               class="form-control"
-                                               id="vehicle_id"
-                                               name="vehicle_id"
-                                               hidden
-                                               placeholder="Owner's Name"/>
+                                        class="form-control"
+                                        id="new_owner_id"
+                                        name="new_owner_id"
+                                        hidden
+                                        placeholder="New Ownar Mother's Name">
                                         <input type="text"
                                                class="form-control"
                                                id="newownermother_name"
@@ -87,12 +95,12 @@
                                 </div>
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
-                                        <label class="form-label">New Owner's Personal ID</label>
+                                        <label class="form-label">Phone</label>
                                         <input type="text"
                                                class="form-control"
-                                               id="new_owner_id"
+                                               id="phone"
                                                disabled
-                                               placeholder="personal id">
+                                               placeholder="phone">
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-0">
@@ -103,11 +111,8 @@
                                 </div>
                                 <div class="col-md-6 mb-0">
                                     <div class="col mt-5">
-                                        <label for="doc" class="uppload-btn btn btn-primary">
-                                            <i class="bx bx-upload"></i>
-                                            Click to Upload
-                                        </label>
-                                        <input type="file" id="doc" name="doc" hidden/>
+                                        <input type="file" id="doc" class="form-control" accept="application/pdf"/>
+                                    <p id="doc-name"></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-0">

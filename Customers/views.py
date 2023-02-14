@@ -546,9 +546,23 @@ def customer_list(request):
 
 @ login_required(login_url="Login")
 def customer_profile(request, id):
+    if request.method == 'GET':
+        if id is not None:
+            customer = ''
+            if request.user.is_superuser:
+                # for admin user
+                customer = customer_model.customer.objects.filter(
+                    Q(customer_id=id)).first()
+            else:
+                # for state user
+                customer = customer_model.customer.objects.filter(
+                    Q(customer_id=id), federal_state=request.user.federal_state).first()
 
-    context = {
-        'pageTitle': 'Profile'
-    }
+            context = {
+                'customer': customer,
+                'pageTitle': 'Profile'
+            }
 
-    return render(request, 'Customer/profile.html', context)
+            return render(request, 'Customer/profile.html', context)
+        else:
+            return JsonResponse({'isError': True, 'Message': 'Provide a customer ID'}, status=400)
