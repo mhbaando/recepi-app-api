@@ -170,14 +170,6 @@ def register_customer(request):
 
 
 @login_required(login_url='Login')
-def r_company(request):
-    context = {
-        'pageTitle': 'R comapny'
-    }
-    return render(request, 'Company/re.html', context)
-
-
-@login_required(login_url='Login')
 def view_company(request):
 
     CheckSearchQuery = 'SearchQuery' in request.GET
@@ -244,20 +236,57 @@ def view_company(request):
     return render(request, 'company/view_company.html', context)
 
 
-# @login_required(login_url='Login')
-# def detail_company(request):
-#     context = {
-#         'pageTitle': 'Company Details'
-#     }
-#     return render(request, 'company/comp_details.html', context)
-
-
 @login_required(login_url='Login')
 def block_company(request):
-    context = {
-        'pageTitle': 'block company'
-    }
-    return render(request, 'company/block_company.html', context)
+    if request.method == 'POST':
+        try:
+            co_id = request.POST.get('companyid').strip()
+            co_desc = request.POST.get('desc')
+            c_doc = request.FILES['companyDoc']
+            company = ""
+            if co_id is None or co_desc is None or c_doc is None:
+                return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
+
+            # find the company for admin
+            if request.user.is_superuser:
+                company = customer_model.company.objects.filter(
+                    Q(company_id=co_id)).first()
+            else:
+                # for regular users
+                company = customer_model.company.objects.filter(
+                    Q(company_id=co_id), federal_state=request.user.federal_state).first()
+
+            if company is not None:
+                company. is_blocked = True
+                company.document = c_doc
+                company.description = co_desc
+                company.save()
+                # customer.update(is_verified=True,
+                #                 document=c_doc, description=c_desc)
+                username = request.user.username
+                names = request.user.first_name + ' ' + request.user.last_name
+                avatar = str(request.user.avatar)
+                module = "Customer / company_block"
+                action = f'Block  A Company {company.full_name}'
+                path = request.path
+                sendTrials(request, username, names,
+                           avatar, action, module, path)
+
+                return JsonResponse({'isError': False, 'Message': 'Company blocked'}, status=200)
+
+            return JsonResponse({'isError': True, 'Message': 'Company not found'}, status=404)
+
+        except Exception as error:
+            username = request.user.username
+            name = request.user.first_name + ' ' + request.user.last_name
+            # register the error
+            sendException(
+                request, username, name, error)
+            message = {
+                'isError': True,
+                'Message': 'On Error Occurs . Please try again or contact system administrator'
+            }
+            return JsonResponse(message, status=200)
 
 
 @login_required(login_url="Login")
