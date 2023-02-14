@@ -16,6 +16,16 @@ $(document).ready(function () {
              
           })
       });
+      const btnblock = document.querySelectorAll("#blockbtn")
+      // loop over the node list
+      btnblock.forEach(btn => {
+          btn.addEventListener('click', function(){
+            companyID = $(this).data('companyid')
+              overlay.attr('class', 'overlay')
+              modal.attr('class','model-contaier')
+             
+          })
+      });
 
     $(".btn_block").on("click",()=>{
        
