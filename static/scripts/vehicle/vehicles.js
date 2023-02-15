@@ -1,4 +1,32 @@
-$(document).ready(function () { 
+$(document).ready(function () {
+  
+  let vehicleId = ""
+  const ownar_name = $("#owner_info")
+  const hidden= $("#veh_hid_id")
+  const number=$("#number")
+  const vhbtns = document.querySelectorAll("#vehicle_id")
+  vhbtns.forEach(btn=>{
+    btn.addEventListener("click",function(){
+      vehicleId = $(this).data('vehicleid')
+ 
+      fetch('/vehicles/vehicle_info/'+vehicleId,{
+        method: 'GET',
+        headers: { "X-CSRFToken": csrftoken },
+      }).then(res=> res.json()).then(data=>{
+        // succes
+        ownar_name.attr('value', `${data.vehicle_model} - ${data.owner}`)
+        number.attr('value',`${data.number.toString().padStart(4, '0')}`)
+
+      }).catch(err=>{
+        // handler error
+      })
+  })
+})
+ 
+
+
+
+
   $("#doc").on("change",function(){
   let file = this.files[0]
   if(file){
@@ -46,7 +74,7 @@ $(document).ready(function () {
   }
 
   // plate number
-
+// request to the backend getting the selected code, type,state 
 
   let type = ""
     $("#type").on("change",()=>{
@@ -61,19 +89,11 @@ $(document).ready(function () {
         state = $("#state option:selected").val()
     })
 
-    
+ 
+  
 
-    // show model on click
-    // const vreify_btn = document.querySelectorAll("#verify-btn")
-    // // loop over the node list
-    // vreify_btn.forEach(btn => {
-    //     btn.addEventListener('click', function(){
-    //         const vehicle_hid_id = $(this).data('vehicle_id')
-    //         customerInfo.attr('value', selectedCustomer)
-    //         overlay.attr('class', 'overlay')
-    //         modal.attr('class','model-contaier')
-    //     })
-    // });
+   
+
 
     $('#reg_form').on('submit',function(e){
       e.preventDefault();
@@ -83,7 +103,7 @@ $(document).ready(function () {
       formData.append("code",code);
       formData.append("state",state);
       formData.append("number",number);
-      formData.append("vehicle_hid_id",vehicle_hid_id);
+  
     
   
      
@@ -128,5 +148,9 @@ $(document).ready(function () {
   
     })
     
-});
 
+
+
+
+
+  })

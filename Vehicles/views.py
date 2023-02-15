@@ -12,10 +12,6 @@ from Customers import models as customer_model
 from Finance import models as finance_model
 from Finance.models import receipt_voucher
 from django.db.models import Q
-import logging
-
-
-logger = logging.getLogger(__name__)
 
 
 @login_required(login_url="Login")
@@ -139,40 +135,35 @@ def seach_transfer(request, search):
     })
 
 
-def get_receipt_owner_vehicle(request):
+@login_required(login_url="Login")
+def vehicle_plate_info(request, id):
 
     if request.method == 'GET':
+        # look up the rv
+        # find_rv = finance_model.receipt_voucher.objects.filter(
+        #     Q(rv_number__icontains=id)).first()
+        find_selected_owner = vehicle_model.vehicle.objects.filter(
+            Q(vehicle_id=id)).first()
 
-        receipt_no = request.GET.get('receiptNumber')
-        receipt = None
-        receipt_owner = None
-        message = None
-        receipt_is_new = ""
-        receipt_belongs_to_transfer_vehicle_account = ""
+        find_latest_plate = vehicle_model.plate.objects.order_by(
+            '-created_at').first()
 
-        try:
-            receipt = finance_model.receipt_voucher.objects.get(
-                receipt_no=receipt_no)
-        except receipt.DoesNotExist:
-            pass
+        if find_selected_owner is not None:
+            return JsonResponse({
+                'isError': False,
+                "vehicle_model": find_selected_owner.vehicle_model.brand_name,
+                "owner": find_selected_owner.owner.full_name,
+                "number": find_latest_plate.plate_no
+            })
 
-        if receipt:
-
-            if receipt_is_new(receipt):
-
-                if receipt_belongs_to_transfer_vehicle_account(receipt):
-
-                   # check receipt does not belong to the same owner of vehicle that is about to be transfered.
-                    receipt_owner = receipt.rv_from.full_name + " " + \
-                        receipt.rv_from.personal_id, receipt.rv_from.customer_id
-
-                else:
-                    message = "Please provide the right receipt."
-            else:
-                message = "Receipt has been used before. Please provide new one."
-        else:
-            message = "Please provide correct receipt number"
-    return JsonResponse({'receipt_owner': receipt_owner, 'message': message})
+        return JsonResponse({
+            'isError': True,
+            'message': 'owner name Not Found'
+        })
+    return JsonResponse({
+        'isError': True,
+        'message': 'Method not allowd'
+    }, status=400)
 
 
 @login_required(login_url="Login")
@@ -311,48 +302,7 @@ def vehicle_profile(request, pk):
     return render(request, 'Vehicles/vehicle_profile.html', context)
 
 
-login_required(login_url="Login")
-
-
-def plate_vehicle_search(self):
-
-    plate_code = None
-    plate_no = None
-    searchQuery = self.request.GET.get('search')
-
-    if searchQuery != '' and searchQuery != None:
-
-        space_index = searchQuery.find(" ")
-
-        logger.error(space_index)
-
-        if space_index != -1:
-            plate_code = searchQuery[:space_index]
-            plate_no = searchQuery[space_index + 1:]
-
-            if plate_code and plate_no:
-
-                try:
-                    plate_code = vehicle_model.vehicle.objects.get(
-                        platecode__iexact=plate_code)
-                except:
-                    pass
-
-                if plate_code:
-                    try:
-                        plate = vehicle_model.vehicle.objects.filter(
-                            code=plate_code).get(plate_no__iexact=plate_no)
-                    except:
-                        pass
-                    if plate:
-
-                        vehicle = vehicle_model.vehicle.objects.filter(
-                            plate=plate)
-
-                        return vehicle
-
-
 @login_required(login_url="Login")
 def asign_plate(request, pk):
 
-    return redirect("veiw-vehicle")
+    return redirect("view-vehicle")

@@ -14,12 +14,18 @@ urlpatterns = [
     path('transfer-searchh/<str:search>', views.seach_transferrr),
     path("registervehicle", views.register_vehicle, name="register-vehicle"),
     path("assignplate/<str:pk>/", views.asign_plate, name="assignplate"),
-    path("assignplate/<str:search>/",
-         views.plate_vehicle_search, name="assign_plate"),
 
 
 
-    path("getreceipt/", views.get_receipt_owner_vehicle, name="getreceipt"),
+    path("vehicle_info/<int:id>/",
+         views.vehicle_plate_info),
+
+
+
+
+
+
+
 
 
 ]

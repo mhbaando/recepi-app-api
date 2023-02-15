@@ -28,7 +28,6 @@
                                                name="old_hid_id"
                                                hidden
                                                placeholder="Owner's Name"/>
-                                               
                                         <input type="text" class="form-control" id="rv_num" placeholder="RV ID">
                                     </div>
                                 </div>
@@ -58,8 +57,7 @@
                                                id="ownar_name"
                                                disabled
                                                placeholder="Owner's Name">
-
-                                               <input type="text"
+                                        <input type="text"
                                                class="form-control"
                                                id="receipt_number"
                                                name="receipt_number"
@@ -71,11 +69,11 @@
                                     <div class="mb-3">
                                         <label class="form-label">NeW Ownar mothers Name</label>
                                         <input type="text"
-                                        class="form-control"
-                                        id="new_owner_id"
-                                        name="new_owner_id"
-                                        hidden
-                                        placeholder="New Ownar Mother's Name">
+                                               class="form-control"
+                                               id="new_owner_id"
+                                               name="new_owner_id"
+                                               hidden
+                                               placeholder="New Ownar Mother's Name">
                                         <input type="text"
                                                class="form-control"
                                                id="newownermother_name"
@@ -112,7 +110,7 @@
                                 <div class="col-md-6 mb-0">
                                     <div class="col mt-5">
                                         <input type="file" id="doc" class="form-control" accept="application/pdf"/>
-                                    <p id="doc-name"></p>
+                                        <p id="doc-name"></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-0">
@@ -195,8 +193,8 @@
                                         {% for trans in transfer %}
                                             <tr>
                                                 <td>{{ trans.rv_number }}</td>
-                                                <td>{{ trans.old_owner }}</td>
-                                                <td>{{ trans.new_owner }}</td>
+                                                <td>{{ trans.old_owner.full_name }}</td>
+                                                <td>{{ trans.new_owner.full_name }}</td>
                                                 <td>{{ trans.vehicle }}</td>
                                             </tr>
                                         {% endfor %}
