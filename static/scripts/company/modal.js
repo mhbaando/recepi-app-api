@@ -2,6 +2,9 @@ $(document).ready(function () {
     const overlay = $(".overlay")
     const modal = $(".model-container")
     const form = $("#block-form")
+    const form1 = $("#edit-form")
+
+    const button = $("#btnprofile")
     const cursor = $(".cursor")
     let companyID;
       // block company
@@ -21,6 +24,21 @@ $(document).ready(function () {
       btnblock.forEach(btn => {
           btn.addEventListener('click', function(){
             companyID = $(this).data('companyid')
+              overlay.attr('class', 'overlay')
+              modal.attr('class','model-contaier')
+             
+          })
+      });
+      // profile modal
+      const btnprofile = document.querySelectorAll("#btnprofile")
+      // loop over the node list
+      btnprofile.forEach(btn => {
+          btn.addEventListener('click', function(){
+            companyName= $(this).data('company_name')
+            cWebsite = $(this).data('webiste')
+            cAddress= $(this).data(' address')
+            cRegisterNo = $(this).data('reg_no')
+
               overlay.attr('class', 'overlay')
               modal.attr('class','model-contaier')
              
@@ -122,4 +140,5 @@ $(document).ready(function () {
         })  
     })
 
+    
 })
