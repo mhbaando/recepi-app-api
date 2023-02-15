@@ -211,7 +211,7 @@ def view_company(request):
         # for admin users
         else:
             companies = customer_model.company.objects.filter(
-                Q(firstname__icontains=SearchQuery)).order_by('-created_at')
+                Q(company_name__icontains=SearchQuery)).order_by('-created_at')
 
     else:
 
@@ -226,12 +226,12 @@ def view_company(request):
     page_number = request.GET.get('page')
     companies_obj = paginator.get_page(page_number)
 
-    # pass cutomers and data number down to the context
+    # pass company and data number down to the context
     context['total'] = len(companies)
     context['DataNumber'] = DataNumber
     context['companies'] = companies_obj
     context['SearchQuery'] = SearchQuery
-    # context['Status'] = Status
+    context['Status'] = Status
 
     return render(request, 'company/view_company.html', context)
 
@@ -292,12 +292,26 @@ def block_company(request):
 @login_required(login_url="Login")
 def company_profile(request, id):
 
-    context = {
-        'pageTitle': 'Company / Profile'
-    }
+    if request.method == 'GET':
+        if id is not None:
+            company = ''
+            if request.user.is_superuser:
+                # for admin user
+                company = customer_model.company.objects.filter(
+                    Q(company_id=id)).first()
+            else:
+                # for state user
+                company = customer_model.company.objects.filter(
+                    Q(company_id=id), federal_state=request.user.federal_state).first()
 
-    return render(request, 'Company/comp_profile.html', context)
+            context = {
+                'company': company,
+                'pageTitle': 'Company / Profile'
+            }
 
+            return render(request, 'Company/comp_profile.html', context)
+        else:
+            return JsonResponse({'isError': True, 'Message': 'Provide a customer ID'}, status=400)
 
 # customers
 
