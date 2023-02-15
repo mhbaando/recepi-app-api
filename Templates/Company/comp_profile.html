@@ -8,20 +8,23 @@
     <div class="container-xxl flex-grow-1 mb-4">
         <div class="d-flex">
             <h4 class="fw-bold col-2 py-3 mb-4 w-100">
-                <span class="text-muted fw-light">Home / company /</span> {{ pageTitle }}
+                <span class="text-muted fw-light">Home / Company/</span> {{ pageTitle }}
             </h4>
         </div>
         <div class="container row gap-3">
             <div class="col-sm-12 col-lg-3 h-50 bg-white rounded p-4 d-flex  justify-content-center">
                 <div class="d-flex flex-column align-items-center justify-content-center ">
                     <img class="customer-img mb-5"
-                         src="{% static "assets/img/customers/placeholder.png" %}"
+                         src="{% if company.logo %} {{ company.logo.url }} {% else %} {% static "assets/img/company/OIP.jpg" %} {% endif %}"
                          alt="customer"
                          width="160"
                          height="160"/>
-                    <h3>Aziza Rage Ahmed</h3>
-                    <p class="text-muted mb-3">ID: 14587899557755</p>
-                    <button class="btn btn-outline-primary" id="blockbtn">Edit</button>
+                    <h4 class="fs-5 text-center">{{ company.company_name }}</h4>
+                    <p class="text-muted mb-3">ID: {{ company.reg_no }}</p>
+                    <button class="btn btn-primary btn-large w-100">
+                        <i class="bx bxs-edit-alt me-3 " id="btnedit"></i>
+                        Edit
+                    </button>
                 </div>
             </div>
             <div class="col-sm-12 col-lg bg-white rounded pt-4">
@@ -35,7 +38,7 @@
                                     data-bs-target="#navs-pills-basic-info"
                                     aria-controls="navs-pills-basic-info"
                                     aria-selected="true">
-                                company
+                                Company
                             </button>
                         </li>
                         <li class="nav-item">
@@ -100,61 +103,21 @@
                              role="tabpanel">
                             <div >
                                 <div class="row mb-2">
-                                    <p class="fw-bold col-2">Company Name</p>
-                                    <p class="text-uppercase col">Al Taqwa</p>
+                                    <p class="fw-bold col-2">Name</p>
+                                    <p class="text-uppercase col">{{ company.company_name }}</p>
                                 </div>
                                 <div class="row mb-2">
-                                    <p class="fw-bold col-2">Mother’s Name</p>
-                                    <p class="text-uppercase col">Caasho Cabdi Salax</p>
+                                    <p class="fw-bold col-2">Website</p>
+                                    <p class="text-uppercase col">{{ company.website }}</p>
                                 </div>
                                 <div class="row mb-2">
-                                    <p class="fw-bold col-2">Personal ID</p>
-                                    <p class="text-uppercase col">1324158789895450</p>
+                                    <p class="fw-bold col-2">Address</p>
+                                    <p class="text-uppercase col">{{ company.address }}</p>
                                 </div>
-                                <div class="row mb-2">
-                                    <p class="fw-bold col-2">Gender</p>
-                                    <p class="text-uppercase col">Female</p>
-                                </div>
-                                <div class="row mb-2">
-                                    <p class="fw-bold col-2">Blood group</p>
-                                    <p class="text-uppercase col">O+</p>
-                                </div>
-                                <div class="row mb-2">
-                                    <p class="fw-bold col-2">Nationality</p>
-                                    <p class="text-uppercase col">Ethiopian</p>
-                                </div>
-                                <div class="row mb-2">
-                                    <p class="fw-bold col-2">Email</p>
-                                    <p class="text-uppercase col">caziza@gmail.com</p>
-                                </div>
-                                <div class="row mb-2">
-                                    <p class="fw-bold col-2">Phone</p>
-                                    <p class="text-uppercase col">+252 617 123 132</p>
-                                </div>
-                                <div class="row mb-2">
-                                    <p class="fw-bold col-2">
-                                        Date of Birth
-                                    </p>
-                                    <p class="text-uppercase col">
-                                        Jun / 19 / 2000
-                                    </p>
-                                </div>
-                                <div class="row mb-2">
-                                    <p class="fw-bold col-2">
-                                        State
-                                    </p>
-                                    <p class="text-uppercase col">
-                                        Banaadir
-                                    </p>
-                                </div>
-                                <div class="row mb-2">
-                                    <p class="fw-bold col-2">
-                                        Address
-                                    </p>
-                                    <p class="text-uppercase col">
-                                        Jamhuriya, Kaaran, BN, Mogadishu Somalia
-                                    </p>
-                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <p class="fw-bold col-2">Registration No</p>
+                                <p class="text-uppercase col">{{ company.reg_no }}</p>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="navs-pills-vehicles" role="tabpanel">
@@ -205,34 +168,18 @@
                                     <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
                                         <thead>
                                             <tr>
-                                                <th class="wd-15p border-bottom-0">
-                                                    Model Brand
-                                                </th>
-                                                <th class="wd-15p border-bottom-0">
-                                                    VIN
-                                                </th>
-                                                <th class="wd-15p border-bottom-0">
-                                                    Registered Data
-                                                </th>
-                                                <th class="wd-15p border-bottom-0">
-                                                    Plate
-                                                </th>
+                                                <th class="wd-15p border-bottom-0">Model Brand</th>
+                                                <th class="wd-15p border-bottom-0">VIN</th>
+                                                <th class="wd-15p border-bottom-0">Registered Data</th>
+                                                <th class="wd-15p border-bottom-0">Plate</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>
-                                                    Tesla
-                                                </td>
-                                                <td>
-                                                    1454587965954121
-                                                </td>
-                                                <td>
-                                                    July/4/2022
-                                                </td>
-                                                <td>
-                                                    BNAG4785
-                                                </td>
+                                                <td>Tesla</td>
+                                                <td>1454587965954121</td>
+                                                <td>July/4/2022</td>
+                                                <td>BNAG4785</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -274,9 +221,7 @@
                         <div class="tab-pane fade" id="navs-pills-licenses" role="tabpanel">
                             <div >
                                 <div class="row mb-2">
-                                    <p class="fw-bold col-2">
-                                        License no
-                                    </p>
+                                    <p class="fw-bold col-2">License no</p>
                                     <p class="text-uppercase col">
                                         48759444596114325452
                                     </p>
@@ -679,5 +624,6 @@
 </div>
 {% endblock content %}
 {% block scriptData %}
-<script src="{% static "scripts/company/profile.js" %}"></script>
+<script src="{% static "scripts/company/modal.js" %}"></script>
+<script src="{% static "scripts/company/cview.js" %}"></script>
 {% endblock scriptData %}
