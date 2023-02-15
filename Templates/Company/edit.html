@@ -1,0 +1,60 @@
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/company/model.css" %}"/>
+    <link rel="stylesheet"
+          href="{% static "assets/css/company-register.css" %}"/>
+{% endblock cssData %}
+<div class="overlay hidden"></div>
+<div class="model-container hidden">
+    <div class="model">
+        <div class="w-100">
+            <div class="d-flex align-items-end justify-content-end ">
+                <span class="text-danger cursor">X</span>
+            </div>
+            <form id="edit-form">
+                {% csrf_token %}
+                {% comment %} model content {% endcomment %}
+                <div class="col">
+                    <label for="company">Company Name</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Company Name"
+                           required="required"
+                           id="cname"/>
+                </div>
+                <div class="col">
+                    <label for="company">Website</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="website"
+                           required="required"
+                           id="website"/>
+                </div>
+                <div class="col">
+                    <label for="company">Address</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Address"
+                           required="required"
+                           id="address"/>
+                </div>
+                <div class="col">
+                    <label for="company">Registration No</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Registration No"
+                           required="required"
+                           id="rnumber"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+{% block scriptData %}
+    <script src="{% static "scripts/company/modal.js" %}"></script>
+{% endblock scriptData %}
