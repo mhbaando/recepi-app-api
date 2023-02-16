@@ -35,6 +35,19 @@ class color(models.Model):
         return self.color_name
 
 
+class type(models.Model):
+    type_id = models.AutoField(primary_key=True)
+    type_name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    # Todo: user relation
+    reg_user = models.ForeignKey(Users, on_delete=models.RESTRICT)
+
+    class Meta:
+        db_table = 'type'
+
+
 class cylinder(models.Model):
     cylinder_id = models.AutoField(primary_key=True)
     cylinder_name = models.CharField(max_length=100)
@@ -87,6 +100,7 @@ class plate(models.Model):
     plate_id = models.AutoField(primary_key=True)
     plate_code = models.CharField(max_length=100)
     plate_no = models.IntegerField()
+    type = models.ForeignKey(type, on_delete=models.RESTRICT, null=True)
     year = models.IntegerField()
     state = models.ForeignKey(
         customer_model.federal_state, on_delete=models.RESTRICT)

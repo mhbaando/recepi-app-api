@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2023 at 09:03 PM
+-- Generation Time: Feb 11, 2023 at 01:00 PM
 -- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- PHP Version: 8.0.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -83,9 +83,7 @@ CREATE TABLE `audittrials` (
 --
 
 INSERT INTO `audittrials` (`id`, `Avatar`, `Username`, `path`, `Name`, `Actions`, `Module`, `date_of_action`, `operating_system`, `browser`, `ip_address`, `user_agent`) VALUES
-(1, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-11 11:58:36.878453', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(2, '', 'azuu', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-16 16:58:00.516077', 'Windows', 'Chrome', '127.0.0.1', '127.0.0.1,Windows,Chrome'),
-(3, '', 'azuu', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-16 19:16:52.018401', 'Windows', 'Chrome', '127.0.0.1', '127.0.0.1,Windows,Chrome');
+(1, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-11 11:58:36.878453', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge');
 
 -- --------------------------------------------------------
 
@@ -227,11 +225,7 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (97, 'Can add plate', 25, 'add_plate'),
 (98, 'Can change plate', 25, 'change_plate'),
 (99, 'Can delete plate', 25, 'delete_plate'),
-(100, 'Can view plate', 25, 'view_plate'),
-(101, 'Can add type', 26, 'add_type'),
-(102, 'Can change type', 26, 'change_type'),
-(103, 'Can delete type', 26, 'delete_type'),
-(104, 'Can view type', 26, 'view_type');
+(100, 'Can view plate', 25, 'view_plate');
 
 -- --------------------------------------------------------
 
@@ -693,16 +687,8 @@ CREATE TABLE `customers` (
   `federal_state_id` int(11) DEFAULT NULL,
   `nationality_id` int(11) NOT NULL,
   `personal_id_type_id` int(11) DEFAULT NULL,
-  `reg_user_id` bigint(20) NOT NULL,
-  `description` longtext DEFAULT NULL
+  `reg_user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `customers`
---
-
-INSERT INTO `customers` (`customer_id`, `firstname`, `middle_name`, `lastname`, `fourth_name`, `mother_name`, `full_name`, `gender`, `date_of_birth`, `place_of_birth`, `personal_id`, `email`, `address`, `phone`, `photo`, `document`, `is_verified`, `created_at`, `modified_at`, `blood_group_id`, `federal_state_id`, `nationality_id`, `personal_id_type_id`, `reg_user_id`, `description`) VALUES
-(1, 'tryt', 'utj6yu', 'tuh6y', 'uh6tyuj6yu', '6yuj76yuj6y', 'uj6y7iuj76yiuj', 'u6tyh6', '2023-02-16', '8uhiui8u', 'p-63435634', 'azuu@gmail.com', 'kaaraan', 'tyujyj', 'customer_images/download_1.jpg', 'customer_document/sample.pdf', 0, '2023-02-16 17:00:09.280462', '2023-02-16 17:00:09.280462', 2, 2, 2, 1, 2, '45t54rty65y');
 
 -- --------------------------------------------------------
 
@@ -749,17 +735,6 @@ CREATE TABLE `django_admin_log` (
   `user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `django_admin_log`
---
-
-INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
-(1, '2023-02-16 17:00:09.282456', '1', 'customer object (1)', 1, '[{\"added\": {}}]', 15, 2),
-(2, '2023-02-16 17:00:53.722169', '1', 'receipt_voucher object (1)', 1, '[{\"added\": {}}]', 11, 2),
-(3, '2023-02-16 17:01:52.177467', '1', 'plate object (1)', 1, '[{\"added\": {}}]', 25, 2),
-(4, '2023-02-16 17:15:31.418682', '1', 'plate object (1)', 2, '[]', 25, 2),
-(5, '2023-02-16 19:49:07.915676', '2', 'Audi', 1, '[{\"added\": {}}]', 23, 2);
-
 -- --------------------------------------------------------
 
 --
@@ -801,7 +776,6 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (22, 'Vehicles', 'model_brand'),
 (25, 'Vehicles', 'plate'),
 (24, 'Vehicles', 'transfare_vehicles'),
-(26, 'Vehicles', 'type'),
 (23, 'Vehicles', 'vehicle');
 
 -- --------------------------------------------------------
@@ -846,10 +820,7 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (22, 'admin', '0001_initial', '2023-02-11 11:51:41.671485'),
 (23, 'admin', '0002_logentry_remove_auto_add', '2023-02-11 11:51:41.687505'),
 (24, 'admin', '0003_logentry_add_action_flag_choices', '2023-02-11 11:51:41.687505'),
-(25, 'sessions', '0001_initial', '2023-02-11 11:51:41.703247'),
-(26, 'Customers', '0004_customer_description', '2023-02-16 16:56:17.694251'),
-(27, 'Vehicles', '0002_type', '2023-02-16 18:22:51.253403'),
-(28, 'Vehicles', '0003_plate_type', '2023-02-16 18:45:26.487823');
+(25, 'sessions', '0001_initial', '2023-02-11 11:51:41.703247');
 
 -- --------------------------------------------------------
 
@@ -869,7 +840,6 @@ CREATE TABLE `django_session` (
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
 ('3h90xe7pgnz9i72lbhwftybmvhle2m3c', 'eyJfc2Vzc2lvbl9pbml0X3RpbWVzdGFtcF8iOjE2NzYxMTY3MzQuMzE2Njg4M30:1pQoWs:VMYTixDLDBJnCOkAuA7yTQvycxNierctmYS5XZHUKYU', '2023-02-25 11:58:54.323663'),
-('nt3ykau18y4glrsoyo7eupn5t3teug6y', '.eJxVjMsOgyAQRf-FdUMccEBddt9vIDiMlT6gEVw1_fdq4qLd3nPueQvn1zq7tfDiYhCDUOL0u42e7px2EG4-XbOknOoSR7kr8qBFXnLgx_lw_wKzL_P2Zk2GcGoNtr5Rtm_IgNLUa89oDRMqYOiQidk2LSgCtqZTEFiPU4BpjxYuJebkYorV1fjkUv3z5cQAxhq0VmEvtyoi6s8XUgNGLg:1pSkKh:eOWOr8koRvkis9Q27iQIGUnW9ESAxNNzysa2vSDw9Uk', '2023-03-02 19:54:19.622082'),
 ('xlwej9sq616n1ijwab51879uuu4c7qpu', '.eJxVjDsOwyAQRO9CHSHAfF2mzxnQLpCYJIbI4CrK3WNLbtxMMe_NfIlvqbVci88ld9_znFqH-ePJyLXRfAtmqOSCmwvxsPbJry0tPkcyEk5OHUJ4pbKD-ITyqDTU0peMdFfoQRu91Zje18M9HUzQpm2NEhiGIWrlApcsKYGWgZTBWK0tRgHOKncfBqO4YTI6DTjwaAIGsSmC_P6P4UUs:1pQoWa:SE_KFKUp0hq7xP1f9fDKQ_-Ly-PoW2LTngLLhIiTV1g', '2023-02-25 11:58:36.880078');
 
 -- --------------------------------------------------------
@@ -1073,19 +1043,8 @@ CREATE TABLE `plate` (
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint(20) NOT NULL,
   `state_id` int(11) NOT NULL,
-  `vehicle_id` int(11) NOT NULL,
-  `type_id` int(11) DEFAULT NULL
+  `vehicle_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `plate`
---
-
-INSERT INTO `plate` (`plate_id`, `plate_code`, `plate_no`, `year`, `created_at`, `modified_at`, `reg_user_id`, `state_id`, `vehicle_id`, `type_id`) VALUES
-(1, 'A1', 1, 2, '2023-02-16 17:01:52.175837', '2023-02-16 17:15:31.416558', 2, 2, 1, NULL),
-(2, 'AB', 2, 2021, '2023-02-16 19:41:43.710959', '2023-02-16 19:41:43.710959', 2, 1, 1, NULL),
-(3, 'AB', 3, 2021, '2023-02-16 19:52:02.168722', '2023-02-16 19:52:02.168722', 2, 1, 2, NULL),
-(4, 'AB', 3, 2021, '2023-02-16 19:52:03.108853', '2023-02-16 19:52:03.108853', 2, 1, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -1102,43 +1061,6 @@ CREATE TABLE `receipt_voucher` (
   `reg_user_id` bigint(20) NOT NULL,
   `rv_from_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `receipt_voucher`
---
-
-INSERT INTO `receipt_voucher` (`rv_id`, `rv_number`, `rv_amount`, `created_at`, `modified_at`, `reg_user_id`, `rv_from_id`) VALUES
-(1, '222222', '50', '2023-02-16 17:00:53.721174', '2023-02-16 17:00:53.721174', 2, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `type`
---
-
-CREATE TABLE `type` (
-  `type_id` int(11) NOT NULL,
-  `type_name` varchar(100) NOT NULL,
-  `created_at` datetime(6) NOT NULL,
-  `modified_at` datetime(6) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `type`
---
-
-INSERT INTO `type` (`type_id`, `type_name`, `created_at`, `modified_at`, `reg_user_id`) VALUES
-(2, 'Gov', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(6, 'dip', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(8, 'MIL', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(10, 'MUN', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(12, 'OAU', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(13, 'POL', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(14, 'PRI', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(15, 'PUB', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(16, 'TAX', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(18, 'UN', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0);
 
 -- --------------------------------------------------------
 
@@ -1172,8 +1094,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `is_staff`, `is_active`, `date_joined`, `email`, `phone`, `gender`, `avatar`, `is_admin`, `is_state`, `modified_at`, `federal_state_id`) VALUES
-(1, 'pbkdf2_sha256$390000$sKaDcWtVLU6KzjGeJ8p6tj$QnKAkFcFuIAhSNg7EOSu9s90br8//2V7CTgPAtU5tP0=', '2023-02-11 11:58:36.876638', 1, 'admin', '', '', 1, 1, '2023-02-11 11:58:20.424718', 'mo@nisa.com', '', NULL, '', 0, 0, '2023-02-11 11:58:20.518314', NULL),
-(2, 'pbkdf2_sha256$390000$GP8UJxs526ZN1rue83spWw$aTYyndCwL4rov2dyguKwcVk/dw50Vbnb7/PBmFg8764=', '2023-02-16 19:16:52.014428', 1, 'azuu', '', '', 1, 1, '2023-02-16 16:57:18.598891', 'azuu@gmail.com', '', NULL, '', 0, 0, '2023-02-16 16:57:18.697077', NULL);
+(1, 'pbkdf2_sha256$390000$sKaDcWtVLU6KzjGeJ8p6tj$QnKAkFcFuIAhSNg7EOSu9s90br8//2V7CTgPAtU5tP0=', '2023-02-11 11:58:36.876638', 1, 'admin', '', '', 1, 1, '2023-02-11 11:58:20.424718', 'mo@nisa.com', '', NULL, '', 0, 0, '2023-02-11 11:58:20.518314', NULL);
 
 -- --------------------------------------------------------
 
@@ -1223,14 +1144,6 @@ CREATE TABLE `vehicle` (
   `reg_user_id` bigint(20) NOT NULL,
   `vehicle_model_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `vehicle`
---
-
-INSERT INTO `vehicle` (`vehicle_id`, `year`, `weight`, `hp`, `pessenger_seat`, `vin`, `enginer_no`, `rv_number`, `created_at`, `modified_at`, `color_id`, `cylinder_id`, `origin_id`, `owner_id`, `reg_user_id`, `vehicle_model_id`) VALUES
-(1, 2021, '43665', '436546', '456546', '46456', '46456', '222222', '2023-02-16 17:01:22.046372', '2023-02-16 17:01:22.046372', 230, 5, 14, 1, 2, 2),
-(2, 1994, '354', '45656', '4', 'v-47665463', '6576535', 'rv-8746543', '2023-02-16 19:49:07.914074', '2023-02-16 19:49:07.914074', 218, 5, 4, 1, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -1421,8 +1334,7 @@ ALTER TABLE `plate`
   ADD PRIMARY KEY (`plate_id`),
   ADD KEY `plate_reg_user_id_744c09e8_fk_users_id` (`reg_user_id`),
   ADD KEY `plate_state_id_3b014cea_fk_federal_state_state_id` (`state_id`),
-  ADD KEY `plate_vehicle_id_8ac47235_fk_vehicle_vehicle_id` (`vehicle_id`),
-  ADD KEY `plate_type_id_ae5aca22_fk_type_type_id` (`type_id`);
+  ADD KEY `plate_vehicle_id_8ac47235_fk_vehicle_vehicle_id` (`vehicle_id`);
 
 --
 -- Indexes for table `receipt_voucher`
@@ -1431,13 +1343,6 @@ ALTER TABLE `receipt_voucher`
   ADD PRIMARY KEY (`rv_id`),
   ADD KEY `receipt_voucher_reg_user_id_adade876_fk_users_id` (`reg_user_id`),
   ADD KEY `receipt_voucher_rv_from_id_513e74e5_fk_customers_customer_id` (`rv_from_id`);
-
---
--- Indexes for table `type`
---
-ALTER TABLE `type`
-  ADD PRIMARY KEY (`type_id`),
-  ADD KEY `type_reg_user_id_7a63cccd_fk_users_id` (`reg_user_id`);
 
 --
 -- Indexes for table `users`
@@ -1506,7 +1411,7 @@ ALTER TABLE `account_types`
 -- AUTO_INCREMENT for table `audittrials`
 --
 ALTER TABLE `audittrials`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `auth_group`
@@ -1524,7 +1429,7 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `blood_group`
@@ -1554,7 +1459,7 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `cylinder`
@@ -1566,19 +1471,19 @@ ALTER TABLE `cylinder`
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `errorlogs`
@@ -1620,25 +1525,19 @@ ALTER TABLE `personal_id_type`
 -- AUTO_INCREMENT for table `plate`
 --
 ALTER TABLE `plate`
-  MODIFY `plate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `plate_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `receipt_voucher`
 --
 ALTER TABLE `receipt_voucher`
-  MODIFY `rv_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `type`
---
-ALTER TABLE `type`
-  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `rv_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
@@ -1656,7 +1555,7 @@ ALTER TABLE `users_user_permissions`
 -- AUTO_INCREMENT for table `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `vehicles_transfare_vehicles`
@@ -1689,6 +1588,12 @@ ALTER TABLE `auth_permission`
   ADD CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`);
 
 --
+-- Constraints for table `color`
+--
+ALTER TABLE `color`
+  ADD CONSTRAINT `color_reg_user_id_1c6d7693_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
 -- Constraints for table `company`
 --
 ALTER TABLE `company`
@@ -1697,16 +1602,103 @@ ALTER TABLE `company`
   ADD CONSTRAINT `company_reg_user_id_3cd998b4_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
 
 --
+-- Constraints for table `customers`
+--
+ALTER TABLE `customers`
+  ADD CONSTRAINT `customers_blood_group_id_a8459ea3_fk_blood_group_blood_group_id` FOREIGN KEY (`blood_group_id`) REFERENCES `blood_group` (`blood_group_id`),
+  ADD CONSTRAINT `customers_federal_state_id_6038d4df_fk_federal_state_state_id` FOREIGN KEY (`federal_state_id`) REFERENCES `federal_state` (`state_id`),
+  ADD CONSTRAINT `customers_nationality_id_ae515b28_fk_countries_country_id` FOREIGN KEY (`nationality_id`) REFERENCES `countries` (`country_id`),
+  ADD CONSTRAINT `customers_personal_id_type_id_71309a38_fk_personal_` FOREIGN KEY (`personal_id_type_id`) REFERENCES `personal_id_type` (`personal_id`),
+  ADD CONSTRAINT `customers_reg_user_id_eeb8baac_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `cylinder`
+--
+ALTER TABLE `cylinder`
+  ADD CONSTRAINT `cylinder_reg_user_id_a39988e0_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `django_admin_log`
+--
+ALTER TABLE `django_admin_log`
+  ADD CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  ADD CONSTRAINT `django_admin_log_user_id_c564eba6_fk_users_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `fingerprints`
+--
+ALTER TABLE `fingerprints`
+  ADD CONSTRAINT `fingerprints_customer_id_d56b0163_fk_customers_customer_id` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`);
+
+--
+-- Constraints for table `license`
+--
+ALTER TABLE `license`
+  ADD CONSTRAINT `license_federal_state_id_3830e544_fk_federal_state_state_id` FOREIGN KEY (`federal_state_id`) REFERENCES `federal_state` (`state_id`),
+  ADD CONSTRAINT `license_owner_id_f487e78c_fk_customers_customer_id` FOREIGN KEY (`owner_id`) REFERENCES `customers` (`customer_id`),
+  ADD CONSTRAINT `license_receipt_voucher_id_4942b888_fk_receipt_voucher_rv_id` FOREIGN KEY (`receipt_voucher_id`) REFERENCES `receipt_voucher` (`rv_id`),
+  ADD CONSTRAINT `license_reg_user_id_946be48d_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `model_brand`
+--
+ALTER TABLE `model_brand`
+  ADD CONSTRAINT `model_brand_reg_user_id_c3636f74_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
 -- Constraints for table `plate`
 --
 ALTER TABLE `plate`
-  ADD CONSTRAINT `plate_type_id_ae5aca22_fk_type_type_id` FOREIGN KEY (`type_id`) REFERENCES `type` (`type_id`);
+  ADD CONSTRAINT `plate_reg_user_id_744c09e8_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `plate_state_id_3b014cea_fk_federal_state_state_id` FOREIGN KEY (`state_id`) REFERENCES `federal_state` (`state_id`),
+  ADD CONSTRAINT `plate_vehicle_id_8ac47235_fk_vehicle_vehicle_id` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`vehicle_id`);
 
 --
--- Constraints for table `type`
+-- Constraints for table `receipt_voucher`
 --
-ALTER TABLE `type`
-  ADD CONSTRAINT `type_reg_user_id_7a63cccd_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+ALTER TABLE `receipt_voucher`
+  ADD CONSTRAINT `receipt_voucher_reg_user_id_adade876_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `receipt_voucher_rv_from_id_513e74e5_fk_customers_customer_id` FOREIGN KEY (`rv_from_id`) REFERENCES `customers` (`customer_id`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_federal_state_id_a5c6fb46_fk_federal_state_state_id` FOREIGN KEY (`federal_state_id`) REFERENCES `federal_state` (`state_id`);
+
+--
+-- Constraints for table `users_groups`
+--
+ALTER TABLE `users_groups`
+  ADD CONSTRAINT `users_groups_group_id_2f3517aa_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
+  ADD CONSTRAINT `users_groups_users_id_1e682706_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `users_user_permissions`
+--
+ALTER TABLE `users_user_permissions`
+  ADD CONSTRAINT `users_user_permissio_permission_id_6d08dcd2_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
+  ADD CONSTRAINT `users_user_permissions_users_id_e1ed60a2_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `vehicle`
+--
+ALTER TABLE `vehicle`
+  ADD CONSTRAINT `vehicle_color_id_e8b55c33_fk_color_color_id` FOREIGN KEY (`color_id`) REFERENCES `color` (`color_id`),
+  ADD CONSTRAINT `vehicle_cylinder_id_0fb3b025_fk_cylinder_cylinder_id` FOREIGN KEY (`cylinder_id`) REFERENCES `cylinder` (`cylinder_id`),
+  ADD CONSTRAINT `vehicle_origin_id_042ff3fe_fk_countries_country_id` FOREIGN KEY (`origin_id`) REFERENCES `countries` (`country_id`),
+  ADD CONSTRAINT `vehicle_owner_id_9c24cb49_fk_customers_customer_id` FOREIGN KEY (`owner_id`) REFERENCES `customers` (`customer_id`),
+  ADD CONSTRAINT `vehicle_reg_user_id_713ecd80_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `vehicle_vehicle_model_id_2a7997b8_fk_model_brand_brand_id` FOREIGN KEY (`vehicle_model_id`) REFERENCES `model_brand` (`brand_id`);
+
+--
+-- Constraints for table `vehicles_transfare_vehicles`
+--
+ALTER TABLE `vehicles_transfare_vehicles`
+  ADD CONSTRAINT `Vehicles_transfare_v_new_owner_id_a8719238_fk_customers` FOREIGN KEY (`new_owner_id`) REFERENCES `customers` (`customer_id`),
+  ADD CONSTRAINT `Vehicles_transfare_v_old_owner_id_7cee99c1_fk_customers` FOREIGN KEY (`old_owner_id`) REFERENCES `customers` (`customer_id`),
+  ADD CONSTRAINT `Vehicles_transfare_v_vehicle_id_bdf6795e_fk_vehicle_v` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`vehicle_id`),
+  ADD CONSTRAINT `Vehicles_transfare_vehicles_reg_user_id_4a859d12_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

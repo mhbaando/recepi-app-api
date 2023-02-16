@@ -3,7 +3,7 @@ $(document).ready(function () {
   let vehicleId = ""
   const ownar_name = $("#owner_info")
   const hidden= $("#veh_hid_id")
-  const number=$("#number")
+  let number=$("#number")
   const vhbtns = document.querySelectorAll("#vehicle_id")
   vhbtns.forEach(btn=>{
     btn.addEventListener("click",function(){
@@ -15,7 +15,7 @@ $(document).ready(function () {
       }).then(res=> res.json()).then(data=>{
         // succes
         ownar_name.attr('value', `${data.vehicle_model} - ${data.owner}`)
-        number.attr('value',`${data.number.toString().padStart(4, '0')}`)
+        number.attr('value',`${(data.number + 1 ).toString().padStart(4, '0')}`)
 
       }).catch(err=>{
         // handler error
@@ -88,6 +88,10 @@ $(document).ready(function () {
     $("#state").on("change",()=>{
         state = $("#state option:selected").val()
     })
+    let year = ""
+    $("#year").on("change",()=>{
+        year = $("#year option:selected").val()
+    })
 
  
   
@@ -102,7 +106,10 @@ $(document).ready(function () {
       formData.append("type",type);
       formData.append("code",code);
       formData.append("state",state);
-      formData.append("number",number);
+      formData.append("number",number.val());
+      formData.append("vehicleId",vehicleId);
+      formData.append("year",year);
+      
   
     
   

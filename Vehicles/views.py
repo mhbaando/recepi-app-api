@@ -263,6 +263,14 @@ def tranfercreate(request):
 @login_required(login_url="Login")
 def view_vehicle(request):
     vehicles = vehicle_model.vehicle.objects.all()
+    states = customer_model.federal_state.objects.all()
+    types = vehicle_model.type.objects.all()
+    year = []
+
+    for i in range(1960, datetime.now().year):
+        year.append(i)
+
+    year.reverse()
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
@@ -284,8 +292,41 @@ def view_vehicle(request):
                'page_obj': page_obj,
                'SearchQuery': SearchQuery,
                'DataNumber': DataNumber,
-               "vehicles": vehicles
+               "vehicles": vehicles,
+               "states": states,
+               "types": types,
+               "year": year,
                }
+
+    if request.method == 'POST':
+        vehicleiddd = request.POST.get('vehicleId', None)
+        code = request.POST.get('code', None)
+        state = request.POST.get('state', None)
+        type = request.POST.get('type', None)
+        number = request.POST.get('number', None)
+        year = request.POST.get('year')
+        print(year)
+
+        selected_state = customer_model.federal_state.objects.filter(
+            Q(state_id=state)).first()
+
+        selected_vehicle = vehicle_model.vehicle.objects.filter(
+            Q(vehicle_id=vehicleiddd)).first()
+        print(selected_vehicle)
+
+        new_plate = vehicle_model.plate(
+            vehicle=selected_vehicle,
+            plate_code=code,
+            state=selected_state,
+            plate_no=number,
+            year=year,
+            type=type,
+
+            reg_user_id=request.user.id,
+        )
+
+        new_plate.save()
+
     return render(request, 'Vehicles/veiw_vehicles.html', context)
 
 

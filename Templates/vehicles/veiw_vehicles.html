@@ -177,42 +177,29 @@
                                                 <option selected>
                                                     Select A Type
                                                 </option>
-                                                <option >
-                                                    DIP
+                                                {% for type in types %}
+                                                <option value={{type.type_id}}>
+                                                    {{type.type_name}}
                                                 </option>
-                                                <option >
-                                                    GOV
-                                                </option>
-                                                <option >
-                                                    MIL
-                                                </option>
-                                                <option >
-                                                    MUN
-                                                </option>
-                                                <option >
-                                                    OAU
-                                                </option>
-                                                <option >
-                                                    POL
-                                                </option>
-                                                <option >
-                                                    POL
-                                                </option>
-                                                <option >
-                                                    PRI
-                                                </option>
-                                                <option >
-                                                    PUB
-                                                </option>
-                                                <option >
-                                                    TAX
-                                                </option>
-                                                <option >
-                                                    UN
-                                                </option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-md-12 mb-0">
+                                        <div class="mb-3">
+                                          <label class="form-label">Year</label>
+                                          <select name="year" id="year" class="form-control form-select select2">
+                                            <option selected>
+                                              Select a year
+                                            </option>
+                                            {% for y in year %}
+                                              <option value="{{ y }}">
+                                                {{ y }}
+                                              </option>
+                                            {% endfor %}
+                                          </select>
+                                        </div>
+                                      </div>
                                     <div class="col-md-12 mb-0">
                                         <div class="mb-3">
                                             <label>
@@ -387,27 +374,11 @@
                                                 <option selected>
                                                     Select State
                                                 </option>
-                                                <option>
-                                                    Banaadir
+                                                {% for state in states %}
+                                                <option value={{state.state_id}}>
+                                                   {{state.state_name}}
                                                 </option>
-                                                <option >
-                                                    Hirshabeelle
-                                                </option>
-                                                <option >
-                                                    Koonfur Galbeed
-                                                </option>
-                                                <option >
-                                                    Galmudug
-                                                </option>
-                                                <option >
-                                                    Puntland
-                                                </option>
-                                                <option >
-                                                    Jubba land
-                                                </option>
-                                                <option >
-                                                    Somali land
-                                                </option>
+                                               {% endfor %}
                                             </select>
                                         </div>
                                     </div>
