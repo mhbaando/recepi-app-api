@@ -1,0 +1,65 @@
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/customer/modal.css" %}"/>
+{% endblock cssData %}
+{% block content %}
+    <div class="overlay hidden"></div>
+    <div class="model-contaier hidden">
+        <div class="model">
+            <div class="model-content">
+                <div>
+                    <h4>Edit Company</h4>
+                    <hr/>
+                </div>
+                <form id="update_form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <label for="company">Company Name</label>
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Company Name"
+                               required="required"
+                               id="cname"/>
+                      </div>
+                    
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                              <label for="company">Website</label>
+                              <input type="text"
+                                     class="form-control"
+                                     placeholder="website"
+                                     required="required"
+                                     id="website"/>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                  <label for="company">Address</label>
+                                  <input type="text"
+                                         class="form-control"
+                                         placeholder="Address"
+                                         required="required"
+                                         id="address"/>
+                                </div>
+                                <div class="col">
+                                    <label for="company">Registration No</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="Registration No"
+                                           required="required"
+                                           id="rnumber"/>
+                                  </div>
+                           
+                        </div>
+                        
+                    <div class="mt-4 d-flex align-items-end justify-content-end">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    <script src="{% static "scripts/company/editModal.js" %}"></script>
+{% endblock scriptData %}
