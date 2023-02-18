@@ -376,7 +376,8 @@ def vehicle_profile(request, pk):
     vehicle_models = vehicle_model.model_brand.objects.all()
     colors = vehicle_model.color.objects.all()
     origins = countries.objects.all()
-    cylinders = vehicle_model.cylinder.objects.all()
+    liscence = customer_model.license.objects.all()
+    # cylinders = vehicle_model.cylinder.objects.all()
     year = []
 
     for i in range(1960, datetime.now().year):
@@ -400,7 +401,8 @@ def vehicle_profile(request, pk):
                 "transfer": transfer,
                 'pageTitle': 'ProFile',
                 "cylenders": cylenders, "year": year, "colors": colors,
-                "origins": origins, "vehicle_models": vehicle_models
+                "origins": origins, "vehicle_models": vehicle_models,
+                "liscence": liscence
             }
 
             return render(request, 'Vehicles/vehicle_profile.html', context)
@@ -435,38 +437,14 @@ def find_vehicle(request, id):
             return JsonResponse({'isErro': False, 'Message': 'Vehicle Not Found'}, status=404)
 
 
-# @ login_required(login_url="Login")
-# def update_vehicle(request):
-#     customer_id = request.POST.get('customer_id', None)
-#     f_name = request.POST.get('fname', None)
-#     m_name = request.POST.get('sname', None)
-#     th_name = request.POST.get('thname', None)
-#     fo_name = request.POST.get('foname', None)
-#     full_name = request.POST.get('full_name', None)
-#     mother_name = request.POST.get('mname', None)
-#     dob = request.POST.get('dob', None)
-#     personal_id = request.POST.get('perid', None)
-#     gender = request.POST.get('gender', None)
-#     group = request.POST.get('bload_group', None)
-#     nationality = request.POST.get('nationality', None)
-#     phone = request.POST.get('phone', None)
-#     email = request.POST.get('email', None)
-#     address = request.POST.get('address', None)
-#     state = request.POST.get('state', None)
+@ login_required(login_url="Login")
+def update_vehicle(request):
+    vehicle_id = request.POST.get('vehicleID', None)
+    print(vehicle_id)
 
-#     if customer_id is not None:
-#         customer = customer_model.customer.objects.filter(
-#             customer_id=customer_id).first()
-#         state = customer_model.federal_state.objects.filter(state_id=state)
-#         bload_group = customer_model.blood_group.objects.filter(
-#             blood_group_id=group)
-
-#         if customer is not None:
-#             pass
-
-#     return JsonResponse({
-#         'hellw': 4
-#     })
+    return JsonResponse({
+        'hellw': 4
+    })
 
 
 @login_required(login_url="Login")

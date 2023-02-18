@@ -108,7 +108,7 @@ $(document).ready(function () {
         
       $.ajax({
           method: "POST",
-          url: "/vehicles/",
+          url: "/vehicles/update_vehicle",
           headers: { "X-CSRFToken": csrftoken },
           processData: false,
           contentType: false,

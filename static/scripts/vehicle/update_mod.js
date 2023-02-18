@@ -113,23 +113,24 @@ $(document).ready(()=>{
 
 
  
-  // formData.append("weight", weight);
+  formData.append("weight", weight);
   
-  // formData.append("rv_number", rv_number);
-  // formData.append("engine_no", enginer_no);
-  // formData.append("hp", hp);
-  // formData.append("passenger_seats", passenger_seats);
-  // formData.append("color", color);
-  // formData.append("year", year);
-  // formData.append("cylinder", cylinder);
-  // formData.append("origin", origin);
+  formData.append("rv_number", rv_number);
+  formData.append("engine_no", enginer_no);
+  formData.append("hp", hp);
+  formData.append("passenger_seats", passenger_seats);
+  formData.append("color", color);
+  formData.append("year", year);
+  formData.append("cylinder", cylinder);
+  formData.append("origin", origin);
 
-  // formData.append("model_brand", model_brand);
+  formData.append("model_brand", model_brand);
+  formData.append("vehicleID",vehicleID);
   
 
    $.ajax({
       method: "POST",
-      url: `/customer/updatecustomer/`,
+      url: `/vehicles/updatevehicle/`,
       headers: { "X-CSRFToken": csrftoken },
       processData: false,
       contentType: false,
