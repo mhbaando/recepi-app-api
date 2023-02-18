@@ -11,30 +11,31 @@ $(document).ready(()=>{
 
         // prepapulate data to the model
         // 1. get the selected compnay
-        $.ajax({
-            method: "GET",
-            url: `/customer/findcompany/${companyID}`,
-            headers: { "X-CSRFToken": csrftoken },
-            async: true,
-            success: function(response){
-                if (!response.isError) {
-                   response.Message.forEach(company => {
-                    //2. fill data to the html ellemets
-                    $("#cname").attr('value', company. company_name)
-                    $("#website").attr('value',  company.website)
-                    $("#address").attr('value', company.address)
-                    $("#rnumber").attr('value',  company.reg_no )
-                    $(`#state option[value='${ company.federal_state_id}']`).attr('selected', true)
+        // $.ajax({
+        //     method: "GET",
+        //     url: `/customer/findcompany/${companyID}`,
+        //     headers: { "X-CSRFToken": csrftoken },
+        //     async: true,
+        //     success: function(response){
+        //         if (!response.isError) {
+        //            response.Message.forEach(company => {
+        //             //2. fill data to the html ellemets
+        //             $("#cname").attr('value', company. company_name)
+        //             $("#website").attr('value',  company.website)
+        //             $("#address").attr('value', company.address)
+        //             $("#rnumber").attr('value',  company.reg_no )
+        //             $(`#state option[value='${ company.federal_state_id}']`).attr('selected', true)
 
-                   });
-                  } else {
-                    Swal.fire("Error", response.Message, "error");
-                  }
-            },
-            error: function(error){
-                Swal.fire("Error", error.responseText, "error");
-            }
-        })
+        //            });
+        //           } else {
+        //             Swal.fire("Error", response.Message, "error");
+        //           }
+        //     },
+        //     error: function(error){
+        //         Swal.fire("Error", error.responseText, "error");
+        //     }
+        // })
+        console.log(companyID)
     })
 
     // hide modal on click
@@ -84,6 +85,8 @@ $(document).ready(()=>{
     formData.append("website", website);
     formData.append("regno", reg_no);
     formData.append("state", state);
+   
+  
     formData.append("company_id", companyID);
 
      $.ajax({
