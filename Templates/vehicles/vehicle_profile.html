@@ -17,10 +17,11 @@
                     height="160"/>
                <h3>@{{ request.user.username }}</h3>
                <p class="text-muted mb-3">ID: {{ request.user.id }}</p>
-               <button class="btn btn-primary btn-large w-100">
-                   <i class="bx bxs-edit-alt me-3"></i>
-                   Edit
-               </button>
+               <button  class="btn btn-primary btn-large w-100 edit"
+               data-vehicle="{{ vehicle.vehicle_id }}">
+           <i class="bx bxs-edit-alt me-3"></i>
+           Edit
+       </button>
            </div>
        </div>
             <div class="col-sm-12 col-lg bg-white rounded pt-4">
@@ -550,4 +551,6 @@
 </div>
 {% endblock content %}
 {% block scriptData %}
+    <script src="{% static "scripts/vehicle/update_mod.js" %}"></script>
 {% endblock scriptData %}
+

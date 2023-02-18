@@ -21,7 +21,8 @@ urlpatterns = [
          views.vehicle_plate_info),
 
 
-
+# path('updatecustomer/', views.update_customer),
+path('findvehicle/<int:id>', views.find_vehicle),
 
 
 

@@ -364,6 +364,62 @@ def vehicle_profile(request, pk):
     # }
 
 
+@ login_required(login_url="Login")
+def find_vehicle(request, id):
+
+    if request.method == 'GET':
+        if id is not None:
+            vehicle = ''
+            if request.user.is_superuser:
+                # for admin user
+                vehicle = vehicle_model.vehicle.objects.filter(
+                    Q(vehicle_id=id)).values()
+            else:
+                # for state user
+                vehicle = vehicle_model.vehicle.objects.filter(
+                    Q(vehicle_id=id), federal_state=request.user.federal_state).values()
+
+            return JsonResponse({'isErro': False, 'Message': list(vehicle)}, status=200)
+        else:
+            return JsonResponse({'isErro': False, 'Message': 'Vehicle Not Found'}, status=404)
+    else:
+        return JsonResponse({'isErro': False, 'Message': 'Method Not Allowed'}, status=404)
+
+
+# @ login_required(login_url="Login")
+# def update_vehicle(request):
+#     customer_id = request.POST.get('customer_id', None)
+#     f_name = request.POST.get('fname', None)
+#     m_name = request.POST.get('sname', None)
+#     th_name = request.POST.get('thname', None)
+#     fo_name = request.POST.get('foname', None)
+#     full_name = request.POST.get('full_name', None)
+#     mother_name = request.POST.get('mname', None)
+#     dob = request.POST.get('dob', None)
+#     personal_id = request.POST.get('perid', None)
+#     gender = request.POST.get('gender', None)
+#     group = request.POST.get('bload_group', None)
+#     nationality = request.POST.get('nationality', None)
+#     phone = request.POST.get('phone', None)
+#     email = request.POST.get('email', None)
+#     address = request.POST.get('address', None)
+#     state = request.POST.get('state', None)
+
+#     if customer_id is not None:
+#         customer = customer_model.customer.objects.filter(
+#             customer_id=customer_id).first()
+#         state = customer_model.federal_state.objects.filter(state_id=state)
+#         bload_group = customer_model.blood_group.objects.filter(
+#             blood_group_id=group)
+
+#         if customer is not None:
+#             pass
+
+#     return JsonResponse({
+#         'hellw': 4
+#     })
+
+
 @login_required(login_url="Login")
 def asign_plate(request, pk):
 
