@@ -42,16 +42,16 @@ $(document).ready(function () {
         formData.append("federal_state", state_name);
         formData.append("federal_state", state_name);
         formData.append("license_type", license_type);
-        formData.append("Type", "new_license");
+        formData.append("Type", "renew_license");
    
         Swal.fire({
           title: "Are you sure",
-          text: "to register this license ?",
+          text: "to renew this license ?",
           icon: "warning",
           showCancelButton: !0,
           confirmButtonColor: "#2ab57d",
           cancelButtonColor: "#fd625e",
-          confirmButtonText: "Yes, register it!",
+          confirmButtonText: "Yes, renew it!",
         }).then(function (e) {
           if (e.value) {
             $.ajax({
@@ -150,6 +150,9 @@ $(document).ready(function () {
           $("#mother_name").val(data.Message.mother_name);
           $("#personal_id").val(data.Message.personal_id);
           $("#personal_id_type").val(data.Message.personal_id_type);
+          $("#licence_no").val(data.Message.license);
+          $("#expire_date").val(data.Message.expire_date);
+          $("#new_expired_year").val(data.Message.new_expired_year);
        
         } else {
           Swal.fire( data.title, data.Message,  data.type);
