@@ -5,6 +5,8 @@
           href="{% static "assets/css/customer/profile.css" %}"/>
 {% endblock cssData %}
 {% block content %}
+{% csrf_token %}
+{% include './modaledit.html' %}
     <div class="container-xxl flex-grow-1 mb-4">
         <div class="d-flex">
             <h4 class="fw-bold col-2 py-3 mb-4 w-100">
@@ -21,10 +23,11 @@
                          height="160"/>
                     <h4 class="fs-5 text-center">{{ company.company_name }}</h4>
                     <p class="text-muted mb-3">ID: {{ company.reg_no }}</p>
-                    <button class="btn btn-primary btn-large w-100">
-                        <i class="bx bxs-edit-alt me-3 " id="btnedit"></i>
-                        Edit
-                    </button>
+                    <button class="btn btn-primary btn-large w-100 edit"
+                    data-company="{{ company.company_id }}">
+                <i class="bx bxs-edit-alt me-3"></i>
+                Edit
+            </button>
                 </div>
             </div>
             <div class="col-sm-12 col-lg bg-white rounded pt-4">
@@ -625,5 +628,7 @@
 {% endblock content %}
 {% block scriptData %}
 <script src="{% static "scripts/company/modal.js" %}"></script>
+<script src="{% static "scripts/company/editModal.js" %}"></script>
+
 <script src="{% static "scripts/company/cview.js" %}"></script>
 {% endblock scriptData %}
