@@ -1,6 +1,16 @@
 {% extends 'Base/index.html' %}
 {% load static %}
+{% block  cssData %}
+
+
+<!-- autocomplete -->
+<link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
+<style>
+    .ui-autocomplete { z-index:2147483647; }
+</style>
+{% endblock  %}
 {% block content %}
+{% csrf_token %}
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">License /</span> {{pageTitle}}</h4>   
      <!-- Basic Layout -->
@@ -12,12 +22,15 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        
+                       
                         <div class="col-md-6 mb-0">
                             <div class="mb-3">
                                 <label class="form-label">Search Invoice</label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
                                     <input
+                                    id="search"
                                       type="text"
                                       class="form-control"
                                       placeholder="Search..."
@@ -27,6 +40,7 @@
                                   </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-6 mb-0">
                             <div class="mb-3">
                                 <label class="form-label">Ownar Name</label>
@@ -46,43 +60,69 @@
                                 <input type="text" class="form-control" id="personal_id" disabled placeholder="Personal ID">
                             </div>
                         </div>
-                        <div class="col-md-6 mb-0">
+                        <div class="col-md-4 mb-0">
                             <div class="mb-3">
                                 <label class="form-label">Licence No</label>
-                                <input type="text" class="form-control"  disabled id="licence_no" placeholder="Licence Number">
+                                <input type="text" disabled class="form-control" id="licence_no"  placeholder="Licence No">
                             </div>
                         </div>
-                        <div class="col-md-6 mb-0">
+                        <div class="col-md-4 mb-0">
                             <div class="mb-3">
-                                <label class="form-label">Place Issue</label>
-                                <select name="state_name" id="place_issue" class="form-control form-select select2">
-                                    <option value="">Select Place</option>
-                                    <option value="br">Banadir</option>
-                                    <option value="cz">.....</option>
-                                   
+                                <label class="form-label">Expire Date</label>
+                                <input type="text" disabled class="form-control" id="expire_date" placeholder="expire date">
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-0">
+                            <div class="mb-3">
+                                <label class="form-label">New Expire </label>
+                                <input type="text" disabled class="form-control" id="new_expired_year" placeholder="expire date">
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-0">
+                            <div class="mb-3">
+                                <label class="form-label">State </label>
+                                <select  id="state_name" class="form-select">
+                                    {% if FederalState %}
+                                    <option value="">Select State</option>
+                                    {% for item in FederalState %}
+                                    <option value={{item.state_id}}>{{item.state_name}}</option>
+                                    {% endfor %}
+                                    {% endif %}
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-0">
+                        
+                        <div class="col-md-4 mb-0">
                             <div class="mb-3">
-                                <label class="form-label">Expire Date</label>
-                                <input type="date" disabled class="form-control" id="expire_date" placeholder="Personal ID">
+                                <label class="form-label">Type </label>
+                                <select id="license_type"class="form-select">
+                                    {% if licensetype %}
+                                    <option value="">Select Type</option>
+                                    {% for item in licensetype %}
+                                    <option value={{item.type_id}}>{{item.type}}</option>
+                                    {% endfor %}
+                                    {% endif %}
+                                </select>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-0">
+                        <div class="col-md-4 mb-0">
                             <div class="mb-3">
-                                <label class="form-label">State </label>
-                                <select name="state_name" id="state_id" class="form-control form-select select2">
+                                <label class="form-label">Place Issued </label>
+                                <select id="place_issue"class="form-select">
+                                    {% if FederalState %}
                                     <option value="">Select State</option>
-                                    <option value="br">Banadir</option>
-                                    <option value="cz">.....</option>
-                                   
+                                    {% for item in FederalState %}
+                                    <option value={{item.state_id}}>{{item.state_name}}</option>
+                                    {% endfor %}
+                                    {% endif %}
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-12 mb-0">
                             <div class="mb-3">
-                                <button class="btn btn-primary">Save</button>
+                                <button class="btn btn-primary" id="submit">Save</button>
                               
                            
                             </div>
@@ -98,4 +138,11 @@
     </div>
    
 </div>
+
 {% endblock content %}
+
+
+{% block scriptData %}
+<script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
+<script src={% static 'scripts/license/re-new-license.js' %}></script>
+{% endblock %}

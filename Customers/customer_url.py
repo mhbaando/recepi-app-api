@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, license
+from . import views, license, customer
 
 urlpatterns = [
     # company urls
@@ -8,6 +8,9 @@ urlpatterns = [
     path('company_block', views.block_company, name='comapny_block'),
     path('company/profile/<int:id>', views.company_profile, name="company_profile"),
     path('search_owner/<str:search>', views.search_engine),
+    path('updatecompany/', views.update_company),
+    path('findcompany/<int:id>', views.find_company),
+
 
 
     # License Urls
@@ -21,11 +24,11 @@ urlpatterns = [
 
     # customers
     # register customer
-    path('', views.register_customer, name='register_customer'),
-    path('activate', views.activate_customer, name='activate_customer'),
-    path('list', views.customer_list, name="customer_list"),
-    path('updatecustomer/', views.update_customer),
-    path('profile/<int:id>', views.customer_profile, name="customer_profile"),
-    path('findcustomer/<int:id>', views.find_customer),
+    path('', customer.register_customer, name='register_customer'),
+    path('activate', customer.activate_customer, name='activate_customer'),
+    path('list', customer.customer_list, name="customer_list"),
+    path('updatecustomer/', customer.update_customer),
+    path('profile/<int:id>', customer.customer_profile, name="customer_profile"),
+    path('findcustomer/<int:id>', customer.find_customer),
     # TODO: search here
 ]

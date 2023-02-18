@@ -2,13 +2,18 @@ $(document).ready(()=>{
     const overlay = $(".overlay")
     const modal = $(".model-contaier")
     let customerID ;
+
+    let gender = ""
+    $("#gender input[type='radio']").on('click',function(){
+        gender =  $(this).val();
+    })
+
     // show model on click
     $(".edit").on('click', function(){
         customerID = $(this).data('customer')
         overlay.attr('class', 'overlay')
         modal.attr('class','model-contaier')
         
-
         // prepapulate data to the model
         // 1. get the selected customer
         $.ajax({
@@ -54,10 +59,7 @@ $(document).ready(()=>{
     })
    
 
-    let gender = ""
-    $("#gender input[type='radio']").on('click',function(){
-        gender =  $(this).val();
-    })
+   
 
     let state = ""
     $("#state").on("change",()=>{
