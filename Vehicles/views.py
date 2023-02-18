@@ -331,7 +331,7 @@ def view_vehicle(request):
                "vehicles": vehicles,
                "states": states,
                "types": types,
-               "year": year,
+               "currentYear": datetime.now().year,
                }
 
     if request.method == 'POST':
