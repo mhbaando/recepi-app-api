@@ -302,10 +302,11 @@ def view_vehicle(request):
         vehicleiddd = request.POST.get('vehicleId', None)
         code = request.POST.get('code', None)
         state = request.POST.get('state', None)
-        type = request.POST.get('type', None)
+        types = request.POST.get('type', None)
         number = request.POST.get('number', None)
         year = request.POST.get('year')
-        print(year)
+
+        selected_type = vehicle_model.type.objects.filter(Q(type_id=types))
 
         selected_state = customer_model.federal_state.objects.filter(
             Q(state_id=state)).first()
@@ -320,7 +321,7 @@ def view_vehicle(request):
             state=selected_state,
             plate_no=number,
             year=year,
-            type=type,
+            type=selected_type,
 
             reg_user_id=request.user.id,
         )
@@ -332,15 +333,35 @@ def view_vehicle(request):
 
 @login_required(login_url="Login")
 def vehicle_profile(request, pk):
-    # vehic_id=vehicle.objects.get(id=pk)
-    vehicles = vehicle_model.vehicle.objects.filter(vehicle_id=pk).all()
+    transfer = vehicle_model.transfare_vehicles.objects.all()
+    if request.method == 'GET':
+        if pk is not None:
+            vehicle = ''
+            if request.user.is_superuser:
+                # for admin user
+                vehicle = vehicle_model.vehicle.objects.filter(
+                    Q(vehicle_id=pk)).first()
+            else:
+                # for state user
+                vehicle = vehicle_model.vehicle.objects.filter(
+                    Q(vehicle_id=pk), federal_state=request.user.federal_state).first()
 
-    context = {
-        'pageTitle': 'Profile',
-        "vehicles": vehicles
-    }
+            context = {
+                'vehicle': vehicle,
+                "transfer": transfer,
+                'pageTitle': 'ProFile'
+            }
 
-    return render(request, 'Vehicles/vehicle_profile.html', context)
+            return render(request, 'Vehicles/vehicle_profile.html', context)
+        else:
+            return JsonResponse({'isError': True, 'Message': 'Provide a Vehicle ID'}, status=400)
+    # # vehic_id=vehicle.objects.get(id=pk)
+    # vehicles = vehicle_model.vehicle.objects.filter(vehicle_id=pk).all()
+
+    # context = {
+    #     'pageTitle': 'Profile',
+    #     "vehicles": vehicles
+    # }
 
 
 @login_required(login_url="Login")

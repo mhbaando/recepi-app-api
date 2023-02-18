@@ -47,6 +47,9 @@ class type(models.Model):
     class Meta:
         db_table = 'type'
 
+    def __str__(self):
+        return self.type_name
+
 
 class cylinder(models.Model):
     cylinder_id = models.AutoField(primary_key=True)

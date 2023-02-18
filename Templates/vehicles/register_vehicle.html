@@ -12,14 +12,17 @@
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title">Basic info</h5>
+  <form id="reg_form">
+          {% csrf_token %}
         <div class="row">
           <div class="col-md-6 mb-0">
             <div class="mb-3">
+
               <label class="form-label">Receipt No</label>
               <input type="text"
                      class="form-control"
                      id="rv_num"
-                     placeholder="Enter Receipt Number">
+                     placeholder="Enter Receipt Number"  required="required">
             </div>
           </div>
           <div class="col-md-6 mb-0">
@@ -34,7 +37,7 @@
                      class="form-control"
                      id="ownar_name"
                      disabled
-                     placeholder="Owner's Name"/>
+                     placeholder="Owner's Name"  required="required"/>
             </div>
           </div>
           <div class="col-md-6 mb-0">
@@ -44,7 +47,7 @@
                      class="form-control"
                      id="ownar_mother"
                      disabled
-                     placeholder="Owner's Mother Name"/>
+                     placeholder="Owner's Mother Name" required="required"/>
             </div>
           </div>
           <div class="col-md-6 mb-0">
@@ -54,19 +57,74 @@
                      class="form-control uppercase"
                      id="personalID"
                      disabled
-                     placeholder="Owner's Personal ID"/>
+                     placeholder="Owner's Personal ID" required="required"/>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <form id="reg_form">
-      {% csrf_token %}
+  
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Vehicle Info</h5>
           <p class="card-text">fill the required feild to register a new vehicle</p>
           <div class="row">
+            
+            <div class="col-md-6 mb-0">
+              <div class="mb-3">
+                <label class="form-label">Weight</label>
+                <input type="text"
+                       class="form-control"
+                       name="weight"
+                       id="weight"
+                       placeholder="Enter a weight"
+                       required="required"/>
+              </div>
+            </div>
+            <div class="col-md-6 mb-0">
+              <div class="mb-3">
+                <label class="form-label">Hours Power(HP)</label>
+                <input type="text"
+                       class="form-control"
+                       id="hp"
+                       name="hp"
+                       placeholder="Hours Power"
+                       required="required"/>
+              </div>
+            </div>
+            <div class="col-md-6 mb-0">
+              <div class="mb-3">
+                <label class="form-label">Passenger Seats</label>
+                <input type="text"
+                       class="form-control"
+                       id="passenger_seats"
+                       name="passenger_seats"
+                       placeholder="Passenger seats"
+                       required="required"/>
+              </div>
+            </div>
+            <div class="col-md-6 mb-0">
+              <div class="mb-3">
+                <label class="form-label">Registration Number</label>
+                <input type="text"
+                       class="form-control"
+                       id="registration_number"
+                       name="registration_number"
+                       placeholder="Reg Number"
+                       required="required"/>
+              </div>
+            </div>
+            <div class="col-md-6 mb-0">
+              <div class="mb-3">
+                <label class="form-label">Engine Number</label>
+                <input type="text"
+                       class="form-control"
+                       id="engine_number"
+                       name="engine_number"
+                       placeholder="engine_no"
+                       required="required"/>
+              </div>
+            </div>
             <div class="col-md-6 mb-0">
               <div class="mb-3">
                 <label class="form-label">Model Brand</label>
@@ -144,61 +202,6 @@
                     </option>
                   {% endfor %}
                 </select>
-              </div>
-            </div>
-            <div class="col-md-6 mb-0">
-              <div class="mb-3">
-                <label class="form-label">Weight</label>
-                <input type="text"
-                       class="form-control"
-                       name="weight"
-                       id="weight"
-                       placeholder="Enter a weight"
-                       required="required"/>
-              </div>
-            </div>
-            <div class="col-md-6 mb-0">
-              <div class="mb-3">
-                <label class="form-label">Hours Power(HP)</label>
-                <input type="text"
-                       class="form-control"
-                       id="hp"
-                       name="hp"
-                       placeholder="Hours Power"
-                       required="required"/>
-              </div>
-            </div>
-            <div class="col-md-6 mb-0">
-              <div class="mb-3">
-                <label class="form-label">Passenger Seats</label>
-                <input type="text"
-                       class="form-control"
-                       id="passenger_seats"
-                       name="passenger_seats"
-                       placeholder="Passenger seats"
-                       required="required"/>
-              </div>
-            </div>
-            <div class="col-md-6 mb-0">
-              <div class="mb-3">
-                <label class="form-label">Registration Number</label>
-                <input type="text"
-                       class="form-control"
-                       id="registration_number"
-                       name="registration_number"
-                       placeholder="VIN"
-                       required="required"/>
-              </div>
-            </div>
-            <div class="col-md-6 mb-0">
-              <div class="mb-3">
-                <label class="form-label">Engine Number</label>
-                <input type="text"
-                       class="form-control"
-                       id="engine_number"
-                       name="engine_number"
-                       placeholder="engine_no"
-                       required="required"/>
               </div>
             </div>
           </div>
