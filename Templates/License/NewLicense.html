@@ -68,6 +68,13 @@
                         </div>
                         <div class="col-md-6 mb-0">
                             <div class="mb-3">
+                                <label class="form-label">Expire Date</label>
+                                <input type="text" disabled class="form-control" id="expire_date" value='{{expired_year}}' placeholder={{expired_year}}>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-0">
+                            <div class="mb-3">
                                 <label class="form-label">State </label>
                                 <select  id="state_name" class="form-select">
                                     {% if FederalState %}
@@ -79,14 +86,9 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Expire Date</label>
-                                <input type="text" disabled class="form-control" id="expire_date" value='{{expired_year}}' placeholder={{expired_year}}>
-                                
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-0">
+                        
+                       
+                        <div class="col-md-4 mb-0">
                             <div class="mb-3">
                                 <label class="form-label">Place Issued </label>
                                 <select id="place_issue"class="form-select">
@@ -94,6 +96,19 @@
                                     <option value="">Select State</option>
                                     {% for item in FederalState %}
                                     <option value={{item.state_id}}>{{item.state_name}}</option>
+                                    {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-0">
+                            <div class="mb-3">
+                                <label class="form-label">Type </label>
+                                <select id="license_type"class="form-select">
+                                    {% if licensetype %}
+                                    <option value="">Select Type</option>
+                                    {% for item in licensetype %}
+                                    <option value={{item.type_id}}>{{item.type}}</option>
                                     {% endfor %}
                                     {% endif %}
                                 </select>

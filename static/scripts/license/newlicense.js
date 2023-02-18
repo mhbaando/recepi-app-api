@@ -7,6 +7,7 @@ $(document).ready(function () {
     let rv_number = $("#search").val();
     let place_issue = $("#place_issue").val();
     let state_name = $("#state_name").val();
+    let license_type = $("#license_type").val();
     let formData = new FormData();
 
     // Validations
@@ -28,10 +29,20 @@ $(document).ready(function () {
         "warning"
       );
     } 
+    else if (license_type == "") {
+      Swal.fire(
+        "Warning!!",
+        "Please select type",
+        "warning"
+      );
+    } 
     else {
         formData.append("rv_id", rv_id);
         formData.append("rv_number", rv_number);
         formData.append("federal_state", state_name);
+        formData.append("federal_state", state_name);
+        formData.append("license_type", license_type);
+        formData.append("Type", "new_license");
    
         Swal.fire({
           title: "Are you sure",
