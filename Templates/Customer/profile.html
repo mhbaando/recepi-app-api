@@ -328,23 +328,25 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    Tesla
-                                                </td>
-                                                <td>
-                                                    148784654676464
-                                                </td>
-                                                <td>
-                                                    Maariya Cali Axmed
-                                                </td>
-                                                <td>
-                                                    BNAG4789
-                                                </td>
-                                                <td>
-                                                    Jul / 4 / 2022
-                                                </td>
-                                            </tr>
+                                            {% for transfare in transfares %}
+                                                <tr>
+                                                    <td>
+                                                        {{ transfare.vehicle.vehicle_model }} - {{ transfare.vehicle.year }}
+                                                    </td>
+                                                    <td>
+                                                        {{ transfare.vehicle.vin }}
+                                                    </td>
+                                                    <td>
+                                                        {{ transfare.new_owner.full_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ transfare.vehicle.vehicle_model }}
+                                                    </td>
+                                                    <td>
+                                                        {{ transfare.created_at }}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -445,20 +447,22 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    Jul / 4 / 2022
-                                                </td>
-                                                <td>
-                                                    $ 150
-                                                </td>
-                                                <td>
-                                                    Transfar vehicle
-                                                </td>
-                                                <td>
-                                                    RV-14589677496214
-                                                </td>
-                                            </tr>
+                                            {% for payment in payments %}
+                                                <tr>
+                                                    <td>
+                                                        {{ payment.created_at }}
+                                                    </td>
+                                                    <td>
+                                                        $ {{ payment.rv_amount }}
+                                                    </td>
+                                                    <td>
+                                                        {{ payment.reason }}
+                                                    </td>
+                                                    <td>
+                                                        {{ payment.rv_number }}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -559,20 +563,22 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    Sisim Factory
-                                                </td>
-                                                <td>
-                                                    https://sissim.so
-                                                </td>
-                                                <td>
-                                                    Banaadir
-                                                </td>
-                                                <td>
-                                                    RVA-789468
-                                                </td>
-                                            </tr>
+                                            {% for company in companies %}
+                                                <tr>
+                                                    <td>
+                                                        {{ company.company_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ company.website }}
+                                                    </td>
+                                                    <td>
+                                                        {{ company.federal_state.state_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ company.reg_no }}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>

@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from Users.views import sendException, sendTrials
 from Vehicles import models as vehicle_model
 from . import models as customer_model
+from Finance import models as financemodel
 
 
 @login_required(login_url='Login')
@@ -255,12 +256,16 @@ def customer_list(request):
 
 @ login_required(login_url="Login")
 def customer_profile(request, id):
+    customer_exist = customer_model.customer.objects.filter(
+        Q(customer_id=id)).exists()
+
+    if not customer_exist:
+        return render(request, './Base/403.html')
+
     bload_group = customer_model.blood_group.objects.all()
     nationalities = customer_model.countries.objects.all()
     doc_types = customer_model.personal_id_type.objects.all()  # personal id types
     states = []
-    vehicles = []
-    license = []
 
     # check the user state
     if request.user.is_state and request.user.federal_state is not None:
@@ -278,14 +283,25 @@ def customer_profile(request, id):
                 # for admin user
                 customer = customer_model.customer.objects.filter(
                     Q(customer_id=id)).first()
-                vehicles = vehicle_model.vehicle.objects.filter(
-                    Q(owner=customer))
-                license = customer_model.license.objects.filter(
-                    Q(owner=customer)).first()
+
             else:
                 # for state user
                 customer = customer_model.customer.objects.filter(
                     Q(customer_id=id), federal_state=request.user.federal_state).first()
+
+            vehicles = vehicle_model.vehicle.objects.filter(
+                Q(owner=customer))
+            license = customer_model.license.objects.filter(
+                Q(owner=customer)).first()
+
+            transfare = vehicle_model.transfare_vehicles.objects.filter(
+                Q(old_owner=customer) | Q(new_owner=customer))
+
+            payments = financemodel.receipt_voucher.objects.filter(
+                Q(rv_from=customer))
+
+            companies = customer_model.company.objects.filter(
+                Q(owner=customer))
 
             context = {
                 'customer': customer,
@@ -294,7 +310,10 @@ def customer_profile(request, id):
                 'nationalities': nationalities,
                 'states': states,
                 'vehicles': vehicles,
-                'license': license
+                'license': license,
+                'transfares': transfare,
+                'payments': payments,
+                'companies': companies
             }
 
             return render(request, 'Customer/profile.html', context)

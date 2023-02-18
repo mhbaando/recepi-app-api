@@ -12,15 +12,49 @@ import httpagentparser
 from django.contrib.auth.hashers import check_password
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.db.models import Count
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-
+from django.db.models.functions import ExtractMonth
 # Create your views here.
+from Vehicles import models as vehicle_model
+from Customers import models as customer_model
+
 
 @login_required(login_url='Login')
 def Dashboard(request):
+    vehicle_count = vehicle_model.vehicle.objects.all().count()
+    license_count = customer_model.license.objects.all().count()
+    customer_count = customer_model.customer.objects.all().count()
+    company_count = customer_model.company.objects.all().count()
+
+    licenses = customer_model.license.objects.all()
+    license_type = customer_model.licensetype.objects.all()
+
+    type_count = {}
+    for ltype in license_type:
+        type_count[ltype.type] = 0
+
+    for liecense in licenses:
+        type_count[liecense.type.type] += 1
+
+    customers = customer_model.customer.objects.all().order_by(
+        '-created_at')[:5]
+    vehicles = vehicle_model.vehicle.objects.annotate(
+        month=ExtractMonth('created_at')).values('month').annotate(count=Count('vehicle_id')).values('month', 'count')
+
+    print(vehicles)
+
     context = {
         'pageTitle': 'Dashboard',
+        'vehicle_count': vehicle_count,
+        'license_count': license_count,
+        'customer_count': customer_count,
+        'company_count': company_count,
+        'type_count': type_count,
+        'customers': customers,
+        'vehicles': vehicles
+
     }
     return render(request, 'dashboard.html', context)
 
