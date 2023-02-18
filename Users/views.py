@@ -16,11 +16,25 @@ from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
 # Create your views here.
+from Vehicles import models as vehicle_model
+from Customers import models as customer_model
+
 
 @login_required(login_url='Login')
 def Dashboard(request):
+    vehicle_count = vehicle_model.vehicle.objects.all().count()
+    license_count = customer_model.license.objects.all().count()
+    customer_count = customer_model.customer.objects.all().count()
+    company_count = customer_model.company.objects.all().count()
+
+    # licenses type
+
     context = {
         'pageTitle': 'Dashboard',
+        'vehicle_count': vehicle_count,
+        'license_count': license_count,
+        'customer_count': customer_count,
+        'company_count': company_count,
     }
     return render(request, 'dashboard.html', context)
 
