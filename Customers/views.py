@@ -623,6 +623,7 @@ def find_customer(request, id):
 
 @ login_required(login_url="Login")
 def update_customer(request):
+    # try:
     customer_id = request.POST.get('customer_id', None)
     f_name = request.POST.get('fname', None)
     m_name = request.POST.get('sname', None)
@@ -643,13 +644,56 @@ def update_customer(request):
     if customer_id is not None:
         customer = customer_model.customer.objects.filter(
             customer_id=customer_id).first()
-        state = customer_model.federal_state.objects.filter(state_id=state)
+        state = customer_model.federal_state.objects.filter(
+            state_id=state).first()
         bload_group = customer_model.blood_group.objects.filter(
-            blood_group_id=group)
+            blood_group_id=group).first()
+        nation = customer_model.countries.objects.filter(
+            country_id=nationality).first()
 
         if customer is not None:
-            pass
+            if (f_name is None or m_name is None or th_name is None or fo_name is None or full_name is None or mother_name is None or dob is None or personal_id is None or gender is None or group is None or nationality is None or phone is None or email is None or address is None or state is None):
+                return JsonResponse({'isErro': False, 'Message': 'All feilds are required'}, status=400)
 
-    return JsonResponse({
-        'hellw': 4
-    })
+            customer.firstname = f_name
+            customer.middle_name = m_name
+            customer.lastname = th_name
+            customer.fourth_name = fo_name
+            customer.mother_name = mother_name
+            customer.full_name = full_name
+            customer.gender = gender
+            customer.date_of_birth = dob
+            customer.blood_group = bload_group
+            customer.nationality = nation
+            customer.personal_id = personal_id
+            customer.email = email
+            customer.address = address
+            customer.federal_state = state
+            customer.phone = phone
+            customer.save()
+
+            # for auditory
+            username = request.user.username
+            names = request.user.first_name + ' ' + request.user.last_name
+            avatar = str(request.user.avatar)
+            module = "Customer / Update"
+            action = 'Updated A Customer ' + customer.full_name
+            path = request.path
+            sendTrials(request, username, names,
+                       avatar, action, module, path)
+            return JsonResponse({'isError': False, 'Message': 'Customer has been updated'}, status=200)
+        return JsonResponse({'isErro': False, 'Message': 'Customer Not Found'}, status=404)
+
+    return JsonResponse({'isErro': False, 'Message': 'customer id is required'}, status=400)
+
+    # except Exception as error:
+    #     username = request.user.username
+    #     name = request.user.first_name + ' ' + request.user.last_name
+    #     # register the error
+    #     sendException(
+    #         request, username, name, error)
+    #     message = {
+    #         'isError': True,
+    #         'Message': 'On Error Occurs . Please try again or contact system administrator'
+    #     }
+    #     return JsonResponse(message, status=200)
