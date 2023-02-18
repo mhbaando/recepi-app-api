@@ -1,4 +1,7 @@
 {% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/customer/modal.css" %}"/>
+{% endblock cssData %}
 {% block content %}
     <div class="overlay hidden"></div>
     <div class="model-contaier hidden">
@@ -8,144 +11,144 @@
                     <h4>Edit Vehicle</h4>
                     <hr/>
                 </div>
-<form id="update_form">
-    {% csrf_token %}
-    <div class="col-sm-12 col-lg-6">
-        <label for="defaultFormControlInput" class="form-label">weight</label>
-          
-          <input type="text"
-                 class="form-control"
-                 name="weight"
-                 id="weight"
-                 placeholder="Enter a weight"
-                 required="required"/>
-        </div>
-      </div>
-      <div class="col-sm-12 col-lg-6">
-        <label for="defaultFormControlInput" class="form-label">House Power</label>
-          <input type="text"
-                 class="form-control"
-                 id="hp"
-                 name="hp"
-                 placeholder="Hours Power"
-                 required="required"/>
-        </div>
-      </div>
-      <div class="col-sm-12 col-lg-6">
-        <label for="defaultFormControlInput" class="form-label">Passenger_seats</label>
-          <input type="text"
-                 class="form-control"
-                 id="passenger_seats"
-                 name="passenger_seats"
-                 placeholder="Passenger seats"
-                 required="required"/>
-        </div>
-      </div>
-      <div class="col-sm-12 col-lg-6">
-        <label for="defaultFormControlInput" class="form-label">Registration Number</label>
-          <input type="text"
-                 class="form-control"
-                 id="registration_number"
-                 name="registration_number"
-                 placeholder="Reg Number"
-                 required="required"/>
-        </div>
-      </div>
-      <div class="col-md-6 mb-0">
-        <div class="mb-3">
-          <label class="form-label">Engine Number</label>
-          <input type="text"
-                 class="form-control"
-                 id="engine_number"
-                 name="engine_number"
-                 placeholder="engine_no"
-                 required="required"/>
-        </div>
-      </div>
-      <div class="col-md-6 mb-0">
-        <div class="mb-3">
-          <label class="form-label">Model Brand</label>
-          <select name="model_brand"
-                  id="model_brand"
-                  class="form-control form-select select2">
-            <option>
-              Select a Brand Name
-            </option>
-            {% for i in  vehicle_models %}
-              <option value="{{ i.brand_id }}">
-                {{ i.brand_name }}
-              </option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6 mb-0">
-        <div class="mb-3">
-          <label class="form-label">Year</label>
-          <select name="year" id="year" class="form-control form-select select2">
-            <option selected>
-              Select a year
-            </option>
-            {% for y in year %}
-              <option value="{{ y }}">
-                {{ y }}
-              </option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6 mb-0">
-        <div class="mb-3">
-          <label class="form-label">Origin</label>
-          <select name="origins" id="origin" class="form-control form-select select2">
-            <option selected>
-              Select Origin
-            </option>
-            {% for i in origins %}
-              <option value="{{ i.country_id }}">
-                {{ i.country_name }}
-              </option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6 mb-0">
-        <div class="mb-3">
-          <label class="form-label">Color</label>
-          <select name="colors" id="color" class="form-control form-select select2">
-            <option>
-              Select a Color
-            </option>
-            {% for i in colors %}
-              <option value="{{ i.color_id }}">
-                {{ i.color_name }}
-              </option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6 mb-0">
-        <div class="mb-3">
-          <label class="form-label">Acylender</label>
-          <select name="cylinders"
-                  id="cylinders"
-                  class="form-control form-select select2">
-            <option selected>
-              Select a Cylender
-            </option>
-            {% for i in cylenders %}
-              <option value={{ i.cylinder_id }}>
-                {{ i.cylinder_name }}
-              </option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-
-    <div class="mt-4 d-flex align-items-end justify-content-end">
-                        <button type="submit" class="btn btn-primary">Update</button>
-                    </div>
-</form>
+                <form id="update_form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <label for="defaultFormControlInput" class="form-label">Weight</label>
+                            <input type="text"
+                                   class="form-control"
+                                   name="weight"
+                                   id="weight"
+                                   placeholder="Enter a weight"
+                                   required="required"/>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <label for="defaultFormControlInput" class="form-label">House Power</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="hp"
+                                   name="hp"
+                                   placeholder="Hours Power"
+                                   required="required"/>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Passenger Seats</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="passenger_seats"
+                                       name="passenger_seats"
+                                       placeholder="Passenger seats"
+                                       required="required"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Registration Number</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="registration_number"
+                                       name="registration_number"
+                                       placeholder="Reg Number"
+                                       required="required"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Engine Number</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="engine_number"
+                                       name="engine_number"
+                                       placeholder="engine_no"
+                                       required="required"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-0">
+                            <div class="mb-3">
+                                <label class="form-label">Model Brand</label>
+                                <select name="model_brand"
+                                        id="model_brand"
+                                        class="form-control form-select select2">
+                                    <option>
+                                        Select a Brand Name
+                                    </option>
+                                    {% for i in  vehicle_models %}
+                                        <option value="{{ i.brand_id }}">
+                                            {{ i.brand_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-0">
+                            <div class="mb-3">
+                                <label class="form-label">Year</label>
+                                <select name="year" id="year" class="form-control form-select select2">
+                                    <option selected>
+                                        Select a year
+                                    </option>
+                                    {% for y in year %}
+                                        <option value="{{ y }}">
+                                            {{ y }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-0">
+                            <div class="mb-3">
+                                <label class="form-label">Origin</label>
+                                <select name="origin" id="origin" class="form-control form-select select2">
+                                    <option selected>
+                                        Select Origin
+                                    </option>
+                                    {% for i in origins %}
+                                        <option value="{{ i.country_id }}">
+                                            {{ i.country_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-0">
+                            <div class="mb-3">
+                                <label class="form-label">Color</label>
+                                <select name="colors" id="color" class="form-control form-select select2">
+                                    <option>
+                                        Select a Color
+                                    </option>
+                                    {% for i in colors %}
+                                        <option value="{{ i.color_id }}">
+                                            {{ i.color_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-0">
+                            <div class="mb-3">
+                                <label class="form-label">Acylender</label>
+                                <select name="cylinders"
+                                        id="cylinders"
+                                        class="form-control form-select select2">
+                                    <option selected>
+                                        Select a Cylender
+                                    </option>
+                                    {% for i in cylenders %}
+                                        <option value={{ i.cylinder_id }}>
+                                            {{ i.cylinder_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-4 d-flex align-items-end justify-content-end">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

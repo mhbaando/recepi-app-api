@@ -1,29 +1,31 @@
 {% extends "Base/index.html" %}
 {% load static %}
 {% block content %}
+    {% include './update_model.html' %}
     <div class="container-xxl flex-grow-1 mb-4">
         <div class="d-flex">
             <h4 class="fw-bold py-3 mb-4">
                 <span class="text-muted fw-light">Home / Vehicle /</span> {{ pageTitle }}
             </h4>
         </div>
+        {% csrf_token %}
         <div class="container row gap-3">
             <div class="col-sm-12 col-lg-3 h-50 bg-white rounded p-4 d-flex  justify-content-center">
                 <div class="d-flex flex-column align-items-center justify-content-center ">
                     <img class="customer-img mb-5"
-                    src="{% static "assets/img/customers/placeholder.png" %}"
-                    alt="customer"
-                    width="160"
-                    height="160"/>
-               <h3>@{{ request.user.username }}</h3>
-               <p class="text-muted mb-3">ID: {{ request.user.id }}</p>
-               <button  class="btn btn-primary btn-large w-100 edit"
-               data-vehicle="{{ vehicle.vehicle_id }}">
-           <i class="bx bxs-edit-alt me-3"></i>
-           Edit
-       </button>
-           </div>
-       </div>
+                         src="{% static "assets/img/customers/placeholder.png" %}"
+                         alt="customer"
+                         width="160"
+                         height="160"/>
+                    <h3>@{{ request.user.username }}</h3>
+                    <p class="text-muted mb-3">ID: {{ request.user.id }}</p>
+                    <button class="btn btn-primary btn-large w-100 edit"
+                            data-vehicle="{{ vehicle.vehicle_id }}">
+                        <i class="bx bxs-edit-alt me-3"></i>
+                        Edit
+                    </button>
+                </div>
+            </div>
             <div class="col-sm-12 col-lg bg-white rounded pt-4">
                 <div class="nav-align-top mb-4">
                     <ul class="nav nav-pills mb-3 px-3" role="tablist">
@@ -35,7 +37,7 @@
                                     data-bs-target="#navs-pills-vehicles"
                                     aria-controls="navs-pills-basic-info"
                                     aria-selected="true">
-                               Vehicles
+                                Vehicles
                             </button>
                         </li>
                         <li class="nav-item">
@@ -90,7 +92,7 @@
                             <div >
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">owner</p>
-                                    <p class="col">{{vehicle.owner.full_name }}</p>
+                                    <p class="col">{{ vehicle.owner.full_name }}</p>
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Model brand</p>
@@ -102,7 +104,7 @@
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Origin</p>
-                                    <p class="text-uppercase col">{{vehicle.origin }}</p>
+                                    <p class="text-uppercase col">{{ vehicle.origin }}</p>
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">cylinder</p>
@@ -114,20 +116,15 @@
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">passenger seats</p>
-                                    <p class="text-uppercase col">{{ vehicle.pessenger_seat}}</p>
+                                    <p class="text-uppercase col">{{ vehicle.pessenger_seat }}</p>
                                 </div>
-                              
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">Engine Number</p>
                                     <p class="text-uppercase col">{{ vehicle.enginer_no }}</p>
                                 </div>
                                 <div class="row mb-2">
-                                    <p class="fw-bold col-2">
-                                            House Power
-                                    </p>
-                                    <p class="text-uppercase col">
-                                        {{ vehicle.hp }}
-                                    </p>
+                                    <p class="fw-bold col-2">House Power</p>
+                                    <p class="text-uppercase col">{{ vehicle.hp }}</p>
                                 </div>
                                 <div class="row mb-2">
                                     <p class="fw-bold col-2">
@@ -145,7 +142,6 @@
                                         {{ vehicle.color }}
                                     </p>
                                 </div>
-                           
                             </div>
                         </div>
                         <div class="tab-pane fade" id="navs-pills-licenses" role="tabpanel">
@@ -249,7 +245,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="wd-12p border-bottom-0">
-                                                   Old Owner 
+                                                    Old Owner
                                                 </th>
                                                 <th class="wd-15p border-bottom-0">
                                                     New owner
@@ -268,15 +264,22 @@
                                         <tbody>
                                             <tr>
                                                 {% for trans in transfer %}
-                                                <td>
-                                                    {{trans.old_owner.full_name}}
-                                                   
-                                                </td>
-                                                <td> {{trans.new_owner.full_name}}</td>
-                                                <td> {{trans.vehicle}}</td>
-                                                <td> {{trans.created_at}}</td>
-                                                <td> {{trans.transfare_reason}}</td>
-                                               {% endfor %}
+                                                    <td>
+                                                        {{ trans.old_owner.full_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ trans.new_owner.full_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ trans.vehicle }}
+                                                    </td>
+                                                    <td>
+                                                        {{ trans.created_at }}
+                                                    </td>
+                                                    <td>
+                                                        {{ trans.transfare_reason }}
+                                                    </td>
+                                                {% endfor %}
                                             </tr>
                                         </tbody>
                                     </table>
@@ -548,9 +551,7 @@
             </div>
         </div>
     </div>
-</div>
 {% endblock content %}
 {% block scriptData %}
     <script src="{% static "scripts/vehicle/update_mod.js" %}"></script>
 {% endblock scriptData %}
-

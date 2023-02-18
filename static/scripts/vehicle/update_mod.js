@@ -22,20 +22,26 @@ $(document).ready(()=>{
                  response.Message.forEach(vehicle => {
                   //2. fill data to the html ellemets
                   $("#weight").attr('value', vehicle.weight)
-                  $("#hp").attr('value', weight.hp)
-                  $("#passenger_seats").attr('value', vehicle.passenger_seats)
+                  $("#hp").attr('value', vehicle.hp)
+                  $("#passenger_seats").attr('value', vehicle.pessenger_seat)
+                  $("#registration_number").attr('value', vehicle.rv_number)
+                  $("#engine_number").attr('value', vehicle.enginer_no)
 
-                
+                  $(`#model_brand option[value='${vehicle.brand_id}']`).attr('selected', true)
+                  $(`#origin option[value='${vehicle.country_id}']`).attr('selected', true)
+
+                  $(`#color option[value='${vehicle.color_id}']`).attr('selected', true)
+                  $(`#year option[value='${vehicle.year}']`).attr('selected', true)
+
+                  $(`#cylinders option[value='${vehicle.cylinder_id}']`).attr('selected', true)
+
                  
-                  $("#registration_number").attr('value', vehicle.registration_number)
-                  // $(`#nation option[value='${customer.nationality_id}']`).attr('selected', true)
-                  // $(`#bload_group option[value='${customer.blood_group_id}']`).attr('selected', true)
+
+                  
 
 
-                  // $("#email").attr('value', customer.email)
-                  // $("#phone").attr('value', customer.phone)
-                  // $("#address").attr('value', customer.address)
-                  // $(`#state option[value='${customer.federal_state_id}']`).attr('selected', true)
+                  
+                  
 
                  });
                 } else {
@@ -55,113 +61,103 @@ $(document).ready(()=>{
   })
  
 
-  // let gender = ""
-  // $("#gender input[type='radio']").on('click',function(){
-  //     gender =  $(this).val();
-  // })
-
-  // let state = ""
-  // $("#state").on("change",()=>{
-  //     state = $("#state option:selected").val()
-  // })
-
-  // let nation =""
-  // $("#nation").on("change",()=>{
-  //     nation = $("#nation option:selected").val()
-  // })
-
-  // let group = ""
-  // $("#bload_group").on("change",()=>{
-  //     group = $("#bload_group option:selected").val()
-  // })
-
-  // // DOB
-  // let dob = ""
-  // $("#dob").on('click',function(){
-  //     dob =  $(this).val()
-  // })
 
 
-  // // submit
-  // $("#update_form").on('submit', function(e){
-  //     e.preventDefault()
-   
-  //  let formData = new FormData(this);
-  //  const full_name = $("#fname").val().trim().split(" ")
-  //  const personal_id = $("#personalid").val()
-  //  const email = $("#email").val()
-  //  const address = $("#address").val()
-  //  const phone = $("#phone").val()
-  //  const mother_name = $("#mname").val()
+  let year = ""
+  $("#year").on("change",()=>{
+      state = $("#year option:selected").val()
+  })
+
+  let model_brand =""
+  $("#model_brand").on("change",()=>{
+      model_brand = $("#model_brand option:selected").val()
+  })
+
+  let origin = ""
+  $("#origin").on("change",()=>{
+      origin = $("#origin option:selected").val()
+  })
 
   
-  // //  check if no change in state, nation, blooad group 
-  // if (gender.trim().length <= 0 || state.trim().length <= 0 || group.trim().length <=0 || nation.trim().length <= 0 || dob.trim().length <= 0 ){
-  //     gender = $("#gender input[type='radio']:checked").val()
-  //     state = $("#state option:selected").val()
-  //     nation = $("#nation option:selected").val()
-  //     group = $("#bload_group option:selected").val()
-  //     dob = $("#dob").val()
-  // }
+  let cylinder = ""
+  $("#cylinder").on('click',function(){
+      dob =  $(this).val()
+  })
+  
+  let color = ""
+  $("#color").on('click',function(){
+      color =  $(this).val()
+  })
 
-  // if(full_name.length < 4 || full_name.length > 4){
-  //     return Swal.fire("Error", 'Name can be only 4 names', "error");
-  // }
 
-  // const f_name =  full_name[0]
-  // const m_name = full_name[1]
-  // const t_name = full_name[2]
-  // const fo_name = full_name[3]
+  // submit
+  $("#update_form").on('submit', function(e){
+      e.preventDefault()
+   
+   let formData = new FormData(this);
+ 
+   const weight = $("#weight").val()
+   const hp = $("#hp").val()
+   const passenger_seats = $("#passenger_seats").val()
+   const rv_number = $("#rv_number").val()
+   const enginer_no = $("#engine_number").val()
+
+  
+  //  check if no change in state, nation, blooad group 
+  // if (weight.trim().length <= 0 || hp.trim().length <= 0 || passenger_seats.trim().length <=0 || rv_number.trim().length <= 0 || enginer_no.trim().length <= 0 ){
+  //     model_brand = $("#model_brand option:selected").val()
+  //     color = $("#color option:selected").val()
+  //     cylinder = $("#cylinder option:selected").val()
+  //     year =  $("#year option:selected").val()
+  //     origin=$("#origin option:selected").val()
+
 
  
-  // formData.append("fname", f_name);
-  // formData.append("sname", m_name);
-  // formData.append("thname", t_name);
-  // formData.append("foname", fo_name);
-  // formData.append("full_name", full_name.join(" "));
-  // formData.append("mname", mother_name);
-  // formData.append("dob", dob);
-  // formData.append("gender", gender);
-  // formData.append("bload_group", group);
-  // formData.append("nationality", nation);
-  // formData.append("phone", phone);
-  // formData.append("email", email);
-  // formData.append("address", address);
-  // formData.append("state", state);
-  // formData.append("perid", personal_id);
-  // formData.append("customer_id", customerID);
+  // formData.append("weight", weight);
+  
+  // formData.append("rv_number", rv_number);
+  // formData.append("engine_no", enginer_no);
+  // formData.append("hp", hp);
+  // formData.append("passenger_seats", passenger_seats);
+  // formData.append("color", color);
+  // formData.append("year", year);
+  // formData.append("cylinder", cylinder);
+  // formData.append("origin", origin);
 
-  //  $.ajax({
-  //     method: "POST",
-  //     url: `/customer/updatecustomer/`,
-  //     headers: { "X-CSRFToken": csrftoken },
-  //     processData: false,
-  //     contentType: false,
-  //     data :formData,
-  //     async: true,
-  //     success: function(response){
-  //         if (!response.isError) {
-  //             Swal.fire({
-  //                 title: "Success",
-  //                 text: response.Message,
-  //                 icon: "success",
-  //                 confirmButtonText: "Ok",
-  //                 confirmButtonClass: "btn btn-success mt-2",
-  //                 buttonsStyling: !1,
-  //               }).then(function (e) {
-  //                 if (e.value) {
-  //                   Swal.DismissReason.cancel;
-  //                   location.reload()
-  //                 }
-  //               });
+  // formData.append("model_brand", model_brand);
+  
+
+   $.ajax({
+      method: "POST",
+      url: `/customer/updatecustomer/`,
+      headers: { "X-CSRFToken": csrftoken },
+      processData: false,
+      contentType: false,
+      data :formData,
+      async: true,
+      success: function(response){
+          if (!response.isError) {
+              Swal.fire({
+                  title: "Success",
+                  text: response.Message,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                  confirmButtonClass: "btn btn-success mt-2",
+                  buttonsStyling: !1,
+                }).then(function (e) {
+                  if (e.value) {
+                    Swal.DismissReason.cancel;
+                    location.reload()
+                  }
+                });
           
-  //           } else {
-  //             Swal.fire("Error", response.Message, "error");
-  //           }
-  //     },
-  //     error: function(error){
-  //         Swal.fire("Error", error.responseText, "error");
-  //     }
-  // })
-  // })
+            } else {
+              Swal.fire("Error", response.Message, "error");
+            }
+      },
+      error: function(error){
+          Swal.fire("Error", error.responseText, "error");
+      }
+  })
+  })
 })
