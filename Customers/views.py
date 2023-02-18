@@ -349,9 +349,8 @@ def update_company(request):
     c_regisno = request.POST.get('foname', None)
 
     if company_id is not None:
-        company = customer_model.customer.objects.filter(
+        company = customer_model.company.objects.filter(
             company_id=company_id).first()
-        state = customer_model.federal_state.objects.filter(state_id=state)
 
         if company is not None:
             pass

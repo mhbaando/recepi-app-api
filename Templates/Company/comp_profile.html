@@ -55,28 +55,7 @@
                                 Vehicles
                             </button>
                         </li>
-                        <li class="nav-item">
-                            <button type="button"
-                                    class="nav-link"
-                                    role="tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#navs-pills-licenses"
-                                    aria-controls="navs-pills-licenses"
-                                    aria-selected="false">
-                                Licenses
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button"
-                                    class="nav-link"
-                                    role="tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#navs-pills-transfare"
-                                    aria-controls="navs-pills-transfare"
-                                    aria-selected="false">
-                                Transfer
-                            </button>
-                        </li>
+                      
                         <li class="nav-item">
                             <button type="button"
                                     class="nav-link"
@@ -96,7 +75,7 @@
                                     data-bs-target="#navs-pills-companies"
                                     aria-controls="navs-pills-companies"
                                     aria-selected="false">
-                                Companies
+                                Owners
                             </button>
                         </li>
                     </ul>
@@ -179,10 +158,14 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Tesla</td>
-                                                <td>1454587965954121</td>
-                                                <td>July/4/2022</td>
-                                                <td>BNAG4785</td>
+                                                {% for vehicle  in vehicles  %}
+                                                <td>{{vehicle.brand_name}}</td>
+                                                <td>{{vehicle.vin}}</td>
+                                                <td>{{vehicle.plate_id}}</td>
+                                                
+                                                {% endfor %}
+                                              
+                                             
                                             </tr>
                                         </tbody>
                                     </table>
@@ -337,23 +320,27 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for vehicle  in vehicles  %}
+
                                             <tr>
                                                 <td>
-                                                    Tesla
+                                                    {{vehicle.brand_name}}
                                                 </td>
                                                 <td>
-                                                    148784654676464
+                                                    {{vehicle.vin }}
+
                                                 </td>
                                                 <td>
-                                                    Maariya Cali Axmed
+                                                    {{vehicle.new_owner}}
                                                 </td>
                                                 <td>
-                                                    BNAG4789
+                                                    {{vehicle.plate}}
                                                 </td>
                                                 <td>
-                                                    Jul / 4 / 2022
+                                                    {{vehicle.created_at}}
                                                 </td>
                                             </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -438,6 +425,7 @@
                                 <div class="row px-4 py-4">
                                     <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
                                         <thead>
+                                         
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">
                                                     Date
@@ -454,20 +442,22 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for payment in payments %}
                                             <tr>
                                                 <td>
-                                                    Jul / 4 / 2022
+                                                    {{payment.created_at}}
                                                 </td>
                                                 <td>
-                                                    $ 150
+                                                    {{payment.amount}}
                                                 </td>
                                                 <td>
-                                                    Transfar vehicle
+                                                {{payement.reason}}
                                                 </td>
                                                 <td>
-                                                    RV-14589677496214
+                                                   {{payement.rv_number}}
                                                 </td>
                                             </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -568,18 +558,19 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for company in companies  %}{% endfor %}
                                             <tr>
                                                 <td>
-                                                    Sisim Factory
+                                                    {{company.company_name}}
                                                 </td>
                                                 <td>
-                                                    https://sissim.so
+                                                    {{company.website}}
                                                 </td>
                                                 <td>
-                                                    Banaadir
+                                                    {{company.state}}
                                                 </td>
                                                 <td>
-                                                    RVA-789468
+                                                    {{company.reg_no}}
                                                 </td>
                                             </tr>
                                         </tbody>
