@@ -170,54 +170,12 @@
                         </div>
                         <div class="tab-pane fade" id="navs-pills-vehicles" role="tabpanel">
                             <div class="table-responsive">
-                                <div class="row mb-2 g-4 align-items-center">
-                                    <div class="col-sm-auto ms-auto">
-                                        <div class="hstack gap-2">
-                                            <div class="form-group">
-                                                <select id="DataNumber"
-                                                        name="DataNumber"
-                                                        DataNumber="{{ DataNumber }}"
-                                                        class="form-control select2 w-100">
-                                                    <option value="5">
-                                                        5
-                                                    </option>
-                                                    <option value="10">
-                                                        10
-                                                    </option>
-                                                    <option value="30">
-                                                        30
-                                                    </option>
-                                                    <option value="50">
-                                                        50
-                                                    </option>
-                                                    <option value="100">
-                                                        100
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <form autocomplete="off">
-                                                <div class="input-group mr-0">
-                                                    <input id="SearchQuery"
-                                                           type="text"
-                                                           placeholder="Search..."
-                                                           value="{{ SearchQuery }}"
-                                                           class="form-control"
-                                                           aria-label="Recipient's"
-                                                           aria-describedby="button-addon2"/>
-                                                    <button class="btn btn-primary" type="button" id="button-addon2">
-                                                        <i class="bx bx-search"></i>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="row px-4 py-4">
                                     <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
                                         <thead>
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">
-                                                    Model Brand
+                                                    Model Brand - Year
                                                 </th>
                                                 <th class="wd-15p border-bottom-0">
                                                     VIN
@@ -231,54 +189,24 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    Tesla
-                                                </td>
-                                                <td>
-                                                    1454587965954121
-                                                </td>
-                                                <td>
-                                                    July/4/2022
-                                                </td>
-                                                <td>
-                                                    BNAG4785
-                                                </td>
-                                            </tr>
+                                            {% for vehicle in vehicles %}
+                                                <tr>
+                                                    <td>
+                                                        {{ vehicle.vehicle_model }} - {{ vehicle.year }}
+                                                    </td>
+                                                    <td>
+                                                        {{ vehicle.vin }}
+                                                    </td>
+                                                    <td>
+                                                        {{ vehicle.created_at }}
+                                                    </td>
+                                                    <td>
+                                                        BNAG4785
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
-                                </div>
-                                <div class="mb-3 col-md-12 d-flex justify-content-between align-items-center">
-                                    <div activePage = {{ licenselist.number }} class="col-md-6 activePage">
-                                        Showing {{ licenselist.number }} to {{ licenselist.paginator.num_pages }} of {{ total }}.
-                                    </div>
-                                    <div class="col-md-6 d-flex justify-content-end align-items-center">
-                                        <nav aria-label="Page navigation">
-                                            <ul class="pagination">
-                                                <li class="page-item first {% if not licenselist.has_previous %}disabled{% endif %}"
-                                                    page="1">
-                                                    <a class="page-link" href="javascript:void(0);">
-                                                        <i class="tf-icon bx bx-chevrons-left"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item prev {% if not licenselist.has_previous %}disabled{% endif %}"
-                                                    page="{% if licenselist.has_previous %}{{ licenselist.previous_page_number }}{% else %}No Page{% endif %}">
-                                                    <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i
-                                                    ></a>
-                                                </li>
-                                                <li class="page-item next {% if not licenselist.has_next %}disabled{% endif %}"
-                                                    page="{% if licenselist.has_next %}{{ licenselist.next_page_number }}{% else %}No Page{% endif %}">
-                                                    <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i
-                                                    ></a>
-                                                </li>
-                                                <li class="page-item last {% if not licenselist.has_next %}disabled{% endif %}"
-                                                    page="{{ licenselist.paginator.num_pages }}">
-                                                    <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i
-                                                    ></a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -289,7 +217,7 @@
                                         License no
                                     </p>
                                     <p class="text-uppercase col">
-                                        48759444596114325452
+                                        {{ license.reg_no }}
                                     </p>
                                 </div>
                                 <div class="row mb-2">
@@ -297,7 +225,7 @@
                                         Place of issue
                                     </p>
                                     <p class="text-uppercase col">
-                                        Mogadishu
+                                        {{ license.place_of_issue }}
                                     </p>
                                 </div>
                                 <div class="row mb-2">
@@ -305,7 +233,7 @@
                                         Expire Date
                                     </p>
                                     <p class="text-uppercase col">
-                                        Jul / 04 / 2028
+                                        {{ license.expired_date }}
                                     </p>
                                 </div>
                                 <div class="row mb-2">
@@ -313,7 +241,7 @@
                                         License Type
                                     </p>
                                     <p class="text-uppercase col">
-                                        G
+                                        {{ license.type.type }}
                                     </p>
                                 </div>
                                 <div class="row mb-2">
@@ -321,7 +249,7 @@
                                         State
                                     </p>
                                     <p class="text-uppercase col">
-                                        Banaadir
+                                        {{ license.federal_state.state_name }}
                                     </p>
                                 </div>
                                 <div class="row mb-2">
@@ -329,7 +257,7 @@
                                         Status
                                     </p>
                                     <p class="text-uppercase col">
-                                        Active
+                                        {{ license.status }}
                                     </p>
                                 </div>
                             </div>
