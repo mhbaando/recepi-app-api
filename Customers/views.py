@@ -312,3 +312,50 @@ def company_profile(request, id):
             return render(request, 'Company/comp_profile.html', context)
         else:
             return JsonResponse({'isError': True, 'Message': 'Provide a customer ID'}, status=400)
+
+           # edit company
+
+
+@ login_required(login_url="Login")
+def find_company(request, id):
+
+    if request.method == 'GET':
+        if id is not None:
+            company = ''
+            if request.user.is_superuser:
+                # for admin user
+                company = customer_model.company.objects.filter(
+                    Q(company_id=id)).values()
+            else:
+                # for state user
+                company = customer_model.company.objects.filter(
+                    Q(company_id=id), federal_state=request.user.federal_state).values()
+
+            return JsonResponse({'isErro': False, 'Message': list(company)}, status=200)
+        else:
+            return JsonResponse({'isErro': False, 'Message': 'Company Not Found'}, status=404)
+    else:
+        return JsonResponse({'isErro': False, 'Message': 'Method Not Allowed'}, status=404)
+
+    #  update company
+
+
+@ login_required(login_url="Login")
+def update_company(request):
+    company_id = request.POST.get('company_id', None)
+    c_name = request.POST.get('cname', None)
+    c_website = request.POST.get('sname', None)
+    c_address = request.POST.get('thname', None)
+    c_regisno = request.POST.get('foname', None)
+
+    if company_id is not None:
+        company = customer_model.customer.objects.filter(
+            company_id=company_id).first()
+        state = customer_model.federal_state.objects.filter(state_id=state)
+
+        if company is not None:
+            pass
+
+    return JsonResponse({
+        'hellw': 4
+    })
