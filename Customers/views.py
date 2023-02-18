@@ -7,7 +7,7 @@ from django.http import JsonResponse, request
 
 from Users.views import sendException, sendTrials
 from datetime import datetime
-
+import json
 # Create your views here.
 # company
 
@@ -560,6 +560,20 @@ def customer_list(request):
 
 @ login_required(login_url="Login")
 def customer_profile(request, id):
+    bload_group = customer_model.blood_group.objects.all()
+    nationalities = customer_model.countries.objects.all()
+    doc_types = customer_model.personal_id_type.objects.all()  # personal id types
+    states = []
+
+    # check the user state
+    if request.user.is_state and request.user.federal_state is not None:
+        states = customer_model.federal_state.objects.filter(
+            Q(state_id=request.user.federal_state.state_id))
+    elif request.user.is_superuser:
+        states = customer_model.federal_state.objects.all()
+    else:
+        states = "No State Found"
+
     if request.method == 'GET':
         if id is not None:
             customer = ''
@@ -574,9 +588,68 @@ def customer_profile(request, id):
 
             context = {
                 'customer': customer,
-                'pageTitle': 'Profile'
+                'pageTitle': 'Profile',
+                'bload_group': bload_group,
+                'nationalities': nationalities,
+                'states': states
             }
 
             return render(request, 'Customer/profile.html', context)
         else:
             return JsonResponse({'isError': True, 'Message': 'Provide a customer ID'}, status=400)
+
+
+@ login_required(login_url="Login")
+def find_customer(request, id):
+
+    if request.method == 'GET':
+        if id is not None:
+            customer = ''
+            if request.user.is_superuser:
+                # for admin user
+                customer = customer_model.customer.objects.filter(
+                    Q(customer_id=id)).values()
+            else:
+                # for state user
+                customer = customer_model.customer.objects.filter(
+                    Q(customer_id=id), federal_state=request.user.federal_state).values()
+
+            return JsonResponse({'isErro': False, 'Message': list(customer)}, status=200)
+        else:
+            return JsonResponse({'isErro': False, 'Message': 'Customer Not Found'}, status=404)
+    else:
+        return JsonResponse({'isErro': False, 'Message': 'Method Not Allowed'}, status=404)
+
+
+@ login_required(login_url="Login")
+def update_customer(request):
+    customer_id = request.POST.get('customer_id', None)
+    f_name = request.POST.get('fname', None)
+    m_name = request.POST.get('sname', None)
+    th_name = request.POST.get('thname', None)
+    fo_name = request.POST.get('foname', None)
+    full_name = request.POST.get('full_name', None)
+    mother_name = request.POST.get('mname', None)
+    dob = request.POST.get('dob', None)
+    personal_id = request.POST.get('perid', None)
+    gender = request.POST.get('gender', None)
+    group = request.POST.get('bload_group', None)
+    nationality = request.POST.get('nationality', None)
+    phone = request.POST.get('phone', None)
+    email = request.POST.get('email', None)
+    address = request.POST.get('address', None)
+    state = request.POST.get('state', None)
+
+    if customer_id is not None:
+        customer = customer_model.customer.objects.filter(
+            customer_id=customer_id).first()
+        state = customer_model.federal_state.objects.filter(state_id=state)
+        bload_group = customer_model.blood_group.objects.filter(
+            blood_group_id=group)
+
+        if customer is not None:
+            pass
+
+    return JsonResponse({
+        'hellw': 4
+    })

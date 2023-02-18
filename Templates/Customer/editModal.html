@@ -1,0 +1,113 @@
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/customer/modal.css" %}"/>
+{% endblock cssData %}
+{% block content %}
+    <div class="overlay hidden"></div>
+    <div class="model-contaier hidden">
+        <div class="model">
+            <div class="model-content">
+                <div>
+                    <h4>Edit Customer</h4>
+                    <hr/>
+                </div>
+                <form id="update_form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <label for="defaultFormControlInput" class="form-label">Full Name</label>
+                            <input type="text" id="fname"  class="form-control"  />
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <label for="defaultFormControlInput" class="form-label">Mother's Name</label>
+                            <input type="text" id='mname' class="form-control"  />
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <label for="defaultFormControlInput" class="form-label">Personal ID</label>
+                            <input type="text" id='personalid'  class="form-control"  />
+                        </div>
+                        <div class="col-sm-12 col-lg-6 d-flex align-items-center justify-content-start pt-4"
+                             id="gender">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" value="Male" />
+                                <label class="form-check-label" for="gender">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" value="Female"/>
+                                <label class="form-check-label" for="gender">Female</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <label for="defaultFormControlInput" class="form-label">Blood group</label>
+                            <select class="form-select" id="bload_group" aria-label="bload group">
+                                <option selected>
+                                    Select Bload Group
+                                </option>
+                                {% for group in bload_group %}
+                                    <option value="{{ group.blood_group_id }}">
+                                        {{ group.blood_group_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <label for="defaultFormControlInput" class="form-label">Nationality</label>
+                            <select class="form-select" id="nation" aria-label="nation">
+                                <option selected>
+                                    Select a Nationality
+                                </option>
+                                {% for nation in nationalities %}
+                                    <option value="{{ nation.country_id }}">
+                                        {{ nation.country_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <label for="defaultFormControlInput" class="form-label">Email</label>
+                            <input type="text" id='email'  class="form-control" />
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <label for="defaultFormControlInput" class="form-label">Phone</label>
+                            <input type="text" id='phone'  class="form-control" />
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <label for="defaultFormControlInput" class="form-label">Date of Birth</label>
+                            <input class="form-control" type="date" id="dob" />
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <label for="defaultFormControlInput" class="form-label">State</label>
+                            <select class="form-select"
+                                    id="state"
+                                    aria-label="state"
+                                    {% if states == 'No State Found' %} disabled{% endif %}>
+                                <option selected>
+                                    {% if states == 'No State Found' %}
+                                        No State Found
+                                    {% else %}
+                                        Select State
+                                    {% endif %}
+                                </option>
+                                {% for state in states %}
+                                    <option value="{{ state.state_id }}">
+                                        {{ state.state_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-lg-12">
+                            <label for="defaultFormControlInput" class="form-label">Address</label>
+                            <input type="text" id='address'  class="form-control"  />
+                        </div>
+                    </div>
+                    <div class="mt-4 d-flex align-items-end justify-content-end">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    <script src="{% static "scripts/customer/editModal.js" %}"></script>
+{% endblock scriptData %}

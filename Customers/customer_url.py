@@ -24,6 +24,8 @@ urlpatterns = [
     path('', views.register_customer, name='register_customer'),
     path('activate', views.activate_customer, name='activate_customer'),
     path('list', views.customer_list, name="customer_list"),
-    path('profile/<int:id>', views.customer_profile, name="customer_profile")
+    path('updatecustomer/', views.update_customer),
+    path('profile/<int:id>', views.customer_profile, name="customer_profile"),
+    path('findcustomer/<int:id>', views.find_customer),
     # TODO: search here
 ]
