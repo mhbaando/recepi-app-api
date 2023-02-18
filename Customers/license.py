@@ -46,7 +46,6 @@ def ReNewLicense(request):
 
 @login_required(login_url='Login')
 def LicenseLists(request):
-
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     CheckStatus = 'Status' in request.GET
@@ -86,6 +85,13 @@ def LicenseLists(request):
             Licenselists = customer_model.license.objects.filter(status=Status, federal_state=request.user.federal_state
 
                                                                  ).order_by('-created_at')
+    get_active_license = customer_model.license.objects.filter(
+        status="Active", expired_date__lte=current_date).order_by('-created_at')
+    for x in range(0, len(get_active_license)):
+        get_current_license = customer_model.license.objects.get(
+            license_id=get_active_license[x].license_id)
+        get_current_license.status = "Expired"
+        get_current_license.save()
 
     paginator = Paginator(Licenselists, DataNumber)
 
@@ -127,20 +133,31 @@ def customer_info(request, id):
         try:
             vouchers = finance_model.receipt_voucher.objects.get(
                 rv_id=id)
-            license = customer_model.license.objects.filter(
-                owner__customer_id=vouchers.rv_from.customer_id, status="Active").exists()
-            if license:
-                license = customer_model.license.objects.filter(
-                    owner__customer_id=vouchers.rv_from.customer_id, status="Active").order_by('created_at')[0]
+            licenses = customer_model.license.objects.filter(
+                owner=vouchers.rv_from.customer_id).exists()
+            license = ''
+            if licenses:
+                license = customer_model.license.objects.filter(owner=vouchers.rv_from.customer_id
+                                                                ).order_by('created_at')[0]
+                message = {
+                    'ownar_name': f"{vouchers.rv_from.full_name}",
+                    'mother_name': f"{vouchers.rv_from.mother_name}",
+                    'personal_id': f"{vouchers.rv_from.personal_id}",
+                    'personal_id_type': f"{vouchers.rv_from.personal_id_type.personal_name}",
+                    'license': f"{license.reg_no}" if license else 'no Lecenses'
+                }
+
+                return JsonResponse({'Message': message}, status=200)
             message = {
                 'ownar_name': f"{vouchers.rv_from.full_name}",
                 'mother_name': f"{vouchers.rv_from.mother_name}",
                 'personal_id': f"{vouchers.rv_from.personal_id}",
                 'personal_id_type': f"{vouchers.rv_from.personal_id_type.personal_name}",
-                'license': f"{license.reg_no}" if license else 'no Lecenses'
+                'license': 'no Lecenses'
             }
 
             return JsonResponse({'Message': message}, status=200)
+
         except Exception as error:
             # username = request.user.username
             # name = request.user.first_name + ' ' + request.user.last_name
