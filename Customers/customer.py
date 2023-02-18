@@ -256,6 +256,12 @@ def customer_list(request):
 
 @ login_required(login_url="Login")
 def customer_profile(request, id):
+    customer_exist = customer_model.customer.objects.filter(
+        Q(customer_id=id)).exists()
+
+    if not customer_exist:
+        return render(request, './Base/403.html')
+
     bload_group = customer_model.blood_group.objects.all()
     nationalities = customer_model.countries.objects.all()
     doc_types = customer_model.personal_id_type.objects.all()  # personal id types

@@ -96,7 +96,7 @@ class customer(models.Model):
     def show_verify(self):
         return {
             'verified_status': 'Not Verified' if not self.is_verified else 'Verified',
-            'verified_color': 'danger text-white' if not self.is_verified else 'success',
+            'verified_color': 'danger' if not self.is_verified else 'success',
             'show_btn': True if not self.is_verified else False,
         }
 
