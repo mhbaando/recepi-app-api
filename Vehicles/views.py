@@ -12,6 +12,7 @@ from Customers import models as customer_model
 from Finance import models as finance_model
 from Finance.models import receipt_voucher
 from django.db.models import Q
+from Users.views import sendException, sendTrials
 
 
 @login_required(login_url="Login")
@@ -28,54 +29,89 @@ def register_vehicle(request):
 
     year.reverse()
 
+    if request.method == 'POST':
+        if request.user.has_perm('Vehicles.add_vehicle'):
+            try:
+                # get data from the request
+                model_brand = request.POST.get('model_brand', None)
+                color = request.POST.get('color', None)
+                origin = request.POST.get('origin', None)
+                year = request.POST.get('year', None)
+                cylinder = request.POST.get('cylinders', None)
+                hp = request.POST.get('hp', None)
+                weight = request.POST.get('weight', None)
+                passenger_seats = request.POST.get('passenger_seats', None)
+                registration_number = request.POST.get(
+                    'registration_number', None)
+                engine_number = request.POST.get('engine_number', None)
+                rv_num = request.POST.get('rv_num', None)
+                owner_id = request.POST.get('owner_id', None)
+
+                if model_brand is None or color is None or origin is None or year is None or cylinder is None or hp is None or weight is None or passenger_seats is None or registration_number is None or engine_number is None or rv_num is None or owner_id is None:
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': 'Validate Error',
+                            'type': 'danger',
+                            'Message':  'Fill All Required Fields'
+                        }
+                    )
+
+                owner = customer_model.customer.objects.filter(
+                    Q(customer_id=owner_id)).first()
+                brand = vehicle_model.model_brand.objects.filter(
+                    Q(brand_id=model_brand)).first()
+                car_color = vehicle_model.color.objects.filter(
+                    Q(color_id=color)).first()
+
+                car_cylinder = vehicle_model.cylinder.objects.filter(
+                    Q(cylinder_id=cylinder)).first()
+
+                car_origin = customer_model.countries.objects.filter(
+                    Q(country_id=origin)).first()
+
+                new_vehicle = vehicle_model.vehicle(
+                    vehicle_model=brand,
+                    color=car_color,
+                    cylinder=car_cylinder,
+                    year=year,
+                    origin=car_origin,
+                    hp=hp,
+                    weight=weight,
+                    vin=registration_number,
+                    enginer_no=engine_number,
+                    pessenger_seat=passenger_seats,
+                    owner=owner,
+                    reg_user_id=request.user.id,
+                    rv_number=rv_num)
+
+                new_vehicle.save()
+
+                username = request.user.username
+                names = request.user.first_name + ' ' + request.user.last_name
+                avatar = str(request.user.avatar)
+                module = "Vehicle / Register"
+                action = f'Registered A Vehicle {brand} at {datetime.now()}'
+                path = request.path
+                sendTrials(request, username, names,
+                           avatar, action, module, path)
+                # return for post method
+                return JsonResponse({'isError': False, 'Message': 'Vehicle has been successfully Saved'}, status=200)
+
+            except Exception as error:
+                username = request.user.username
+                name = request.user.first_name + ' ' + request.user.last_name
+                # register the error
+                sendException(
+                    request, username, name, error)
+                message = {
+                    'isError': True,
+                    'Message': 'On Error Occurs . Please try again or contact system administrator'
+                }
+                return JsonResponse(message, status=200)
+
     context = {"vehicle_models": vehicle_models, "colors": colors, "origins": origins,
                "cylenders": cylinders, "owners": owners, 'year': year, "pageTitle": 'Register vehicle'}
-
-    if request.method == 'POST':
-        model_brand = request.POST.get('model_brand', None)
-        color = request.POST.get('color', None)
-        origin = request.POST.get('origin', None)
-        year = request.POST.get('year', None)
-        cylinder = request.POST.get('cylinders', None)
-        hp = request.POST.get('hp', None)
-        weight = request.POST.get('weight', None)
-        passenger_seats = request.POST.get('passenger_seats', None)
-        registration_number = request.POST.get(
-            'registration_number', None)
-        engine_number = request.POST.get('engine_number', None)
-        rv_num = request.POST.get('rv_num', None)
-        owner_id = request.POST.get('owner_id', None)
-
-        owner = customer_model.customer.objects.filter(
-            Q(customer_id=owner_id)).first()
-        brand = vehicle_model.model_brand.objects.filter(
-            Q(brand_id=model_brand)).first()
-        car_color = vehicle_model.color.objects.filter(
-            Q(color_id=color)).first()
-
-        car_cylinder = vehicle_model.cylinder.objects.filter(
-            Q(cylinder_id=cylinder)).first()
-
-        car_origin = customer_model.countries.objects.filter(
-            Q(country_id=origin)).first()
-
-        new_vehicle = vehicle_model.vehicle(
-            vehicle_model=brand,
-            color=car_color,
-            cylinder=car_cylinder,
-            year=year,
-            origin=car_origin,
-            hp=hp,
-            weight=weight,
-            vin=registration_number,
-            enginer_no=engine_number,
-            pessenger_seat=passenger_seats,
-            owner=owner,
-            reg_user_id=request.user.id,
-            rv_number=rv_num)
-
-        new_vehicle.save()
-
     return render(request, "Vehicles/register_vehicle.html", context)
 
 
@@ -302,10 +338,13 @@ def view_vehicle(request):
         vehicleiddd = request.POST.get('vehicleId', None)
         code = request.POST.get('code', None)
         state = request.POST.get('state', None)
-        type = request.POST.get('type', None)
+        types = request.POST.get('type', None)
         number = request.POST.get('number', None)
         year = request.POST.get('year')
-        print(year)
+
+        selected_type = vehicle_model.type.objects.filter(
+            type_id=types).first()
+        print(selected_type)
 
         selected_state = customer_model.federal_state.objects.filter(
             Q(state_id=state)).first()
@@ -320,7 +359,7 @@ def view_vehicle(request):
             state=selected_state,
             plate_no=number,
             year=year,
-            type=type,
+            type=selected_type,
 
             reg_user_id=request.user.id,
         )
@@ -332,15 +371,80 @@ def view_vehicle(request):
 
 @login_required(login_url="Login")
 def vehicle_profile(request, pk):
-    # vehic_id=vehicle.objects.get(id=pk)
-    vehicles = vehicle_model.vehicle.objects.filter(vehicle_id=pk).all()
+    transfer = vehicle_model.transfare_vehicles.objects.all()
+    cylenders = vehicle_model.cylinder.objects.all()
+    vehicle_models = vehicle_model.model_brand.objects.all()
+    colors = vehicle_model.color.objects.all()
+    origins = countries.objects.all()
+    liscence = customer_model.license.objects.all()
+    # cylinders = vehicle_model.cylinder.objects.all()
+    year = []
 
-    context = {
-        'pageTitle': 'Profile',
-        "vehicles": vehicles
-    }
+    for i in range(1960, datetime.now().year):
+        year.append(i)
 
-    return render(request, 'Vehicles/vehicle_profile.html', context)
+    year.reverse()
+    if request.method == 'GET':
+        if pk is not None:
+            vehicle = ''
+            if request.user.is_superuser:
+                # for admin user
+                vehicle = vehicle_model.vehicle.objects.filter(
+                    Q(vehicle_id=pk)).first()
+            else:
+                # for state user
+                vehicle = vehicle_model.vehicle.objects.filter(
+                    Q(vehicle_id=pk), federal_state=request.user.federal_state).first()
+
+            context = {
+                'vehicle': vehicle,
+                "transfer": transfer,
+                'pageTitle': 'ProFile',
+                "cylenders": cylenders, "year": year, "colors": colors,
+                "origins": origins, "vehicle_models": vehicle_models,
+                "liscence": liscence
+            }
+
+            return render(request, 'Vehicles/vehicle_profile.html', context)
+        else:
+            return JsonResponse({'isError': True, 'Message': 'Provide a Vehicle ID'}, status=400)
+    # # vehic_id=vehicle.objects.get(id=pk)
+    # vehicles = vehicle_model.vehicle.objects.filter(vehicle_id=pk).all()
+
+    # context = {
+    #     'pageTitle': 'Profile',
+    #     "vehicles": vehicles
+    # }
+
+
+@ login_required(login_url="Login")
+def find_vehicle(request, id):
+
+    if request.method == 'GET':
+        if id is not None:
+            vehicle = ''
+            if request.user.is_superuser:
+                # for admin user
+                vehicle = vehicle_model.vehicle.objects.filter(
+                    Q(vehicle_id=id)).values()
+            else:
+                # for state user
+                vehicle = vehicle_model.vehicle.objects.filter(
+                    Q(vehicle_id=id), federal_state=request.user.federal_state).values()
+
+            return JsonResponse({'isErro': False, 'Message': list(vehicle)}, status=200)
+        else:
+            return JsonResponse({'isErro': False, 'Message': 'Vehicle Not Found'}, status=404)
+
+
+@ login_required(login_url="Login")
+def update_vehicle(request):
+    vehicle_id = request.POST.get('vehicleID', None)
+    print(vehicle_id)
+
+    return JsonResponse({
+        'hellw': 4
+    })
 
 
 @login_required(login_url="Login")

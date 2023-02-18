@@ -8,14 +8,14 @@
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">Home / Vehicle /</span> {{ pageTitle }}
         </h4>
+        <div class="col-sm-3">
+            <a href ={% url 'register-vehicle' %} class="btn btn-primary">Add new vehicle</a>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="row mb-2 g-4 align-items-center">
-                            <div class="col-sm-3">
-                                <a href ={% url 'register-vehicle' %} class="btn btn-primary">Add new vehicle</a>
-                            </div>
                             <div class="col-sm-auto ms-auto">
                                 <div class="hstack gap-2">
                                     <div class="form-group">
@@ -170,6 +170,9 @@
                                     </div>
                                     <div class="col-md-12 mb-0">
                                         <div class="mb-3">
+                                                    <label>
+                                                        Type
+                                                    </label>
                                             <select class="form-select"
                                                     id="type"
                                                     name="type"
@@ -187,7 +190,9 @@
                                     </div>
                                     <div class="col-md-12 mb-0">
                                         <div class="mb-3">
-                                          <label class="form-label">Year</label>
+                                                            <label>
+                                                                Year
+                                                            </label>
                                           <select name="year" id="year" class="form-control form-select select2">
                                             <option selected>
                                               Select a year

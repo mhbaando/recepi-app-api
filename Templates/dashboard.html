@@ -21,7 +21,7 @@
                  height="40"/>
           </div>
           <div class="summary-card-info">
-            <h3 class="mb-0">345</h3>
+            <h3 class="mb-0">{{ vehicle_count }}</h3>
             <p class="mb-0">Vehicles</p>
           </div>
         </div>
@@ -33,7 +33,7 @@
                  height="40"/>
           </div>
           <div class="summary-card-info">
-            <h3 class="mb-0">1,234</h3>
+            <h3 class="mb-0">{{ license_count }}</h3>
             <p class="mb-0">Licenses</p>
           </div>
         </div>
@@ -45,7 +45,7 @@
                  height="40"/>
           </div>
           <div class="summary-card-info">
-            <h3 class="mb-0">1024</h3>
+            <h3 class="mb-0">{{ customer_count }}</h3>
             <p class="mb-0">Customers</p>
           </div>
         </div>
@@ -57,7 +57,7 @@
                  height="40"/>
           </div>
           <div class="summary-card-info">
-            <h3 class="mb-0">1324</h3>
+            <h3 class="mb-0">{{ company_count }}</h3>
             <p class="mb-0">Companies</p>
           </div>
         </div>
@@ -84,7 +84,7 @@
                   <p class="p-0 m-0 license-card__title">
                     <span>A</span> - Total
                   </p>
-                  <p class="p-0 m-0">320</p>
+                  <p class="p-0 m-0">{{ type_count.A }}</p>
                 </div>
               </div>
               <div class="px-3 license-card">
@@ -96,7 +96,7 @@
                   <p class="p-0 m-0 license-card__title">
                     <span>A1</span> - Total
                   </p>
-                  <p class="p-0 m-0">320</p>
+                  <p class="p-0 m-0">{{ type_count.A1 }}</p>
                 </div>
               </div>
               <div class="px-3 license-card">
@@ -108,7 +108,7 @@
                   <p class="p-0 m-0 license-card__title">
                     <span>B</span> - Total
                   </p>
-                  <p class="p-0 m-0">320</p>
+                  <p class="p-0 m-0">{{ type_count.B }}</p>
                 </div>
               </div>
               <div class="px-3 license-card">
@@ -120,7 +120,7 @@
                   <p class="p-0 m-0 license-card__title">
                     <span>C</span> - Total
                   </p>
-                  <p class="p-0 m-0">320</p>
+                  <p class="p-0 m-0">{{ type_count.C }}</p>
                 </div>
               </div>
               <div class="px-3 license-card">
@@ -132,7 +132,7 @@
                   <p class="p-0 m-0 license-card__title">
                     <span>C1</span> - Total
                   </p>
-                  <p class="p-0 m-0">320</p>
+                  <p class="p-0 m-0">{{ type_count.c1 }}</p>
                 </div>
               </div>
               <div class="px-3 license-card">
@@ -144,7 +144,7 @@
                   <p class="p-0 m-0 license-card__title">
                     <span>D</span> - Total
                   </p>
-                  <p class="p-0 m-0">320</p>
+                  <p class="p-0 m-0">{{ type_count.D }}</p>
                 </div>
               </div>
               <div class="px-3 license-card">
@@ -156,7 +156,7 @@
                   <p class="p-0 m-0 license-card__title">
                     <span>E</span> - Total
                   </p>
-                  <p class="p-0 m-0">320</p>
+                  <p class="p-0 m-0">{{ type_count.E }}</p>
                 </div>
               </div>
               <div class="px-3 license-card">
@@ -169,7 +169,7 @@
                     <span>F</span> - Total
                   </p>
                   <p class="p-0 m-0">
-                    320
+                    {{ type_count.F }}
                   </p>
                 </div>
               </div>
@@ -183,7 +183,7 @@
                     <span>G</span> - Total
                   </p>
                   <p class="p-0 m-0">
-                    320
+                    {{ type_count.G }}
                   </p>
                 </div>
               </div>
@@ -212,135 +212,39 @@
                   Customer Name
                 </th>
                 <th>
-                  License Number
+                  Customer Mother Name
                 </th>
                 <th>
-                  License Table
+                  Customer Personal ID
                 </th>
                 <th>
-                  Expire Date
-                </th>
-                <th>
-                  Status
+                  Customer Status
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">
-                  1
-                </th>
-                <td>
-                  Elon Musk
-                </td>
-                <td>
-                  BNA-4512
-                </td>
-                <td>
-                  4578787845787
-                </td>
-                <td>
-                  A
-                </td>
-                <td>
-                  Jun 8,2024
-                </td>
-                <td>
-                  <span class="badge bg-label-success">Active</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  2
-                </th>
-                <td>
-                  Elon Musk
-                </td>
-                <td>
-                  BNA-4512
-                </td>
-                <td>
-                  4578787845787
-                </td>
-                <td >
-                  A
-                </td>
-                <td>
-                  Jun 8,2024
-                </td>
-                <td>
-                  <span class="badge bg-label-success">Active</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  3
-                </th>
-                <td>
-                  Elon Musk
-                </td>
-                <td>
-                  BNA-4512
-                </td>
-                <td>
-                  4578787845787
-                </td>
-                <td >
-                  4
-                </td>
-                <td>
-                  Jun 8,2024
-                </td>
-                <td>
-                  <span class="badge bg-label-danger">Lost</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  5
-                </th>
-                <td>
-                  Elon Musk
-                </td>
-                <td>
-                  BNA-4512
-                </td>
-                <td>
-                  4578787845787
-                </td>
-                <td>
-                  A
-                </td>
-                <td>
-                  Jun 8,2024
-                </td>
-                <td>
-                  <span class="badge bg-label-success">Active</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  6
-                </th>
-                <td>
-                  Elon Musk
-                </td>
-                <td>
-                  BNA-4512
-                </td>
-                <td>
-                  4578787845787
-                </td>
-                <td>
-                  A
-                </td>
-                <td>
-                  Jun 8,2024
-                </td>
-                <td>
-                  <span class="badge bg-label-danger">Suspended</span>
-                </td>
-              </tr>
+              {% for customer in customers %}
+                <tr>
+                  <th scope="row">
+                    {{ customer.customer_id }}
+                  </th>
+                  <td>
+                    {{ customer.created_at }}
+                  </td>
+                  <td>
+                    {{ customer.full_name }}
+                  </td>
+                  <td>
+                    {{ customer.mother_name }}
+                  </td>
+                  <td>
+                    {{ customer.personal_id }}
+                  </td>
+                  <td>
+                    <span class="badge bg-label-{{ customer.show_verify.verified_color }}">{{ customer.show_verify.verified_status }}</span>
+                  </td>
+                </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>

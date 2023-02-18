@@ -37,11 +37,10 @@ class receipt_voucher(models.Model):
     rv_from = models.ForeignKey(
         customer_model.customer, on_delete=models.RESTRICT)
     created_at = models.DateTimeField(auto_now_add=True)
+    reason = models.CharField(max_length=250, null=True, blank=True)
     modified_at = models.DateTimeField(auto_now=True)
     # Todo: user relation
     reg_user = models.ForeignKey(Users, on_delete=models.RESTRICT)
 
     class Meta:
         db_table = 'receipt_voucher'
-# CIZW214760138
-# 10.125.1.250

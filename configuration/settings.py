@@ -27,9 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    
-    
+
+
+
     # Own Apps
     'Users',
     'Finance',
@@ -115,7 +115,7 @@ TIME_ZONE = 'Africa/Mogadishu'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -146,9 +146,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'Users.Users'
 
 
-#session expiration
-SESSION_EXPIRE_SECONDS = 900  # session will expire after 15 minutes of Inactivity.
+# session expiration
+# session will expire after 15 minutes of Inactivity.
+SESSION_EXPIRE_SECONDS = 900
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 # group by minute
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60 
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60
 SESSION_TIMEOUT_REDIRECT = 'Login'
