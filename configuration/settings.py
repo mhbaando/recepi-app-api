@@ -15,7 +15,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -80,7 +80,7 @@ DATABASES = {
         },
         'NAME': config('DATABASE_NAME'),
         'USER': config('DATABASE_USER'),
-        'PASSWORD': '',
+        'PASSWORD': 'suldaane',
         'HOST': config('DATABASE_HOST'),
         'PORT': config('DATABASE_PORT'),
     }

@@ -112,7 +112,7 @@ def register_vehicle(request):
 
     context = {"vehicle_models": vehicle_models, "colors": colors, "origins": origins,
                "cylenders": cylinders, "owners": owners, 'year': year, "pageTitle": 'Register vehicle'}
-    return render(request, "Vehicles/register_vehicle.html", context)
+    return render(request, "vehicles/register_vehicle.html", context)
 
 
 @login_required(login_url="Login")
@@ -293,7 +293,7 @@ def tranfercreate(request):
 
         new_transfering.save()
 
-    return render(request, "Vehicles/transfer.html", context)
+    return render(request, "vehicles/transfer.html", context)
 
 
 @login_required(login_url="Login")
@@ -366,7 +366,7 @@ def view_vehicle(request):
 
         new_plate.save()
 
-    return render(request, 'Vehicles/veiw_vehicles.html', context)
+    return render(request, 'vehicles/veiw_vehicles.html', context)
 
 
 @login_required(login_url="Login")
@@ -405,7 +405,7 @@ def vehicle_profile(request, pk):
                 "liscence": liscence
             }
 
-            return render(request, 'Vehicles/vehicle_profile.html', context)
+            return render(request, 'vehicles/vehicle_profile.html', context)
         else:
             return JsonResponse({'isError': True, 'Message': 'Provide a Vehicle ID'}, status=400)
     # # vehic_id=vehicle.objects.get(id=pk)

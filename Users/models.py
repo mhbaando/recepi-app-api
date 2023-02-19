@@ -40,6 +40,11 @@ class Users(AbstractUser):
             return "Employee"
 
         return "Anonymous"
+    # Profile Url
+    def profileUrl(self):
+        if self.avatar and hasattr(self.avatar, 'url'):
+            return self.avatar.url
+
 
     @classmethod
     def create_user(cls, fname, lname, email, phone, gender, image, is_admins, is_state, is_supers, request, state=None):
