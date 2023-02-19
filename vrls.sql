@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2023 at 09:03 PM
+-- Generation Time: Feb 19, 2023 at 06:52 AM
 -- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- PHP Version: 8.0.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,6 +36,13 @@ CREATE TABLE `account` (
   `account_type_id` int(11) NOT NULL,
   `reg_user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `account`
+--
+
+INSERT INTO `account` (`account_id`, `account_name`, `amount`, `created_at`, `modified_at`, `account_type_id`, `reg_user_id`) VALUES
+(1, 'New License', 45, '2023-02-18 12:51:23.526754', '2023-02-18 12:51:23.526754', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -84,8 +91,52 @@ CREATE TABLE `audittrials` (
 
 INSERT INTO `audittrials` (`id`, `Avatar`, `Username`, `path`, `Name`, `Actions`, `Module`, `date_of_action`, `operating_system`, `browser`, `ip_address`, `user_agent`) VALUES
 (1, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-11 11:58:36.878453', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(2, '', 'azuu', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-16 16:58:00.516077', 'Windows', 'Chrome', '127.0.0.1', '127.0.0.1,Windows,Chrome'),
-(3, '', 'azuu', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-16 19:16:52.018401', 'Windows', 'Chrome', '127.0.0.1', '127.0.0.1,Windows,Chrome');
+(2, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-11 12:09:30.210679', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(3, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-12 06:02:42.108436', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(4, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-12 06:34:11.702720', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(5, '', 'admin', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-12 06:36:07.442179', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(6, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-12 10:22:44.701850', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(7, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 05:44:09.072011', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(8, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 07:08:20.371662', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(9, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-13 07:23:30.249287', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(10, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-13 07:43:37.234742', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(11, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-13 07:45:34.303377', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(12, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-13 07:46:47.302234', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(13, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 08:18:11.036520', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(14, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-13 08:33:28.813782', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(15, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/logout/', ' ', '  Logged out the System', 'Users Module', '2023-02-13 08:39:43.072694', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(16, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 08:39:47.791668', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(17, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 09:28:04.517758', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(18, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 10:10:45.679851', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(19, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 10:28:20.915629', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(20, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 11:53:15.191844', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(21, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/activate', ' ', 'Activated A Customer Maxamed Ali Maxamed Maxamuud', 'Customer / Activate', '2023-02-13 11:53:32.175337', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(22, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-14 06:42:24.339367', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(23, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-14 10:46:44.962803', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(24, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-14 12:08:06.453699', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(25, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-15 07:13:37.363144', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(26, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-15 10:51:00.596635', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(27, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-15 12:55:30.973051', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(28, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-16 11:42:51.628480', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(29, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-16 11:59:05.518381', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(30, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 06:06:48.461544', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(31, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 07:15:21.791621', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(32, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 10:38:43.370839', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(33, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 11:50:45.092697', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(34, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xasen Ali Jaamac Axmed', 'Customer / Update', '2023-02-18 11:54:56.191988', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(35, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xasen Ali Jaamac Axmed', 'Customer / Update', '2023-02-18 11:58:44.699828', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(36, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xalima Axmed Liban Farayare', 'Customer / Update', '2023-02-18 12:03:05.698844', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(37, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xalima Axmed Liban Cabdi', 'Customer / Update', '2023-02-18 12:07:51.929056', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(38, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xalima Axmed Liban Cabdi', 'Customer / Update', '2023-02-18 12:08:19.462905', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(39, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xalima Axmed Liban Cabdi', 'Customer / Update', '2023-02-18 12:12:34.355896', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(40, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xalima Axmed Liban Cabdi', 'Customer / Update', '2023-02-18 12:13:56.789811', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(41, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 12:47:33.849225', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(42, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 13:21:20.957681', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(43, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/activate', ' ', 'Activated A Customer Ahmed Jaamac Geedi Jaamac', 'Customer / Activate', '2023-02-18 13:30:42.333621', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(44, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 13:52:38.444344', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(45, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 15:20:18.579328', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(46, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 16:04:15.907838', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
+(47, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-19 08:43:58.224397', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge');
 
 -- --------------------------------------------------------
 
@@ -231,7 +282,11 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (101, 'Can add type', 26, 'add_type'),
 (102, 'Can change type', 26, 'change_type'),
 (103, 'Can delete type', 26, 'delete_type'),
-(104, 'Can view type', 26, 'view_type');
+(104, 'Can view type', 26, 'view_type'),
+(105, 'Can add licensetype', 27, 'add_licensetype'),
+(106, 'Can change licensetype', 27, 'change_licensetype'),
+(107, 'Can delete licensetype', 27, 'delete_licensetype'),
+(108, 'Can view licensetype', 27, 'view_licensetype');
 
 -- --------------------------------------------------------
 
@@ -447,6 +502,13 @@ CREATE TABLE `company` (
   `owner_id` int(11) NOT NULL,
   `reg_user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `company`
+--
+
+INSERT INTO `company` (`company_id`, `company_name`, `email`, `address`, `phone`, `logo`, `website`, `reg_no`, `document`, `description`, `is_blocked`, `created_at`, `modified_at`, `federal_state_id`, `owner_id`, `reg_user_id`) VALUES
+(1, 'Maandhis', 'info@maandhis.com', 'Hodan Talex mogadishu Somalia', '+252634034190', '', 'https://maadhis.com', '478499556', '', 'Maandhis', 0, '2023-02-18 13:36:29.922984', '2023-02-18 13:36:29.922984', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -702,7 +764,12 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`customer_id`, `firstname`, `middle_name`, `lastname`, `fourth_name`, `mother_name`, `full_name`, `gender`, `date_of_birth`, `place_of_birth`, `personal_id`, `email`, `address`, `phone`, `photo`, `document`, `is_verified`, `created_at`, `modified_at`, `blood_group_id`, `federal_state_id`, `nationality_id`, `personal_id_type_id`, `reg_user_id`, `description`) VALUES
-(1, 'tryt', 'utj6yu', 'tuh6y', 'uh6tyuj6yu', '6yuj76yuj6y', 'uj6y7iuj76yiuj', 'u6tyh6', '2023-02-16', '8uhiui8u', 'p-63435634', 'azuu@gmail.com', 'kaaraan', 'tyujyj', 'customer_images/download_1.jpg', 'customer_document/sample.pdf', 0, '2023-02-16 17:00:09.280462', '2023-02-16 17:00:09.280462', 2, 2, 2, 1, 2, '45t54rty65y');
+(1, 'Ahmed', 'Jaamac', 'Geedi', 'Jaamac', 'Hindi Maxamud Jamac', 'Ahmed Jaamac Geedi Jaamac', 'Male', '2023-02-12', NULL, '458787846693', 'a@me.com', 'Mogadishu', '13243546798', 'customer_images/7309681-removebg-preview_2udf4g7.png', 'customer_document/liiska_lamabarada_a8MnFXm.pdf', 1, '2023-02-12 06:36:07.440182', '2023-02-18 13:30:42.332785', 1, 1, 3, 1, 1, 'verified'),
+(2, 'Xalima', 'Axmed', 'Liban', 'Cabdi', 'Marwo Cali Xassen Axmed', 'Xalima Axmed Liban Cabdi', 'Female', '2007-05-20', NULL, 'P0779874577', 'halima@gmail.com', 'Hodan Talex mogadishu Somalia', '615121489', 'customer_images/7309681-removebg-preview_vpAxNkC.png', 'customer_document/printer-test-page-color_UNlZZ4e.pdf', 0, '2023-02-13 07:23:30.249287', '2023-02-18 12:13:56.785912', 3, 1, 163, 1, 1, NULL),
+(3, 'Xamid', 'Ali', 'Xasen', 'Raage', 'Aamino Maxamed Cali', 'Xamid Ali Xasen Raage', 'Male', '2023-02-13', NULL, 'P07798745', 'xamdi@gmail.com', 'Hodan Banaadir', '615478596', 'customer_images/7309681-removebg-preview_HFoWPy1.png', '', 0, '2023-02-13 07:43:37.231742', '2023-02-13 07:43:37.231742', 3, 1, 3, 1, 1, NULL),
+(4, 'Asad', 'Xalane', 'Abshir', 'Afyare', 'Marwo Cali Xassen Cilmi', 'Asad Xalane Abshir Afyare', 'Male', '2023-02-13', NULL, 'P0777987', 'a@gmain.com', 'Hodan Banaadir', '614253696', 'customer_images/7309681-removebg-preview_FUD9iWg.png', 'printer-test-page-color.pdf', 0, '2023-02-13 07:45:34.300387', '2023-02-13 07:45:34.300387', 2, 1, 2, 1, 1, 'qofkaan wlahubiyay'),
+(5, 'Maxamed', 'Ali', 'Maxamed', 'Maxamuud', 'Isniino Ali Abdi', 'Maxamed Ali Maxamed Maxamuud', 'Female', '2023-02-13', NULL, 'P0789696', 'is@gmain.com', 'Hodan Talex', '615478525', 'customer_images/7309681-removebg-preview_XxXTXiM.png', 'customer_document/printer-test-page-color_aQ6MmV5.pdf', 1, '2023-02-13 07:46:47.299805', '2023-02-13 11:53:32.173329', 4, 1, 5, 1, 1, 'sddsfgds'),
+(6, 'Xasen', 'Ali', 'Jaamac', 'Axmed', 'Asiyo Jaamac', 'Xasen Ali Jaamac Axmed', 'Male', '2011-02-14', NULL, 'P077984985', 'a@gmain.com', 'Hodan Banaadir Mogadishu Somalia', '64597984', 'customer_images/7309681-removebg-preview_TgSBrgO.png', 'customer_document/liiska_lamabarada.pdf', 1, '2023-02-13 08:33:28.813782', '2023-02-18 11:58:44.695844', 3, 1, 163, 1, 1, 'liiska lamabrada');
 
 -- --------------------------------------------------------
 
@@ -754,11 +821,28 @@ CREATE TABLE `django_admin_log` (
 --
 
 INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
-(1, '2023-02-16 17:00:09.282456', '1', 'customer object (1)', 1, '[{\"added\": {}}]', 15, 2),
-(2, '2023-02-16 17:00:53.722169', '1', 'receipt_voucher object (1)', 1, '[{\"added\": {}}]', 11, 2),
-(3, '2023-02-16 17:01:52.177467', '1', 'plate object (1)', 1, '[{\"added\": {}}]', 25, 2),
-(4, '2023-02-16 17:15:31.418682', '1', 'plate object (1)', 2, '[]', 25, 2),
-(5, '2023-02-16 19:49:07.915676', '2', 'Audi', 1, '[{\"added\": {}}]', 23, 2);
+(1, '2023-02-13 05:58:17.711162', '1', 'mo@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Username\", \"Phone\", \"Avatar\"]}}]', 8, 1),
+(2, '2023-02-15 07:14:50.111793', '1', 'Audi', 1, '[{\"added\": {}}]', 23, 1),
+(3, '2023-02-15 13:04:45.075515', '1', 'plate object (1)', 1, '[{\"added\": {}}]', 25, 1),
+(4, '2023-02-18 12:49:52.829838', '1', 'licensetype object (1)', 1, '[{\"added\": {}}]', 27, 1),
+(5, '2023-02-18 12:50:00.278818', '2', 'licensetype object (2)', 1, '[{\"added\": {}}]', 27, 1),
+(6, '2023-02-18 12:50:07.155614', '3', 'licensetype object (3)', 1, '[{\"added\": {}}]', 27, 1),
+(7, '2023-02-18 12:51:23.528878', '1', 'account object (1)', 1, '[{\"added\": {}}]', 9, 1),
+(8, '2023-02-18 12:51:54.161536', '1', 'receipt_voucher object (1)', 1, '[{\"added\": {}}]', 11, 1),
+(9, '2023-02-18 12:52:17.417318', '1', 'license object (1)', 1, '[{\"added\": {}}]', 19, 1),
+(10, '2023-02-18 13:22:16.340668', '1', 'transfare_vehicles object (1)', 1, '[{\"added\": {}}]', 24, 1),
+(11, '2023-02-18 13:36:29.925148', '1', 'company object (1)', 1, '[{\"added\": {}}]', 13, 1),
+(12, '2023-02-18 14:09:22.230142', '1', 'receipt_voucher object (1)', 2, '[{\"changed\": {\"fields\": [\"Rv number\"]}}]', 11, 1),
+(13, '2023-02-18 14:10:16.869272', '2', 'receipt_voucher object (2)', 1, '[{\"added\": {}}]', 11, 1),
+(14, '2023-02-18 14:11:52.040260', '2', 'license object (2)', 2, '[{\"changed\": {\"fields\": [\"Expired date\"]}}]', 19, 1),
+(15, '2023-02-18 14:26:12.397275', '4', 'licensetype object (4)', 1, '[{\"added\": {}}]', 27, 1),
+(16, '2023-02-18 14:26:20.001182', '5', 'licensetype object (5)', 1, '[{\"added\": {}}]', 27, 1),
+(17, '2023-02-18 14:26:26.850904', '6', 'licensetype object (6)', 1, '[{\"added\": {}}]', 27, 1),
+(18, '2023-02-18 14:26:33.501485', '7', 'licensetype object (7)', 1, '[{\"added\": {}}]', 27, 1),
+(19, '2023-02-18 14:26:44.907258', '8', 'licensetype object (8)', 1, '[{\"added\": {}}]', 27, 1),
+(20, '2023-02-18 14:26:57.485954', '9', 'licensetype object (9)', 1, '[{\"added\": {}}]', 27, 1),
+(21, '2023-02-18 14:53:16.356988', '3', 'license object (3)', 1, '[{\"added\": {}}]', 19, 1),
+(22, '2023-02-19 08:49:39.697818', '4', 'license object (4)', 1, '[{\"added\": {}}]', 19, 1);
 
 -- --------------------------------------------------------
 
@@ -788,6 +872,7 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (16, 'Customers', 'customer_fingers'),
 (17, 'Customers', 'federal_state'),
 (19, 'Customers', 'license'),
+(27, 'Customers', 'licensetype'),
 (18, 'Customers', 'personal_id_type'),
 (9, 'Finance', 'account'),
 (10, 'Finance', 'account_types'),
@@ -847,9 +932,11 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (23, 'admin', '0002_logentry_remove_auto_add', '2023-02-11 11:51:41.687505'),
 (24, 'admin', '0003_logentry_add_action_flag_choices', '2023-02-11 11:51:41.687505'),
 (25, 'sessions', '0001_initial', '2023-02-11 11:51:41.703247'),
-(26, 'Customers', '0004_customer_description', '2023-02-16 16:56:17.694251'),
-(27, 'Vehicles', '0002_type', '2023-02-16 18:22:51.253403'),
-(28, 'Vehicles', '0003_plate_type', '2023-02-16 18:45:26.487823');
+(26, 'Customers', '0004_customer_description', '2023-02-13 10:23:48.976605'),
+(27, 'Vehicles', '0002_type', '2023-02-18 06:06:21.656903'),
+(28, 'Vehicles', '0003_plate_type', '2023-02-18 06:06:21.703801'),
+(29, 'Customers', '0005_licensetype_license_type', '2023-02-18 12:47:21.458681'),
+(30, 'Finance', '0003_receipt_voucher_reason', '2023-02-18 13:29:22.332128');
 
 -- --------------------------------------------------------
 
@@ -868,9 +955,8 @@ CREATE TABLE `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('3h90xe7pgnz9i72lbhwftybmvhle2m3c', 'eyJfc2Vzc2lvbl9pbml0X3RpbWVzdGFtcF8iOjE2NzYxMTY3MzQuMzE2Njg4M30:1pQoWs:VMYTixDLDBJnCOkAuA7yTQvycxNierctmYS5XZHUKYU', '2023-02-25 11:58:54.323663'),
-('nt3ykau18y4glrsoyo7eupn5t3teug6y', '.eJxVjMsOgyAQRf-FdUMccEBddt9vIDiMlT6gEVw1_fdq4qLd3nPueQvn1zq7tfDiYhCDUOL0u42e7px2EG4-XbOknOoSR7kr8qBFXnLgx_lw_wKzL_P2Zk2GcGoNtr5Rtm_IgNLUa89oDRMqYOiQidk2LSgCtqZTEFiPU4BpjxYuJebkYorV1fjkUv3z5cQAxhq0VmEvtyoi6s8XUgNGLg:1pSkKh:eOWOr8koRvkis9Q27iQIGUnW9ESAxNNzysa2vSDw9Uk', '2023-03-02 19:54:19.622082'),
-('xlwej9sq616n1ijwab51879uuu4c7qpu', '.eJxVjDsOwyAQRO9CHSHAfF2mzxnQLpCYJIbI4CrK3WNLbtxMMe_NfIlvqbVci88ld9_znFqH-ePJyLXRfAtmqOSCmwvxsPbJry0tPkcyEk5OHUJ4pbKD-ITyqDTU0peMdFfoQRu91Zje18M9HUzQpm2NEhiGIWrlApcsKYGWgZTBWK0tRgHOKncfBqO4YTI6DTjwaAIGsSmC_P6P4UUs:1pQoWa:SE_KFKUp0hq7xP1f9fDKQ_-Ly-PoW2LTngLLhIiTV1g', '2023-02-25 11:58:36.880078');
+('jjskjwceyy9nc2df8yzmi895gbm2w58t', '.eJxVjMsOwiAUBf-FtSG8oV269xvIvYAWtWAKXRn_3TbpQrdnZs6beFj75NeWFp8jGQknp98NITxS2UG8Q7lVGmrpS0a6K_SgjV5qTM_z4f4dTNCmrUYFDIOMRg-BK5a0QMdAqWCdMQ6jgMHp4Sql1dwyFQcDKHm0AYPYFLGfttRarsXnkrvveU6tw_zyZOTGGrvlQlDLpdOSf746u0Wk:1pTccE:r-NDkVOf53d_68w6c4puqsjqEzBUis_DFtW-JtR2qNI', '2023-03-05 08:52:02.713853'),
+('zfmfv2uch5c9qf8drlemf1uoxdyv9m20', '.eJxVjMsOwiAUBf-FtSFcyrNL934DuTy0qAVT6Mr477ZJN92emTlf4lpqLdficsnd9Tyn1nH-ODKC0gpAa2moNCBA8AtxuPbJrS0tLkcyEiCnzWN4pbKD-MTyqDTU0pfs6a7QgzZ6qzG9r4d7OpiwTVvtBTIfhqikDSBYktwbhkIEbZQyPnK0Rtr7MGgJmoloFfoBog4-8E3h5PcH-NVFnQ:1pQonO:bQRIQDwH2bLkNsGR2JSelBEOW-8ekxiil1mFCcg9nwQ', '2023-02-25 12:15:58.589394');
 
 -- --------------------------------------------------------
 
@@ -892,6 +978,25 @@ CREATE TABLE `errorlogs` (
   `user_agent` longtext NOT NULL,
   `Avatar` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `errorlogs`
+--
+
+INSERT INTO `errorlogs` (`id`, `Username`, `Name`, `Expected_error`, `field_error`, `trace_back`, `line_number`, `date_recorded`, `browser`, `ip_address`, `user_agent`, `Avatar`) VALUES
+(1, 'AD00001', ' ', '<class \'AttributeError\'>', '\'QuerySet\' object has no attribute \'save\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 476, in activate_customer\n    customer.save()\n    ^^^^^^^^^^^^^\nAttributeError: \'QuerySet\' object has no attribute \'save\'\n', 476, '2023-02-13 10:28:43.233754', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(2, 'AD00001', ' ', '<class \'AttributeError\'>', '\'NoneType\' object has no attribute \'is_verified\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 473, in activate_customer\n    customer.is_verified = True\n    ^^^^^^^^^^^^^^^^^^^^\nAttributeError: \'NoneType\' object has no attribute \'is_verified\'\n', 473, '2023-02-13 10:29:43.219383', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(3, 'AD00001', ' ', '<class \'AttributeError\'>', '\'NoneType\' object has no attribute \'full_name\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 473, in activate_customer\n    print(customer.full_name)\n          ^^^^^^^^^^^^^^^^^^\nAttributeError: \'NoneType\' object has no attribute \'full_name\'\n', 473, '2023-02-13 10:31:26.373960', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(4, 'AD00001', ' ', '<class \'AttributeError\'>', '\'NoneType\' object has no attribute \'full_name\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 473, in activate_customer\n    print(customer.full_name)\n          ^^^^^^^^^^^^^^^^^^\nAttributeError: \'NoneType\' object has no attribute \'full_name\'\n', 473, '2023-02-13 10:31:52.207236', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(5, 'AD00001', ' ', '<class \'AttributeError\'>', '\'NoneType\' object has no attribute \'full_name\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 473, in activate_customer\n    print(customer.full_name)\n          ^^^^^^^^^^^^^^^^^^\nAttributeError: \'NoneType\' object has no attribute \'full_name\'\n', 473, '2023-02-13 10:32:26.906826', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(6, 'AD00001', ' ', '<class \'AttributeError\'>', '\'NoneType\' object has no attribute \'full_name\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 473, in activate_customer\n    print(customer.full_name)\n          ^^^^^^^^^^^^^^^^^^\nAttributeError: \'NoneType\' object has no attribute \'full_name\'\n', 473, '2023-02-13 10:40:34.595615', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(7, 'AD00001', ' ', '<class \'AttributeError\'>', '\'QuerySet\' object has no attribute \'full_name\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 474, in activate_customer\n    print(customer.full_name)\n          ^^^^^^^^^^^^^^^^^^\nAttributeError: \'QuerySet\' object has no attribute \'full_name\'\n', 474, '2023-02-13 10:47:45.508766', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(8, 'AD00001', ' ', '<class \'AttributeError\'>', '\'customer\' object has no attribute \'update\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 479, in activate_customer\n    customer.update()\n    ^^^^^^^^^^^^^^^\nAttributeError: \'customer\' object has no attribute \'update\'\n', 479, '2023-02-13 10:54:37.339885', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(9, 'AD00001', ' ', '<class \'AttributeError\'>', '\'customer\' object has no attribute \'update\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 476, in activate_customer\n    customer.update(is_verified=True,\n    ^^^^^^^^^^^^^^^\nAttributeError: \'customer\' object has no attribute \'update\'\n', 476, '2023-02-13 10:59:16.473254', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(10, 'AD00001', ' ', '<class \'AttributeError\'>', '\'customer\' object has no attribute \'update\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 476, in activate_customer\n    customer.update(is_verified=True,\n    ^^^^^^^^^^^^^^^\nAttributeError: \'customer\' object has no attribute \'update\'\n', 476, '2023-02-13 10:59:44.790552', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(11, 'AD00001', ' ', '<class \'AttributeError\'>', '\'customer\' object has no attribute \'update\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 476, in activate_customer\n    customer.update(is_verified=True,\n    ^^^^^^^^^^^^^^^\nAttributeError: \'customer\' object has no attribute \'update\'\n', 476, '2023-02-13 10:59:59.514020', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(12, 'AD00001', ' ', '<class \'AttributeError\'>', '\'QuerySet\' object has no attribute \'save\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 477, in activate_customer\n    customer.save()\n    ^^^^^^^^^^^^^\nAttributeError: \'QuerySet\' object has no attribute \'save\'\n', 477, '2023-02-13 11:26:12.339984', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
+(13, 'AD00001', ' ', '<class \'ValueError\'>', 'Cannot assign \"<QuerySet [<blood_group: O+>]>\": \"customer.blood_group\" must be a \"blood_group\" instance.', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 665, in update_customer\n    customer.blood_group = bload_group\n    ^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\gaadiidka\\env\\Lib\\site-packages\\django\\db\\models\\fields\\related_descriptors.py\", line 237, in __set__\n    raise ValueError(\nValueError: Cannot assign \"<QuerySet [<blood_group: O+>]>\": \"customer.blood_group\" must be a \"blood_group\" instance.\n', 665, '2023-02-18 11:51:02.643659', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png');
 
 -- --------------------------------------------------------
 
@@ -950,8 +1055,48 @@ CREATE TABLE `license` (
   `federal_state_id` int(11) NOT NULL,
   `owner_id` int(11) NOT NULL,
   `receipt_voucher_id` int(11) DEFAULT NULL,
+  `reg_user_id` bigint(20) NOT NULL,
+  `type_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `license`
+--
+
+INSERT INTO `license` (`license_id`, `place_of_issue`, `expired_date`, `status`, `reg_no`, `document`, `created_at`, `modified_at`, `federal_state_id`, `owner_id`, `receipt_voucher_id`, `reg_user_id`, `type_id`) VALUES
+(1, 'Mogadishu', '2023-02-28', 'Active', '1477855474', '', '2023-02-18 12:52:17.416322', '2023-02-18 12:52:17.416322', 1, 1, 1, 1, 1),
+(2, 'Banaadir', '2023-02-17', 'Expired', '2355475', '', '2023-02-18 14:10:31.364611', '2023-02-18 14:11:54.311185', 1, 3, 2, 1, 1),
+(3, 'Mogadishu', '2023-02-28', 'Active', '12312312312', '', '2023-02-18 14:53:16.354888', '2023-02-18 14:53:16.354888', 1, 3, 2, 1, 6),
+(4, 'Banaadir', '2023-02-20', 'Active', '45512012', '', '2023-02-19 08:49:39.696478', '2023-02-19 08:49:39.696478', 1, 3, 1, 1, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `licensetype`
+--
+
+CREATE TABLE `licensetype` (
+  `type_id` int(11) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `licensetype`
+--
+
+INSERT INTO `licensetype` (`type_id`, `type`, `created_at`, `modified_at`, `reg_user_id`) VALUES
+(1, 'A', '2023-02-18 12:49:52.828991', '2023-02-18 12:49:52.828991', 1),
+(2, 'A1', '2023-02-18 12:50:00.278278', '2023-02-18 12:50:00.278278', 1),
+(3, 'B', '2023-02-18 12:50:07.154556', '2023-02-18 12:50:07.154556', 1),
+(4, 'C', '2023-02-18 14:26:12.396299', '2023-02-18 14:26:12.396299', 1),
+(5, 'C1', '2023-02-18 14:26:19.999697', '2023-02-18 14:26:19.999697', 1),
+(6, 'D', '2023-02-18 14:26:26.849524', '2023-02-18 14:26:26.849524', 1),
+(7, 'E', '2023-02-18 14:26:33.500030', '2023-02-18 14:26:33.500030', 1),
+(8, 'F', '2023-02-18 14:26:44.906484', '2023-02-18 14:26:44.906484', 1),
+(9, 'G', '2023-02-18 14:26:57.484768', '2023-02-18 14:26:57.484768', 1);
 
 -- --------------------------------------------------------
 
@@ -1082,10 +1227,7 @@ CREATE TABLE `plate` (
 --
 
 INSERT INTO `plate` (`plate_id`, `plate_code`, `plate_no`, `year`, `created_at`, `modified_at`, `reg_user_id`, `state_id`, `vehicle_id`, `type_id`) VALUES
-(1, 'A1', 1, 2, '2023-02-16 17:01:52.175837', '2023-02-16 17:15:31.416558', 2, 2, 1, NULL),
-(2, 'AB', 2, 2021, '2023-02-16 19:41:43.710959', '2023-02-16 19:41:43.710959', 2, 1, 1, NULL),
-(3, 'AB', 3, 2021, '2023-02-16 19:52:02.168722', '2023-02-16 19:52:02.168722', 2, 1, 2, NULL),
-(4, 'AB', 3, 2021, '2023-02-16 19:52:03.108853', '2023-02-16 19:52:03.108853', 2, 1, 2, NULL);
+(1, 'A', 1, 2022, '2023-02-15 13:04:45.074002', '2023-02-15 13:04:45.074002', 1, 1, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -1100,15 +1242,17 @@ CREATE TABLE `receipt_voucher` (
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint(20) NOT NULL,
-  `rv_from_id` int(11) NOT NULL
+  `rv_from_id` int(11) NOT NULL,
+  `reason` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `receipt_voucher`
 --
 
-INSERT INTO `receipt_voucher` (`rv_id`, `rv_number`, `rv_amount`, `created_at`, `modified_at`, `reg_user_id`, `rv_from_id`) VALUES
-(1, '222222', '50', '2023-02-16 17:00:53.721174', '2023-02-16 17:00:53.721174', 2, 1);
+INSERT INTO `receipt_voucher` (`rv_id`, `rv_number`, `rv_amount`, `created_at`, `modified_at`, `reg_user_id`, `rv_from_id`, `reason`) VALUES
+(1, '14259', '45', '2023-02-18 12:51:54.159618', '2023-02-18 14:09:22.230142', 1, 1, NULL),
+(2, '475869', '50', '2023-02-18 14:10:16.867879', '2023-02-18 14:10:16.867879', 1, 3, 'New License');
 
 -- --------------------------------------------------------
 
@@ -1123,22 +1267,6 @@ CREATE TABLE `type` (
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `type`
---
-
-INSERT INTO `type` (`type_id`, `type_name`, `created_at`, `modified_at`, `reg_user_id`) VALUES
-(2, 'Gov', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(6, 'dip', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(8, 'MIL', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(10, 'MUN', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(12, 'OAU', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(13, 'POL', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(14, 'PRI', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(15, 'PUB', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(16, 'TAX', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(18, 'UN', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0);
 
 -- --------------------------------------------------------
 
@@ -1172,8 +1300,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `is_staff`, `is_active`, `date_joined`, `email`, `phone`, `gender`, `avatar`, `is_admin`, `is_state`, `modified_at`, `federal_state_id`) VALUES
-(1, 'pbkdf2_sha256$390000$sKaDcWtVLU6KzjGeJ8p6tj$QnKAkFcFuIAhSNg7EOSu9s90br8//2V7CTgPAtU5tP0=', '2023-02-11 11:58:36.876638', 1, 'admin', '', '', 1, 1, '2023-02-11 11:58:20.424718', 'mo@nisa.com', '', NULL, '', 0, 0, '2023-02-11 11:58:20.518314', NULL),
-(2, 'pbkdf2_sha256$390000$GP8UJxs526ZN1rue83spWw$aTYyndCwL4rov2dyguKwcVk/dw50Vbnb7/PBmFg8764=', '2023-02-16 19:16:52.014428', 1, 'azuu', '', '', 1, 1, '2023-02-16 16:57:18.598891', 'azuu@gmail.com', '', NULL, '', 0, 0, '2023-02-16 16:57:18.697077', NULL);
+(1, 'pbkdf2_sha256$390000$sKaDcWtVLU6KzjGeJ8p6tj$QnKAkFcFuIAhSNg7EOSu9s90br8//2V7CTgPAtU5tP0=', '2023-02-19 08:43:58.218976', 1, 'AD00001', '', '', 1, 1, '2023-02-11 11:58:20.000000', 'mo@nisa.com', 'q121', NULL, 'Avatars/7309681-removebg-preview.png', 0, 0, '2023-02-13 05:58:17.706174', NULL);
 
 -- --------------------------------------------------------
 
@@ -1229,8 +1356,7 @@ CREATE TABLE `vehicle` (
 --
 
 INSERT INTO `vehicle` (`vehicle_id`, `year`, `weight`, `hp`, `pessenger_seat`, `vin`, `enginer_no`, `rv_number`, `created_at`, `modified_at`, `color_id`, `cylinder_id`, `origin_id`, `owner_id`, `reg_user_id`, `vehicle_model_id`) VALUES
-(1, 2021, '43665', '436546', '456546', '46456', '46456', '222222', '2023-02-16 17:01:22.046372', '2023-02-16 17:01:22.046372', 230, 5, 14, 1, 2, 2),
-(2, 1994, '354', '45656', '4', 'v-47665463', '6576535', 'rv-8746543', '2023-02-16 19:49:07.914074', '2023-02-16 19:49:07.914074', 218, 5, 4, 1, 2, 4);
+(1, 2020, '1500', '12000', '4', '4789562', '78499647466', '412536', '2023-02-15 07:14:50.109798', '2023-02-15 07:14:50.109798', 213, 5, 2, 1, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -1251,6 +1377,13 @@ CREATE TABLE `vehicles_transfare_vehicles` (
   `reg_user_id` bigint(20) NOT NULL,
   `vehicle_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `vehicles_transfare_vehicles`
+--
+
+INSERT INTO `vehicles_transfare_vehicles` (`transfare_id`, `rv_number`, `document`, `description`, `transfare_reason`, `created_at`, `modified_at`, `new_owner_id`, `old_owner_id`, `reg_user_id`, `vehicle_id`) VALUES
+(1, 'RV14259', '', 'walakala wrejjiyaay', 'wuu iska gaday', '2023-02-18 13:22:16.338445', '2023-02-18 13:22:16.338445', 2, 1, 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -1399,7 +1532,15 @@ ALTER TABLE `license`
   ADD KEY `license_federal_state_id_3830e544_fk_federal_state_state_id` (`federal_state_id`),
   ADD KEY `license_owner_id_f487e78c_fk_customers_customer_id` (`owner_id`),
   ADD KEY `license_receipt_voucher_id_4942b888_fk_receipt_voucher_rv_id` (`receipt_voucher_id`),
-  ADD KEY `license_reg_user_id_946be48d_fk_users_id` (`reg_user_id`);
+  ADD KEY `license_reg_user_id_946be48d_fk_users_id` (`reg_user_id`),
+  ADD KEY `license_type_id_6aec3442_fk_licensetype_type_id` (`type_id`);
+
+--
+-- Indexes for table `licensetype`
+--
+ALTER TABLE `licensetype`
+  ADD PRIMARY KEY (`type_id`),
+  ADD KEY `licensetype_reg_user_id_a47f077c_fk_users_id` (`reg_user_id`);
 
 --
 -- Indexes for table `model_brand`
@@ -1494,7 +1635,7 @@ ALTER TABLE `vehicles_transfare_vehicles`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `account_types`
@@ -1506,7 +1647,7 @@ ALTER TABLE `account_types`
 -- AUTO_INCREMENT for table `audittrials`
 --
 ALTER TABLE `audittrials`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `auth_group`
@@ -1524,7 +1665,7 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT for table `blood_group`
@@ -1542,7 +1683,7 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -1554,7 +1695,7 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `cylinder`
@@ -1566,25 +1707,25 @@ ALTER TABLE `cylinder`
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `errorlogs`
 --
 ALTER TABLE `errorlogs`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `federal_state`
@@ -1602,7 +1743,13 @@ ALTER TABLE `fingerprints`
 -- AUTO_INCREMENT for table `license`
 --
 ALTER TABLE `license`
-  MODIFY `license_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `license_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `licensetype`
+--
+ALTER TABLE `licensetype`
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `model_brand`
@@ -1620,25 +1767,25 @@ ALTER TABLE `personal_id_type`
 -- AUTO_INCREMENT for table `plate`
 --
 ALTER TABLE `plate`
-  MODIFY `plate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `plate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `receipt_voucher`
 --
 ALTER TABLE `receipt_voucher`
-  MODIFY `rv_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `rv_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `type`
 --
 ALTER TABLE `type`
-  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
@@ -1656,13 +1803,13 @@ ALTER TABLE `users_user_permissions`
 -- AUTO_INCREMENT for table `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `vehicles_transfare_vehicles`
 --
 ALTER TABLE `vehicles_transfare_vehicles`
-  MODIFY `transfare_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `transfare_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -1689,6 +1836,12 @@ ALTER TABLE `auth_permission`
   ADD CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`);
 
 --
+-- Constraints for table `color`
+--
+ALTER TABLE `color`
+  ADD CONSTRAINT `color_reg_user_id_1c6d7693_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
 -- Constraints for table `company`
 --
 ALTER TABLE `company`
@@ -1697,16 +1850,117 @@ ALTER TABLE `company`
   ADD CONSTRAINT `company_reg_user_id_3cd998b4_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
 
 --
+-- Constraints for table `customers`
+--
+ALTER TABLE `customers`
+  ADD CONSTRAINT `customers_blood_group_id_a8459ea3_fk_blood_group_blood_group_id` FOREIGN KEY (`blood_group_id`) REFERENCES `blood_group` (`blood_group_id`),
+  ADD CONSTRAINT `customers_federal_state_id_6038d4df_fk_federal_state_state_id` FOREIGN KEY (`federal_state_id`) REFERENCES `federal_state` (`state_id`),
+  ADD CONSTRAINT `customers_nationality_id_ae515b28_fk_countries_country_id` FOREIGN KEY (`nationality_id`) REFERENCES `countries` (`country_id`),
+  ADD CONSTRAINT `customers_personal_id_type_id_71309a38_fk_personal_` FOREIGN KEY (`personal_id_type_id`) REFERENCES `personal_id_type` (`personal_id`),
+  ADD CONSTRAINT `customers_reg_user_id_eeb8baac_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `cylinder`
+--
+ALTER TABLE `cylinder`
+  ADD CONSTRAINT `cylinder_reg_user_id_a39988e0_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `django_admin_log`
+--
+ALTER TABLE `django_admin_log`
+  ADD CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  ADD CONSTRAINT `django_admin_log_user_id_c564eba6_fk_users_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `fingerprints`
+--
+ALTER TABLE `fingerprints`
+  ADD CONSTRAINT `fingerprints_customer_id_d56b0163_fk_customers_customer_id` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`);
+
+--
+-- Constraints for table `license`
+--
+ALTER TABLE `license`
+  ADD CONSTRAINT `license_federal_state_id_3830e544_fk_federal_state_state_id` FOREIGN KEY (`federal_state_id`) REFERENCES `federal_state` (`state_id`),
+  ADD CONSTRAINT `license_owner_id_f487e78c_fk_customers_customer_id` FOREIGN KEY (`owner_id`) REFERENCES `customers` (`customer_id`),
+  ADD CONSTRAINT `license_receipt_voucher_id_4942b888_fk_receipt_voucher_rv_id` FOREIGN KEY (`receipt_voucher_id`) REFERENCES `receipt_voucher` (`rv_id`),
+  ADD CONSTRAINT `license_reg_user_id_946be48d_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `license_type_id_6aec3442_fk_licensetype_type_id` FOREIGN KEY (`type_id`) REFERENCES `licensetype` (`type_id`);
+
+--
+-- Constraints for table `licensetype`
+--
+ALTER TABLE `licensetype`
+  ADD CONSTRAINT `licensetype_reg_user_id_a47f077c_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `model_brand`
+--
+ALTER TABLE `model_brand`
+  ADD CONSTRAINT `model_brand_reg_user_id_c3636f74_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
 -- Constraints for table `plate`
 --
 ALTER TABLE `plate`
-  ADD CONSTRAINT `plate_type_id_ae5aca22_fk_type_type_id` FOREIGN KEY (`type_id`) REFERENCES `type` (`type_id`);
+  ADD CONSTRAINT `plate_reg_user_id_744c09e8_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `plate_state_id_3b014cea_fk_federal_state_state_id` FOREIGN KEY (`state_id`) REFERENCES `federal_state` (`state_id`),
+  ADD CONSTRAINT `plate_type_id_ae5aca22_fk_type_type_id` FOREIGN KEY (`type_id`) REFERENCES `type` (`type_id`),
+  ADD CONSTRAINT `plate_vehicle_id_8ac47235_fk_vehicle_vehicle_id` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`vehicle_id`);
+
+--
+-- Constraints for table `receipt_voucher`
+--
+ALTER TABLE `receipt_voucher`
+  ADD CONSTRAINT `receipt_voucher_reg_user_id_adade876_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `receipt_voucher_rv_from_id_513e74e5_fk_customers_customer_id` FOREIGN KEY (`rv_from_id`) REFERENCES `customers` (`customer_id`);
 
 --
 -- Constraints for table `type`
 --
 ALTER TABLE `type`
   ADD CONSTRAINT `type_reg_user_id_7a63cccd_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_federal_state_id_a5c6fb46_fk_federal_state_state_id` FOREIGN KEY (`federal_state_id`) REFERENCES `federal_state` (`state_id`);
+
+--
+-- Constraints for table `users_groups`
+--
+ALTER TABLE `users_groups`
+  ADD CONSTRAINT `users_groups_group_id_2f3517aa_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
+  ADD CONSTRAINT `users_groups_users_id_1e682706_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `users_user_permissions`
+--
+ALTER TABLE `users_user_permissions`
+  ADD CONSTRAINT `users_user_permissio_permission_id_6d08dcd2_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
+  ADD CONSTRAINT `users_user_permissions_users_id_e1ed60a2_fk_users_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `vehicle`
+--
+ALTER TABLE `vehicle`
+  ADD CONSTRAINT `vehicle_color_id_e8b55c33_fk_color_color_id` FOREIGN KEY (`color_id`) REFERENCES `color` (`color_id`),
+  ADD CONSTRAINT `vehicle_cylinder_id_0fb3b025_fk_cylinder_cylinder_id` FOREIGN KEY (`cylinder_id`) REFERENCES `cylinder` (`cylinder_id`),
+  ADD CONSTRAINT `vehicle_origin_id_042ff3fe_fk_countries_country_id` FOREIGN KEY (`origin_id`) REFERENCES `countries` (`country_id`),
+  ADD CONSTRAINT `vehicle_owner_id_9c24cb49_fk_customers_customer_id` FOREIGN KEY (`owner_id`) REFERENCES `customers` (`customer_id`),
+  ADD CONSTRAINT `vehicle_reg_user_id_713ecd80_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `vehicle_vehicle_model_id_2a7997b8_fk_model_brand_brand_id` FOREIGN KEY (`vehicle_model_id`) REFERENCES `model_brand` (`brand_id`);
+
+--
+-- Constraints for table `vehicles_transfare_vehicles`
+--
+ALTER TABLE `vehicles_transfare_vehicles`
+  ADD CONSTRAINT `Vehicles_transfare_v_new_owner_id_a8719238_fk_customers` FOREIGN KEY (`new_owner_id`) REFERENCES `customers` (`customer_id`),
+  ADD CONSTRAINT `Vehicles_transfare_v_old_owner_id_7cee99c1_fk_customers` FOREIGN KEY (`old_owner_id`) REFERENCES `customers` (`customer_id`),
+  ADD CONSTRAINT `Vehicles_transfare_v_vehicle_id_bdf6795e_fk_vehicle_v` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`vehicle_id`),
+  ADD CONSTRAINT `Vehicles_transfare_vehicles_reg_user_id_4a859d12_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

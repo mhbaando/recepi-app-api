@@ -100,6 +100,9 @@ class customer(models.Model):
             'show_btn': True if not self.is_verified else False,
         }
 
+    def __str__(self) -> str:
+        return self.full_name
+
 
 class customer_fingers(models.Model):
     customer = models.ForeignKey(
@@ -155,6 +158,9 @@ class licensetype(models.Model):
     class Meta:
         db_table = 'licensetype'
 
+    def __str__(self) -> str:
+        return self.type
+
 
 class license(models.Model):
     license_id = models.AutoField(primary_key=True)
@@ -180,3 +186,6 @@ class license(models.Model):
     # TODO: resoipt herer
     class Meta:
         db_table = 'license'
+
+    def __str__(self) -> str:
+        return f"{self.license_id} {self.owner.full_name} {self.receipt_voucher.rv_number}"
