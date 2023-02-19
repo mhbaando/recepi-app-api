@@ -353,8 +353,10 @@ def update_company(request):
             company_id=company_id).first()
 
         if company is not None:
-            pass
-
-    return JsonResponse({
-        'hellw': 4
-    })
+            if (c_name is None or c_website is None or c_address is None or c_regisno is None):
+                return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
+            company.company_name = c_name
+            company.website = c_website
+            company.address = c_address
+            company.reg_no = c_regisno
+            company.save()
