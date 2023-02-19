@@ -44,3 +44,6 @@ class receipt_voucher(models.Model):
 
     class Meta:
         db_table = 'receipt_voucher'
+
+    def __str__(self) -> str:
+        return self.rv_number
