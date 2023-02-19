@@ -437,14 +437,14 @@ def find_vehicle(request, id):
             return JsonResponse({'isErro': False, 'Message': 'Vehicle Not Found'}, status=404)
 
 
-@ login_required(login_url="Login")
-def update_vehicle(request):
-    vehicle_id = request.POST.get('vehicleID', None)
-    print(vehicle_id)
+# @ login_required(login_url="Login")
+# def update_vehicle(request):
+#     vehicle_id = request.POST.get('vehicleID', None)
+#     print(vehicle_id)
 
-    return JsonResponse({
-        'hellw': 4
-    })
+#     return JsonResponse({
+#         'hellw': 4
+#     })
 
 
 @login_required(login_url="Login")
