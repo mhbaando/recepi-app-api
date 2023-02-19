@@ -233,7 +233,7 @@ def view_company(request):
     context['SearchQuery'] = SearchQuery
     context['Status'] = Status
 
-    return render(request, 'company/view_company.html', context)
+    return render(request, 'Company/view_company.html', context)
 
 
 @login_required(login_url='Login')
@@ -360,3 +360,4 @@ def update_company(request):
             company.address = c_address
             company.reg_no = c_regisno
             company.save()
+
