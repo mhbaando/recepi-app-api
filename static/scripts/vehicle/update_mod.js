@@ -128,37 +128,37 @@ $(document).ready(()=>{
   formData.append("vehicleID",vehicleID);
   
 
-   $.ajax({
-      method: "POST",
-      url: `/vehicles/updatevehicle/`,
-      headers: { "X-CSRFToken": csrftoken },
-      processData: false,
-      contentType: false,
-      data :formData,
-      async: true,
-      success: function(response){
-          if (!response.isError) {
-              Swal.fire({
-                  title: "Success",
-                  text: response.Message,
-                  icon: "success",
-                  confirmButtonText: "Ok",
-                  confirmButtonClass: "btn btn-success mt-2",
-                  buttonsStyling: !1,
-                }).then(function (e) {
-                  if (e.value) {
-                    Swal.DismissReason.cancel;
-                    location.reload()
-                  }
-                });
+//    $.ajax({
+//       method: "POST",
+//       url: `/vehicles/updatevehicle/`,
+//       headers: { "X-CSRFToken": csrftoken },
+//       processData: false,
+//       contentType: false,
+//       data :formData,
+//       async: true,
+//       success: function(response){
+//           if (!response.isError) {
+//               Swal.fire({
+//                   title: "Success",
+//                   text: response.Message,
+//                   icon: "success",
+//                   confirmButtonText: "Ok",
+//                   confirmButtonClass: "btn btn-success mt-2",
+//                   buttonsStyling: !1,
+//                 }).then(function (e) {
+//                   if (e.value) {
+//                     Swal.DismissReason.cancel;
+//                     location.reload()
+//                   }
+//                 });
           
-            } else {
-              Swal.fire("Error", response.Message, "error");
-            }
-      },
-      error: function(error){
-          Swal.fire("Error", error.responseText, "error");
-      }
-  })
+//             } else {
+//               Swal.fire("Error", response.Message, "error");
+//             }
+//       },
+//       error: function(error){
+//           Swal.fire("Error", error.responseText, "error");
+//       }
+//   })
   })
 })
