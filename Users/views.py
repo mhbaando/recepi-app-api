@@ -40,10 +40,6 @@ def Dashboard(request):
 
     customers = customer_model.customer.objects.all().order_by(
         '-created_at')[:5]
-    vehicles = vehicle_model.vehicle.objects.annotate(
-        month=ExtractMonth('created_at')).values('month').annotate(count=Count('vehicle_id')).values('month', 'count')
-
-    print(vehicles)
 
     context = {
         'pageTitle': 'Dashboard',
@@ -53,10 +49,23 @@ def Dashboard(request):
         'company_count': company_count,
         'type_count': type_count,
         'customers': customers,
-        'vehicles': vehicles
 
     }
     return render(request, 'dashboard.html', context)
+
+
+# chart dashboard
+@login_required(login_url='Login')
+def get_chart_data(request):
+
+    vehicles = vehicle_model.vehicle.objects.annotate(
+        month=ExtractMonth('created_at')).values('month').annotate(count=Count('vehicle_id')).values('month', 'count')
+
+
+    context = {
+        'vehicles': list(vehicles)
+    }
+    return JsonResponse(context)
 
 
 def Login(request):

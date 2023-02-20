@@ -10,7 +10,7 @@ urlpatterns = [
     path('manage_users/<str:action>',
          ManageUsers, name='ManageUsers'),
 
-    
+
     # Audit and logs
     path('audit_trials', AuditTrials, name='AuditTrials'),
     path('error_logs', ErrorLogs, name='ErrorLogs'),
@@ -36,7 +36,8 @@ urlpatterns = [
          RenameGroup),
 
     path('search_engine/<str:search>', SearchEngine),
-    
-    
+
+
     path('', Dashboard, name='Dashboard'),
+    path('chart/', get_chart_data),
 ]
