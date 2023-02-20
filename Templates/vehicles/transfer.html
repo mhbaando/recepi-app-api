@@ -31,15 +31,45 @@
                                         <input type="text" class="form-control" id="rv_num" placeholder="RV ID">
                                     </div>
                                 </div>
-                                <div class="col">
+                                {% comment %} <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                      <label class="form-label">Year</label>
+                                      <select name="year" id="year" class="form-control form-select select2">
+                                        <option selected>
+                                          Select a year
+                                        </option>
+                                        {% for y in year %}
+                                          <option value="{{ y }}">
+                                            {{ y }}
+                                          </option>
+                                        {% endfor %}
+                                      </select>
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label for="customer">New Owner's Name</label>
+                                        <div class="input-group">
+                                            <input list="customers"
+                                                   name="Typelist"
+                                                   id="selected_owner"
+                                                   class="form-control rounded"
+                                                   placeholder="Search Customer Name"
+                                                   size="50"/>
+                                            <datalist id="customers">
+                                                {% for customer in customers %}
+                                                    <option>
+                                                        {{ customer.full_name }} -  {{ customer.personal_id }}
+                                                    </option>
+                                                {% endfor %}
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% comment %} <div class="col">
                                     <label for="company">New Owner's Name</label>
                                     <div class="input-group">
-                                        <input list="customers"
-                                               name="Typelist"
-                                               id="selected_owner"
-                                               class="form-control rounded"
-                                               placeholder="Search Customer Name"
-                                               size="50"/>
+                                        <input list="customers" name="Typelist" id="selected_owner" class="form-control rounded" placeholder="Search Customer Name" size="50"/>
                                         <datalist id="customers">
                                             {% for customer in customers %}
                                                 <option>
@@ -48,7 +78,7 @@
                                             {% endfor %}
                                         </datalist>
                                     </div>
-                                </div>
+                                </div> {% endcomment %}
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
                                         <label class="form-label">Owner's Name</label>

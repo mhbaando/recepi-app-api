@@ -52,8 +52,15 @@ $(document).ready(function () {
 
           }
         });
+        
       }
-
+      else{
+        // reste when chars are lesthe 4 charsd
+        ownar_name.attr('value', "")
+        owner_mother.attr('value', "")
+        personalID.attr('value', "")
+      
+      }
     })
     
     $("#reg_form").on('submit',function(e){

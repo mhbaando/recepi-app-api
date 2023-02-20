@@ -1,6 +1,51 @@
 $(document).ready(function () {
-  
+  let stateappre = [{
+    'name':'Banaadir',
+    'appreviation':'BN'
+  },
+  {
+    'name':'Hirshabeelle',
+    'appreviation':'HR'
+  },
+  {
+    'name':'Galmudug',
+    'appreviation':'GM'
+  },
+  {
+    'name':'Puntland',
+    'appreviation':'PN'
+  },
+  {
+    'name':'Koonfur Galbeed',
+    'appreviation':'KG'
+  },
+  {
+    'name':'Jubba land',
+    'appreviation':'JL'
+  },
+  {
+    'name':'Somali land',
+    'appreviation':'SL'
+  }
+  ]
+
+  let plateNo = ""
   let vehicleId = ""
+  let type = ""
+  
+  let state = "" // for form to display satateid
+  let stateplate = "" // for user to display statet
+  let code = ""  // for form to dispay code ID
+  let codeplate = "" // for user to display code
+ 
+ 
+ 
+  let year = ""
+  $("#year").on("change",()=>{
+      year = $("#year option:selected").val()
+  })
+
+  
   const ownar_name = $("#owner_info")
   const hidden= $("#veh_hid_id")
   let number=$("#number")
@@ -15,7 +60,15 @@ $(document).ready(function () {
       }).then(res=> res.json()).then(data=>{
         // succes
         ownar_name.attr('value', `${data.vehicle_model} - ${data.owner}`)
-        number.attr('value',`${(data.number + 1 ).toString().padStart(4, '0')}`)
+
+        if (data.number === null) {
+          plateNo = (1).toString().padStart(4, '0')
+          number.attr('value',`${(1).toString().padStart(4, '0')}`)
+        }
+
+        plateNo = (Number(data.number) + 1 ).toString().padStart(4, '0')
+        number.attr('value',`${(Number(data.number) + 1 ).toString().padStart(4, '0')}`)
+       
 
       }).catch(err=>{
         // handler error
@@ -23,8 +76,26 @@ $(document).ready(function () {
   })
 })
  
+$("#type").on("change",()=>{
+  type = $("#type option:selected").val()
+ 
+})
+
+$("#code").on("change",()=>{
+  code = $("#code option:selected").val()
+  codeplate=$("#code option:selected").text().trim()
+  number.attr('value',`${stateplate}-${codeplate}-${plateNo}`)
+})
 
 
+$("#state").on("change",function(){
+  state =  $("#state option:selected").val()
+
+  const selected = $("#state option:selected").text().trim()
+  stateplate = stateappre.filter(state=> state.name.includes(selected))[0].appreviation
+  number.attr('value',`${stateplate}-${codeplate}-${plateNo}`)
+  
+})
 
 
   $("#doc").on("change",function(){
@@ -76,22 +147,7 @@ $(document).ready(function () {
   // plate number
 // request to the backend getting the selected code, type,state 
 
-  let type = ""
-    $("#type").on("change",()=>{
-        type = $("#type option:selected").val()
-    })
-    let code = ""
-    $("#code").on("change",()=>{
-        code = $("#code option:selected").val()
-    })
-    let state = ""
-    $("#state").on("change",()=>{
-        state = $("#state option:selected").val()
-    })
-    let year = ""
-    $("#year").on("change",()=>{
-        year = $("#year option:selected").val()
-    })
+ 
 
  
   
@@ -106,7 +162,7 @@ $(document).ready(function () {
       formData.append("type",type);
       formData.append("code",code);
       formData.append("state",state);
-      formData.append("number",number.val());
+      formData.append("number",plateNo);
       formData.append("vehicleId",vehicleId);
       formData.append("year",year);
       
@@ -134,7 +190,7 @@ $(document).ready(function () {
             }).then(function (e) {
               if (e.value) {
                 Swal.DismissReason.cancel;
-                // location.replace('/vehicles/register-tranfer')
+                location.replace('/vehicles/viewvehicle')
               }
             });
   

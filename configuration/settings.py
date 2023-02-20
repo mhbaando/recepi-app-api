@@ -80,7 +80,7 @@ DATABASES = {
         },
         'NAME': config('DATABASE_NAME'),
         'USER': config('DATABASE_USER'),
-        'PASSWORD': 'suldaane',
+        'PASSWORD': '',
         'HOST': config('DATABASE_HOST'),
         'PORT': config('DATABASE_PORT'),
     }

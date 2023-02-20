@@ -102,7 +102,7 @@ class vehicle(models.Model):
 class plate(models.Model):
     plate_id = models.AutoField(primary_key=True)
     plate_code = models.CharField(max_length=100)
-    plate_no = models.IntegerField()
+    plate_no = models.CharField(max_length=100, null=True, blank=True)
     type = models.ForeignKey(type, on_delete=models.RESTRICT, null=True)
     year = models.IntegerField()
     state = models.ForeignKey(
@@ -117,6 +117,9 @@ class plate(models.Model):
 
     class Meta:
         db_table = 'plate'
+
+    def __str__(self):
+        return self.plate_no
 
 
 class transfare_vehicles(models.Model):

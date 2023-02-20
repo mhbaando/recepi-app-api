@@ -15,7 +15,7 @@ urlpatterns = [
     path("registervehicle", views.register_vehicle, name="register-vehicle"),
     path("assignplate/<str:pk>/", views.asign_plate, name="assignplate"),
 
-#     path('updatevehicle/', views.update_vehicle),
+    path('updatevehicle/', views.update_vehicle),
 
     path("vehicle_info/<int:id>/",
          views.vehicle_plate_info),
