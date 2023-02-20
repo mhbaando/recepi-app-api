@@ -43,6 +43,9 @@ $(document).ready(function(){
 })
 
 
+
+
+
   // find new owner
   const newOwnerName = $("#newowner_name")
   const newOwnerMother = $("#newownermother_name")
@@ -80,6 +83,8 @@ const description = $("#description")
   })
     
   })
+
+ 
 
   
   

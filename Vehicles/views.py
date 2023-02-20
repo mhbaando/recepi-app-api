@@ -112,7 +112,7 @@ def register_vehicle(request):
 
     context = {"vehicle_models": vehicle_models, "colors": colors, "origins": origins,
                "cylenders": cylinders, "owners": owners, 'year': year, "pageTitle": 'Register vehicle'}
-    return render(request, "Vehicles/register_vehicle.html", context)
+    return render(request, "vehicles/register_vehicle.html", context)
 
 
 @login_required(login_url="Login")
@@ -184,12 +184,16 @@ def vehicle_plate_info(request, id):
         find_latest_plate = vehicle_model.plate.objects.order_by(
             '-created_at').first()
 
+        plate_no = None
+        if find_latest_plate is not None:
+            plate_no = find_latest_plate.plate_no
+        print(plate_no)
         if find_selected_owner is not None:
             return JsonResponse({
                 'isError': False,
                 "vehicle_model": find_selected_owner.vehicle_model.brand_name,
                 "owner": find_selected_owner.owner.full_name,
-                "number": find_latest_plate.plate_no
+                "number": plate_no
             })
 
         return JsonResponse({
@@ -293,7 +297,7 @@ def tranfercreate(request):
 
         new_transfering.save()
 
-    return render(request, "Vehicles/transfer.html", context)
+    return render(request, "vehicles/transfer.html", context)
 
 
 @login_required(login_url="Login")
@@ -301,6 +305,9 @@ def view_vehicle(request):
     vehicles = vehicle_model.vehicle.objects.all()
     states = customer_model.federal_state.objects.all()
     types = vehicle_model.type.objects.all()
+    plate_number = vehicle_model.vehicle.objects.all()
+
+    print(plate_number)
     year = []
 
     for i in range(1960, datetime.now().year):
@@ -332,6 +339,7 @@ def view_vehicle(request):
                "states": states,
                "types": types,
                "currentYear": datetime.now().year,
+               "plate_number": plate_number
                }
 
     if request.method == 'POST':
@@ -344,14 +352,12 @@ def view_vehicle(request):
 
         selected_type = vehicle_model.type.objects.filter(
             type_id=types).first()
-        print(selected_type)
 
         selected_state = customer_model.federal_state.objects.filter(
             Q(state_id=state)).first()
 
         selected_vehicle = vehicle_model.vehicle.objects.filter(
             Q(vehicle_id=vehicleiddd)).first()
-        print(selected_vehicle)
 
         new_plate = vehicle_model.plate(
             vehicle=selected_vehicle,
@@ -366,7 +372,7 @@ def view_vehicle(request):
 
         new_plate.save()
 
-    return render(request, 'Vehicles/veiw_vehicles.html', context)
+    return render(request, 'vehicles/veiw_vehicles.html', context)
 
 
 @login_required(login_url="Login")
@@ -375,8 +381,8 @@ def vehicle_profile(request, pk):
     cylenders = vehicle_model.cylinder.objects.all()
     vehicle_models = vehicle_model.model_brand.objects.all()
     colors = vehicle_model.color.objects.all()
-    origins = countries.objects.all()
-    liscence = customer_model.license.objects.all()
+    origins = customer_model.countries.objects.all()
+
     # cylinders = vehicle_model.cylinder.objects.all()
     year = []
 
@@ -400,12 +406,13 @@ def vehicle_profile(request, pk):
                 'vehicle': vehicle,
                 "transfer": transfer,
                 'pageTitle': 'ProFile',
-                "cylenders": cylenders, "year": year, "colors": colors,
                 "origins": origins, "vehicle_models": vehicle_models,
-                "liscence": liscence
+                "cylenders": cylenders, "year": year, "colors": colors,
+
+
             }
 
-            return render(request, 'Vehicles/vehicle_profile.html', context)
+            return render(request, 'vehicles/vehicle_profile.html', context)
         else:
             return JsonResponse({'isError': True, 'Message': 'Provide a Vehicle ID'}, status=400)
     # # vehic_id=vehicle.objects.get(id=pk)
@@ -437,17 +444,21 @@ def find_vehicle(request, id):
             return JsonResponse({'isErro': False, 'Message': 'Vehicle Not Found'}, status=404)
 
 
-# @ login_required(login_url="Login")
-# def update_vehicle(request):
-#     vehicle_id = request.POST.get('vehicleID', None)
-#     print(vehicle_id)
+@ login_required(login_url="Login")
+def update_vehicle(request):
+    vehicle_id = request.POST.get('vehicleID', None)
+    weight = request.POST.get('weight', None)
+    rv_number = request.POST.get('rv_number', None)
+    hp = request.POST.get('hp', None)
+    engine_number = request.POST.get('engine_no', None)
+    passenger_seats = request.POST.get('passenger_seats', None)
 
-#     return JsonResponse({
-#         'hellw': 4
-#     })
+    return JsonResponse({
+        'hellw': 4
+    })
 
 
 @login_required(login_url="Login")
 def asign_plate(request, pk):
 
-    return redirect("view-vehicle")
+    return redirect("veiw-vehicle")
