@@ -171,8 +171,9 @@
                      size=""
                      class="form-control custom-input-file"
                      accept="application/pdf"
-                     required maxlength="40" required maxlength="40" onchange="checkFileSize(this)" data-max_size="1048576" title="bla bla"
-                     />
+                     required maxlength="40" 
+                     
+                     image = forms.FileField(required=False, validators=[file_size])/>
             </div>
           </div>
          
