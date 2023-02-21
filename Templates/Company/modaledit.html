@@ -13,8 +13,8 @@
                 </div>
                 <form id="update_form">
                     {% csrf_token %}
-                    <div class="row">
-                        <label for="company">Company Name</label>
+                    <div class="row  mb-4">
+                                    <label for="company">Company Name</label>
                         <input type="text"
                                class="form-control"
                                placeholder="Company Name"
@@ -41,7 +41,7 @@
                                          required="required"
                                          id="address"/>
                                 </div>
-                                <div class="col">
+                                <div class="col  mb-3">
                                     <label for="company">Registration No</label>
                                     <input type="text"
                                            class="form-control"
@@ -59,6 +59,7 @@
             </div>
         </div>
     </div>
+    
 {% endblock content %}
 {% block scriptData %}
     <script src="{% static "scripts/company/editModal.js" %}"></script>

@@ -1,5 +1,7 @@
 from django.db import models
 from Users.models import Users
+
+
 # Create your models here.
 
 
@@ -129,7 +131,7 @@ class company(models.Model):
     website = models.CharField(max_length=100, null=True, blank=True)
     reg_no = models.TextField(null=True, blank=True)
     document = models.FileField(
-        null=True, blank=True, upload_to='comapany_document')
+        null=True, blank=True, upload_to='comapany_document', max_length=80)
     description = models.TextField(null=True, blank=True)
     owner = models.ForeignKey(customer, on_delete=models.RESTRICT)
     is_blocked = models.BooleanField(default=False)
@@ -146,6 +148,7 @@ class company(models.Model):
             'verified_color': 'success' if not self.is_blocked else 'danger text-white',
             'show_btn': True if not self.is_blocked else False,
         }
+# limitation of file upload
 
 
 class licensetype(models.Model):

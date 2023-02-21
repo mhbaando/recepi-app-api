@@ -11,30 +11,30 @@ $(document).ready(()=>{
 
         // prepapulate data to the model
         // 1. get the selected compnay
-        // $.ajax({
-        //     method: "GET",
-        //     url: `/customer/findcompany/${companyID}`,
-        //     headers: { "X-CSRFToken": csrftoken },
-        //     async: true,
-        //     success: function(response){
-        //         if (!response.isError) {
-        //            response.Message.forEach(company => {
-        //             //2. fill data to the html ellemets
-        //             $("#cname").attr('value', company. company_name)
-        //             $("#website").attr('value',  company.website)
-        //             $("#address").attr('value', company.address)
-        //             $("#rnumber").attr('value',  company.reg_no )
-        //             $(`#state option[value='${ company.federal_state_id}']`).attr('selected', true)
+        $.ajax({
+            method: "GET",
+            url: `/customer/findcompany/${companyID}`,
+            headers: { "X-CSRFToken": csrftoken },
+            async: true,
+            success: function(response){
+                if (!response.isError) {
+                   response.Message.forEach(company => {
+                    //2. fill data to the html ellemets
+                    $("#cname").attr('value', company. company_name)
+                    $("#website").attr('value',  company.website)
+                    $("#address").attr('value', company.address)
+                    $("#rnumber").attr('value',  company.reg_no )
+                    $(`#state option[value='${ company.federal_state_id}']`).attr('selected', true)
 
-        //            });
-        //           } else {
-        //             Swal.fire("Error", response.Message, "error");
-        //           }
-        //     },
-        //     error: function(error){
-        //         Swal.fire("Error", error.responseText, "error");
-        //     }
-        // })
+                   });
+                  } else {
+                    Swal.fire("Error", response.Message, "error");
+                  }
+            },
+            error: function(error){
+                Swal.fire("Error", error.responseText, "error");
+            }
+        })
         console.log(companyID)
     })
 
@@ -74,9 +74,9 @@ $(document).ready(()=>{
     // }
 
     const cname =  company_name[0]
-    // const m_name = company_name[1]
-    // const t_name = company_name[2]
-    // const fo_name = company_name[3]
+    const m_name = company_name[1]
+    const t_name = company_name[2]
+    const fo_name = company_name[3]
 
    
     formData.append("companyname", cname);

@@ -10,6 +10,9 @@ urlpatterns = [
     path('search_owner/<str:search>', views.search_engine),
     path('updatecompany/', views.update_company),
     path('findcompany/<int:id>', views.find_company),
+    path('searchcustomer/<str:search>',
+         views. Searchcustomer, name=' Searchcustomer'),
+
 
 
 

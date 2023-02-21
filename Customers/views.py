@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse, request
+from django.core.exceptions import ValidationError
+
+from Finance.models import account
 
 from Users.views import sendException, sendTrials
 from datetime import datetime
@@ -342,22 +345,67 @@ def find_company(request, id):
 
 @ login_required(login_url="Login")
 def update_company(request):
-    company_id = request.POST.get('company_id', None)
-    c_name = request.POST.get('cname', None)
-    c_website = request.POST.get('sname', None)
-    c_address = request.POST.get('thname', None)
-    c_regisno = request.POST.get('foname', None)
+    try:
+        company_id = request.POST.get('company_id', None)
+        c_name = request.POST.get('cname', None)
+        c_website = request.POST.get('sname', None)
+        c_address = request.POST.get('thname', None)
+        c_regisno = request.POST.get('foname', None)
 
-    if company_id is not None:
-        company = customer_model.company.objects.filter(
-            company_id=company_id).first()
+        if company_id is not None:
+            company = customer_model.company.objects.filter(
+                company_id=company_id).first()
 
-        if company is not None:
-            if (c_name is None or c_website is None or c_address is None or c_regisno is None):
-                return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
-            company.company_name = c_name
-            company.website = c_website
-            company.address = c_address
-            company.reg_no = c_regisno
-            company.save()
+            if company is not None:
+                if (c_name is None or c_website is None or c_address is None or c_regisno is None):
+                    return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
+                company.company_name = c_name
+                company.website = c_website
+                company.address = c_address
+                company.reg_no = c_regisno
+                company.save()
+                # for auditory
 
+                username = request.user.username
+                names = request.user.company_name + ' ' + request.user.website
+                avatar = str(request.user.avatar)
+                module = "Customer / update"
+                action = 'updated a company' + company.company_name
+                path = request.path
+                sendTrials(request, username, names,
+                           avatar, action, module, path)
+                return JsonResponse({'isError': False, 'Message': 'company has been updated'}, status=404)
+            return JsonResponse({'isErro': False, 'Message': 'company feild is required'}, status=400)
+
+    except Exception as error:
+
+        username = request.user.username
+        name = request.user.first_name + '' + request.user.last_name
+
+        sendException(
+            request, username, name, error
+        )
+        message = {
+            'isError': True,
+            'Message': 'on Error occurs . please try again or contact system adminstrator'
+
+        }
+        return JsonResponse(message, status=200)
+
+
+@login_required(login_url='Login')
+def Searchcustomer(request, search):
+    if request.method == 'GET':
+        searchQuery = customer_model.customer.objects.filter(
+            Q(full_name__icontains=search))
+        message = []
+        for xSearch in range(0, len(searchQuery)):
+            message.append(
+                {
+                    'label': f"{searchQuery[xSearch].full_name}",
+                    'value': f"{searchQuery[xSearch].full_name}",
+                    'full_name': searchQuery[xSearch].full_name,
+
+                }
+            )
+        return JsonResponse({'Message': message}, status=200)
