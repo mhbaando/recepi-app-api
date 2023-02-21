@@ -305,9 +305,25 @@ def view_vehicle(request):
     vehicles = vehicle_model.vehicle.objects.all()
     states = customer_model.federal_state.objects.all()
     types = vehicle_model.type.objects.all()
-    plate_number = vehicle_model.vehicle.objects.all()
+    plate_number = vehicle_model.plate.objects.all()
+    find_plate_num = vehicle_model.plate.objects.filter(
+        Q(vehicle_id=plate_number)).first()
 
-    print(plate_number)
+    if request.method == 'POST':
+        vehicle_id = request.POST.get('vehicleId', None)
+
+        find_plate_num = vehicle_model.plate.objects.filter(
+            Q(vehicle_id=plate_number)).first()
+
+        if find_plate_num is not None:
+            return JsonResponse({
+                'isError': False,
+                "find_plate_num": find_plate_num.plate_no
+
+
+            })
+    print(find_plate_num)
+
     year = []
 
     for i in range(1960, datetime.now().year):

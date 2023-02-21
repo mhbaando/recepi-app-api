@@ -64,6 +64,7 @@ $(document).ready(function () {
         if (data.number === null) {
           plateNo = (1).toString().padStart(4, '0')
           number.attr('value',`${(1).toString().padStart(4, '0')}`)
+        
         }
 
         plateNo = (Number(data.number) + 1 ).toString().padStart(4, '0')
