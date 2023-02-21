@@ -12,6 +12,8 @@ $(document).ready(function(){
   const old_hid_idd = $("#old_hid_id")
   const receipt_number=$("#receipt_number")
 
+  // new owner
+
 
   // event on input 
   // find old owner
@@ -47,58 +49,115 @@ $(document).ready(function(){
 
 
   // find new owner
-  const newOwnerName = $("#newowner_name")
-  const newOwnerMother = $("#newownermother_name")
-  const new_owner_id = $("#new_owner_id")
-  const phone = $("#phone")
   
-
-  // the other ones 
-
-const reason = $("#reason")
-const description = $("#description")
 
 
 
   // select new owner
   
-  let customer = ""
-  $("input[name='Typelist']").on('input', function(e){
-    customer= $(this).val().split("-")[1]?.trim();  
-    $.ajax({
-      type: 'GET',
-      url: '/vehicles/transfer-searchh/'+customer,
-      async: false,
-      headers: { "X-CSRFToken": csrftoken },
-      success: function (data) {
-        newOwnerMother.attr('value', data.newownermother_name)
-        phone.attr('value', data.phone)
-        new_owner_id.attr('value', data.new_owner_id)
+  // let customer = ""
+  // $("input[name='Typelist']").on('input', function(e){
+  //   customer= $(this).val().split("-")[1]?.trim();  
+  //   $.ajax({
+  //     type: 'GET',
+  //     url: '/vehicles/transfer-searchh/'+customer,
+  //     async: false,
+  //     headers: { "X-CSRFToken": csrftoken },
+  //     success: function (data) {
+  //       newOwnerMother.attr('value', data.newownermother_name)
+  //       phone.attr('value', data.phone)
+  //       new_owner_id.attr('value', data.new_owner_id)
 
-      },
-      error:function(err){
-        alert(err);
-      }
+  //     },
+  //     error:function(err){
+  //       alert(err);
+  //     }
       
-  })
+  // })
     
-  })
+  // })
+
+  
+  function findOwner (name){
+    let owner = []
+    $.ajax({
+        method: "GET",
+        url: "/vehicles/searchcustomer/" + name,
+        async: false,
+        headers: { "X-CSRFToken": csrftoken },
+        success: function (data) {
+          if (!data.isError) {
+          owner = data.Message
+            
+         
+          } else {
+            Swal.fire( data.title, data.Message,  data.type);
+          }
+        },
+        error: function (error) {
+          error;
+        },
+      });
+      return owner
+}
+
+$("#search").on("input", function (){
+    if ($(this).val().trim().length > 4 ){
+        const owner =  findOwner($(this).val())
+        const newOwnerMother = $("#newownermother_name")
+        const personal_id = $("#personalid")
+        const new_owner_id = $("#new_owner_id")
+
+        $("#search").autocomplete({
+          source: owner,
+          select: function (event, ui) {
+            const item = ui.item.rv_id;
+            const value = ui.item.value;
+            if (value != "") {
+              $("#search").attr("rv_id", item);
+              personal_id.attr('value', ui.item.personal_id)
+              newOwnerMother.attr('value', ui.item.newowner_mother_name)
+              new_owner_id.attr('value', ui.item.new_hid_id)
+            }
+
+          },
+          response: function (event, ui) {
+            if (!ui.content.length) {
+              var noResult = { value: "", label: "No result found" };
+              ui.content.push(noResult);
+            }
+          },
+          minLength: 1,
+        });
+
+        // newOwnerMother.attr('value', newownermother_namenewownermother_name)
+        // phone.attr('value', phone.phone)
+     
+    }
+})
+
+
 
  
 
   
+
   
   // submit form
   $('#reg_form').on('submit',function(e){
     e.preventDefault();
+    const newOwnerName = $("#newowner_name")
+    const newOwnerMother = $("#owner_mother")
+    const reason = $("#reason")
+    const description = $("#description")
     let formData = new FormData();
           
-    formData.append("reason",reason);
+    formData.append("reason",reason.val());
     formData.append("description",description.val());
-    formData.append("doc",transfare_document);
-    formData.append("olold_hid_id",old_hid_idd.val());
+    formData.append("doc",doc.val());
+    formData.append("olold_hid_id",transfare_document);
     formData.append("receipt_number",receipt_number.val());
-    formData.append("new_owner_id",new_owner_id.val());
+    formData.append("new_owner_id",new_owner_id);
 
     $("#transfare_document").change(function(){
       let file = this.files[0]
@@ -149,5 +208,31 @@ const description = $("#description")
   })
 
 
-})
 
+
+
+
+
+function customer(name) {
+    $.ajax({
+      method: "GET",
+      url: "/vehicles/customer_info/" + name,
+      async: false,
+      headers: { "X-CSRFToken": csrftoken },
+      success: function (data) {
+        if (!data.isError) {
+         
+          $("#phone").val(data.Message.ownar_name);
+          $("#newownermother_name").val(data.Message.mother_name);
+          
+       console.log(data)
+        } else {
+          Swal.fire( data.title, data.Message,  data.type);
+        }
+      },
+      error: function (error) {
+        error;
+      },
+    });
+  }
+  })

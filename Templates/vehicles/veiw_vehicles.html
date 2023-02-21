@@ -60,9 +60,9 @@
                                     <thead>
                                         <tr>
                                             <th>vehicle_model</th>
-                                            <th>vin</th>
-                                            <th>year</th>
                                             <th>hp</th>
+                                            <th>year</th>
+                                            <th>vin</th>
                                             <th>Passenger</th>
                                             <th>Rv number</th>
                                             <th>Plate Number</th>
@@ -74,13 +74,13 @@
                                         {% if page_obj %}
                                             {% for veh in vehicles %}
                                                 <tr>
-                                                    <td>{{ veh.vehicle_model }}</td>
+                                                    <td>{{ veh.model }}</td>
                                                     <td>{{ veh.hp }}</td>
                                                     <td>{{ veh.year }}</td>
-                                                    <td>{{ veh.pessenger_seat }}</td>
-                                                    <td>{{ veh.owner.full_name }}</td>
-                                                    <td>{{ veh.rv_number }}</td>
-                                                    <td>{{ plate_number.plate_no }}</td>
+                                                    <td>{{ veh.vin }}</td>
+                                                    <td>{{ veh.passenger }}</td>
+                                                    <td>{{ veh.rv_no }}</td>
+                                                    <td>{{ veh.plate_no }}</td>
                                                     <td>
                                                         <a href="{% url 'vehicle-profile' veh.vehicle_id %}"
                                                            class="btn btn-primary">View Profile</a>
