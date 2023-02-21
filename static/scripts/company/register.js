@@ -18,6 +18,8 @@ $(document).ready(function () {
         }else {
             companyDoc = undefined
         }
+
+        
     })
 
     // get state 
