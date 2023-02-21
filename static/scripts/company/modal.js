@@ -77,17 +77,12 @@ $(document).ready(function () {
 		}else{
       companyDoc = undefined
     }
-    function checkFileSize(elem) {
-      var fsize = elem.files[0].size;
-      var fname = elem.files[0].name.length;
-      if (fsize > elem.getAttribute("data-max_size") || fname > elem.getAttribute("maxlength")) {
-          elem.setCustomValidity(elem.getAttribute("title"));
-      } else {
-      
-          elem.setCustomValidity("");
-      
-	}
-}
+
+   
+    
+    
+  
+})
 
      // send data to the backend 
     // block company 
@@ -152,4 +147,3 @@ $(document).ready(function () {
 
     
   })
-})
