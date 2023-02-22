@@ -30,12 +30,12 @@ let transfer_document = ""
         }
     })
 
-
+let vehicleID = ""
  const transfer_btn = document.querySelectorAll("#transferbtn")
     // loop over the node list
     transfer_btn.forEach(btn => {
         btn.addEventListener('click', function(){
-            // const selectedCustomer = $(this).data('customer')
+            vehicleID = $(this).data('vehicleid')
             overlay.attr('class', 'overlay')
             modal.attr('class','model-contaier')
         })
@@ -64,7 +64,7 @@ let transfer_document = ""
   const old_hid_idd = $("#old_hid_id")
   const receipt_number=$("#receipt_number")
   const new_hid_id = $("#new_hid_id")
-  const vehicle_id= $("#vehicle_id")
+ 
   // const doc = $("#doc")
   
 
@@ -89,7 +89,7 @@ let transfer_document = ""
           owner_mother.attr('value', data.mother_name)
           old_hid_idd.attr('value', data?.old_hid_id)
           receipt_number.attr('value', data?.receipt_number)
-          vehicle_id.attr('value', data?.vehicle_id)
+      
         },
         error: function(err){
           alert(err);
@@ -165,28 +165,28 @@ $("#search").on("input", function (){
         const newOwnerMother = $("#newownermother_name")
         const personal_id = $("#personalid")
        
-
+        console.log($(this).val());
         $("#search").autocomplete({
-          source: owner,
-          select: function (event, ui) {
-            const item = ui.item.rv_id;
-            const value = ui.item.value;
-            if (value != "") {
-              $("#search").attr("rv_id", item);
-              personal_id.attr('value', ui.item.personal_id)
-              newOwnerMother.attr('value', ui.item.newowner_mother_name)
-              new_hid_id.attr('value', ui.item.new_hid_id)
-            }
-
-          },
-          response: function (event, ui) {
-            if (!ui.content.length) {
-              var noResult = { value: "", label: "No result found" };
-              ui.content.push(noResult);
-            }
-          },
-          minLength: 1,
-        });
+            source: owner,
+            select: function (event, ui) {
+              const item = ui.item.rv_id;
+              const value = ui.item.value;
+              if (value != "") {
+                $("#search").attr("rv_id", item);
+                personal_id.attr('value', ui.item.personal_id)
+                newOwnerMother.attr('value', ui.item.newowner_mother_name)
+                new_hid_id.attr('value', ui.item.new_hid_id)
+              }
+  
+            },
+            response: function (event, ui) {
+              if (!ui.content.length) {
+                var noResult = { value: "", label: "No result found" };
+                ui.content.push(noResult);
+              }
+            },
+            minLength: 1,
+          });
 
         // newOwnerMother.attr('value', newownermother_namenewownermother_name)
         // phone.attr('value', phone.phone)
@@ -202,9 +202,8 @@ $("#search").on("input", function (){
 
   
   // submit form
-  $('#reg_form').on('submit',function(e){
+  $('#transfer_form').on('submit',function(e){
     e.preventDefault();
-    const newOwnerName = $("#newowner_name")
     const newOwnerMother = $("#owner_mother")
     // const doc=$("#doc")
     const reason = $("#reason")
@@ -214,10 +213,10 @@ $("#search").on("input", function (){
     formData.append("reason",reason.val());
     formData.append("description",description.val());
     formData.append("transfer_document",transfer_document);
-    formData.append("olold_hid_id",old_hid_idd);
+    formData.append("olold_hid_id",old_hid_idd.val());
     formData.append("receipt_number",receipt_number.val());
     formData.append("new_hid_id",new_hid_id.val());
-    formData.append("vehicle_id",vehicle_id.val());
+    formData.append("vehicleID",vehicleID);
 
 
     

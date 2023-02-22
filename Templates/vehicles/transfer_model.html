@@ -16,7 +16,7 @@
                         <hr/>
                     </div>
                     {% comment %} customer infor {% endcomment %}
-                    <form id='reg_form'>
+                    <form id='transfer_form'>
                         {% csrf_token %}
                         <div class="card-body">
                             <div class="row">
@@ -157,8 +157,7 @@
     </div>
 {% endblock content %}
 {% block scriptData %}
-    {% comment %} <script src={% static "scripts/vehicle/transfer.js" %}></script> {% endcomment %}
     <script src={% static "scripts/vehicle/transfereModel.js" %}></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
+    <script>src="https://code.jquery.com/jquery-3.1.1.slim.min.js"</script>
 {% endblock scriptData %}
