@@ -135,10 +135,11 @@ def search_engine(request, search):
         owner = []
 
         for customer in customers:
-            owner = [{
+            owner.append([{
                 'owner_name': customer.full_name,
-                'owner_id': customer.personal_id
-            }]
+                'owner_id': customer.personal_id,
+                'owner_pk': customer.customer_id
+            }])
 
         return JsonResponse({'owner': owner}, status=200)
     else:
@@ -360,4 +361,3 @@ def update_company(request):
             company.address = c_address
             company.reg_no = c_regisno
             company.save()
-
