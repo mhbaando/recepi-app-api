@@ -52,8 +52,9 @@
                             <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Acc Name</th>
-                                        <th scope="col">Acc Type</th>
+                                        <th scope="col">Account Number</th>
+                                        <th scope="col">Account Type</th>
+                                        <th scope="col">Account  Name</th>
                                         <th scope="col">Amount</th>
                                         
                                     </tr>
@@ -64,6 +65,8 @@
                                     <tr>
                                         <td>{{item.account_name}}</td>
                                         <td>{{item.account_type}}</td>
+                                        <td>{{item.account_name}}</td>
+
                                         <td>{{item.amount}}</td>
                                     </tr>
                                     {% endfor %}

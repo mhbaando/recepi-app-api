@@ -28,9 +28,8 @@ $(document).ready(function () {
       let page = $(".activePage").attr("activePage");
       let search = $("#SearchQuery").val();
       let entries = $("#DataNumber").val();
-      let Status = $("#Status").val();
       
-      let url = `/customer/list?DataNumber=${entries}&page=${page}&Status=${Status}`;
+      let url = `/customer/list?DataNumber=${entries}&page=${page}`;
   
       if (search != "") {
         url += `&SearchQuery=${search}`;
