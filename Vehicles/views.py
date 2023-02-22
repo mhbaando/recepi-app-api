@@ -266,7 +266,7 @@ def tranfercreate(request):
 
     if request.method == 'POST':
         old_owner_id = request.POST.get('olold_hid_id', None)
-        new_owner_id = request.POST.get('new_owner_id', None)
+        new_owner_id = request.POST.get('new_hid_id', None)
         receipt_number = request.POST.get('receipt_number', None)
         description = request.POST.get('description', None)
         document = request.FILES.get('document', None)
@@ -549,7 +549,7 @@ def Searchcustomer(request, search):
                     'full_name': searchQuery[xSearch].full_name,
                     'personal_id': searchQuery[xSearch].personal_id,
                     'newowner_mother_name': searchQuery[xSearch].mother_name,
-                    'new_owner_id': searchQuery[xSearch].customer_id,
+                    'new_hid_id': searchQuery[xSearch].customer_id,
                 }
             )
         return JsonResponse({'Message': message}, status=200)

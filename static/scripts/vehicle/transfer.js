@@ -1,5 +1,6 @@
 $(document).ready(function(){
   let transfare_document = ""
+
   $("#DataNumber").val($("#DataNumber").attr("DataNumber"));
 
   $("#DataNumber").change(function () {
@@ -11,6 +12,15 @@ $(document).ready(function(){
   const owner_mother = $("#owner_mother")
   const old_hid_idd = $("#old_hid_id")
   const receipt_number=$("#receipt_number")
+  const new_hid_id = $("#new_hid_id")
+  
+
+  $("#transfare_document").change(function(){
+    let file = this.files[0]
+    if(file){
+      $("#doc-name").text(file.name)
+    }
+  })
 
   // new owner
 
@@ -106,7 +116,7 @@ $("#search").on("input", function (){
         const owner =  findOwner($(this).val())
         const newOwnerMother = $("#newownermother_name")
         const personal_id = $("#personalid")
-        const new_owner_id = $("#new_owner_id")
+       
 
         $("#search").autocomplete({
           source: owner,
@@ -117,7 +127,7 @@ $("#search").on("input", function (){
               $("#search").attr("rv_id", item);
               personal_id.attr('value', ui.item.personal_id)
               newOwnerMother.attr('value', ui.item.newowner_mother_name)
-              new_owner_id.attr('value', ui.item.new_hid_id)
+              new_hid_id.attr('value', ui.item.new_hid_id)
             }
 
           },
@@ -148,6 +158,7 @@ $("#search").on("input", function (){
     e.preventDefault();
     const newOwnerName = $("#newowner_name")
     const newOwnerMother = $("#owner_mother")
+    const doc=$("#doc")
     const reason = $("#reason")
     const description = $("#description")
     let formData = new FormData();
@@ -155,16 +166,11 @@ $("#search").on("input", function (){
     formData.append("reason",reason.val());
     formData.append("description",description.val());
     formData.append("doc",doc.val());
-    formData.append("olold_hid_id",transfare_document);
+    formData.append("olold_hid_id",old_hid_idd.val());
     formData.append("receipt_number",receipt_number.val());
-    formData.append("new_owner_id",new_owner_id);
+    formData.append("new_hid_id",new_hid_id.val());
 
-    $("#transfare_document").change(function(){
-      let file = this.files[0]
-      if(file){
-        $("#doc-name").text(file.name)
-      }
-    })
+
     
     $.ajax({
   method: "POST",
