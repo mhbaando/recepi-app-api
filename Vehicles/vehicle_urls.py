@@ -15,18 +15,18 @@ urlpatterns = [
     path("registervehicle", views.register_vehicle, name="register-vehicle"),
     path("assignplate/<str:pk>/", views.asign_plate, name="assignplate"),
 
-#     path('updatevehicle/', views.update_vehicle),
+    path('updatevehicle/', views.update_vehicle),
 
     path("vehicle_info/<int:id>/",
          views.vehicle_plate_info),
 
 
-    # path('updatecustomer/', views.update_customer),
+
     path('findvehicle/<int:id>', views.find_vehicle),
 
 
 
-
-
+    path('searchcustomer/<str:search>',
+         views. Searchcustomer, name=' Searchcustomer'),
 
 ]

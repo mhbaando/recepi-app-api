@@ -184,12 +184,16 @@ def vehicle_plate_info(request, id):
         find_latest_plate = vehicle_model.plate.objects.order_by(
             '-created_at').first()
 
+        plate_no = None
+        if find_latest_plate is not None:
+            plate_no = find_latest_plate.plate_no
+        print(plate_no)
         if find_selected_owner is not None:
             return JsonResponse({
                 'isError': False,
                 "vehicle_model": find_selected_owner.vehicle_model.brand_name,
                 "owner": find_selected_owner.owner.full_name,
-                "number": find_latest_plate.plate_no
+                "number": plate_no
             })
 
         return JsonResponse({
@@ -298,19 +302,91 @@ def tranfercreate(request):
 
 @login_required(login_url="Login")
 def view_vehicle(request):
-    vehicles = vehicle_model.vehicle.objects.all()
+    year = []
+    vehicles = []
+    noplates = []
+
+    stateappre = [{
+        'name': 'Banaadir',
+        'appreviation': 'BN'
+    },
+        {
+        'name': 'Hirshabeelle',
+        'appreviation': 'HR'
+    },
+        {
+        'name': 'Galmudug',
+        'appreviation': 'GM'
+    },
+        {
+        'name': 'Puntland',
+        'appreviation': 'PN'
+    },
+        {
+        'name': 'Koonfur Galbeed',
+        'appreviation': 'KG'
+    },
+        {
+        'name': 'Jubba land',
+        'appreviation': 'JL'
+    },
+        {
+        'name': 'Somali land',
+        'appreviation': 'SL'
+    }
+    ]
+
+    print(stateappre)
+    DataNumber = 10
+    SearchQuery = ''
+    CheckDataNumber = 'DataNumber' in request.GET
+    CheckSearchQuery = 'SearchQuery' in request.GET
+
     states = customer_model.federal_state.objects.all()
     types = vehicle_model.type.objects.all()
-    year = []
+    plate_number = vehicle_model.plate.objects.all()
+    vehicle_number = vehicle_model.vehicle.objects.all()
+
+    for plateNo in plate_number:
+        vehicle = vehicle_model.vehicle.objects.filter(
+            Q(vehicle_id=plateNo.vehicle.vehicle_id)).first()
+
+        if vehicle is not None:
+            vehicles.append({
+                'vehicle_id': vehicle.vehicle_id,
+                'model': vehicle.vehicle_model,
+                'vin': vehicle.vin,
+                'year': vehicle.year,
+                'hp': vehicle.hp,
+                'passenger': vehicle.pessenger_seat,
+                'rv_no': vehicle.rv_number,
+                'plate_no':  f"{ plateNo.state}-{plateNo.plate_code}-{plateNo.plate_no} ",
+                # 'plate_no': plateNo.plate_no,
+            })
+    else:
+
+        for noplate in vehicle_number:
+            vehicless = vehicle_model.vehicle.objects.filter(
+                Q(vehicle_id=noplate.vehicle_id)).first()
+            print(vehicless)
+
+            if vehicless is not None:
+                vehicles.append({
+                    'vehicle_id': vehicless.vehicle_id,
+                    'model': vehicless.vehicle_model,
+                    'vin': vehicless.vin,
+                    'year': vehicless.year,
+                    'hp': vehicless.hp,
+                    'passenger': vehicless.pessenger_seat,
+                    'rv_no': vehicless.rv_number,
+
+
+
+                })
 
     for i in range(1960, datetime.now().year):
         year.append(i)
-
     year.reverse()
-    CheckSearchQuery = 'SearchQuery' in request.GET
-    CheckDataNumber = 'DataNumber' in request.GET
-    DataNumber = 10
-    SearchQuery = ''
 
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
@@ -332,6 +408,9 @@ def view_vehicle(request):
                "states": states,
                "types": types,
                "currentYear": datetime.now().year,
+               "plate_number": plate_number,
+               "noplates": noplates
+
                }
 
     if request.method == 'POST':
@@ -344,14 +423,12 @@ def view_vehicle(request):
 
         selected_type = vehicle_model.type.objects.filter(
             type_id=types).first()
-        print(selected_type)
 
         selected_state = customer_model.federal_state.objects.filter(
             Q(state_id=state)).first()
 
         selected_vehicle = vehicle_model.vehicle.objects.filter(
             Q(vehicle_id=vehicleiddd)).first()
-        print(selected_vehicle)
 
         new_plate = vehicle_model.plate(
             vehicle=selected_vehicle,
@@ -375,8 +452,8 @@ def vehicle_profile(request, pk):
     cylenders = vehicle_model.cylinder.objects.all()
     vehicle_models = vehicle_model.model_brand.objects.all()
     colors = vehicle_model.color.objects.all()
-    origins = countries.objects.all()
-    liscence = customer_model.license.objects.all()
+    origins = customer_model.countries.objects.all()
+
     # cylinders = vehicle_model.cylinder.objects.all()
     year = []
 
@@ -400,9 +477,10 @@ def vehicle_profile(request, pk):
                 'vehicle': vehicle,
                 "transfer": transfer,
                 'pageTitle': 'ProFile',
-                "cylenders": cylenders, "year": year, "colors": colors,
                 "origins": origins, "vehicle_models": vehicle_models,
-                "liscence": liscence
+                "cylenders": cylenders, "year": year, "colors": colors,
+
+
             }
 
             return render(request, 'vehicles/vehicle_profile.html', context)
@@ -437,17 +515,41 @@ def find_vehicle(request, id):
             return JsonResponse({'isErro': False, 'Message': 'Vehicle Not Found'}, status=404)
 
 
-# @ login_required(login_url="Login")
-# def update_vehicle(request):
-#     vehicle_id = request.POST.get('vehicleID', None)
-#     print(vehicle_id)
+@ login_required(login_url="Login")
+def update_vehicle(request):
+    vehicle_id = request.POST.get('vehicleID', None)
+    weight = request.POST.get('weight', None)
+    rv_number = request.POST.get('rv_number', None)
+    hp = request.POST.get('hp', None)
+    engine_number = request.POST.get('engine_no', None)
+    passenger_seats = request.POST.get('passenger_seats', None)
 
-#     return JsonResponse({
-#         'hellw': 4
-#     })
+    return JsonResponse({
+        'hellw': 4
+    })
 
 
 @login_required(login_url="Login")
 def asign_plate(request, pk):
 
-    return redirect("view-vehicle")
+    return redirect("veiw-vehicle")
+
+
+@login_required(login_url='Login')
+def Searchcustomer(request, search):
+    if request.method == 'GET':
+        searchQuery = customer_model.customer.objects.filter(
+            Q(full_name__icontains=search))
+        message = []
+        for xSearch in range(0, len(searchQuery)):
+            message.append(
+                {
+                    'label': f"{searchQuery[xSearch].full_name}",
+                    'value': f"{searchQuery[xSearch].full_name}",
+                    'full_name': searchQuery[xSearch].full_name,
+                    'personal_id': searchQuery[xSearch].personal_id,
+                    'newowner_mother_name': searchQuery[xSearch].mother_name,
+                    'new_owner_id': searchQuery[xSearch].customer_id,
+                }
+            )
+        return JsonResponse({'Message': message}, status=200)

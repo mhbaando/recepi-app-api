@@ -53,26 +53,27 @@
                      id="website"/>
             </div>
             <div class="col">
-              <label for="company">Owner</label>
-              <div class="input-group">
-                <input list="customers"
-                       name="customers"
-                       class="form-control rounded"
-                       placeholder="Search Customer Name"
-                       size="50"/>
-                <datalist id="customers">
-                  {% for customer in customers %}
-                    <option>
-                      {{ customer.full_name }} -  {{ customer.personal_id }}
-                    </option>
-                  {% endfor %}
-                </datalist>
-              </div>
+          
+                <label class="form-label">Search customer</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                    <input
+                      id="search"
+                      type="text"
+                      class="form-control"
+                      placeholder="Search..."
+                      aria-label="Search..."
+                      aria-describedby="basic-addon-search31"
+                    />
+                  </div>
             </div>
+          
           </div>
         </div>
       </div>
+     
     </div>
+
     <div class="card my-4">
       <div class="card-header">
         <h3>Contact Info</h3>
@@ -169,9 +170,13 @@
                      name="doc"
                      size=""
                      class="form-control custom-input-file"
-                     accept="application/pdf"/>
+                     accept="application/pdf"
+                     required maxlength="40" 
+                     
+                     image = forms.FileField(required=False, validators=[file_size])/>
             </div>
           </div>
+         
         </div>
         <div class="row mt-4">
           <div class="form-outline">
@@ -180,7 +185,7 @@
                       id="desc"
                       placeholder="write your description here"
                       rows="4"
-                      required="required"></textarea>
+                      required="required" ></textarea>
           </div>
         </div>
       </div>
@@ -193,5 +198,6 @@
     <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
     <script src="{% static "scripts/company/upload.js" %}"></script>
     <script src="{% static "scripts/company/register.js" %}"></script>
+    <script src={% static 'scripts/role/roles.js' %}></script>
   {% endblock scriptData %}
 {% endblock content %}

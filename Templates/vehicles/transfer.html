@@ -2,6 +2,8 @@
 {% load static %}
 {% block cssData %}
     <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
+    <link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
+    <style>.ui-autocomplete { z-index:2147483647; }</style>
 {% endblock cssData %}
 {% block content %}
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -31,15 +33,39 @@
                                         <input type="text" class="form-control" id="rv_num" placeholder="RV ID">
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label class="form-label">Search Customer name</label>
+                                        <div class="input-group input-group-merge">
+                                            <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                                            <input id="search"
+                                                   type="text"
+                                                   class="form-control"
+                                                   placeholder="Search..."
+                                                   aria-label="Search..."
+                                                   aria-describedby="basic-addon-search31"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% comment %} <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label for="customer">New Owner's Name</label>
+                                        <div class="input-group">
+                                            <input list="customers" name="Typelist" id="selected_owner" class="form-control rounded" placeholder="Search Customer Name" size="50"/>
+                                            <datalist id="customers">
+                                                {% for customer in customers %}
+                                                    <option>
+                                                        {{ customer.full_name }} -  {{ customer.personal_id }}
+                                                    </option>
+                                                {% endfor %}
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                </div> {% endcomment %}
+                                {% comment %} <div class="col">
                                     <label for="company">New Owner's Name</label>
                                     <div class="input-group">
-                                        <input list="customers"
-                                               name="Typelist"
-                                               id="selected_owner"
-                                               class="form-control rounded"
-                                               placeholder="Search Customer Name"
-                                               size="50"/>
+                                        <input list="customers" name="Typelist" id="selected_owner" class="form-control rounded" placeholder="Search Customer Name" size="50"/>
                                         <datalist id="customers">
                                             {% for customer in customers %}
                                                 <option>
@@ -48,7 +74,7 @@
                                             {% endfor %}
                                         </datalist>
                                     </div>
-                                </div>
+                                </div> {% endcomment %}
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
                                         <label class="form-label">Owner's Name</label>
@@ -67,7 +93,7 @@
                                 </div>
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
-                                        <label class="form-label">NeW Ownar mothers Name</label>
+                                        <label class="form-label">New Owner's Mother Name</label>
                                         <input type="text"
                                                class="form-control"
                                                id="new_owner_id"
@@ -88,17 +114,17 @@
                                                class="form-control"
                                                id="owner_mother"
                                                disabled
-                                               placeholder="personal ID">
+                                               placeholder="personal ID"/>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
-                                        <label class="form-label">Phone</label>
+                                        <label class="form-label">Persaonal ID</label>
                                         <input type="text"
                                                class="form-control"
-                                               id="phone"
+                                               id="personalid"
                                                disabled
-                                               placeholder="phone">
+                                               placeholder="Personal ID"/>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-0">
@@ -116,7 +142,7 @@
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
                                         <label for="exampleFormControlTextarea1" class="form-label">Discription</label>
-                                        <textarea class="form-control" id="discription" name="discription" rows="4"></textarea>
+                                        <textarea class="form-control" id="description" name="description" rows="4"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-4 mb-1">
@@ -241,5 +267,6 @@
 </div>
 {% endblock content %}
 {% block scriptData %}
+    <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
     <script src={% static "scripts/vehicle/transfer.js" %}></script>
 {% endblock scriptData %}

@@ -92,11 +92,11 @@ $(document).ready(function () {
 
   // Performing autocomplete function
   $("#search").on("input", function () {
-    $("#search").removeAttr("rv_id");
+   
     $("#ownar_name").val("");
     $("#mother_name").val("");
-    $("#personal_id").val("");
-    $("#personal_id_type").val("");
+    
+    
     var listUsers = [];
     if ($(this).val() != "" && $(this).val().length > 2) {
       listUsers = Receiptvoucher($(this).val());

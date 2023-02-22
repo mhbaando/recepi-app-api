@@ -18,6 +18,8 @@ $(document).ready(function () {
         }else {
             companyDoc = undefined
         }
+
+        
     })
 
     // get state 
@@ -112,4 +114,77 @@ $(document).ready(function () {
       
             
     })
-})
+
+
+
+    // search 
+    function findOwner (name){
+        let owner = []
+        $.ajax({
+            method: "GET",
+            url: "/customer/searchcustomer/" + name,
+            async: false,
+            headers: { "X-CSRFToken": csrftoken },
+            success: function (data) {
+              if (!data.isError) {
+              owner = data.Message
+                
+             
+              } else {
+                Swal.fire( data.title, data.Message,  data.type);
+              }
+            },
+            error: function (error) {
+              error;
+            },
+          });
+          return owner
+    }
+
+    $("#search").on("input", function (){
+        if ($(this).val().trim().length > 4 ){
+            const owner =  findOwner($(this).val())
+            $("#search").autocomplete({
+                source: owner,
+                select: function (event, ui) {
+                  const item = ui.item.full_name;
+                  const value = ui.item.value;
+                  if (value != "") {
+                    $("#search").attr("rv_id", item);
+                  }
+                },
+                response: function (event, ui) {
+                  if (!ui.content.length) {
+                    var noResult = { value: "", label: "No result found" };
+                    ui.content.push(noResult);
+                  }
+                },
+                minLength: 1,
+              });
+        }
+    })
+
+
+
+
+    function customer(name) {
+        $.ajax({
+          method: "GET",
+          url: "/customer/customer_info/" + name,
+          async: false,
+          headers: { "X-CSRFToken": csrftoken },
+          success: function (data) {
+            if (!data.isError) {
+              $("#ownar_name").val(data.Message.ownar_name);
+              
+           console.log(data)
+            } else {
+              Swal.fire( data.title, data.Message,  data.type);
+            }
+          },
+          error: function (error) {
+            error;
+          },
+        });
+      }
+      })

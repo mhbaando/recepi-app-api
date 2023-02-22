@@ -77,7 +77,12 @@ $(document).ready(function () {
 		}else{
       companyDoc = undefined
     }
-	})
+
+   
+    
+    
+  
+})
 
      // send data to the backend 
     // block company 
@@ -141,4 +146,4 @@ $(document).ready(function () {
     })
 
     
-})
+  })
