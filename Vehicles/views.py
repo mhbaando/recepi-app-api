@@ -302,22 +302,91 @@ def tranfercreate(request):
 
 @login_required(login_url="Login")
 def view_vehicle(request):
-    vehicles = vehicle_model.vehicle.objects.all()
+    year = []
+    vehicles = []
+    noplates = []
+
+    stateappre = [{
+        'name': 'Banaadir',
+        'appreviation': 'BN'
+    },
+        {
+        'name': 'Hirshabeelle',
+        'appreviation': 'HR'
+    },
+        {
+        'name': 'Galmudug',
+        'appreviation': 'GM'
+    },
+        {
+        'name': 'Puntland',
+        'appreviation': 'PN'
+    },
+        {
+        'name': 'Koonfur Galbeed',
+        'appreviation': 'KG'
+    },
+        {
+        'name': 'Jubba land',
+        'appreviation': 'JL'
+    },
+        {
+        'name': 'Somali land',
+        'appreviation': 'SL'
+    }
+    ]
+
+    print(stateappre)
+    DataNumber = 10
+    SearchQuery = ''
+    CheckDataNumber = 'DataNumber' in request.GET
+    CheckSearchQuery = 'SearchQuery' in request.GET
+
     states = customer_model.federal_state.objects.all()
     types = vehicle_model.type.objects.all()
-    plate_number = vehicle_model.vehicle.objects.all()
+    plate_number = vehicle_model.plate.objects.all()
+    vehicle_number = vehicle_model.vehicle.objects.all()
 
-    print(plate_number)
-    year = []
+    for plateNo in plate_number:
+        vehicle = vehicle_model.vehicle.objects.filter(
+            Q(vehicle_id=plateNo.vehicle.vehicle_id)).first()
+
+        if vehicle is not None:
+            vehicles.append({
+                'vehicle_id': vehicle.vehicle_id,
+                'model': vehicle.vehicle_model,
+                'vin': vehicle.vin,
+                'year': vehicle.year,
+                'hp': vehicle.hp,
+                'passenger': vehicle.pessenger_seat,
+                'rv_no': vehicle.rv_number,
+                'plate_no':  f"{ plateNo.state}-{plateNo.plate_code}-{plateNo.plate_no} ",
+                # 'plate_no': plateNo.plate_no,
+            })
+    else:
+
+        for noplate in vehicle_number:
+            vehicless = vehicle_model.vehicle.objects.filter(
+                Q(vehicle_id=noplate.vehicle_id)).first()
+            print(vehicless)
+
+            if vehicless is not None:
+                vehicles.append({
+                    'vehicle_id': vehicless.vehicle_id,
+                    'model': vehicless.vehicle_model,
+                    'vin': vehicless.vin,
+                    'year': vehicless.year,
+                    'hp': vehicless.hp,
+                    'passenger': vehicless.pessenger_seat,
+                    'rv_no': vehicless.rv_number,
+
+
+
+                })
 
     for i in range(1960, datetime.now().year):
         year.append(i)
-
     year.reverse()
-    CheckSearchQuery = 'SearchQuery' in request.GET
-    CheckDataNumber = 'DataNumber' in request.GET
-    DataNumber = 10
-    SearchQuery = ''
 
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
@@ -339,7 +408,9 @@ def view_vehicle(request):
                "states": states,
                "types": types,
                "currentYear": datetime.now().year,
-               "plate_number": plate_number
+               "plate_number": plate_number,
+               "noplates": noplates
+
                }
 
     if request.method == 'POST':
@@ -462,3 +533,23 @@ def update_vehicle(request):
 def asign_plate(request, pk):
 
     return redirect("veiw-vehicle")
+
+
+@login_required(login_url='Login')
+def Searchcustomer(request, search):
+    if request.method == 'GET':
+        searchQuery = customer_model.customer.objects.filter(
+            Q(full_name__icontains=search))
+        message = []
+        for xSearch in range(0, len(searchQuery)):
+            message.append(
+                {
+                    'label': f"{searchQuery[xSearch].full_name}",
+                    'value': f"{searchQuery[xSearch].full_name}",
+                    'full_name': searchQuery[xSearch].full_name,
+                    'personal_id': searchQuery[xSearch].personal_id,
+                    'newowner_mother_name': searchQuery[xSearch].mother_name,
+                    'new_owner_id': searchQuery[xSearch].customer_id,
+                }
+            )
+        return JsonResponse({'Message': message}, status=200)

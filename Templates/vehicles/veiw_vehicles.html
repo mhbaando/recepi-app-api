@@ -60,11 +60,12 @@
                                     <thead>
                                         <tr>
                                             <th>vehicle_model</th>
-                                            <th>vin</th>
-                                            <th>year</th>
                                             <th>hp</th>
+                                            <th>year</th>
+                                            <th>vin</th>
                                             <th>Passenger</th>
                                             <th>Rv number</th>
+                                            <th>Plate Number</th>
                                             <th>Action</th>
                                             <th>Assign A plate</th>
                                         </tr>
@@ -73,12 +74,13 @@
                                         {% if page_obj %}
                                             {% for veh in vehicles %}
                                                 <tr>
-                                                    <td>{{ veh.vehicle_model }}</td>
+                                                    <td>{{ veh.model }}</td>
                                                     <td>{{ veh.hp }}</td>
                                                     <td>{{ veh.year }}</td>
-                                                    <td>{{ veh.pessenger_seat }}</td>
-                                                    <td>{{ veh.owner.full_name }}</td>
-                                                    <td>{{ veh.rv_number }}</td>
+                                                    <td>{{ veh.vin }}</td>
+                                                    <td>{{ veh.passenger }}</td>
+                                                    <td>{{ veh.rv_no }}</td>
+                                                    <td>{{ veh.plate_no }}</td>
                                                     <td>
                                                         <a href="{% url 'vehicle-profile' veh.vehicle_id %}"
                                                            class="btn btn-primary">View Profile</a>
@@ -185,7 +187,9 @@
                                     </div>
                                     <div class="col-md-12 mb-0">
                                         <div class="mb-3">
-                                            <label>Year</label>
+                                            <label>
+                                                Year
+                                            </label>
                                             <select name="year" id="year" class="form-control form-select select2">
                                                 <option selected>
                                                     Select a year
@@ -198,7 +202,9 @@
                                     </div>
                                     <div class="col-md-12 mb-0">
                                         <div class="mb-3">
-                                            <label>Code</label>
+                                            <label>
+                                                Code
+                                            </label>
                                             <select class="form-select"
                                                     id="code"
                                                     name="code"
