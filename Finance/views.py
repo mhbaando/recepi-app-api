@@ -1,14 +1,63 @@
 from django.http import JsonResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from . import models
-from . models import account,receipt_voucher
+from . models import account, receipt_voucher
 from . forms import accountform
 from django.contrib import messages
+from Users.views import sendException, sendTrials
+from datetime import datetime
 
 
 def AccountsPage(request):
-    accounts=account.objects.all()
+
+    accounts = account.objects.all()
+
+    acconuttype = []
+    finance = []
+
+    if request.method == 'POST':
+        acc_number = request.POST.get('account_number', None)
+        acc_name = request.POST.get('account_name', None)
+        acc_type = request.POST.get('account_type', None)
+        acc_amount = request.POST.get('account_amount', None)
+
+        if acc_number is None or acc_name is None or acc_type is None or acc_amount is None:
+            return JsonResponse(
+                {
+                    'isError': True,
+                    'title': 'validate error',
+                    'Message': 'Fill All Required Fields'
+                }
+
+
+            )
+
+        new_account = models.account(
+            account_number=acc_number,
+            account_name=acc_name,
+            account_type=acc_type,
+            account_amount=acc_amount
+        )
+        new_account.save()
+        username = request.user.username
+        names = request.user.first_name + '' + request.user.last_name
+        avatar = str(request.user.avatar)
+        module = "Finance / add account"
+        action = f'Registered A Company {acc_name} at {datetime.now()}'
+        path = request.path
+        sendTrials(request, username, names, avatar, action, module, path)
+        return JsonResponse({
+            'isError': False, 'Message':
+                'account has saved'
+        }, status=200)
+    context = {
+        'pageTitle': 'Accounts',
+        'accounttype': acconuttype,
+        'finance': finance
+
+    }
+
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
@@ -21,7 +70,6 @@ def AccountsPage(request):
         SearchQuery = request.GET['SearchQuery']
     else:
         pass
-
 
     paginator = Paginator(accounts, DataNumber)
 
@@ -47,11 +95,10 @@ def AddAccount(request):
         else:
             messages.error(request, "error accured")
 
-
-    context = {"form":form,
-        'pageTitle': 'Create Account',
-        'account_types': models.account_types.objects.all()
-    }
+    context = {"form": form,
+               'pageTitle': 'Create Account',
+               'account_types': models.account_types.objects.all()
+               }
     return render(request, 'Finance/add_account.html', context)
 
 
@@ -61,9 +108,7 @@ def ManageAccounts(request, action):
     # TODO
     # First check if the request matches your need [POST,GET. etc]
     # Then check if the user has the required permission
-    
-    
-    
+
     # This action will create a new account
     if action == 'AddNewAccount':
         if request.method == 'POST':
@@ -114,18 +159,15 @@ def ManageAccounts(request, action):
                     }
                 )
 
-
         # Save data to database
-    
-        
-        
+
     # If there is not action matching
     # Return 404 error
 
 
 # This will display the receipts list
 def ReceiptPage(request):
-    receipt_vouchers=receipt_voucher.objects.all()
+    receipt_vouchers = receipt_voucher.objects.all()
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
@@ -144,7 +186,7 @@ def ReceiptPage(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
-        "receipt_vouchers":receipt_vouchers,
+        "receipt_vouchers": receipt_vouchers,
         'pageTitle': 'Receipts',
         'page_obj': page_obj,
         'SearchQuery': SearchQuery,

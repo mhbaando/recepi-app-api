@@ -79,6 +79,10 @@ def register_company(request):
                 Q(personal_id=c_owner_id)).first()
 
             if found_owner is not None:
+
+                if (c_companyDoc.size > 1000000):
+                    return JsonResponse({'isError': True, 'Message': 'you can not  upload more then 1mb'}, status=200)
+
                 # register new compnay
                 new_company = customer_model.company(
                     company_name=c_name,
