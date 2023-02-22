@@ -44,7 +44,7 @@ def AccountsPage(request):
         names = request.user.first_name + '' + request.user.last_name
         avatar = str(request.user.avatar)
         module = "Finance / add account"
-        action = f'Registered A Company {acc_name} at {datetime.now()}'
+        action = f'Registered A account {acc_name} at {datetime.now()}'
         path = request.path
         sendTrials(request, username, names, avatar, action, module, path)
         return JsonResponse({
