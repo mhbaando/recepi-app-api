@@ -74,12 +74,10 @@ def register_company(request):
                 Q(state_id=c_state)).first()
 
             # find owner by splitn the name and personal id
-            c_owner_id = c_owner.split('-')[1].strip()
             found_owner = customer_model.customer.objects.filter(
-                Q(personal_id=c_owner_id)).first()
+                Q(customer_id=c_owner)).first()
 
             if found_owner is not None:
-
                 if (c_companyDoc.size > 1000000):
                     return JsonResponse({'isError': True, 'Message': 'you can not  upload more then 1mb'}, status=200)
 
@@ -149,30 +147,6 @@ def search_engine(request, search):
         return JsonResponse({'owner': owner}, status=200)
     else:
         return JsonResponse()
-
-
-@login_required(login_url='Login')
-def register_customer(request):
-    states = []
-    bload_group = customer_model.blood_group.objects.all()
-    nationalities = customer_model.countries.objects.all()
-    doc_types = customer_model.personal_id_type.objects.all()  # personal id types
-
-    if request.user.is_state and request.user.federal_state is not None:
-        states = customer_model.federal_state.objects.filter(
-            Q(state_name=request.user.federal_state))
-    else:
-        states = customer_model.federal_state.objects.all()
-
-    context = {
-        'pageTitle': 'Register',
-        'bload_group': bload_group,
-        'nationalities': nationalities,
-        'states': states,
-        'doc_types': doc_types
-    }
-
-    return render(request, 'Customer/register.html', context)
 
 
 @login_required(login_url='Login')
@@ -408,6 +382,7 @@ def Searchcustomer(request, search):
                     'label': f"{searchQuery[xSearch].full_name}",
                     'value': f"{searchQuery[xSearch].full_name}",
                     'full_name': searchQuery[xSearch].full_name,
+                    'owner_pk': searchQuery[xSearch].customer_id,
 
                 }
             )

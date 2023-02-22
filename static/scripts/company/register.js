@@ -2,6 +2,8 @@ $(document).ready(function () {
     // get user image and uppload doc
     let logoImage = ""
     let companyDoc = ""
+    let owner_id = ""
+
     $('#upload').change(function(){
         const file = this.files[0];
         if (file){
@@ -29,11 +31,8 @@ $(document).ready(function () {
     })
 
 
-    let owner = ""
-    $("input[name=customers]").focusout(function(){
-        owner = $(this).val()
-    });
 
+   
     $("#re_form").on('submit',function(e){
         e.preventDefault();
         
@@ -61,11 +60,10 @@ $(document).ready(function () {
         
         formData.append("desc", desc);
         formData.append("cname", cname);
-        formData.append("owner", owner);
         formData.append("phone", phone);
         formData.append("email", email);
         formData.append("state", state);
-        formData.append("owner", owner);
+        formData.append("owner", owner_id);
         formData.append("website", website);
         formData.append("rnumber", rnumber);
         formData.append("address", address);
@@ -151,6 +149,8 @@ $(document).ready(function () {
                   const value = ui.item.value;
                   if (value != "") {
                     $("#search").attr("rv_id", item);
+                    owner_id = ui.item.owner_pk
+                    console.log(ui.item.owner_pk)
                   }
                 },
                 response: function (event, ui) {
