@@ -1,6 +1,26 @@
-$(document).ready(function(){
+$(document).ready(()=>{
 
-  let transfer_document = ""
+
+const overlay = $(".overlay")
+    const modal = $(".model-contaier")
+    const cancle = $(".cancle-btn")
+
+    $("#transferbtn").on("click", function(){
+        overlay.attr("class","overlay")
+        modal.attr("class","model-contaier")
+    })
+
+    overlay.on("click", function(){
+        overlay.attr("class","hidden")
+        modal.attr("class","hidden")
+    })
+    cancle.on('click',function(){
+        overlay.attr('class', 'hidden')
+        modal.attr('class','hidden')
+    })
+
+
+let transfer_document = ""
     $('#doc').change(function(){
         const file = this.files[0];
         if (file){
@@ -10,7 +30,16 @@ $(document).ready(function(){
         }
     })
 
-    
+
+ const transfer_btn = document.querySelectorAll("#transferbtn")
+    // loop over the node list
+    transfer_btn.forEach(btn => {
+        btn.addEventListener('click', function(){
+            // const selectedCustomer = $(this).data('customer')
+            overlay.attr('class', 'overlay')
+            modal.attr('class','model-contaier')
+        })
+    });
     // showing name of the file
   $("#transfare_document").change(function(){
     let file = this.files[0]
@@ -232,33 +261,7 @@ $("#search").on("input", function (){
 
 
   })
+
+
 })
 
-
-
-
-
-
-// function customer(name) {
-//     $.ajax({
-//       method: "GET",
-//       url: "/vehicles/customer_info/" + name,
-//       async: false,
-//       headers: { "X-CSRFToken": csrftoken },
-//       success: function (data) {
-//         if (!data.isError) {
-         
-//           $("#phone").val(data.Message.ownar_name);
-//           $("#newownermother_name").val(data.Message.mother_name);
-          
-//        console.log(data)
-//         } else {
-//           Swal.fire( data.title, data.Message,  data.type);
-//         }
-//       },
-//       error: function (error) {
-//         error;
-//       },
-//     });
-//   }
-  

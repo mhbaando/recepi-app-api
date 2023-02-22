@@ -1,0 +1,164 @@
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
+    <link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
+    <link rel="stylesheet" href="{% static "assets/css/customer/modal.css" %}"/>
+    <style>.ui-autocomplete { z-index:2147483647; }</style>
+{% endblock cssData %}
+{% block content %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="overlay hidden"></div>
+        <div class="model-contaier hidden">
+            <div class="model">
+                <div class="model-content">
+                    <div>
+                        <h4>Transfer From</h4>
+                        <hr/>
+                    </div>
+                    {% comment %} customer infor {% endcomment %}
+                    <form id='reg_form'>
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label class="form-label">Rv ID</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="old_hid_id"
+                                               name="old_hid_id"
+                                               hidden
+                                               placeholder="Owner's Name"/>
+                                        <input type="text" class="form-control" id="rv_num" placeholder="RV ID">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label class="form-label">Search Customer name</label>
+                                        <div class="input-group input-group-merge">
+                                            <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                                            <input id="search"
+                                                   type="text"
+                                                   class="form-control"
+                                                   placeholder="Search..."
+                                                   aria-label="Search..."
+                                                   aria-describedby="basic-addon-search31"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% comment %} <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label for="customer">New Owner's Name</label>
+                                        <div class="input-group">
+                                            <input list="customers" name="Typelist" id="selected_owner" class="form-control rounded" placeholder="Search Customer Name" size="50"/>
+                                            <datalist id="customers">
+                                                {% for customer in customers %}
+                                                    <option>
+                                                        {{ customer.full_name }} -  {{ customer.personal_id }}
+                                                    </option>
+                                                {% endfor %}
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                </div> {% endcomment %}
+                                {% comment %} <div class="col">
+                                    <label for="company">New Owner's Name</label>
+                                    <div class="input-group">
+                                        <input list="customers" name="Typelist" id="selected_owner" class="form-control rounded" placeholder="Search Customer Name" size="50"/>
+                                        <datalist id="customers">
+                                            {% for customer in customers %}
+                                                <option>
+                                                    {{ customer.full_name }} -  {{ customer.personal_id }}
+                                                </option>
+                                            {% endfor %}
+                                        </datalist>
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label class="form-label">Owner's Name</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="ownar_name"
+                                               disabled
+                                               placeholder="Owner's Name">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="receipt_number"
+                                               name="receipt_number"
+                                               hidden
+                                               placeholder="Owner's Name"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label class="form-label">New Owner's Mother Name</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="new_hid_id"
+                                               name="new_hid_id"
+                                               hidden
+                                               placeholder="New Ownar Mother's Name">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="newownermother_name"
+                                               disabled
+                                               placeholder="New Ownar Mother's Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label class="form-label">Owner's Mother Name</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="owner_mother"
+                                               disabled
+                                               placeholder="personal ID"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label class="form-label">Persaonal ID</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="personalid"
+                                               disabled
+                                               placeholder="Personal ID"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlTextarea1" class="form-label">Transfer Reason</label>
+                                        <textarea class="form-control" id="reason" name="reason" rows="4"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <div class="col mt-5">
+                                        <input type="file" id="doc" class="form-control" accept="application/pdf"/>
+                                        <p id="doc-name"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlTextarea1" class="form-label">Discription</label>
+                                        <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                                    </div>
+                                </div>
+                                <div class="action-btn  ">
+                                    <button type="button" class="btn btn-outline-danger me-4 cancle-btn">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    {% comment %} <script src={% static "scripts/vehicle/transfer.js" %}></script> {% endcomment %}
+    <script src={% static "scripts/vehicle/transfereModel.js" %}></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
+{% endblock scriptData %}

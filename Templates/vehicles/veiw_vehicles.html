@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
 {% endblock cssData %}
 {% block content %}
+    {% include "./transfer_model.html" %}
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">Home / Vehicle /</span> {{ pageTitle }}
@@ -59,15 +60,15 @@
                                 <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>vehicle_model</th>
-                                            <th>hp</th>
-                                            <th>year</th>
-                                            <th>vin</th>
-                                            <th>Passenger</th>
-                                            <th>Rv number</th>
-                                            <th>Plate Number</th>
-                                            <th>Action</th>
-                                            <th>Assign A plate</th>
+                                            <th class="wd-15p border-bottom-0">vehicle_model</th>
+                                            <th class="wd-15p border-bottom-0">year</th>
+                                            <th class="wd-15p border-bottom-0">vin</th>
+                                            <th class="wd-15p border-bottom-0">Passenger</th>
+                                            <th class="wd-15p border-bottom-0">Rv number</th>
+                                            <th class="wd-15p border-bottom-0">Plate Number</th>
+                                            <th class="wd-15p border-bottom-0">Action</th>
+                                            <th class="wd-15p border-bottom-0">Assign A plate</th>
+                                            <th class="wd-15p border-bottom-0">Transfer Vehicle</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -75,7 +76,6 @@
                                             {% for veh in vehicles %}
                                                 <tr>
                                                     <td>{{ veh.model }}</td>
-                                                    <td>{{ veh.hp }}</td>
                                                     <td>{{ veh.year }}</td>
                                                     <td>{{ veh.vin }}</td>
                                                     <td>{{ veh.passenger }}</td>
@@ -87,11 +87,19 @@
                                                     </td>
                                                     <td>
                                                         <a href="{% url 'assignplate' veh.vehicle_id %}"
-                                                           class="btn btn-primary"
+                                                           class="btn btn-success text-white"
                                                            id="vehicle_id"
                                                            data-toggle="modal"
                                                            data-target="#exampleModal"
                                                            data-vehicleid="{{ veh.vehicle_id }}">Assign plate</a>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button"
+                                                                class="btn btn-success text-white"
+                                                                id="transferbtn"
+                                                                data-vehicleid="{{ veh.vehicle_id }}">
+                                                            Transfer
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -409,11 +417,20 @@
                     </div>
                 </div>
             </div>
-        {% endblock content %}
-        {% block scriptData %}
-            <script src={% static "scripts/vehicle/vehicles.js" %}></script>
-            <script src="https://code.jquery.com/jquery-3.1.1.min.js">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        </div>
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    <script src={% static "scripts/vehicle/vehicles.js" %}></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src={% static "scripts/vehicle/transfereModel.js" %}></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 {% endblock scriptData %}

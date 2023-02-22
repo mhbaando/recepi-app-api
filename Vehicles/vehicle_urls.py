@@ -4,7 +4,7 @@ from . import views
 # from .views import Assign_create
 urlpatterns = [
     path("", views.register_vehicle, name="register-vehicle"),
-    path("register-tranfer/", views.tranfercreate, name="transfer"),
+    path("register-tranfer/<str:pk>/", views.tranfercreate, name="transfer"),
     path("viewvehicle/", views.view_vehicle, name="veiw-vehicle"),
     # path("asignplate/", views.assign_plate, name="asign-plate"),
     path("vehicle-profile/<str:pk>/",
@@ -14,6 +14,7 @@ urlpatterns = [
     path('transfer-searchh/<str:search>', views.seach_transferrr),
     path("registervehicle", views.register_vehicle, name="register-vehicle"),
     path("assignplate/<str:pk>/", views.asign_plate, name="assignplate"),
+    #     path("transfer_create/<str:pk>/", views.transfer_model, name="transfer-model"),
 
     path('updatevehicle/', views.update_vehicle),
 

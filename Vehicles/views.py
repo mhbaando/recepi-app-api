@@ -159,6 +159,7 @@ def seach_transfer(request, search):
                 'personal_id': find_rv.rv_from.personal_id,
                 "receipt_number": find_rv.rv_number,
 
+
             })
 
         return JsonResponse({
@@ -236,7 +237,7 @@ def seach_transferrr(request, search):
 
 
 @login_required(login_url="Login")
-def tranfercreate(request):
+def tranfercreate(request,pk):
     transfer = vehicle_model.transfare_vehicles.objects.all()
     customers = customer_model.customer.objects.all()
     CheckSearchQuery = 'SearchQuery' in request.GET
@@ -264,38 +265,40 @@ def tranfercreate(request):
                "customers": customers
                }
 
-    if request.method == 'POST':
-        old_owner_id = request.POST.get('olold_hid_id', None)
-        new_owner_id = request.POST.get('new_hid_id', None)
-        receipt_number = request.POST.get('receipt_number', None)
-        description = request.POST.get('description', None)
-        document = request.FILES.get('document', None)
-        reason = request.POST.get('reason', None)
+    # if request.method == 'POST':
+    #     old_owner_id = request.POST.get('olold_hid_id', None)
+    #     reason = request.POST.get('reason', None)
+    #     new_owner_id = request.POST.get('new_hid_id', None)
+    #     receipt_number = request.POST.get('receipt_number', None)
+    #     description = request.POST.get('description', None)
+    #     vehicle_id = request.POST.get('vehicle_id', None)
 
-        vehicle_old_id = vehicle_model.vehicle.objects.filter(
-            Q(owner=old_owner_id)).first()
+    #     # document = request.FILES['transfer_document']
+    #     vehicle_old_id = vehicle_model.vehicle.objects.filter(
+    #         Q(owner=old_owner_id)).first()
 
-        # vehicle_new_id = vehicle_model.vehicle.objects.filter(
-        #     Q(owner=new_owner_id)).first()
+    #     old_customer = customer_model.customer.objects.filter(
+    #         Q(customer_id=old_owner_id)).first()
 
-        # vehicle_to_transfare = vehicle_model.vehicle.objects.filter(
-        #     Q(owner__customer_id=old_owner_id)).first()
+    #     car_to_update = vehicle_model.vehicle.objects.filter(
+    #         vehicle_id=vehicle_id).first()
+    #     new_owner = customer_model.customer.objects.filter(
+    #         customer_id=new_owner_id).first()
+    #     car_to_update.owner = new_owner
+    #     car_to_update.save()
 
-        old_customer = customer_model.customer.objects.filter(
-            Q(customer_id=old_owner_id)).first()
+    #     new_transfering = vehicle_model.transfare_vehicles(
+    #         old_owner_id=old_customer.customer_id,
+    #         new_owner_id=new_owner_id,
+    #         vehicle_id=vehicle_old_id.vehicle_id,
+    #         description=description,
+    #         # document=document,
+    #         rv_number=receipt_number,
+    #         transfare_reason=reason,
+    #         reg_user_id=request.user.id,
+    #     )
 
-        new_transfering = vehicle_model.transfare_vehicles(
-            old_owner_id=old_customer.customer_id,
-            new_owner_id=new_owner_id,
-            vehicle_id=vehicle_old_id.vehicle_id,
-            description=description,
-            document=document,
-            rv_number=receipt_number,
-            transfare_reason=reason,
-            reg_user_id=request.user.id,
-        )
-
-        new_transfering.save()
+    #     new_transfering.save()
 
     return render(request, "vehicles/transfer.html", context)
 
@@ -553,3 +556,9 @@ def Searchcustomer(request, search):
                 }
             )
         return JsonResponse({'Message': message}, status=200)
+
+
+# @login_required(login_url="Login")
+# def transfer_model(request, pk):
+
+#     return redirect("veiw-vehicle")
