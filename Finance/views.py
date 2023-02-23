@@ -8,6 +8,11 @@ from django.contrib import messages
 from Users.views import sendException, sendTrials
 from datetime import datetime
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+# current_date = date.today()
+# currentDatetime = datetime.now()
+# years_to_add = current_date.year + 4
+# expired_year = current_date.replace(year=years_to_add)
 
 
 def AccountsPage(request):
@@ -137,7 +142,184 @@ def ReceiptPage(request):
 
 
 def AddReceipt(request):
+
     context = {
         'pageTitle': 'Create Receipt',
     }
     return render(request, 'Finance/add_receipt.html', context)
+
+
+# search rvaccount
+
+
+@login_required(login_url='Login')
+def Searchrvaccount(request, id):
+    if request.method == 'GET':
+        searchQuery = models.receipt_voucher.finance.objects.filter(
+            Q(account_number__icontains=id))
+        message = []
+        for xSearch in range(0, len(searchQuery)):
+            message.append(
+                {
+                    'label': f"{searchQuery[xSearch].account_number}",
+                    'value': f"{searchQuery[xSearch].account_number}",
+                    'account_number': searchQuery[xSearch].account_number,
+                    'account_pk': searchQuery[xSearch].account_id,
+
+                }
+            )
+        return JsonResponse({'Message': message}, status=200)
+
+
+# receipt vouch
+
+@login_required(login_url='Login')
+# Search Query
+def SearchReceiptVoucher(request, search):
+    if request.method == 'GET':
+        searchQuery = models.finance.receipt_voucher.objects.filter(
+            Q(rv_number__icontains=search))
+        message = []
+        for xSearch in range(0, len(searchQuery)):
+            message.append(
+                {
+                    'label': f"{searchQuery[xSearch].rv_number}",
+                    'value': f"{searchQuery[xSearch].rv_number}",
+                    'rv_id': searchQuery[xSearch].rv_id,
+
+                }
+            )
+        return JsonResponse({'Message': message}, status=200)
+
+# search rcfrom
+
+
+@login_required(login_url='Login')
+def receipt(request, id):
+    try:
+
+        if id == 0:
+            # Post new  Weapon model and check if the user is allowed to create
+            if request.method == 'POST':
+                Type = request.POST.get('Type')
+                if Type == "new_reciet":
+                    # owner = request.POST.get('owner')
+                    federal_state = request.POST.get('federal_state')
+
+                    rv_id = request.POST.get('rv_id')
+                    is_voucher_exist = models.finance.objects.filter(
+                        receipt_voucher=rv_id).exists()
+
+                    if is_voucher_exist:
+                        get_voucher = models.finance.objects.get(
+                            receipt_voucher=rv_id)
+                        message = {
+                            'isError': True,
+                            'title': "Duplicate Error!!",
+                            'type': "warning",
+                            'Message': f'This receipt voucher already used by {get_voucher.owner.account_name}'
+                        }
+                        return JsonResponse(message, status=200)
+                    else:
+
+                        # get instance of receipt voucher
+                        get_rv_number = models.finance.receipt_voucher.objects.get(
+                            rv_id=rv_id)
+
+                        # get instance of owner
+                        get_owner = models.finance.objects.get(
+                            customer_id=get_rv_number.rv_from.customer_id)
+
+                        # get instance of federal state
+                        get_federal_state = models.finance.federal_state.objects.get(
+                            state_id=federal_state)
+                        save_reciet = models.finance(
+                            federal_state=get_federal_state,
+                            owner=get_owner,
+
+                            reg_user=request.user,
+                            receipt_voucher=get_rv_number,
+
+                        )
+                        save_reciet.save()
+                        # TODO: Add to Trial
+                        message = {
+                            'isError': False,
+                            'title': "Successfully!!!",
+                            'type': "success",
+                            'Message': 'New reciet has been successfully created'
+                        }
+
+                        return JsonResponse(message, status=200)
+                elif Type == "renew_license":
+                    # owner = request.POST.get('owner')
+                    federal_state = request.POST.get('federal_state')
+
+                    license_type = request.POST.get('license_type')
+
+                    rv_id = request.POST.get('rv_id')
+                    is_voucher_exist = models.finance.objects.filter(
+                        receipt_voucher=rv_id).exists()
+
+                    if is_voucher_exist:
+                        get_voucher = models.finance.license.objects.get(
+                            receipt_voucher=rv_id)
+                        message = {
+                            'isError': True,
+                            'title': "Duplicate Error!!",
+                            'type': "warning",
+                            'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
+                        }
+                        return JsonResponse(message, status=200)
+                    else:
+
+                        # get instance of receipt voucher
+                        get_rv_number = models.finance.receipt_voucher.objects.get(
+                            rv_id=rv_id)
+
+                        # get instance of owner
+                        get_owner = models.finance.objects.get(
+                            customer_id=get_rv_number.rv_from.customer_id)
+
+                        # get instance of federal state
+                        get_federal_state = models.federal_state.objects.get(
+                            state_id=federal_state)
+                        get_lasted_license = models.finance.objects.filter(
+                            owner=get_owner.customer_id).order_by('-license_id')[0]
+                        save_license = models.finance(
+                            federal_state=get_federal_state,
+                            owner=get_owner,
+
+                            reg_user=request.user,
+                            receipt_voucher=get_rv_number,
+                            reg_no=get_lasted_license.reg_no
+                        )
+                        save_license.save()
+                        # TODO: Add to Trial
+                        message = {
+                            'isError': False,
+                            'title': "Successfully!!!",
+                            'type': "success",
+                            'Message': 'New license has been successfully created'
+                        }
+
+                        return JsonResponse(message, status=200)
+                else:
+                    message = {
+                        'isError': True,
+                        'title': "Duplicate Error!!",
+                        'type': "warning",
+                        'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
+                    }
+                    return JsonResponse(message, status=200)
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + ' ' + request.user.last_name
+
+        message = {
+            'isError': True,
+            'title': "Server Error",
+            'type': "error",
+            'Message': 'On Error Occurs . Please try again or contact system administrator'
+        }
+        return JsonResponse(message, status=200)
