@@ -7,56 +7,12 @@ from . forms import accountform
 from django.contrib import messages
 from Users.views import sendException, sendTrials
 from datetime import datetime
+from django.db.models import Q
 
 
 def AccountsPage(request):
 
     accounts = account.objects.all()
-
-    acconuttype = []
-    finance = []
-
-    if request.method == 'POST':
-        acc_number = request.POST.get('account_number', None)
-        acc_name = request.POST.get('account_name', None)
-        acc_type = request.POST.get('account_type', None)
-        acc_amount = request.POST.get('account_amount', None)
-
-        if acc_number is None or acc_name is None or acc_type is None or acc_amount is None:
-            return JsonResponse(
-                {
-                    'isError': True,
-                    'title': 'validate error',
-                    'Message': 'Fill All Required Fields'
-                }
-
-
-            )
-
-        new_account = models.account(
-            account_number=acc_number,
-            account_name=acc_name,
-            account_type=acc_type,
-            account_amount=acc_amount
-        )
-        new_account.save()
-        username = request.user.username
-        names = request.user.first_name + '' + request.user.last_name
-        avatar = str(request.user.avatar)
-        module = "Finance / add account"
-        action = f'Registered A Company {acc_name} at {datetime.now()}'
-        path = request.path
-        sendTrials(request, username, names, avatar, action, module, path)
-        return JsonResponse({
-            'isError': False, 'Message':
-                'account has saved'
-        }, status=200)
-    context = {
-        'pageTitle': 'Accounts',
-        'accounttype': acconuttype,
-        'finance': finance
-
-    }
 
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
@@ -85,83 +41,66 @@ def AccountsPage(request):
 
 
 def AddAccount(request):
-    form = accountform()
-    if request.method == "POST":
-        form = accountform(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "created a new account")
-            return redirect("AccountsPage")
-        else:
-            messages.error(request, "error accured")
 
-    context = {"form": form,
-               'pageTitle': 'Create Account',
-               'account_types': models.account_types.objects.all()
-               }
+    if request.method == "POST":
+        acc_number = request.POST.get('account_number', None)
+        acc_name = request.POST.get('account_name', None)
+        acc_type = request.POST.get('account_type', None)
+        acc_amount = request.POST.get('account_amount', None)
+
+        if acc_number is None or acc_name is None or acc_type is None or acc_amount is None:
+            return JsonResponse(
+                {
+                    'isError': True,
+                    'title': 'validate error',
+                    'type': 'danger',
+                    'Message': 'Fill All Required Fields'
+                }
+            )
+
+        new_account = models.account(
+            account_number=acc_number,
+            account_name=acc_name,
+            account_type=acc_type,
+            account_amount=acc_amount
+        )
+        new_account.save()
+        return JsonResponse({'isError': False, 'Message': 'created successfully'})
+
+    context = {
+        'pageTitle': 'Create Account',
+        'account_types': models.account_types.objects.all()
+    }
     return render(request, 'Finance/add_account.html', context)
 
 
 def ManageAccounts(request, action):
-    # action : Holds the action to be performed
 
-    # TODO
-    # First check if the request matches your need [POST,GET. etc]
-    # Then check if the user has the required permission
-
-    # This action will create a new account
+    # creating new account
     if action == 'AddNewAccount':
         if request.method == 'POST':
             # Get all data from the request
             account_name = request.POST.get('account_name')
             account_type = request.POST.get('account_type')
             account_number = request.POST.get('account_number')
-            amount = request.POST.get('amount')
+            amount = request.POST.get('account_amount')
 
-            # Validaet data
-            if account_name == '' or account_name == 'null' or account_name is None or account_name == 'undefined':
-                return JsonResponse(
-                    {
-                        'isError': True,
-                        'Message': 'Please enter account name',
-                        'title': 'Validation Error!',
-                        'type': 'warning',
-                    }
-                )
+            acc_type = models.account_types.objects.filter(
+                Q(name=account_type)).first()
 
-            if account_type == '' or account_type == 'null' or account_type is None or account_type == 'undefined':
-                return JsonResponse(
-                    {
-                        'isError': True,
-                        'Message': 'Please enter account type',
-                        'title': 'Validation Error!',
-                        'type': 'warning',
-                    }
-                )
-
-            if account_number == '' or account_number == 'null' or account_number is None or account_number == 'undefined':
-                return JsonResponse(
-                    {
-                        'isError': True,
-                        'Message': 'Please enter account number',
-                        'title': 'Validation Error!',
-                        'type': 'warning',
-                    }
-                )
-
-            if amount == '' or amount == 'null' or amount is None or amount == 'undefined':
-                return JsonResponse(
-                    {
-                        'isError': True,
-                        'Message': 'Please enter an amont',
-                        'title': 'Validation Error!',
-                        'type': 'warning',
-                    }
-                )
-
-        # Save data to database
+            new_account = models.account(
+                account_number=account_number,
+                account_name=account_name,
+                account_type=acc_type,
+                amount=amount,
+                reg_user=request.user
+            )
+            # Save data to database
+            new_account.save()
+            return JsonResponse({'isError': False, 'Message': 'created successfully'})
 
     # If there is not action matching
+    return render(request, 'Base/403.html')
     # Return 404 error
 
 
