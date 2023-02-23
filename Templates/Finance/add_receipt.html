@@ -3,13 +3,15 @@
 {% block content %}
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
+
+
             <span class="text-muted fw-light">Payment /</span> {{ pageTitle }}
-            <form id="receipt_form"
+          
         </h4>
-       
+        <form id="reciet_form">
                                     <div class="card my-4">
                                         <div class="card-header">
-                                          <h3>Create Account</h3>
+                                          <h3>Reciept info</h3>
                                         </div>
                                         <div class="card-body">
                                           <div class="row mb-4">
@@ -23,31 +25,45 @@
                                             </div>
                                             <div class="col">
                                               <label for="company">Recieved From</label>
-                                              <input type="text"
-                                                     class="form-control"
-                                                     placeholder="Recieved from"
-                                                     required="required"
-                                                     id="Recievedfrom"/>
+                                             
+                                            <div class="input-group input-group-merge">
+                                                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                                                <input
+                                                  id="search"
+                                                  type="text"
+                                                  class="form-control"
+                                                  placeholder="Search..."
+                                                  aria-label="Search..."
+                                                  aria-describedby="basic-addon-search31"
+                                                />
                                             </div>
+                                          </div>
                                           </div>
                                           <div class="row mb-4">
                                             <div class="col">
                                               <label for="company">RV Account</label>
-                                              <input type="text"
-                                                     class="form-control"
-                                                     placeholder="Amount"
-                                                     required="required"
-                                                     id="amount"/>
+                                             
+                                            <div class="input-group input-group-merge">
+                                                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                                                <input
+                                                  id="search1"
+                                                  type="text"
+                                                  class="form-control"
+                                                  placeholder="Search..."
+                                                  aria-label="Search..."
+                                                  aria-describedby="basic-addon-search31"
+                                                />
+                                              </div>
                                             </div>
                                             <div class="col">
                                               <label for="company">Personal ID</label>
-                                              <input type="text" class="form-control" id="mother_name" disabled placeholder="Personal ID">
+                                              <input type="text" class="form-control" id="personal_id" disabled placeholder="Personal ID">
                                             </div>
                                           </div>
                                           <div class="row mb-4">
                                             <div class="col">
                                               <label for="company">RVAmount</label>
-                                              <input type="text" class="form-control" id="mother_name" disabled placeholder="Rv amount">
+                                              <input type="text" class="form-control" id="rv_amount" disabled placeholder="Rv amount">
                                             </div>
                                             <div class="col">
                                                 <label for="company">Mother's Name ID</label>
@@ -63,7 +79,7 @@
                                    
         </div>
     </div>
-  </form>
+  </from>
 {% endblock content %}
 {% block scriptData %}
     <script src={% static "scripts/finance/re.js" %}></script>
