@@ -4,6 +4,7 @@
 {% block content %}
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Payment /</span> {{ pageTitle }}</h4>
+    <form id="acc_form"
     <div class="card my-4">
       {% csrf_token %}
         <div class="card-header">
@@ -58,6 +59,7 @@
           </div>
       </div>
 </div>
+</form>
 {% endblock content %}
 
 {% block scriptData %}
