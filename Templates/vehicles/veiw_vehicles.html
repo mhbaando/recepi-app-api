@@ -80,18 +80,27 @@
                                                     <td>{{ veh.vin }}</td>
                                                     <td>{{ veh.passenger }}</td>
                                                     <td>{{ veh.rv_no }}</td>
-                                                    <td>{{ veh.plate_no }}</td>
                                                     <td>
-                                                        <a href="{% url 'vehicle-profile' veh.vehicle_id %}"
-                                                           class="btn btn-primary">View Profile</a>
+                                                        {% if veh.plate_no %}
+                                                            {{ veh.plate_no }}
+                                                        {% else %}
+                                                            <p>Assign Plate First</p>
+                                                        {% endif %}
                                                     </td>
                                                     <td>
-                                                        <a href="{% url 'assignplate' veh.vehicle_id %}"
-                                                           class="btn btn-success text-white"
-                                                           id="vehicle_id"
-                                                           data-toggle="modal"
-                                                           data-target="#exampleModal"
-                                                           data-vehicleid="{{ veh.vehicle_id }}">Assign plate</a>
+                                                        <a href="{% url 'vehicle-profile' veh.vehicle_id %}">
+                                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAY1JREFUSEu1lY0xQ1EQhU8qQAWoABWgA6kgdEAF6IAKUAEqkFRAKggd0IH5Mrtm3bvvJzPv3ZlMXm5u9ts9e+5mopHXZOT4KgE3ku4kfQ8FjgCCX0v6kHQ6FCQCtiXNJR0MCSklKiFTSceSziTtSTo06agSGR8lvbZVmzU5Qvq2AnnvM1AGINPnkC2QK0kvkj6NyJkTe81CVVXvMoneTY6l/dB7giznliWwWwMiG1KlvSsBNBnNWfsWzBtfynVkZmA/ysp5KlmvCCC7hxDF7cpWBiGIN9shfN6VdGFV/QOgL1+iN7BYchMEJ+2EpDxJYqFACoCOxuWdyCA/Jo8zHPBlfUwlgo6+MWCTXE9WrUu0MmAqkQekyVnArr03s/bC7Fs1uWwUAcmEitrk4hwLu2Jt7sffsOxzk70f+H7LqgOMCfC/ryp42eToc3x9adM17rc9p1O46w8HEIMOd/BM1iyyRTqvjvdeN7lvtuW5xlHfVcEmwAhhzFNV9Ze5ScDsLBBctA4+BqCCDilRWv0vleJuGYI2aeIAAAAASUVORK5CYII="/>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        {% if veh.plate_no is None %}
+                                                            <a href="{% url 'assignplate' veh.vehicle_id %}"
+                                                               class="btn btn-success text-white"
+                                                               id="vehicle_id"
+                                                               data-toggle="modal"
+                                                               data-target="#exampleModal"
+                                                               data-vehicleid="{{ veh.vehicle_id }}">Assign plate</a>
+                                                        {% endif %}
                                                     </td>
                                                     <td>
                                                         <button type="button"
@@ -152,12 +161,6 @@
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                {% comment %} <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Assign Plate</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div> {% endcomment %}
                 <form id="reg_form">
                     {% csrf_token %}
                     <div class="modal-body">
@@ -195,9 +198,7 @@
                                     </div>
                                     <div class="col-md-12 mb-0">
                                         <div class="mb-3">
-                                            <label>
-                                                Year
-                                            </label>
+                                            <label>Year</label>
                                             <select name="year" id="year" class="form-control form-select select2">
                                                 <option selected>
                                                     Select a year
