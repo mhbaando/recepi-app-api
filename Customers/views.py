@@ -161,7 +161,7 @@ def view_company(request):
     DataNumber = 10
     companies = []
     context = {
-        'pageTitle': 'company-views'
+        'pageTitle': 'View Company'
     }
 
     if not request.user.is_superuser and request.user.federal_state is None:
@@ -275,6 +275,7 @@ def company_profile(request, id):
     if request.method == 'GET':
         if id is not None:
             company = ''
+
             if request.user.is_superuser:
                 # for admin user
                 company = customer_model.company.objects.filter(
