@@ -39,7 +39,7 @@
       </ul>
     </li>
     <!-- company -->
-    <li class="menu-item {% if pageTitle == 'Register Company' or pageTitle == 'company-views' or pageTitle == 'detail company' or pageTitle == 'block company'  or  pageTitle == 'Company / Profile' %}active open{% endif %}">
+    <li class="menu-item {% if pageTitle == 'Register Company' or pageTitle == 'View Company' or pageTitle == 'detail company' or pageTitle == 'block company'  or  pageTitle == 'Company / Profile' %}active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-building"></i>
         <div data-i18n="Dashboards">Company</div>
@@ -55,7 +55,7 @@
             <div data-i18n="Analytics">Block Company</div>
           </a>
         </li> {% endcomment %}
-        <li class="menu-item {% if pageTitle == 'company-views' or pageTitle == 'Profile' or pageTitle == 'Company / Profile' %} active{% endif %}">
+        <li class="menu-item {% if pageTitle == 'View Company' or pageTitle == 'Profile' or pageTitle == 'Company / Profile' %} active{% endif %}">
           <a href="{% url 'view_company' %}" class="menu-link">
             <div data-i18n="CRM">View Company</div>
           </a>
