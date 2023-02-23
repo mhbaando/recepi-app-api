@@ -16,7 +16,7 @@
                         <hr/>
                     </div>
                     {% comment %} customer infor {% endcomment %}
-                    <form id='reg_form'>
+                    <form id='transfer_form'>
                         {% csrf_token %}
                         <div class="card-body">
                             <div class="row">
@@ -46,7 +46,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {% comment %} <div class="col-md-6 mb-0">
+                                <!-- {% comment %} <div class="col-md-6 mb-0">
                                     <div class="mb-3">
                                         <label for="customer">New Owner's Name</label>
                                         <div class="input-group">
@@ -60,20 +60,8 @@
                                             </datalist>
                                         </div>
                                     </div>
-                                </div> {% endcomment %}
-                                {% comment %} <div class="col">
-                                    <label for="company">New Owner's Name</label>
-                                    <div class="input-group">
-                                        <input list="customers" name="Typelist" id="selected_owner" class="form-control rounded" placeholder="Search Customer Name" size="50"/>
-                                        <datalist id="customers">
-                                            {% for customer in customers %}
-                                                <option>
-                                                    {{ customer.full_name }} -  {{ customer.personal_id }}
-                                                </option>
-                                            {% endfor %}
-                                        </datalist>
-                                    </div>
-                                </div> {% endcomment %}
+                                </div> {% endcomment %} -->
+                            
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
                                         <label class="form-label">Owner's Name</label>
@@ -126,21 +114,22 @@
                                                placeholder="Personal ID"/>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-0">
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlTextarea1" class="form-label">Transfer Reason</label>
-                                        <textarea class="form-control" id="reason" name="reason" rows="4"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-0">
-                                    <div class="col mt-5">
+                                <div class="col-md-12 mb-0">
+                                    <div class="col mt-2">
                                         <input type="file" id="doc" class="form-control" accept="application/pdf"/>
                                         <p id="doc-name"></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-0">
                                     <div class="mb-3">
-                                        <label for="exampleFormControlTextarea1" class="form-label">Discription</label>
+                                        <label class="form-label">Transfer Reason</label>
+                                        <textarea class="form-control" id="reason" name="reason" rows="4"></textarea>
+                                    </div>
+                                </div>
+                              
+                                <div class="col-md-6 mb-0">
+                                    <div class="mb-3">
+                                        <label class="form-label">Description</label>
                                         <textarea class="form-control" id="description" name="description" rows="4"></textarea>
                                     </div>
                                 </div>
@@ -157,8 +146,7 @@
     </div>
 {% endblock content %}
 {% block scriptData %}
-    {% comment %} <script src={% static "scripts/vehicle/transfer.js" %}></script> {% endcomment %}
     <script src={% static "scripts/vehicle/transfereModel.js" %}></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
+    <script>src="https://code.jquery.com/jquery-3.1.1.slim.min.js"</script>
 {% endblock scriptData %}
