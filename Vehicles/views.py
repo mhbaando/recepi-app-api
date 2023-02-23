@@ -238,33 +238,6 @@ def seach_transferrr(request, search):
 
 @login_required(login_url="Login")
 def tranfercreate(request):
-    # transfer = vehicle_model.transfare_vehicles.objects.all()
-    # customers = customer_model.customer.objects.all()
-    # CheckSearchQuery = 'SearchQuery' in request.GET
-    # CheckDataNumber = 'DataNumber' in request.GET
-    # DataNumber = 5
-    # SearchQuery = ''
-
-    # if CheckDataNumber:
-    #     DataNumber = int(request.GET['DataNumber'])
-
-    # if CheckSearchQuery:
-    #     SearchQuery = request.GET['SearchQuery']
-    # else:
-    #     pass
-
-    # paginator = Paginator(transfer, DataNumber)
-
-    # page_number = request.GET.get('page')
-    # page_obj = paginator.get_page(page_number)
-    # context = {'pageTitle': 'Transfer Vehicle',
-    #            'page_obj': page_obj,
-    #            'SearchQuery': SearchQuery,
-    #            'DataNumber': DataNumber,
-    #            "transfer": transfer,
-    #            "customers": customers
-    #            }
-
     if request.method == 'POST':
         old_owner_id = request.POST.get('olold_hid_id', None)
         reason = request.POST.get('reason', None)
@@ -273,7 +246,7 @@ def tranfercreate(request):
         description = request.POST.get('description', None)
         vehicle_id = request.POST.get('vehicleID', None)
         document = request.FILES['transfer_document']
-        
+
         vehicle_old_id = vehicle_model.vehicle.objects.filter(
             Q(owner=old_owner_id)).first()
 
@@ -303,7 +276,6 @@ def tranfercreate(request):
     return JsonResponse({
         'successfully saved': "azuu"
     })
-
 
 
 @login_required(login_url="Login")
@@ -342,53 +314,49 @@ def view_vehicle(request):
     }
     ]
 
-    print(stateappre)
+    stateappr = ""
+
     DataNumber = 10
     SearchQuery = ''
     CheckDataNumber = 'DataNumber' in request.GET
     CheckSearchQuery = 'SearchQuery' in request.GET
 
-    states = customer_model.federal_state.objects.all()
     types = vehicle_model.type.objects.all()
     plate_number = vehicle_model.plate.objects.all()
-    vehicle_number = vehicle_model.vehicle.objects.all()
+    states = customer_model.federal_state.objects.all()
+    all_vehicles = vehicle_model.vehicle.objects.all()
 
-    for plateNo in plate_number:
-        vehicle = vehicle_model.vehicle.objects.filter(
-            Q(vehicle_id=plateNo.vehicle.vehicle_id)).first()
+    if all_vehicles is not None:
+        for vh in all_vehicles:
+            vehicle_with_plate = vehicle_model.plate.objects.filter(
+                vehicle=vh).all()
+            if vehicle_with_plate is not None:
+                for plateNo in vehicle_with_plate:
+                    stateap = ""
+                    for stateapp in stateappre:
+                        if plateNo.state.state_name == stateapp['name']:
+                            stateap = stateapp['appreviation']
 
-        if vehicle is not None:
+                    vehicles.append({
+                        'vehicle_id': vh.vehicle_id,
+                        'model': vh.vehicle_model,
+                        'vin': vh.vin,
+                        'year': vh.year,
+                        'hp': vh.hp,
+                        'passenger': vh.pessenger_seat,
+                        'rv_no': vh.rv_number,
+                        'plate_no':  f"{ stateap}-{plateNo.plate_code}-{plateNo.plate_no} ",
+                    })
+
             vehicles.append({
-                'vehicle_id': vehicle.vehicle_id,
-                'model': vehicle.vehicle_model,
-                'vin': vehicle.vin,
-                'year': vehicle.year,
-                'hp': vehicle.hp,
-                'passenger': vehicle.pessenger_seat,
-                'rv_no': vehicle.rv_number,
-                'plate_no':  f"{ plateNo.state}-{plateNo.plate_code}-{plateNo.plate_no} ",
-                # 'plate_no': plateNo.plate_no,
+                'vehicle_id': vh.vehicle_id,
+                'model': vh.vehicle_model,
+                'vin': vh.vin,
+                'year': vh.year,
+                'hp': vh.hp,
+                'passenger': vh.pessenger_seat,
+                'rv_no': vh.rv_number,
             })
-    else:
-
-        for noplate in vehicle_number:
-            vehicless = vehicle_model.vehicle.objects.filter(
-                Q(vehicle_id=noplate.vehicle_id)).first()
-            print(vehicless)
-
-            if vehicless is not None:
-                vehicles.append({
-                    'vehicle_id': vehicless.vehicle_id,
-                    'model': vehicless.vehicle_model,
-                    'vin': vehicless.vin,
-                    'year': vehicless.year,
-                    'hp': vehicless.hp,
-                    'passenger': vehicless.pessenger_seat,
-                    'rv_no': vehicless.rv_number,
-
-
-
-                })
 
     for i in range(1960, datetime.now().year):
         year.append(i)
@@ -406,6 +374,7 @@ def view_vehicle(request):
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+
     context = {'pageTitle': 'View Vehicles',
                'page_obj': page_obj,
                'SearchQuery': SearchQuery,
@@ -423,6 +392,7 @@ def view_vehicle(request):
         vehicleiddd = request.POST.get('vehicleId', None)
         code = request.POST.get('code', None)
         state = request.POST.get('state', None)
+
         types = request.POST.get('type', None)
         number = request.POST.get('number', None)
         year = request.POST.get('year')

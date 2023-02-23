@@ -19,6 +19,7 @@ class account(models.Model):
     account_id = models.AutoField(primary_key=True)
     account_name = models.CharField(max_length=100)
     account_type = models.ForeignKey(account_types, on_delete=models.RESTRICT)
+    account_number = models.IntegerField(blank=True, null=True)
     amount = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

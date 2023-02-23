@@ -2,18 +2,48 @@ $(document).ready(function(){
     $('#add_new_account').on("click", function(){
     
     
+
+      let accountpe = ""
+      $("#accounttype").on("change",()=>{
+        accountpe = $("#accounttype option:selected").val()
+      })
     // Prepare posting data
+    
+    $("#acc_form").on('submit',function(e){
+      e.preventDefault();
     let formData = new FormData();
     let acctnumber = $("#accnumber").val();
     let acctname = $("#accname").val();
     let accttype = $("#accounttype").val();
     let acctamount = $("#amount").val();
 
+    // if(!acctnumber){
+    //   alert("fill accnumber")
+    // }
+
+    // if(!acctname){
+    //   alert("fill accname")
+    // }
+    // if(!accttype){
+    //   alert("fill acctpe")
+    // }
+    // if(!acctamount){
+    //   alert("fill accamount")
+    // }
+    if(!accountpe || accountpe === "Select account type"){
+      return Swal.fire("Error", "Select account", "error");
+  }
+
     // Append all these to form-data
     formData.append("account_number", acctnumber);
     formData.append("account_name", acctname);
     formData.append("account_type", accttype);
     formData.append("account_amount", acctamount);
+
+   
+  
+
+
 
     $.ajax({
       method: "POST",
@@ -52,4 +82,4 @@ $(document).ready(function(){
       error: function (response) {},
     });
   });
-});
+    })})
