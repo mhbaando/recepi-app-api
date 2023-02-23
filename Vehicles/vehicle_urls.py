@@ -4,7 +4,7 @@ from . import views
 # from .views import Assign_create
 urlpatterns = [
     path("", views.register_vehicle, name="register-vehicle"),
-    path("register-tranfer/<str:pk>/", views.tranfercreate, name="transfer"),
+    path("register-tranfer/", views.tranfercreate),
     path("viewvehicle/", views.view_vehicle, name="veiw-vehicle"),
     # path("asignplate/", views.assign_plate, name="asign-plate"),
     path("vehicle-profile/<str:pk>/",

@@ -237,71 +237,73 @@ def seach_transferrr(request, search):
 
 
 @login_required(login_url="Login")
-def tranfercreate(request, pk):
-    transfer = vehicle_model.transfare_vehicles.objects.all()
-    customers = customer_model.customer.objects.all()
-    CheckSearchQuery = 'SearchQuery' in request.GET
-    CheckDataNumber = 'DataNumber' in request.GET
-    DataNumber = 5
-    SearchQuery = ''
+def tranfercreate(request):
+    # transfer = vehicle_model.transfare_vehicles.objects.all()
+    # customers = customer_model.customer.objects.all()
+    # CheckSearchQuery = 'SearchQuery' in request.GET
+    # CheckDataNumber = 'DataNumber' in request.GET
+    # DataNumber = 5
+    # SearchQuery = ''
 
-    if CheckDataNumber:
-        DataNumber = int(request.GET['DataNumber'])
+    # if CheckDataNumber:
+    #     DataNumber = int(request.GET['DataNumber'])
 
-    if CheckSearchQuery:
-        SearchQuery = request.GET['SearchQuery']
-    else:
-        pass
+    # if CheckSearchQuery:
+    #     SearchQuery = request.GET['SearchQuery']
+    # else:
+    #     pass
 
-    paginator = Paginator(transfer, DataNumber)
+    # paginator = Paginator(transfer, DataNumber)
 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {'pageTitle': 'Transfer Vehicle',
-               'page_obj': page_obj,
-               'SearchQuery': SearchQuery,
-               'DataNumber': DataNumber,
-               "transfer": transfer,
-               "customers": customers
-               }
+    # page_number = request.GET.get('page')
+    # page_obj = paginator.get_page(page_number)
+    # context = {'pageTitle': 'Transfer Vehicle',
+    #            'page_obj': page_obj,
+    #            'SearchQuery': SearchQuery,
+    #            'DataNumber': DataNumber,
+    #            "transfer": transfer,
+    #            "customers": customers
+    #            }
 
     if request.method == 'POST':
-        # old_owner_id = request.POST.get('olold_hid_id', None)
-        # reason = request.POST.get('reason', None)
-        # new_owner_id = request.POST.get('new_hid_id', None)
-        # receipt_number = request.POST.get('receipt_number', None)
-        # description = request.POST.get('description', None)
+        old_owner_id = request.POST.get('olold_hid_id', None)
+        reason = request.POST.get('reason', None)
+        new_owner_id = request.POST.get('new_hid_id', None)
+        receipt_number = request.POST.get('receipt_number', None)
+        description = request.POST.get('description', None)
         vehicle_id = request.POST.get('vehicleID', None)
-        print(vehicle_id)
+        document = request.FILES['transfer_document']
+        
+        vehicle_old_id = vehicle_model.vehicle.objects.filter(
+            Q(owner=old_owner_id)).first()
 
-        # document = request.FILES['transfer_document']
-        # vehicle_old_id = vehicle_model.vehicle.objects.filter(
-        #     Q(owner=old_owner_id)).first()
+        old_customer = customer_model.customer.objects.filter(
+            Q(customer_id=old_owner_id)).first()
 
-        # old_customer = customer_model.customer.objects.filter(
-        #     Q(customer_id=old_owner_id)).first()
+        car_to_update = vehicle_model.vehicle.objects.filter(
+            vehicle_id=vehicle_id).first()
+        new_owner = customer_model.customer.objects.filter(
+            customer_id=new_owner_id).first()
+        car_to_update.owner = new_owner
+        car_to_update.save()
 
-        # car_to_update = vehicle_model.vehicle.objects.filter(
-        #     vehicle_id=vehicle_id).first()
-        # new_owner = customer_model.customer.objects.filter(
-        #     customer_id=new_owner_id).first()
-        # car_to_update.owner = new_owner
-        # car_to_update.save()
+        new_transfering = vehicle_model.transfare_vehicles(
+            old_owner_id=old_customer.customer_id,
+            new_owner_id=new_owner_id,
+            vehicle_id=vehicle_old_id.vehicle_id,
+            description=description,
+            document=document,
+            rv_number=receipt_number,
+            transfare_reason=reason,
+            reg_user_id=request.user.id,
+        )
 
-        # new_transfering = vehicle_model.transfare_vehicles(
-        #     old_owner_id=old_customer.customer_id,
-        #     new_owner_id=new_owner_id,
-        #     vehicle_id=vehicle_old_id.vehicle_id,
-        #     description=description,
-        #     document=document,
-        #     rv_number=receipt_number,
-        #     transfare_reason=reason,
-        #     reg_user_id=request.user.id,
-        # )
+        new_transfering.save()
 
-        # new_transfering.save()
+    return JsonResponse({
+        'successfully saved': "azuu"
+    })
 
-    return render(request, "vehicles/transfer.html", context)
 
 
 @login_required(login_url="Login")
