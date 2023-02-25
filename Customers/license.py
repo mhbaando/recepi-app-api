@@ -319,13 +319,13 @@ def manage_license(request, id):
         username = request.user.username
         name = request.user.first_name + ' ' + request.user.last_name
 
-        message = {
-            'isError': True,
-            'title': "Server Error",
-            'type': "error",
-            'Message': 'On Error Occurs . Please try again or contact system administrator'
-        }
-        return JsonResponse(message, status=200)
+        # message = {
+        #     'isError': True,
+        #     'title': "Server Error",
+        #     'type': "error",
+        #     'Message': 'On Error Occurs . Please try again or contact system administrator'
+        # }
+        # return JsonResponse(message, status=200)
 
 
 # License Generator

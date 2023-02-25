@@ -44,8 +44,8 @@ def register_vehicle(request):
                 registration_number = request.POST.get(
                     'registration_number', None)
                 engine_number = request.POST.get('engine_number', None)
-                rv_num = request.POST.get('rv_num', None)
                 owner_id = request.POST.get('owner_id', None)
+                rv_num = request.POST.get('rv_num', None)
 
                 if model_brand is None or color is None or origin is None or year is None or cylinder is None or hp is None or weight is None or passenger_seats is None or registration_number is None or engine_number is None or rv_num is None or owner_id is None:
                     return JsonResponse(
@@ -57,35 +57,49 @@ def register_vehicle(request):
                         }
                     )
 
-                owner = customer_model.customer.objects.filter(
-                    Q(customer_id=owner_id)).first()
-                brand = vehicle_model.model_brand.objects.filter(
-                    Q(brand_id=model_brand)).first()
-                car_color = vehicle_model.color.objects.filter(
-                    Q(color_id=color)).first()
+                is_voucher_exist = vehicle_model.vehicle.objects.filter(
+                    rv_number=rv_num).first()
 
-                car_cylinder = vehicle_model.cylinder.objects.filter(
-                    Q(cylinder_id=cylinder)).first()
+                if is_voucher_exist is not None:
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': "Duplicate Error!!",
+                            'type': "warning",
+                            'Message': f'This receipt voucher already used by {is_voucher_exist.owner.full_name}'
+                        }
+                    )
+                else:
 
-                car_origin = customer_model.countries.objects.filter(
-                    Q(country_id=origin)).first()
+                    owner = customer_model.customer.objects.filter(
+                        Q(customer_id=owner_id)).first()
+                    brand = vehicle_model.model_brand.objects.filter(
+                        Q(brand_id=model_brand)).first()
+                    car_color = vehicle_model.color.objects.filter(
+                        Q(color_id=color)).first()
 
-                new_vehicle = vehicle_model.vehicle(
-                    vehicle_model=brand,
-                    color=car_color,
-                    cylinder=car_cylinder,
-                    year=year,
-                    origin=car_origin,
-                    hp=hp,
-                    weight=weight,
-                    vin=registration_number,
-                    enginer_no=engine_number,
-                    pessenger_seat=passenger_seats,
-                    owner=owner,
-                    reg_user_id=request.user.id,
-                    rv_number=rv_num)
+                    car_cylinder = vehicle_model.cylinder.objects.filter(
+                        Q(cylinder_id=cylinder)).first()
 
-                new_vehicle.save()
+                    car_origin = customer_model.countries.objects.filter(
+                        Q(country_id=origin)).first()
+
+                    new_vehicle = vehicle_model.vehicle(
+                        vehicle_model=brand,
+                        color=car_color,
+                        cylinder=car_cylinder,
+                        year=year,
+                        origin=car_origin,
+                        hp=hp,
+                        weight=weight,
+                        vin=registration_number,
+                        enginer_no=engine_number,
+                        pessenger_seat=passenger_seats,
+                        owner=owner,
+                        reg_user_id=request.user.id,
+                        rv_number=rv_num)
+
+                    new_vehicle.save()
 
                 username = request.user.username
                 names = request.user.first_name + ' ' + request.user.last_name
@@ -328,25 +342,11 @@ def view_vehicle(request):
 
     if all_vehicles is not None:
         for vh in all_vehicles:
-            vehicle_with_plate = vehicle_model.plate.objects.filter(
-                vehicle=vh).all()
-            if vehicle_with_plate is not None:
-                for plateNo in vehicle_with_plate:
-                    stateap = ""
-                    for stateapp in stateappre:
-                        if plateNo.state.state_name == stateapp['name']:
-                            stateap = stateapp['appreviation']
-
-                    vehicles.append({
-                        'vehicle_id': vh.vehicle_id,
-                        'model': vh.vehicle_model,
-                        'vin': vh.vin,
-                        'year': vh.year,
-                        'hp': vh.hp,
-                        'passenger': vh.pessenger_seat,
-                        'rv_no': vh.rv_number,
-                        'plate_no':  f"{ stateap}-{plateNo.plate_code}-{plateNo.plate_no} ",
-                    })
+            stateap = ""
+            for stateapp in stateappre:
+                if vh.plate_no is not None:
+                    if vh.plate_no.state.state_name == stateapp['name']:
+                        stateap = stateapp['appreviation']
 
             vehicles.append({
                 'vehicle_id': vh.vehicle_id,
@@ -356,6 +356,7 @@ def view_vehicle(request):
                 'hp': vh.hp,
                 'passenger': vh.pessenger_seat,
                 'rv_no': vh.rv_number,
+                'plate_no': f'{stateap}-{vh.plate_no.plate_code}-{vh.plate_no.plate_no}' if vh.plate_no is not None else None
             })
 
     for i in range(1960, datetime.now().year):
@@ -387,38 +388,6 @@ def view_vehicle(request):
                "noplates": noplates
 
                }
-
-    if request.method == 'POST':
-        vehicleiddd = request.POST.get('vehicleId', None)
-        code = request.POST.get('code', None)
-        state = request.POST.get('state', None)
-
-        types = request.POST.get('type', None)
-        number = request.POST.get('number', None)
-        year = request.POST.get('year')
-
-        selected_type = vehicle_model.type.objects.filter(
-            type_id=types).first()
-
-        selected_state = customer_model.federal_state.objects.filter(
-            Q(state_id=state)).first()
-
-        selected_vehicle = vehicle_model.vehicle.objects.filter(
-            Q(vehicle_id=vehicleiddd)).first()
-
-        new_plate = vehicle_model.plate(
-            vehicle=selected_vehicle,
-            plate_code=code,
-            state=selected_state,
-            plate_no=number,
-            year=year,
-            type=selected_type,
-
-            reg_user_id=request.user.id,
-        )
-
-        new_plate.save()
-
     return render(request, 'vehicles/veiw_vehicles.html', context)
 
 
@@ -506,9 +475,62 @@ def update_vehicle(request):
 
 
 @login_required(login_url="Login")
-def asign_plate(request, pk):
+def asign_plate(request):
 
-    return redirect("veiw-vehicle")
+    year = []
+    types = vehicle_model.type.objects.all()
+
+    states = customer_model.federal_state.objects.all()
+
+    for i in range(1960, datetime.now().year):
+        year.append(i)
+
+    year.reverse()
+
+    context = {
+        "states": states,
+        "types": types,
+        "currentYear": datetime.now().year,
+    }
+
+    if request.method == 'POST':
+        vehicleiddd = request.POST.get('vehicleIdd', None)
+        code = request.POST.get('code', None)
+        state = request.POST.get('state', None)
+
+        types = request.POST.get('type', None)
+        number = request.POST.get('number', None)
+        year = request.POST.get('year')
+
+        selected_type = vehicle_model.type.objects.filter(
+            type_id=types).first()
+
+        selected_state = customer_model.federal_state.objects.filter(
+            Q(state_id=state)).first()
+
+        selected_vehicle = vehicle_model.vehicle.objects.filter(
+            Q(vehicle_id=vehicleiddd)).first()
+
+        # create plate
+        new_plate = vehicle_model.plate(
+            plate_code=code,
+            state=selected_state,
+            plate_no=number,
+            year=year,
+            type=selected_type,
+            reg_user_id=request.user.id,
+        )
+
+        new_plate.save()
+
+        # assign plate to the car
+        vehicle_to_assign_plate = vehicle_model.vehicle.objects.filter(
+            Q(vehicle_id=vehicleiddd)).first()
+        if vehicle_to_assign_plate is not None:
+            vehicle_to_assign_plate.plate_no = new_plate
+            vehicle_to_assign_plate.save()
+
+    return render(request, 'vehicles/assign_model.html', context)
 
 
 @login_required(login_url='Login')

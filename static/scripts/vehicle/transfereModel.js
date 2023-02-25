@@ -212,6 +212,10 @@ $("#search").on("input", function (){
     formData.append("new_hid_id",new_hid_id.val());
     formData.append("vehicleID",vehicleID);
 
+    if(!transfer_document || transfer_document === "Select a document" ){
+      return Swal.fire("Error", "Select A document ", "error");
+  }
+
 
     
     $.ajax({
@@ -234,7 +238,7 @@ $("#search").on("input", function (){
           }).then(function (e) {
             if (e.value) {
               Swal.DismissReason.cancel;
-              location.replace('/vehicles/register-tranfer')
+              location.replace('/vehicles/viewvehicle')
             }
           });
 
