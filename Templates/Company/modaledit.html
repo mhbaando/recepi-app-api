@@ -13,45 +13,83 @@
                 </div>
                 <form id="update_form">
                     {% csrf_token %}
-                    <div class="row  mb-4">
-                                    <label for="company">Company Name</label>
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Company Name"
-                               required="required"
-                               id="cname"/>
-                      </div>
-                    
+                    <div class="row pb-3">
+                        <div class="row">
+                            <label for="company">Company Name</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Company Name"
+                                   required="required"
+                                   id="cname"/>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col">
-                              <label for="company">Website</label>
-                              <input type="text"
-                                     class="form-control"
-                                     placeholder="website"
-                                     required="required"
-                                     id="website"/>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col">
-                                  <label for="company">Address</label>
-                                  <input type="text"
-                                         class="form-control"
-                                         placeholder="Address"
-                                         required="required"
-                                         id="address"/>
-                                </div>
-                                <div class="col  mb-3">
-                                    <label for="company">Registration No</label>
-                                    <input type="text"
-                                           class="form-control"
-                                           placeholder="Registration No"
-                                           required="required"
-                                           id="rnumber"/>
-                                  </div>
-                           
+                    </div>
+                    <div class="col row gap-2">
+                        <div class="col">
+                            <label for="company">Phone</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Phone"
+                                   required="required"
+                                   id="cphone"/>
                         </div>
-                        
+                        <div class="col">
+                            <label for="company">Email</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Email"
+                                   required="required"
+                                   id="cemail"/>
+                        </div>
+                    </div>
+                    <div class="row mb-4 gap-2 pt-3">
+                        <div class="col">
+                            <label for="company">Address</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Address"
+                                   required="required"
+                                   id="caddress"/>
+                        </div>
+                        <div class="col">
+                            <label for="defaultFormControlInput">State</label>
+                            <select class="form-select"
+                                    id="state"
+                                    aria-label="state"
+                                    {% if states == 'No State Found' %} disabled{% endif %}>
+                                <option selected>
+                                    {% if states == 'No State Found' %}
+                                        No State Found
+                                    {% else %}
+                                        Select State
+                                    {% endif %}
+                                </option>
+                                {% for state in states %}
+                                    <option value="{{ state.state_id }}">
+                                        {{ state.state_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div
+                    >
+                    <div class="row mb-4 gap-2 pt-3">
+                        <div class="col">
+                            <label for="company">Website</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Website"
+                                   required="required"
+                                   id="cwebsite"/>
+                        </div>
+                        <div class="col">
+                            <label for="defaultFormControlInput">Registration #</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Registration #"
+                                   required="required"
+                                   id="cregister"/>
+                        </div>
+                    </div>
                     <div class="mt-4 d-flex align-items-end justify-content-end">
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
@@ -59,7 +97,6 @@
             </div>
         </div>
     </div>
-    
 {% endblock content %}
 {% block scriptData %}
     <script src="{% static "scripts/company/editModal.js" %}"></script>

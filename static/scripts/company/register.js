@@ -6,11 +6,17 @@ $(document).ready(function () {
 
     $('#upload').change(function(){
         const file = this.files[0];
-        if (file){
-            logoImage = file
+        if(file){
+          if(file.size > 1000000){
+            Swal.fire("Error", "Upploaded file exceeded max size", "error");
+            return false;
+          }
+          else{
+              logoImage = file
+          }
         }else{
-            logoImage = undefined
-        }
+          logoImage = undefined
+      }
     })
 
     $("#doc").on('change', function(){

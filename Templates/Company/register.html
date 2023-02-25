@@ -53,27 +53,21 @@
                      id="website"/>
             </div>
             <div class="col">
-          
-                <label class="form-label">Search customer</label>
-                <div class="input-group input-group-merge">
-                    <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                    <input
-                      id="search"
-                      type="text"
-                      class="form-control"
-                      placeholder="Search..."
-                      aria-label="Search..."
-                      aria-describedby="basic-addon-search31"
-                    />
-                  </div>
+              <label class="form-label">Search customer</label>
+              <div class="input-group input-group-merge">
+                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                <input id="search"
+                       type="text"
+                       class="form-control"
+                       placeholder="Search..."
+                       aria-label="Search..."
+                       aria-describedby="basic-addon-search31"/>
+              </div>
             </div>
-          
           </div>
         </div>
       </div>
-     
     </div>
-
     <div class="card my-4">
       <div class="card-header">
         <h3>Contact Info</h3>
@@ -171,12 +165,10 @@
                      size=""
                      class="form-control custom-input-file"
                      accept="application/pdf"
-                     required maxlength="40" 
-                     
-                     />
+                     required
+                     maxlength="40"/>
             </div>
           </div>
-         
         </div>
         <div class="row mt-4">
           <div class="form-outline">
@@ -185,7 +177,7 @@
                       id="desc"
                       placeholder="write your description here"
                       rows="4"
-                      required="required" ></textarea>
+                      required="required"></textarea>
           </div>
         </div>
       </div>
@@ -194,10 +186,10 @@
       <button type="submit" class="btn btn-primary btn-lg active">Save Company</button>
     </div>
   </form>
-  {% block scriptData %}
-    <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
-    <script src="{% static "scripts/company/upload.js" %}"></script>
-    <script src="{% static "scripts/company/register.js" %}"></script>
-    <script src={% static 'scripts/role/roles.js' %}></script>
-  {% endblock scriptData %}
 {% endblock content %}
+{% block scriptData %}
+  <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
+  <script src="{% static "scripts/company/register.js" %}"></script>
+  <script src={% static 'scripts/role/roles.js' %}></script>
+  <script src="{% static "scripts/company/upload.js" %}"></script>
+{% endblock scriptData %}

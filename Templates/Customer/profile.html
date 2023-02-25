@@ -13,7 +13,7 @@
             </h4>
         </div>
         <div class="container row gap-3">
-            <div class="col-sm-12 col-lg-3 h-50 bg-white rounded p-4 d-flex  justify-content-center">
+            <div class="col-sm-12 col-lg h-50 bg-white rounded p-4 d-flex  justify-content-center me-3">
                 <div class="d-flex flex-column align-items-center justify-content-center ">
                     <img class="customer-img mb-5"
                          src="{% if customer.photo %} {{ customer.photo.url }} {% else %} {% static "assets/img/customers/placeholder.png" %} {% endif %}"
@@ -39,7 +39,7 @@
                     </button>
                 </div>
             </div>
-            <div class="col-sm-12 col-lg bg-white rounded pt-4">
+            <div class="col-sm-12 col-lg-9  bg-white rounded pt-4">
                 <div class="nav-align-top mb-4">
                     <ul class="nav nav-pills mb-3 px-3" role="tablist">
                         <li class="nav-item">
@@ -210,7 +210,7 @@
                                                             {{ vehicle.created_at }}
                                                         </td>
                                                         <td>
-                                                            BNAG4785
+                                                            {{ vehicle.plate }}
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
@@ -345,6 +345,9 @@
                                                         New Owner
                                                     </th>
                                                     <th class="wd-15p border-bottom-0">
+                                                        Old Owner
+                                                    </th>
+                                                    <th class="wd-15p border-bottom-0">
                                                         Plate
                                                     </th>
                                                     <th class="wd-15p border-bottom-0">
@@ -365,7 +368,10 @@
                                                             {{ transfare.new_owner.full_name }}
                                                         </td>
                                                         <td>
-                                                            {{ transfare.vehicle.vehicle_model }}
+                                                            {{ transfare.old_owner.full_name }}
+                                                        </td>
+                                                        <td>
+                                                            {{ transfare.vehicle.plate }}
                                                         </td>
                                                         <td>
                                                             {{ transfare.created_at }}

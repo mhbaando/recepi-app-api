@@ -14,19 +14,15 @@ $(document).ready(()=>{
 	// company doc
 	$("#doc").on("change",function(){
 		let file = this.files[0]
-		
-		if(file.size > 1000000){
-			alert("you can not upload more then 1mb")
-			return false;
-
-		}
 		if(file){
-			$("#doc-name").text(file.name)
+			if(file.size > 1000000){
+				Swal.fire("Error", "Upploaded file exceeded max size", "error");
+				return false;
+			}
+			else{
+				$("#doc-name").text(file.name)
+			}
 		}
-
-		
-	
-
 	})
 });
 

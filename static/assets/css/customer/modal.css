@@ -10,8 +10,34 @@
     background-color: rgba(0, 0, 0, 0.157);
 }
 
+.overlay-assign{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.157);
+}
+
 
 .model-contaier {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+    max-width: 550px;
+
+    margin: auto;
+    z-index: 11;
+}
+
+.containerr{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -41,6 +67,21 @@
     width: 100%;
 }
 
+.model-assign {
+    background-color: white;
+    border-radius: 10px;
+    
+    display: flex;
+    
+    flex-direction: column;
+
+    
+    padding: 1rem
+}
+
+.model-content {
+    width: 100%;
+}
 .custom-input-file_container {
     display: flex;
     align-items: center;

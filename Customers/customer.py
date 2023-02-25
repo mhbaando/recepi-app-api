@@ -288,8 +288,8 @@ def customer_profile(request, id):
                 # for state user
                 customer = customer_model.customer.objects.filter(
                     Q(customer_id=id), federal_state=request.user.federal_state).first()
-
-            vehicles = vehicle_model.vehicle.objects.filter(
+            vehicles = []
+            vehicle = vehicle_model.vehicle.objects.filter(
                 Q(owner=customer))
             license = customer_model.license.objects.filter(
                 Q(owner=customer)).first()
@@ -302,6 +302,27 @@ def customer_profile(request, id):
 
             companies = customer_model.company.objects.filter(
                 Q(owner=customer))
+
+            for vh in vehicle:
+
+                # TODO: plate needs more checking on the plate view
+                plate = vehicle_model.plate.objects.filter(
+                    Q(vehicle=vh)).first()
+                if plate is not None:
+                    vehicles.append({
+                        'vehicle_model': vh.vehicle_model,
+                        'year': vh.year,
+                        'vin': vh.vin,
+                        'created_at': vh.created_at,
+                        'plate': f"{plate.state}-{plate.plate_code}-{plate.plate_no}"
+                    })
+                vehicles.append({
+                    'vehicle_model': vh.vehicle_model,
+                    'year': vh.year,
+                    'vin': vh.vin,
+                    'created_at': vh.created_at,
+                    'plate': f"No Plate Assigned"
+                })
 
             context = {
                 'customer': customer,
