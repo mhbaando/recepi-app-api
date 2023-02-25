@@ -1,86 +1,94 @@
 {% extends "Base/index.html" %}
 {% load static %}
+{% block  cssData %}
+  <!-- autocomplete -->
+  <link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
+  <style>.ui-autocomplete { z-index:2147483647; }</style>
+{% endblock cssData %}
 {% block content %}
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4">
-
-
-            <span class="text-muted fw-light">Payment /</span> {{ pageTitle }}
-          
-        </h4>
-        <form id="reciet_form">
-                                    <div class="card my-4">
-                                        <div class="card-header">
-                                          <h3>Reciept info</h3>
-                                        </div>
-                                        <div class="card-body">
-                                          <div class="row mb-4">
-                                            <div class="col">
-                                              <label for="company">RV Number</label>
-                                              <input type="text"
-                                                     class="form-control"
-                                                     placeholder="rv number"
-                                                     required="required"
-                                                     id="rvnumber"/>
-                                            </div>
-                                            <div class="col">
-                                              <label for="company">Recieved From</label>
-                                             
-                                            <div class="input-group input-group-merge">
-                                                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                                                <input
-                                                  id="search"
-                                                  type="text"
-                                                  class="form-control"
-                                                  placeholder="Search..."
-                                                  aria-label="Search..."
-                                                  aria-describedby="basic-addon-search31"
-                                                />
-                                            </div>
-                                          </div>
-                                          </div>
-                                          <div class="row mb-4">
-                                            <div class="col">
-                                              <label for="company">RV Account</label>
-                                             
-                                            <div class="input-group input-group-merge">
-                                                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                                                <input
-                                                  id="search1"
-                                                  type="text"
-                                                  class="form-control"
-                                                  placeholder="Search..."
-                                                  aria-label="Search..."
-                                                  aria-describedby="basic-addon-search31"
-                                                />
-                                              </div>
-                                            </div>
-                                            <div class="col">
-                                              <label for="company">Personal ID</label>
-                                              <input type="text" class="form-control" id="personal_id" disabled placeholder="Personal ID">
-                                            </div>
-                                          </div>
-                                          <div class="row mb-4">
-                                            <div class="col">
-                                              <label for="company">RVAmount</label>
-                                              <input type="text" class="form-control" id="rv_amount" disabled placeholder="Rv amount">
-                                            </div>
-                                            <div class="col">
-                                                <label for="company">Mother's Name ID</label>
-                                                <input type="text" class="form-control" id="mother_name" disabled placeholder="Mother's Name">
-                                            </div>
-                                          </div>
-                                        </div>
-                                        
-                                        <div class="d-flex justify-content-end align-items-end mb-4 me-4 ">
-                                            <button type="submit" class="btn btn-primary btn-lg active id="add_new_reciept">Save</button>
-                                          </div>
-                                      </div>
-                                   
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+      <span class="text-muted fw-light">Payment /</span> {{ pageTitle }}
+    </h4>
+    <form id="reciet_form">
+      {% csrf_token %}
+      <div class="card my-4">
+        <div class="card-header">
+          <h3>Reciept info</h3>
         </div>
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col">
+              <label for="company">RV Number</label>
+              <input type="text"
+                     class="form-control"
+                     placeholder="rv number"
+                     required="required"
+                     id="rvnumber"/>
+            </div>
+            <div class="col">
+              <label for="company">Recieved From</label>
+              <div class="input-group input-group-merge">
+                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                <input id="rcfrom"
+                       type="text"
+                       class="form-control"
+                       placeholder="Search..."
+                       aria-label="Search..."
+                       aria-describedby="basic-addon-search31"/>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col">
+              <label for="company">RV Account</label>
+              <div class="input-group input-group-merge">
+                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                <input id="rvaccount"
+                       type="text"
+                       class="form-control"
+                       placeholder="Search..."
+                       aria-label="Search..."
+                       aria-describedby="basic-addon-search31"/>
+              </div>
+            </div>
+            <div class="col">
+              <label for="company">Personal ID</label>
+              <input type="text"
+                     class="form-control"
+                     id="personal_id"
+                     disabled
+                     placeholder="Personal ID">
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col">
+              <label for="company">RVAmount</label>
+              <input type="text"
+                     class="form-control"
+                     id="rv_amount"
+                     disabled
+                     placeholder="Rv amount">
+            </div>
+            <div class="col">
+              <label for="company">Mother's Name ID</label>
+              <input type="text"
+                     class="form-control"
+                     id="mother_name"
+                     disabled
+                     placeholder="Mother's Name">
+            </div>
+          </div>
+          <div class="d-flex justify-content-end align-items-end mb-4 me-4 ">
+            <button type="submit" class="btn btn-primary btn-lg active" id="addnewreciet">Save</button>
+          </div>
+        </div>
+      </div>
+      </from>
     </div>
-  </from>
-{% endblock content %}
-{% block scriptData %}
-    <script src={% static "scripts/finance/re.js" %}></script>
-{% endblock scriptData %}
+  {% endblock content %}
+  {% block scriptData %}
+    <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
+    <script src={% static "scripts/finance/receipt.js" %}></script>
+    <script src={% static "scripts/finance/savedreciet.js" %}></script>
+  {% endblock scriptData %}
