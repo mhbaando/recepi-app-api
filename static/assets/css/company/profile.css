@@ -15,7 +15,7 @@ span {
     background: url('../../img/co_bg.jpg');
     background-position: center;
     background-size: cover;
-    filter: brightness(0.4);
+    /* filter: brightness(0.4); */
 
     position: relative;
 
