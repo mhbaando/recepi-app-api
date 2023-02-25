@@ -3,12 +3,13 @@ from Customers import models as customer_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import JsonResponse, request
-from django.core.exceptions import ValidationError
+from django.http import JsonResponse
+
 
 from Users.views import sendException, sendTrials
+from Vehicles import models as vehilce_model
+from Finance import models as financemodel
 from datetime import datetime
-import json
 # Create your views here.
 # company
 
@@ -271,30 +272,90 @@ def block_company(request):
 
 @login_required(login_url="Login")
 def company_profile(request, id):
-
     if request.method == 'GET':
         if id is not None:
             company = ''
+            all_vehicles = []
+            transfares = []
+            payments = []
+            states = []
 
             if request.user.is_superuser:
                 # for admin user
                 company = customer_model.company.objects.filter(
                     Q(company_id=id)).first()
+                vehicles = vehilce_model.vehicle.objects.filter(
+                    Q(owner=company.owner)).all()
+                transfares = vehilce_model.transfare_vehicles.objects.filter(
+                    Q(old_owner=company.owner) | Q(new_owner=company.owner)).all()
+                payments = financemodel.receipt_voucher.objects.filter(
+                    Q(rv_from=company.owner))
+                states = customer_model.federal_state.objects.all()
+
+                for vh in vehicles:
+                    plate = vehilce_model.plate.objects.filter(
+                        Q(vehicle=vh)).first()
+                    if plate is not None:
+                        all_vehicles.append({
+                            'vehicle_model': vh.vehicle_model,
+                            'year': vh.year,
+                            'vin': vh.vin,
+                            'created_at': vh.created_at,
+                            'plate': f"{plate.state}-{plate.plate_code}-{plate.plate_no}"
+                        })
+                    all_vehicles.append({
+                        'vehicle_model': vh.vehicle_model,
+                        'year': vh.year,
+                        'vin': vh.vin,
+                        'created_at': vh.created_at,
+                        'plate': "No Plate Assigned"
+                    })
             else:
                 # for state user
                 company = customer_model.company.objects.filter(
                     Q(company_id=id), federal_state=request.user.federal_state).first()
+                vehicles = vehilce_model.vehicle.objects.filter(
+                    Q(owner=company.owner)).all()
+
+                transfares = vehilce_model.transfare_vehicles.objects.filter(
+                    Q(old_owner=company.owner) | Q(new_owner=company.owner)).all()
+
+                payments = financemodel.receipt_voucher.objects.filter(
+                    Q(rv_from=company.owner))
+                states = customer_model.federal_state.objects.filter(
+                    Q(state_id=request.user.federal_state.state_id))
+
+                for vh in vehicles:
+                    plate = vehilce_model.plate.objects.filter(
+                        Q(vehicle=vh)).first()
+                    if plate is not None:
+                        all_vehicles.append({
+                            'vehicle_model': vh.vehicle_model,
+                            'year': vh.year,
+                            'vin': vh.vin,
+                            'created_at': vh.created_at,
+                            'plate': f"{plate.state}-{plate.plate_code}-{plate.plate_no}"
+                        })
+                    all_vehicles.append({
+                        'vehicle_model': vh.vehicle_model,
+                        'year': vh.year,
+                        'vin': vh.vin,
+                        'created_at': vh.created_at,
+                        'plate': "No Plate Assigned"
+                    })
 
             context = {
                 'company': company,
+                'vehicles': all_vehicles,
+                'transfares': transfares,
+                'payments': payments,
+                'states': states,
                 'pageTitle': 'Company / Profile'
             }
 
             return render(request, 'Company/comp_profile.html', context)
         else:
             return JsonResponse({'isError': True, 'Message': 'Provide a customer ID'}, status=400)
-
-           # edit company
 
 
 @ login_required(login_url="Login")
@@ -326,40 +387,47 @@ def update_company(request):
     try:
         company_id = request.POST.get('company_id', None)
         c_name = request.POST.get('cname', None)
-        c_website = request.POST.get('sname', None)
-        c_address = request.POST.get('thname', None)
-        c_regisno = request.POST.get('foname', None)
+        cphone = request.POST.get('cphone', None)
+        cemail = request.POST.get('cemail', None)
+        caddress = request.POST.get('caddress', None)
+        cwebsite = request.POST.get('cwebsite', None)
+        cregister = request.POST.get('cregister', None)
+        cstate = request.POST.get('cstate', None)
 
         if company_id is not None:
             company = customer_model.company.objects.filter(
                 company_id=company_id).first()
 
             if company is not None:
-                if (c_name is None or c_website is None or c_address is None or c_regisno is None):
+                if c_name is None or cphone is None or cemail is None or caddress is None or cwebsite is None or cregister is None or cstate is None:
                     return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
-                company.company_name = c_name
-                company.website = c_website
-                company.address = c_address
-                company.reg_no = c_regisno
-                company.save()
-                # for auditory
+                state = customer_model.federal_state.objects.filter(
+                    Q(state_id=cstate)).first()
 
+                company.company_name = c_name
+                company.phone = cphone
+                company.email = cemail
+                company.website = cwebsite
+                company.address = caddress
+                company.reg_no = cregister
+                company.federal_state = state
+                company.save()
+
+                # for auditory
                 username = request.user.username
-                names = request.user.company_name + ' ' + request.user.website
+                names = request.user.first_name + ' ' + request.user.last_name
                 avatar = str(request.user.avatar)
                 module = "Customer / update"
                 action = 'updated a company' + company.company_name
                 path = request.path
                 sendTrials(request, username, names,
                            avatar, action, module, path)
-                return JsonResponse({'isError': False, 'Message': 'company has been updated'}, status=404)
+                return JsonResponse({'isError': False, 'Message': 'company has been updated'}, status=200)
             return JsonResponse({'isErro': False, 'Message': 'company feild is required'}, status=400)
 
     except Exception as error:
-
         username = request.user.username
         name = request.user.first_name + '' + request.user.last_name
-
         sendException(
             request, username, name, error
         )
