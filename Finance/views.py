@@ -323,3 +323,76 @@ def receipt(request, id):
             'Message': 'On Error Occurs . Please try again or contact system administrator'
         }
         return JsonResponse(message, status=200)
+
+
+@login_required(login_url='Login')
+def find_account(request, name):
+    if request.method == 'GET':
+        # if name is not None:
+        rv_account = models.account.objects.filter(
+            Q(account_name__icontains=name))
+        message = []
+        if rv_account is not None:
+            for xSearch in range(0, len(rv_account)):
+                message.append(
+                    {
+                        'label': f"{rv_account[xSearch].account_name}",
+                        'value': f"{rv_account[xSearch].account_name}",
+                        'amount': rv_account[xSearch].amount,
+                    }
+                )
+            return JsonResponse({'Message': message}, status=200)
+        return JsonResponse({'isError': True, 'Message': 'Not found'})
+
+
+@login_required(login_url='Login')
+def find_rcfrom(request, name):
+    if request.method == 'GET':
+        # if name is not None:
+        rc_from = models.customer_model.customer.objects.filter(
+            Q(full_name__icontains=name))
+        message = []
+        if rc_from is not None:
+            for xSearch in range(0, len(rc_from)):
+                message.append(
+                    {
+                        'label': f"{ rc_from[xSearch].full_name}",
+                        'value': f"{ rc_from[xSearch].full_name}",
+                        'per_id': f"{ rc_from[xSearch].personal_id}",
+                        'mot_name': f"{ rc_from[xSearch].mother_name}",
+
+                    }
+                )
+
+            return JsonResponse({'Message': message}, status=200)
+        return JsonResponse({'isError': True, 'Message': 'Not found'})
+
+
+def savereciept(request, action):
+
+    # creating new account
+    if action == 'reciet_form':
+        if request.method == 'POST':
+            # Get all data from the request
+            rv_number = request.POST.get('rv_number')
+            recieved_from = request.POST.get('recieved_from')
+            rv_account = request.POST.get('rv_account')
+            personal_id = request.POST.get('personal_id')
+            mother_name = request.POST.get('mother_name')
+
+            new_reciet = models.account(
+                rvnumber=rv_number,
+                recievedfrom=recieved_from,
+                rvaccount=rv_account,
+                personal_id=personal_id,
+                mothername=mother_name,
+
+
+                reg_user=request.user
+            )
+            # Save data to database
+            new_reciet.save()
+            return JsonResponse({'isError': False, 'Message': 'created successfully'})
+
+    # If there is not action matching
+    return render(request, 'receipt_list.html')
