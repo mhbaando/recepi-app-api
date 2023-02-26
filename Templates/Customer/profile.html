@@ -210,7 +210,11 @@
                                                             {{ vehicle.created_at }}
                                                         </td>
                                                         <td>
-                                                            {{ vehicle.plate }}
+                                                            {% if vehicle.plate %}
+                                                                {{ vehicle.plate }}
+                                                            {% else %}
+                                                                No Plate Assigned
+                                                            {% endif %}
                                                         </td>
                                                     </tr>
                                                 {% endfor %}

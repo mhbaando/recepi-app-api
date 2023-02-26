@@ -58,8 +58,7 @@
                                         <tr>
                                             <th scope="col">RV Number</th>
                                             <th scope="col">Recieved From</th>
-                                           
-
+                                            <th scope="col">Reason</th>
                                             <th scope="col">Amount</th>
                                         </tr>
                                     </thead>
@@ -68,10 +67,9 @@
                                             {% for item in receipt_vouchers %}
                                                 <tr>
                                                     <td>{{ item.rv_number }}</td>
-                                                    <td>{{ item.rv_from}}</td>
-                                              
-
-                                                    <td>{{ item.rv_amount}}</td>
+                                                    <td>{{ item.rv_from }}</td>
+                                                    <td>{{ item.reason }}</td>
+                                                    <td>$ {{ item.rv_amount }}</td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}

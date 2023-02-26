@@ -81,29 +81,35 @@ def AddAccount(request):
 
 
 def ManageAccounts(request, action):
-
     # creating new account
     if action == 'AddNewAccount':
         if request.method == 'POST':
             # Get all data from the request
-            account_name = request.POST.get('account_name')
-            account_type = request.POST.get('account_type')
-            account_number = request.POST.get('account_number')
-            amount = request.POST.get('account_amount')
+            account_name = request.POST.get('account_name', None)
+            account_type = request.POST.get('account_type', None)
+            account_number = request.POST.get('account_number', None)
+            amount = request.POST.get('account_amount', None)
 
-            acc_type = models.account_types.objects.filter(
-                Q(name=account_type)).first()
+            if account_name is None or account_type is None or account_number is None or amount is None:
+                return JsonResponse({
+                    'isError': True,
+                    'Message': 'Bad Request All Filds are required'
+                }, status=400)
 
-            new_account = models.account(
-                account_number=account_number,
-                account_name=account_name,
-                account_type=acc_type,
-                amount=amount,
-                reg_user=request.user
-            )
-            # Save data to database
-            new_account.save()
-            return JsonResponse({'isError': False, 'Message': 'created successfully'})
+            else:
+                acc_type = models.account_types.objects.filter(
+                    Q(name=account_type)).first()
+
+                new_account = models.account(
+                    account_number=account_number,
+                    account_name=account_name,
+                    account_type=acc_type,
+                    amount=amount,
+                    reg_user=request.user
+                )
+                # Save data to database
+                new_account.save()
+                return JsonResponse({'isError': False, 'Message': 'created successfully'})
 
     # If there is not action matching
     return render(request, 'Base/403.html')
@@ -369,22 +375,24 @@ def find_rcfrom(request, name):
         return JsonResponse({'isError': True, 'Message': 'Not found'})
 
 
+@login_required(login_url='Login')
 def savereciept(request, action):
-
     # creating new account
     if action == 'reciet_form':
         if request.method == 'POST':
             # Get all data from the request
+            amount = request.POST.get('rvamount')
             rv_number = request.POST.get('rv_number')
             personal_id = request.POST.get('personal_id')
+            reason = request.POST.get('reason')
 
-            reason = request.POST.get(' reasonnt')
             customer = customer_model.customer.objects.filter(
                 Q(personal_id=personal_id)).first()
 
             new_reciet = models.receipt_voucher(
                 rv_number=rv_number,
                 rv_from=customer,
+                rv_amount=amount,
                 reason=reason,
                 reg_user=request.user
             )

@@ -1,49 +1,31 @@
-$(document).ready(function(){
-    $('#add_new_account').on("click", function(){
-    
-    
+$(document).ready(function () {
 
-      let accountpe = ""
-      $("#accounttype").on("change",()=>{
-        accountpe = $("#accounttype option:selected").val()
-      })
-    // Prepare posting data
-    
-    $("#acc_form").on('submit',function(e){
-      e.preventDefault();
+  let accountpe = ""
+  $("#accounttype").on("change", () => {
+    accountpe = $("#accounttype option:selected").val()
+  })
+  // Prepare posting data
+
+  $("#acc_form").on('submit', function (e) {
+    e.preventDefault();
     let formData = new FormData();
     let acctnumber = $("#accnumber").val();
     let acctname = $("#accname").val();
-    let accttype = $("#accounttype").val();
     let acctamount = $("#amount").val();
 
-    // if(!acctnumber){
-    //   alert("fill accnumber")
-    // }
-
-    // if(!acctname){
-    //   alert("fill accname")
-    // }
-    // if(!accttype){
-    //   alert("fill acctpe")
-    // }
-    // if(!acctamount){
-    //   alert("fill accamount")
-    // }
-    if(!accountpe || accountpe === "Select account type"){
-      return Swal.fire("Error", "Select account", "error");
-  }
-
+    if (!acctname || acctname.trim().length <= 0 || !acctnumber || acctnumber.trim().length <= 0 || !acctamount || acctamount.trim().length <= 0) {
+      Swal.fire("Error", "All filds are required", "error");
+      return false
+    }
+    if (!accountpe || accountpe === 'select a Account type') {
+      Swal.fire("Error", "Select an account", "error");
+      return false
+    }
     // Append all these to form-data
     formData.append("account_number", acctnumber);
     formData.append("account_name", acctname);
-    formData.append("account_type", accttype);
+    formData.append("account_type", accountpe);
     formData.append("account_amount", acctamount);
-
-   
-  
-
-
 
     $.ajax({
       method: "POST",
@@ -52,7 +34,7 @@ $(document).ready(function(){
       processData: false,
       contentType: false,
       data: formData,
-      async: false,
+      async: true,
       success: function (response) {
         if (!response.isError) {
           Swal.fire({
@@ -63,23 +45,20 @@ $(document).ready(function(){
             buttonsStyling: !1,
             showCloseButton: !0,
           }).then((e) => {
-            location.reload();
-            // location.replace(
-            //   `/employees/employee_profile/${response.EmployeeID}`
-            // );
+            location.replace('/finance/accounts');
           });
         } else {
-            Swal.fire({
-              title: "Something Wrong!!",
-              text: response.Message,
-              icon: "error",
-              confirmButtonClass: "btn btn-primary w-xs mt-2",
-              buttonsStyling: !1,
-              showCloseButton: !0,
-            });
+          Swal.fire({
+            title: "Something Wrong!!",
+            text: response.Message,
+            icon: "error",
+            confirmButtonClass: "btn btn-primary w-xs mt-2",
+            buttonsStyling: !1,
+            showCloseButton: !0,
+          });
         }
       },
-      error: function (response) {},
+      error: function (response) { },
     });
   });
-    })})
+})
