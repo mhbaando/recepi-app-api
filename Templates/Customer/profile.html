@@ -210,7 +210,11 @@
                                                             {{ vehicle.created_at }}
                                                         </td>
                                                         <td>
-                                                            {{ vehicle.plate }}
+                                                            {% if vehicle.plate %}
+                                                                {{ vehicle.plate }}
+                                                            {% else %}
+                                                                No Plate Assigned
+                                                            {% endif %}
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
@@ -492,7 +496,7 @@
                                                             {{ payment.created_at }}
                                                         </td>
                                                         <td>
-                                                            {{ payment.rv_amount }}
+                                                            $ {{ payment.rv_amount }}
                                                         </td>
                                                         <td>
                                                             {{ payment.reason }}
