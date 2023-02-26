@@ -63,11 +63,11 @@
                         <div class="col-md-6 mb-0">
                             <div class="mb-3">
                                 <label class="form-label">Model Brand</label>
-                                <select id="model_brand" class="form-control form-select select2">
+                                <select id="vehicle_models" class="form-control form-select select2">
                                     <option>
                                         Select a Brand Name
                                     </option>
-                                    {% for i in  vehicle_models %}
+                                    {% for i in vehicle_models %}
                                         <option value="{{ i.brand_id }}">
                                             {{ i.brand_name }}
                                         </option>
@@ -78,28 +78,13 @@
                         <div class="col-md-6 mb-0">
                             <div class="mb-3">
                                 <label class="form-label">Year</label>
-                                <select name="year" id="year" class="form-control form-select select2">
+                                <select id="year" class="form-control form-select select2">
                                     <option selected>
                                         Select a year
                                     </option>
                                     {% for y in year %}
                                         <option value="{{ y }}">
                                             {{ y }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Origin</label>
-                                <select id="origin" class="form-control form-select select2">
-                                    <option>
-                                        Select Origin
-                                    </option>
-                                    {% for i in origins %}
-                                        <option value="{{ i.country_id }}">
-                                            {{ i.country_name }}
                                         </option>
                                     {% endfor %}
                                 </select>
@@ -115,6 +100,21 @@
                                     {% for i in colors %}
                                         <option value="{{ i.color_id }}">
                                             {{ i.color_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-0">
+                            <div class="mb-3">
+                                <label class="form-label">Origin</label>
+                                <select id="origin" class="form-control form-select select2">
+                                    <option>
+                                        Select Origin
+                                    </option>
+                                    {% for i in origins %}
+                                        <option value="{{ i.country_id }}">
+                                            {{ i.country_name }}
                                         </option>
                                     {% endfor %}
                                 </select>

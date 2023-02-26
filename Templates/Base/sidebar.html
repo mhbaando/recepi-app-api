@@ -85,11 +85,6 @@
             <div data-i18n="CRM">Transfer Vehicles</div>
           </a>
         </li> {% endcomment %}
-        <li class="menu-item {% if pageTitle == 'View Vehicles' or pageTitle == 'Vehicle Profile' %} active{% endif %}">
-          <a href="{% url 'veiw-vehicle' %}" class="menu-link">
-            <div data-i18n="CRM">View Vehicles</div>
-          </a>
-        </li>
         {% if perms.Vehicles.view_vehicle %}
           <li class="menu-item {% if pageTitle == 'View Vehicles' or pageTitle == 'ProFile' %} active{% endif %}">
             <a href="{% url 'veiw-vehicle' %}" class="menu-link">

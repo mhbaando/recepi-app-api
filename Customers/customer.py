@@ -28,8 +28,6 @@ def register_customer(request):
     else:
         states = "No State Found"
 
-        
-
     context = {
         'pageTitle': 'Register',
         'bload_group': bload_group,

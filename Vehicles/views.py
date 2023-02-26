@@ -404,10 +404,10 @@ def view_vehicle(request):
 
 @login_required(login_url="Login")
 def vehicle_profile(request, pk):
-    transfer = vehicle_model.transfare_vehicles.objects.all()
+
     cylenders = vehicle_model.cylinder.objects.all()
-    vehicle_models = vehicle_model.model_brand.objects.all()
     colors = vehicle_model.color.objects.all()
+    vehicle_models = vehicle_model.model_brand.objects.all()
     origins = customer_model.countries.objects.all()
 
     # cylinders = vehicle_model.cylinder.objects.all()
@@ -436,8 +436,8 @@ def vehicle_profile(request, pk):
                 'vehicle': vehicle,
                 "transfares": transfares,
                 'pageTitle': 'Vehicle Profile',
-                "origins": origins, "vehicle_models": vehicle_models,
                 "cylenders": cylenders, "year": year, "colors": colors,
+                "origins": origins, "vehicle_models": vehicle_models,
             }
 
             return render(request, 'vehicles/vehicle_profile.html', context)
@@ -474,12 +474,43 @@ def find_vehicle(request, id):
 
 @ login_required(login_url="Login")
 def update_vehicle(request):
-    vehicle_id = request.POST.get('vehicleID', None)
-    weight = request.POST.get('weight', None)
-    rv_number = request.POST.get('rv_number', None)
-    hp = request.POST.get('hp', None)
-    engine_number = request.POST.get('engine_no', None)
-    passenger_seats = request.POST.get('passenger_seats', None)
+    owner_id = request.POST.get('vehicleID', None)
+    vweight = request.POST.get('weight', None)
+    vrv_number = request.POST.get('rv_number', None)
+    vhp = request.POST.get('hp', None)
+    vengine_number = request.POST.get('engine_no', None)
+    vpassenger_seats = request.POST.get('passenger_seats', None)
+    vcolor = request.POST.get('color', None)
+    vcylinder = request.POST.get('cylinder', None)
+    vorigin = request.POST.get('origin', None)
+    vmodel_brand = request.POST.get('model_brand', None)
+    vyear = request.POST.get('year', None)
+
+    vehicle = vehicle_model.vehicle.objects.filter(
+        Q(vehicle_id=owner_id)).first()
+
+    brand = vehicle_model.model_brand.objects.filter(
+        Q(brand_id=vmodel_brand)).first()
+    car_color = vehicle_model.color.objects.filter(
+        Q(color_id=vcolor)).first()
+
+    car_cylinder = vehicle_model.cylinder.objects.filter(
+        Q(cylinder_id=vcylinder)).first()
+
+    car_origin = customer_model.countries.objects.filter(
+        Q(country_id=vorigin)).first()
+
+    vehicle.weight = vweight,
+    vehicle.rv_number = vrv_number,
+    vehicle.hp = vhp,
+    vehicle.enginer_no = vengine_number,
+    vehicle.pessenger_seat = vpassenger_seats,
+    vehicle.color.color_id = car_color.color_id,
+    vehicle.cylinder.cylinder_id = car_cylinder.cylinder_id,
+    vehicle.origin.country_id = car_origin,
+    vehicle.vehicle_model.brand_id = brand,
+    vehicle.year = int(vyear)
+    vehicle.save()
 
     return JsonResponse({
         'hellw': 4
@@ -562,9 +593,3 @@ def Searchcustomer(request, search):
                 }
             )
         return JsonResponse({'Message': message}, status=200)
-
-
-# @login_required(login_url="Login")
-# def transfer_model(request, pk):
-
-#     return redirect("veiw-vehicle")
