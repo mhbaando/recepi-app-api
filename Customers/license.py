@@ -64,6 +64,7 @@ def ReNewLicense(request):
         'expired_year': expired_year,
         'pageTitle': 'Renew License'
     }
+
     return render(request, 'License/ReNewLicense.html', context)
 # License Lists
 
