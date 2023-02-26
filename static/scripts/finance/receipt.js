@@ -91,7 +91,7 @@ $(document).ready(function () {
           if (value != "") {
             $("#rvaccount").attr("rv_account", item)
             
-            $("#rv_amount").attr('value',"$ "+ui.item.amount )
+            $("#rv_amount").attr('value','$ '+ui.item.amount )
           }
         },
         response: function (event, ui) {
