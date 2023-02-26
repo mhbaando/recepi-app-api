@@ -17,6 +17,7 @@ expired_year = current_date.replace(year=years_to_add)
 
 @login_required(login_url='Login')
 def NewLicense(request):
+    place_issues = customer_model.placeissue.objects.all()
     if request.user.is_admin or request.user.is_superuser:
         FederalState = customer_model.federal_state.objects.all()
     else:
@@ -28,7 +29,8 @@ def NewLicense(request):
         'expired_year': expired_year,
         'licensetype': licensetype,
         'last_license': GenerateLicenseNumber,
-        'pageTitle': 'Register License'
+        'pageTitle': 'Register License',
+        'place_issues': place_issues,
 
     }
     return render(request, 'License/NewLicense.html', context)

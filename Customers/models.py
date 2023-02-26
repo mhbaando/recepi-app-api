@@ -34,9 +34,12 @@ class personal_id_type(models.Model):
 
 class placeissue(models.Model):
     place_id = models.AutoField(primary_key=True)
-    place_name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
+    place_name = models.CharField(max_length=100, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    modified_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+
+    reg_user = models.ForeignKey(
+        Users, on_delete=models.RESTRICT, null=True, blank=True)
 
     class Meta:
         db_table = 'place_issue'
