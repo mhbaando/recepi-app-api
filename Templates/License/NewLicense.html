@@ -1,142 +1,142 @@
 {% extends 'Base/index.html' %}
 {% load static %}
 {% block  cssData %}
-
-
-<!-- autocomplete -->
-<link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
-<style>
-    .ui-autocomplete { z-index:2147483647; }
-</style>
+    <!-- autocomplete -->
+    <link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
+    <style>.ui-autocomplete { z-index:2147483647; }</style>
 {% endblock  %}
 {% block content %}
-{% csrf_token %}
-<div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">License /</span> {{pageTitle}}</h4>   
-     <!-- Basic Layout -->
-     <div class="row">
-        <div class="col-md-12 ">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">License Info</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        
-                       
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Search Invoice</label>
-                                <div class="input-group input-group-merge">
-                                    <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                                    <input
-                                    id="search"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="Search..."
-                                      aria-label="Search..."
-                                      aria-describedby="basic-addon-search31"
-                                    />
-                                  </div>
+    {% csrf_token %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4">
+            <span class="text-muted fw-light">License /</span> {{ pageTitle }}
+        </h4>
+        <!-- Basic Layout -->
+        <div class="row">
+            <div class="col-md-12 ">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">License Info</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Search Invoice</label>
+                                    <div class="input-group input-group-merge">
+                                        <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                                        <input id="search"
+                                               type="text"
+                                               class="form-control"
+                                               placeholder="Search..."
+                                               aria-label="Search..."
+                                               aria-describedby="basic-addon-search31"/>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Ownar Name</label>
-                                <input type="text" class="form-control" id="ownar_name" disabled placeholder="Ownar Name">
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Ownar Name</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="ownar_name"
+                                           disabled
+                                           placeholder="Ownar Name">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Mother Name</label>
-                                <input type="text" class="form-control" id="mother_name" disabled placeholder="Mother's Name">
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Mother Name</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="mother_name"
+                                           disabled
+                                           placeholder="Mother's Name">
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Personal ID</label>
-                                <input type="text" class="form-control" id="personal_id" disabled placeholder="Personal ID">
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Personal ID</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="personal_id"
+                                           disabled
+                                           placeholder="Personal ID">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Licence No</label>
-                                <input type="text" disabled class="form-control" id="licence_no" value='{{last_license}}' placeholder={{last_license}}>
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Licence No</label>
+                                    <input type="text" disabled class="form-control" id="licence_no" value='{{ last_license }}' placeholder={{ last_license }}>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Expire Date</label>
-                                <input type="text" disabled class="form-control" id="expire_date" value='{{expired_year}}' placeholder={{expired_year}}>
-                                
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Expire Date</label>
+                                    <input type="text" disabled class="form-control" id="expire_date" value='{{ expired_year }}' placeholder={{ expired_year }}>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">State </label>
-                                <select  id="state_name" class="form-select">
-                                    {% if FederalState %}
-                                    <option value="">Select State</option>
-                                    {% for item in FederalState %}
-                                    <option value={{item.state_id}}>{{item.state_name}}</option>
-                                    {% endfor %}
-                                    {% endif %}
-                                </select>
+                            <div class="col-md-4 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">State</label>
+                                    <select id="state_name" class="form-select">
+                                        {% if states %}
+                                            <option value="">
+                                                Select State
+                                            </option>
+                                            {% for item in states %}
+                                                <option value={{ item.state_id }}>{{ item.state_name }}
+                                                </option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        
-                       
-                        <div class="col-md-4 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Place Issued </label>
-                                <select id="place_issue"class="form-select">
-                                    {% if FederalState %}
-                                    <option value="">Select State</option>
-                                    {% for item in FederalState %}
-                                    <option value={{item.state_id}}>{{item.state_name}}</option>
-                                    {% endfor %}
-                                    {% endif %}
-                                </select>
+                            <div class="col-md-4 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Place Issued</label>
+                                    <select id="place_issue"class="form-select">
+                                        {% if place_issues %}
+                                            <option value="">
+                                                Select a place issues
+                                            </option>
+                                            {% for item in place_issues %}
+                                                <option value={{ item.place_id }}>{{ item.place_name }}
+                                                </option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Type </label>
-                                <select id="license_type"class="form-select">
-                                    {% if licensetype %}
-                                    <option value="">Select Type</option>
-                                    {% for item in licensetype %}
-                                    <option value={{item.type_id}}>{{item.type}}</option>
-                                    {% endfor %}
-                                    {% endif %}
-                                </select>
+                            <div class="col-md-4 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <select id="license_type"class="form-select">
+                                        {% if licensetype %}
+                                            <option value="">
+                                                Select Type
+                                            </option>
+                                            {% for item in licensetype %}
+                                                <option value={{ item.type_id }}>{{ item.type }}
+                                                </option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12 mb-0">
-                            <div class="mb-3">
-                                <button class="btn btn-primary" id="submit">Save</button>
-                              
-                           
+                            <div class="col-md-12 mb-0">
+                                <div class="mb-3">
+                                    <button class="btn btn-primary" id="submit">Save</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
-                    
-                    
                 </div>
             </div>
         </div>
-       
     </div>
-   
-</div>
-
 {% endblock content %}
-
-
 {% block scriptData %}
-<script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
-<script src={% static 'scripts/license/newlicense.js' %}></script>
+    <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
+    <script src={% static 'scripts/license/newlicense.js' %}></script>
 {% endblock %}

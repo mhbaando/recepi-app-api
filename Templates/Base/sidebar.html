@@ -68,11 +68,13 @@
         <div data-i18n="Dashboards">Vehicles</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item {% if pageTitle == 'Register vehicle' %}active{% endif %}">
-          <a href="{% url 'register-vehicle' %}" class="menu-link">
-            <div data-i18n="CRM">Register Vehicle</div>
-          </a>
-        </li>
+        {% if perms.Customers.add_vehicle %}
+          <li class="menu-item {% if pageTitle == 'Register vehicle' %}active{% endif %}">
+            <a href="{% url 'register-vehicle' %}" class="menu-link">
+              <div data-i18n="CRM">Register Vehicle</div>
+            </a>
+          </li>
+        {% endif %}
         {% comment %} <li class="menu-item {% if pageTitle == 'Assign Aplate' %}active{% endif %}">
           <a href="{% url 'asign-plate' %}" class="menu-link">
             <div data-i18n="CRM">Assign Plate</div>
@@ -114,11 +116,13 @@
         <div data-i18n="Dashboards">License</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item {% if pageTitle == 'Register License' %}active{% endif %}">
-          <a href={% url 'NewLicense' %} class="menu-link">
-            <div data-i18n="Analytics">New License</div>
-          </a>
-        </li>
+        {% if perms.Customers.add_license %}
+          <li class="menu-item {% if pageTitle == 'Register License' %}active{% endif %}">
+            <a href={% url 'NewLicense' %} class="menu-link">
+              <div data-i18n="Analytics">New License</div>
+            </a>
+          </li>
+        {% endif %}
         <li class="menu-item {% if pageTitle == 'Renew License' %}active{% endif %}">
           <a href={% url 'ReNewLicense' %} class="menu-link">
             <div data-i18n="Analytics">Re-new License</div>
