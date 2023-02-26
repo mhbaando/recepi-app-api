@@ -37,9 +37,7 @@ $(document).ready(function(){
             showCloseButton: !0,
           }).then((e) => {
             location.reload();
-            // location.replace(
-            //   `/employees/employee_profile/${response.EmployeeID}`
-            // );
+           
           });
         } else {
             Swal.fire({
