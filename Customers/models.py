@@ -32,6 +32,19 @@ class personal_id_type(models.Model):
         return self.personal_name
 
 
+class placeissue(models.Model):
+    place_id = models.AutoField(primary_key=True)
+    place_name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'place_issue'
+
+    def __str__(self):
+        return self.place_name
+
+
 class countries(models.Model):
     country_id = models.AutoField(primary_key=True)
     country_name = models.CharField(max_length=100)
