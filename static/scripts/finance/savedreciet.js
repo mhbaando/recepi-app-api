@@ -9,13 +9,15 @@ $(document).ready(function(){
     let rv_from = $("#rcfrom").val();
     let reason= $("#reason").val();
     let personal_id= $("#personal_id").val();
+    let rvamount= $("#rv_amount").val();
 
   
 
     // Append all these to form-data
     formData.append("rv_number",rv_number);
-    formData.append(" rv_from",  rv_from);
-    formData.append(" reason",  reason);
+    formData.append("rv_from",rv_from);
+    formData.append("reason",reason);
+    formData.append("rvamount",rvamount);
     formData.append("personal_id",personal_id)
   
     $.ajax({

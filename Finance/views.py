@@ -369,22 +369,24 @@ def find_rcfrom(request, name):
         return JsonResponse({'isError': True, 'Message': 'Not found'})
 
 
+@login_required(login_url='Login')
 def savereciept(request, action):
-
     # creating new account
     if action == 'reciet_form':
         if request.method == 'POST':
             # Get all data from the request
+            amount = request.POST.get('rvamount')
             rv_number = request.POST.get('rv_number')
             personal_id = request.POST.get('personal_id')
+            reason = request.POST.get('reason')
 
-            reason = request.POST.get(' reasonnt')
             customer = customer_model.customer.objects.filter(
                 Q(personal_id=personal_id)).first()
 
             new_reciet = models.receipt_voucher(
                 rv_number=rv_number,
                 rv_from=customer,
+                rv_amount=amount,
                 reason=reason,
                 reg_user=request.user
             )
