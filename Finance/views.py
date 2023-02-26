@@ -9,6 +9,7 @@ from Users.views import sendException, sendTrials
 from datetime import datetime
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from Customers import models as customer_model
 # current_date = date.today()
 # currentDatetime = datetime.now()
 # years_to_add = current_date.year + 4
@@ -375,19 +376,16 @@ def savereciept(request, action):
         if request.method == 'POST':
             # Get all data from the request
             rv_number = request.POST.get('rv_number')
-            recieved_from = request.POST.get('recieved_from')
-            rv_account = request.POST.get('rv_account')
             personal_id = request.POST.get('personal_id')
-            mother_name = request.POST.get('mother_name')
 
-            new_reciet = models.account(
-                rvnumber=rv_number,
-                recievedfrom=recieved_from,
-                rvaccount=rv_account,
-                personal_id=personal_id,
-                mothername=mother_name,
+            reason = request.POST.get(' reasonnt')
+            customer = customer_model.customer.objects.filter(
+                Q(personal_id=personal_id)).first()
 
-
+            new_reciet = models.receipt_voucher(
+                rv_number=rv_number,
+                rv_from=customer,
+                reason=reason,
                 reg_user=request.user
             )
             # Save data to database

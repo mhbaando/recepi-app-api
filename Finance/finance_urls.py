@@ -21,7 +21,7 @@ urlpatterns = [
          views.SearchReceiptVoucher, name='SearchReceiptVoucher'),
     path('findaccount/<str:name>', views.find_account),
     path('findrfrom/<str:name>', views.find_rcfrom),
-    path('savereciept', views.savereciept, name='savereciept'),
+    path('save_reciept/<str:action>', views.savereciept, name='savereciept'),
 
 
 

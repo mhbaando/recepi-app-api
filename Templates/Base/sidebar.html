@@ -62,7 +62,7 @@
         </li>
       </ul>
     </li>
-    <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' or  pageTitle == 'ProFile' %}active open{% endif %}">
+    <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' or  pageTitle == 'Vehicle Profile' %}active open{% endif %}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-car"></i>
         <div data-i18n="Dashboards">Vehicles</div>
@@ -85,6 +85,11 @@
             <div data-i18n="CRM">Transfer Vehicles</div>
           </a>
         </li> {% endcomment %}
+        <li class="menu-item {% if pageTitle == 'View Vehicles' or pageTitle == 'Vehicle Profile' %} active{% endif %}">
+          <a href="{% url 'veiw-vehicle' %}" class="menu-link">
+            <div data-i18n="CRM">View Vehicles</div>
+          </a>
+        </li>
         {% if perms.Vehicles.view_vehicle %}
           <li class="menu-item {% if pageTitle == 'View Vehicles' or pageTitle == 'ProFile' %} active{% endif %}">
             <a href="{% url 'veiw-vehicle' %}" class="menu-link">

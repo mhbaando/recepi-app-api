@@ -429,14 +429,15 @@ def vehicle_profile(request, pk):
                 vehicle = vehicle_model.vehicle.objects.filter(
                     Q(vehicle_id=pk), federal_state=request.user.federal_state).first()
 
+            transfares = vehicle_model.transfare_vehicles.objects.filter(
+                Q(vehicle=vehicle)).all()
+
             context = {
                 'vehicle': vehicle,
-                "transfer": transfer,
-                'pageTitle': 'ProFile',
+                "transfares": transfares,
+                'pageTitle': 'Vehicle Profile',
                 "origins": origins, "vehicle_models": vehicle_models,
                 "cylenders": cylenders, "year": year, "colors": colors,
-
-
             }
 
             return render(request, 'vehicles/vehicle_profile.html', context)
