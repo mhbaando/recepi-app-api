@@ -79,16 +79,25 @@
                      placeholder="Mother's Name">
             </div>
           </div>
-          <div class="d-flex justify-content-end align-items-end mb-4 me-4 ">
-            <button type="submit" class="btn btn-primary btn-lg active" id="addnewreciet">Save</button>
+          <div class="col">
+            <label class="form-label" for="desc">Reason</label>
+            <textarea class="form-control"
+                      id="reason"
+                      placeholder="write your reason  here"
+                      rows="4"
+                      required="required"></textarea>
           </div>
         </div>
+        <div class="d-flex justify-content-end align-items-end mb-4 me-4 ">
+          <button type="submit" class="btn btn-primary btn-lg active" id="addnewreciet">Save</button>
+        </div>
       </div>
-      </from>
     </div>
-  {% endblock content %}
-  {% block scriptData %}
-    <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
-    <script src={% static "scripts/finance/receipt.js" %}></script>
-    <script src={% static "scripts/finance/savedreciet.js" %}></script>
-  {% endblock scriptData %}
+    </from>
+  </div>
+{% endblock content %}
+{% block scriptData %}
+  <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
+  <script src={% static "scripts/finance/receipt.js" %}></script>
+  <script src={% static "scripts/finance/savedreciet.js" %}></script>
+{% endblock scriptData %}
