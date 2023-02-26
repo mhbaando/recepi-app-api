@@ -1,36 +1,26 @@
 $(document).ready(function(){
     $('#addnewreciet').on("click", function(){
     
-    
-
     // Prepare posting data
-    
     $("#reciet_form").on('submit',function(e){
       e.preventDefault();
     let formData = new FormData();
-    let  rv_number = $("#rvnumber").val();
-    let  recievedfrom = $("#rcfrom").val();
-    let rvaccount= $("#rvaccount").val();
-    let  personal_id = $("#personal_id").val();
-    let   mothername = $("#mother_name").val();
+    let rv_number = $("#rvnumber").val();
+    let rv_from = $("#rcfrom").val();
+    let reason= $("#reason").val();
+    let personal_id= $("#personal_id").val();
 
-
-    // Append all these to form-data
-    formData.append("rv_number", rv_number);
-    formData.append("rvfrom",  recievedfrom);
-    formData.append("rvaccount", rvaccount);
-    formData.append("personalid", personal_id);
-    formData.append("mothername", mothername);
-
-
-   
   
 
-
-
+    // Append all these to form-data
+    formData.append("rv_number",rv_number);
+    formData.append(" rv_from",  rv_from);
+    formData.append(" reason",  reason);
+    formData.append("personal_id",personal_id)
+  
     $.ajax({
       method: "POST",
-      url: "/finance/savereciept/",
+      url: "/finance/save_reciept/reciet_form",
       headers: { "X-CSRFToken": csrftoken },
       processData: false,
       contentType: false,
