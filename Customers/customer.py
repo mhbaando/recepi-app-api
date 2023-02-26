@@ -266,6 +266,35 @@ def customer_profile(request, id):
     nationalities = customer_model.countries.objects.all()
     doc_types = customer_model.personal_id_type.objects.all()  # personal id types
     states = []
+    stateappre = [{
+        'name': 'Banaadir',
+        'appreviation': 'BN'
+    },
+        {
+        'name': 'Hirshabeelle',
+        'appreviation': 'HR'
+    },
+        {
+        'name': 'Galmudug',
+        'appreviation': 'GM'
+    },
+        {
+        'name': 'Puntland',
+        'appreviation': 'PN'
+    },
+        {
+        'name': 'Koonfur Galbeed',
+        'appreviation': 'KG'
+    },
+        {
+        'name': 'Jubba land',
+        'appreviation': 'JL'
+    },
+        {
+        'name': 'Somali land',
+        'appreviation': 'SL'
+    }
+    ]
 
     # check the user state
     if request.user.is_state and request.user.federal_state is not None:
@@ -304,24 +333,18 @@ def customer_profile(request, id):
                 Q(owner=customer))
 
             for vh in vehicle:
+                stateap = ""
+                for stateapp in stateappre:
+                    if vh.plate_no is not None:
+                        if vh.plate_no.state.state_name == stateapp['name']:
+                            stateap = stateapp['appreviation']
 
-                # TODO: plate needs more checking on the plate view
-                plate = vehicle_model.plate.objects.filter(
-                    Q(vehicle=vh)).first()
-                if plate is not None:
-                    vehicles.append({
-                        'vehicle_model': vh.vehicle_model,
-                        'year': vh.year,
-                        'vin': vh.vin,
-                        'created_at': vh.created_at,
-                        'plate': f"{plate.state}-{plate.plate_code}-{plate.plate_no}"
-                    })
                 vehicles.append({
                     'vehicle_model': vh.vehicle_model,
                     'year': vh.year,
                     'vin': vh.vin,
                     'created_at': vh.created_at,
-                    'plate': f"No Plate Assigned"
+                    'plate': f'{stateap}-{vh.plate_no.plate_code}-{vh.plate_no.plate_no}' if vh.plate_no is not None else None
                 })
 
             context = {
