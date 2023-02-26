@@ -2,15 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy
-from Customers.models import countries, customer, blood_group
-from django.contrib import messages
 from datetime import datetime
 from Vehicles import models as vehicle_model
 from Customers import models as customer_model
 from Finance import models as finance_model
-from Finance.models import receipt_voucher
 from django.db.models import Q
 from Users.views import sendException, sendTrials
 
@@ -19,9 +14,9 @@ from Users.views import sendException, sendTrials
 def register_vehicle(request):
     vehicle_models = vehicle_model.model_brand.objects.all()
     colors = vehicle_model.color.objects.all()
-    origins = countries.objects.all()
+    origins = customer_model.countries.objects.all()
     cylinders = vehicle_model.cylinder.objects.all()
-    owners = customer.objects.all()
+    owners = customer_model.customer.objects.all()
     year = []
 
     for i in range(1960, datetime.now().year):
@@ -29,9 +24,10 @@ def register_vehicle(request):
 
     year.reverse()
 
-    if request.method == 'POST':
+    try:
+
         if request.user.has_perm('Vehicles.add_vehicle'):
-            try:
+            if request.method == 'POST':
                 # get data from the request
                 model_brand = request.POST.get('model_brand', None)
                 color = request.POST.get('color', None)
@@ -84,6 +80,12 @@ def register_vehicle(request):
                     car_origin = customer_model.countries.objects.filter(
                         Q(country_id=origin)).first()
 
+                    if owner is None or brand is None or car_color is None or car_origin is None:
+                        return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
+
+                    if request.user.is_superuser == False and request.user.federal_state is None:
+                        return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
+
                     new_vehicle = vehicle_model.vehicle(
                         vehicle_model=brand,
                         color=car_color,
@@ -101,28 +103,31 @@ def register_vehicle(request):
 
                     new_vehicle.save()
 
-                username = request.user.username
-                names = request.user.first_name + ' ' + request.user.last_name
-                avatar = str(request.user.avatar)
-                module = "Vehicle / Register"
-                action = f'Registered A Vehicle {brand} at {datetime.now()}'
-                path = request.path
-                sendTrials(request, username, names,
-                           avatar, action, module, path)
-                # return for post method
-                return JsonResponse({'isError': False, 'Message': 'Vehicle has been successfully Saved'}, status=200)
+                    username = request.user.username
+                    names = request.user.first_name + ' ' + request.user.last_name
+                    avatar = str(request.user.avatar)
+                    module = "Vehicle / Register"
+                    action = f'Registered A Vehicle {brand} at {datetime.now()}'
+                    path = request.path
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
+                    # return for post method
+                    return JsonResponse({'isError': False, 'Message': 'Vehicle has been successfully Saved'}, status=200)
+        else:
 
-            except Exception as error:
-                username = request.user.username
-                name = request.user.first_name + ' ' + request.user.last_name
-                # register the error
-                sendException(
-                    request, username, name, error)
-                message = {
-                    'isError': True,
-                    'Message': 'On Error Occurs . Please try again or contact system administrator'
-                }
-                return JsonResponse(message, status=200)
+            return redirect('un_authorized')
+
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + ' ' + request.user.last_name
+        # register the error
+        sendException(
+            request, username, name, error)
+        message = {
+            'isError': True,
+            'Message': 'On Error Occurs . Please try again or contact system administrator'
+        }
+        return JsonResponse(message, status=200)
 
     context = {"vehicle_models": vehicle_models, "colors": colors, "origins": origins,
                "cylenders": cylinders, "owners": owners, 'year': year, "pageTitle": 'Register vehicle'}
@@ -297,6 +302,12 @@ def view_vehicle(request):
     year = []
     vehicles = []
     noplates = []
+    if request.user.is_state and request.user.federal_state is not None:
+        states = customer_model.federal_state.objects.filter(
+            Q(state_name=request.user.federal_state))
+    else:
+        # admins can view all users
+        states = customer_model.federal_state.objects.all()
 
     stateappre = [{
         'name': 'Banaadir',
@@ -337,7 +348,7 @@ def view_vehicle(request):
 
     types = vehicle_model.type.objects.all()
     plate_number = vehicle_model.plate.objects.all()
-    states = customer_model.federal_state.objects.all()
+
     all_vehicles = vehicle_model.vehicle.objects.all()
 
     if all_vehicles is not None:
@@ -476,59 +487,58 @@ def update_vehicle(request):
 
 @login_required(login_url="Login")
 def asign_plate(request):
+    if request.user.has_perm('Vehicles.view_customer'):
 
-    year = []
-    types = vehicle_model.type.objects.all()
+        year = []
+        types = vehicle_model.type.objects.all()
 
-    states = customer_model.federal_state.objects.all()
+        for i in range(1960, datetime.now().year):
+            year.append(i)
 
-    for i in range(1960, datetime.now().year):
-        year.append(i)
+        year.reverse()
 
-    year.reverse()
+        context = {
 
-    context = {
-        "states": states,
-        "types": types,
-        "currentYear": datetime.now().year,
-    }
+            "types": types,
+            "currentYear": datetime.now().year,
+        }
 
-    if request.method == 'POST':
-        vehicleiddd = request.POST.get('vehicleIdd', None)
-        code = request.POST.get('code', None)
-        state = request.POST.get('state', None)
+        if request.method == 'POST':
+            vehicleiddd = request.POST.get('vehicleIdd', None)
+            code = request.POST.get('code', None)
+            state = request.POST.get('state', None)
 
-        types = request.POST.get('type', None)
-        number = request.POST.get('number', None)
-        year = request.POST.get('year')
+            types = request.POST.get('type', None)
+            number = request.POST.get('number', None)
+            year = request.POST.get('year')
 
-        selected_type = vehicle_model.type.objects.filter(
-            type_id=types).first()
+            selected_type = vehicle_model.type.objects.filter(
+                type_id=types).first()
 
-        selected_state = customer_model.federal_state.objects.filter(
-            Q(state_id=state)).first()
+            selected_state = customer_model.federal_state.objects.filter(
+                Q(state_id=state)).first()
 
-        selected_vehicle = vehicle_model.vehicle.objects.filter(
-            Q(vehicle_id=vehicleiddd)).first()
+            selected_vehicle = vehicle_model.vehicle.objects.filter(
+                Q(vehicle_id=vehicleiddd)).first()
 
-        # create plate
-        new_plate = vehicle_model.plate(
-            plate_code=code,
-            state=selected_state,
-            plate_no=number,
-            year=year,
-            type=selected_type,
-            reg_user_id=request.user.id,
-        )
+            # create plate
+            new_plate = vehicle_model.plate(
+                plate_code=code,
+                state=selected_state,
+                plate_no=number,
+                year=year,
+                type=selected_type,
+                reg_user_id=request.user.id,
+            )
 
-        new_plate.save()
+            new_plate.save()
 
-        # assign plate to the car
-        vehicle_to_assign_plate = vehicle_model.vehicle.objects.filter(
-            Q(vehicle_id=vehicleiddd)).first()
-        if vehicle_to_assign_plate is not None:
-            vehicle_to_assign_plate.plate_no = new_plate
-            vehicle_to_assign_plate.save()
+            # assign plate to the car
+            vehicle_to_assign_plate = vehicle_model.vehicle.objects.filter(
+                Q(vehicle_id=vehicleiddd)).first()
+            if vehicle_to_assign_plate is not None:
+                vehicle_to_assign_plate.plate_no = new_plate
+                vehicle_to_assign_plate.save()
 
     return render(request, 'vehicles/assign_model.html', context)
 

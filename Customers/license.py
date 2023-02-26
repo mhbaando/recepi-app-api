@@ -18,14 +18,21 @@ expired_year = current_date.replace(year=years_to_add)
 @login_required(login_url='Login')
 def NewLicense(request):
     states = []
+    place_issues = []
 
-    place_issues = customer_model.placeissue.objects.all()
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
             Q(state_name=request.user.federal_state))
     else:
         # admins can view all users
         states = customer_model.federal_state.objects.all()
+
+    if request.user.is_place_issue and request.user.place_issues is not None:
+        place_issues = customer_model.placeissue.objects.filter(
+            Q(place_name=request.user.place_issues))
+    else:
+        # admins can view all users
+        place_issues = customer_model.placeissue.objects.all()
 
     licensetype = customer_model.licensetype.objects.all()
     context = {
