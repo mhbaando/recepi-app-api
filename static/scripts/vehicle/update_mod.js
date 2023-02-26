@@ -124,6 +124,8 @@ $(document).ready(()=>{
   
     formData.append("model_brand", brands);
     formData.append("vehicleID",vehicleID);
+
+    
     
   
      $.ajax({
