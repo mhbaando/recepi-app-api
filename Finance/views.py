@@ -81,29 +81,35 @@ def AddAccount(request):
 
 
 def ManageAccounts(request, action):
-
     # creating new account
     if action == 'AddNewAccount':
         if request.method == 'POST':
             # Get all data from the request
-            account_name = request.POST.get('account_name')
-            account_type = request.POST.get('account_type')
-            account_number = request.POST.get('account_number')
-            amount = request.POST.get('account_amount')
+            account_name = request.POST.get('account_name', None)
+            account_type = request.POST.get('account_type', None)
+            account_number = request.POST.get('account_number', None)
+            amount = request.POST.get('account_amount', None)
 
-            acc_type = models.account_types.objects.filter(
-                Q(name=account_type)).first()
+            if account_name is None or account_type is None or account_number is None or amount is None:
+                return JsonResponse({
+                    'isError': True,
+                    'Message': 'Bad Request All Filds are required'
+                }, status=400)
 
-            new_account = models.account(
-                account_number=account_number,
-                account_name=account_name,
-                account_type=acc_type,
-                amount=amount,
-                reg_user=request.user
-            )
-            # Save data to database
-            new_account.save()
-            return JsonResponse({'isError': False, 'Message': 'created successfully'})
+            else:
+                acc_type = models.account_types.objects.filter(
+                    Q(name=account_type)).first()
+
+                new_account = models.account(
+                    account_number=account_number,
+                    account_name=account_name,
+                    account_type=acc_type,
+                    amount=amount,
+                    reg_user=request.user
+                )
+                # Save data to database
+                new_account.save()
+                return JsonResponse({'isError': False, 'Message': 'created successfully'})
 
     # If there is not action matching
     return render(request, 'Base/403.html')
