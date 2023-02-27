@@ -15,7 +15,7 @@
                     <div class="card-body">
                         <form action="javascript:void(0);">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-sm-12 col-lg-4">
                                     <div class="mb-3">
                                         <label for="firstNameinput" class="form-label">First Name</label>
                                         <input type="text"
@@ -25,7 +25,7 @@
                                     </div>
                                 </div>
                                 <!--end col-->
-                                <div class="col-4">
+                                <div class="col-sm-12 col-lg-4">
                                     <div class="mb-3">
                                         <label for="lastNameinput" class="form-label">Last Name</label>
                                         <input type="text"
@@ -35,7 +35,7 @@
                                     </div>
                                 </div>
                                 <!--end col-->
-                                <div class="col-4">
+                                <div class="col-sm-12 col-lg-4">
                                     <div class="mb-3">
                                         <label for="phonenumberInput" class="form-label">Phone Number</label>
                                         <input type="number"
@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                                 <!--end col-->
-                                <div class="col-4">
+                                <div class="col-sm-12 col-lg-4">
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email Address</label>
                                         <input type="email"
@@ -56,8 +56,8 @@
                                     </div>
                                 </div>
                                 <!--end col-->
-                                <div class="col-4">
-                                    <div class="mb-3">
+                                <div class="col-lg-4 col-sm-12  d-flex gap-3">
+                                    <div class="mb-3 flex-1 col-6">
                                         <label for="UserType" class="form-label">User Type</label>
                                         <select id="UserType" class="form-select">
                                             <option selected value="">
@@ -76,8 +76,21 @@
                                             {% endif %}
                                         </select>
                                     </div>
+                                    <div class="col-lg col-sm-12 mb-3 ">
+                                        <label for="state" class="form-label">State</label>
+                                        <select id="state" class="form-select" disabled>
+                                            <option >
+                                                Select State
+                                            </option>
+                                            {% for state in states %}
+                                                <option value="{{ state.state_id }}">
+                                                    {{ state.state_name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-sm-12 col-lg-4">
                                     <div class="mb-3">
                                         <label for="Gender" class="form-label">Gender</label>
                                         <select id="Gender" class="form-select">
@@ -94,7 +107,7 @@
                                     </div>
                                 </div>
                                 <!--end col-->
-                                <div class="col-12">
+                                <div class="col-sm-12 col-lg-12">
                                     <div class="mb-3">
                                         <div>
                                             <label for="formFile" class="form-label">Upload Image</label>

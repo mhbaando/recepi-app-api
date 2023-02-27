@@ -79,6 +79,9 @@ def LicenseLists(request):
     Status = "Active"
     SearchQuery = ''
     Licenselists = []
+    states = customer_model.federal_state.objects.all()
+    place_issues = customer_model.placeissue.objects.all()
+    licensetype = customer_model.licensetype.objects.all()
 
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
@@ -129,7 +132,10 @@ def LicenseLists(request):
         'DataNumber': DataNumber,
         'total': len(Licenselists),
         'pageTitle':  'License Lists',
-        'Status': Status
+        'Status': Status,
+        "states": states,
+        "place_issues": place_issues,
+        "licensetype": licensetype,
     }
     return render(request, 'License/LicenseLists.html', context)
 
@@ -367,3 +373,38 @@ def GenerateLicenseNumber():
     year = currentDatetime.strftime('%y')
 
     return f"{year}{serial}"
+
+
+def update_liscence(request):
+
+    pass
+
+
+# @login_required(login_url="Login")
+# def find_liscence(request, id):
+#     if request.method == 'GET':
+#         if id is not None:
+#             liscence = ''
+#             if request.user.is_superuser:
+#                 # for admin user
+#                 liscence = customer_model.license.objects.filter(
+#                     Q(liscence_id=id)).values()
+#             else:
+#                 # for state user
+#                 liscence = customer_model.liscence.objects.filter(
+#                     Q(liscence_id=id), federal_state=request.user.federal_state).values()
+
+#             return JsonResponse({'isErro': False, 'Message': list(liscence)}, status=200)
+#         else:
+#             return JsonResponse({'isErro': False, 'Message': 'Liscence Not Found'}, status=404)
+
+
+@login_required(login_url="Login")
+def edit_liscence(request, pk):
+
+    edit_state = customer_model.federal_state.objects.all()
+    place_issue = customer_model.placeissue.objects.all()
+
+    context = {"edit_state": edit_state, "place_issue": place_issue}
+
+    return render(request, 'License/edit_model.html', context)

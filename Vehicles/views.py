@@ -302,6 +302,8 @@ def view_vehicle(request):
     year = []
     vehicles = []
     noplates = []
+    vehcile_lists = []
+    vehicle_lists = []
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
             Q(state_name=request.user.federal_state))
@@ -340,12 +342,6 @@ def view_vehicle(request):
     ]
 
     stateappr = ""
-
-    DataNumber = 10
-    SearchQuery = ''
-    CheckDataNumber = 'DataNumber' in request.GET
-    CheckSearchQuery = 'SearchQuery' in request.GET
-
     types = vehicle_model.type.objects.all()
     plate_number = vehicle_model.plate.objects.all()
 
@@ -374,13 +370,24 @@ def view_vehicle(request):
         year.append(i)
     year.reverse()
 
+    CheckSearchQuery = 'SearchQuery' in request.GET
+    CheckDataNumber = 'DataNumber' in request.GET
+    CheckStatus = 'Status' in request.GET
+    DataNumber = 10
+    Status = "Active"
+    SearchQuery = ''
+    vehicle_lists = []
+
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
-
+    if CheckStatus:
+        Status = request.GET.get('Status')
     if CheckSearchQuery:
         SearchQuery = request.GET['SearchQuery']
-    else:
-        pass
+        vehicle_lists = vehicle_model.vehicle.objects.filter(
+            Q(weight__icontains=SearchQuery)
+
+        ).order_by('-created_at')
 
     paginator = Paginator(vehicles, DataNumber)
 
@@ -392,11 +399,12 @@ def view_vehicle(request):
                'SearchQuery': SearchQuery,
                'DataNumber': DataNumber,
                "vehicles": vehicles,
-               "states": states,
+               #    "states": states,
                "types": types,
                "currentYear": datetime.now().year,
                "plate_number": plate_number,
-               "noplates": noplates
+               "noplates": noplates,
+               "total": len(vehicle_lists)
 
                }
     return render(request, 'vehicles/veiw_vehicles.html', context)
@@ -474,42 +482,44 @@ def find_vehicle(request, id):
 
 @ login_required(login_url="Login")
 def update_vehicle(request):
-    owner_id = request.POST.get('vehicleID', None)
+    vehicle_id = request.POST.get('vehicleID', None)
     vweight = request.POST.get('weight', None)
-    vrv_number = request.POST.get('rv_number', None)
     vhp = request.POST.get('hp', None)
-    vengine_number = request.POST.get('engine_no', None)
     vpassenger_seats = request.POST.get('passenger_seats', None)
+    vengine_no = request.POST.get('engine_no', None)
+    rv_number = request.POST.get('rv_number', None)
     vcolor = request.POST.get('color', None)
     vcylinder = request.POST.get('cylinder', None)
+    vbrand = request.POST.get('model_brand', None)
+    year = request.POST.get('year', None)
     vorigin = request.POST.get('origin', None)
-    vmodel_brand = request.POST.get('model_brand', None)
-    vyear = request.POST.get('year', None)
 
     vehicle = vehicle_model.vehicle.objects.filter(
-        Q(vehicle_id=owner_id)).first()
+        Q(vehicle_id=vehicle_id)).first()
 
-    brand = vehicle_model.model_brand.objects.filter(
-        Q(brand_id=vmodel_brand)).first()
-    car_color = vehicle_model.color.objects.filter(
+    c_color = vehicle_model.color.objects.filter(
         Q(color_id=vcolor)).first()
 
-    car_cylinder = vehicle_model.cylinder.objects.filter(
+    c_cylinder = vehicle_model.cylinder.objects.filter(
         Q(cylinder_id=vcylinder)).first()
 
-    car_origin = customer_model.countries.objects.filter(
+    c_origin = customer_model.countries.objects.filter(
         Q(country_id=vorigin)).first()
 
-    vehicle.weight = vweight,
-    vehicle.rv_number = vrv_number,
-    vehicle.hp = vhp,
-    vehicle.enginer_no = vengine_number,
-    vehicle.pessenger_seat = vpassenger_seats,
-    vehicle.color.color_id = car_color.color_id,
-    vehicle.cylinder.cylinder_id = car_cylinder.cylinder_id,
-    vehicle.origin.country_id = car_origin,
-    vehicle.vehicle_model.brand_id = brand,
-    vehicle.year = int(vyear)
+    c_brand = vehicle_model.model_brand.objects.filter(
+        Q(brand_id=vbrand)).first()
+
+    vehicle.weight = vweight
+    vehicle.hp = vhp
+    vehicle.pessenger_seat = vpassenger_seats
+    vehicle.enginer_no = vengine_no
+    vehicle.rv_number = rv_number
+    vehicle.year = year
+    vehicle.color = c_color
+    vehicle.cylinder = c_cylinder
+    vehicle.origin = c_origin
+    vehicle.vehicle_model = c_brand
+
     vehicle.save()
 
     return JsonResponse({
@@ -517,7 +527,7 @@ def update_vehicle(request):
     })
 
 
-@login_required(login_url="Login")
+@ login_required(login_url="Login")
 def asign_plate(request):
     if request.user.has_perm('Vehicles.view_customer'):
 
@@ -575,7 +585,7 @@ def asign_plate(request):
     return render(request, 'vehicles/assign_model.html', context)
 
 
-@login_required(login_url='Login')
+@ login_required(login_url='Login')
 def Searchcustomer(request, search):
     if request.method == 'GET':
         searchQuery = customer_model.customer.objects.filter(

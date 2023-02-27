@@ -67,7 +67,6 @@ class Users(AbstractUser):
                 is_place_issue=is_place_issue,
                 is_active=False if is_state else True,
                 federal_state=state
-
             )
             Users.set_password('123')
             Users.save()

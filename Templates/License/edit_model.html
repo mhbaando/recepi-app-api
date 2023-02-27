@@ -1,0 +1,139 @@
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
+    <link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
+    <link rel="stylesheet" href="{% static "assets/css/customer/modal.css" %}"/>
+    <style>.ui-autocomplete { z-index:2147483647; }</style>
+{% endblock cssData %}
+{% block content %}
+    <div class="overlay hidden"></div>
+    <div class="model-contaier hidden">
+        <div class="model">
+            <div class="model-content">
+                <div>
+                    <h4>Manage Liscence</h4>
+                    <hr/>
+                </div>
+                <form id="reg_form">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Liscence Number</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="Liscence_num"
+                                           name="Liscence Number"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Rv number</label>
+                                    <input type="text" class="form-control" id="Rv number" name="Rv number" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Expired Date</label>
+                                    <input type="text" class="form-control" id="exp_date" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Registered Date</label>
+                                    <input type="text" class="form-control" id="reg_date" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label>State</label>
+                                    <select class="form-select"
+                                            id="state"
+                                            name="state"
+                                            aria-label="Default select example"/>
+                                    {% if states %}
+                                        <option selected>
+                                            Select State
+                                        </option>
+                                        {% for state in states %}
+                                            <option value={{ state.state_id }}>
+                                                {{ state.state_name }}
+                                            </option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-0">
+                            <div class="mb-3">
+                                <label>Place of issue</label>
+                                <select class="form-select" id="place"  aria-label="Default select example"/>
+                                {% comment %} {% if states %} {% endcomment %}
+                                <option selected>
+                                    Select A place
+                                </option>
+                                {% for state in place_issues %}
+                                    <option value={{ state.place_id }}>
+                                        {{ state.place_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-0">
+                        <div class="mb-3">
+                            <label class="form-label">Type of liscence</label>
+                            <select class="form-select" id="type" aria-label="Default select example"/>
+                            <option selected>
+                                Select A Type
+                            </option>
+                            {% for state in licensetype %}
+                                <option value={{ state.type_id }}>
+                                    {{ state.type }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-0">
+                    <div class="mb-3">
+                        <label class="form-label">Owner</label>
+                        <input type="text" class="form-control" id="owner_lis"/>
+                    </div>
+                </div>
+                <div class="my-4 d-flex flex-column ">
+                    <label class="form-label">Status</label>
+                    <div class="gender">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="Male"/>
+                            <label class="form-check-label" for="gender">Active</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="Female"/>
+                            <label class="form-check-label" for="gender">Expired</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="Female"/>
+                            <label class="form-check-label" for="gender">Lost</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="Female"/>
+                            <label class="form-check-label" for="gender">Suspended</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-btn">
+                    <button type="button" class="btn btn-outline-danger me-4 Close-btn">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+{% endblock content %}
+{% block scriptData %}
+    <script src={% static "scripts/license/edit_liscence.js" %}></script>
+{% endblock scriptData %}
