@@ -40,11 +40,6 @@ let vehicleID = ""
             modal.attr('class','model-contaier')
         })
     });
- 
-
-
-    
-
 
   $("#DataNumber").val($("#DataNumber").attr("DataNumber"));
 

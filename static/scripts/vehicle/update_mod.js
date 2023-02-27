@@ -33,7 +33,7 @@ $(document).ready(()=>{
                     $(`#origin option[value='${vehicle.origin_id}']`).attr('selected', true)
                     
                     
-                   console.log(vehicle.origin_id);
+             
                     
                     
   
@@ -106,7 +106,6 @@ $(document).ready(()=>{
         origin = $("#origin").val()
     }
   
-  
    
     formData.append("weight", weight);
     
@@ -123,6 +122,7 @@ $(document).ready(()=>{
     formData.append("vehicleID",vehicleID);
 
     
+    console.log(formData)
     
   
      $.ajax({
