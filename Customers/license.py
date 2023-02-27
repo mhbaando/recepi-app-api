@@ -11,7 +11,7 @@ from Customers import models as customer_model
 from Finance import models as finance_model
 current_date = date.today()
 currentDatetime = datetime.now()
-years_to_add = current_date.year + 4
+years_to_add = current_date.year + 3
 expired_year = current_date.replace(year=years_to_add)
 
 
@@ -57,6 +57,7 @@ def ReNewLicense(request):
     else:
         FederalState = customer_model.federal_state.objects.filter(
             Q(state_id=request.user.federal_state.state_id))
+
     licensetype = customer_model.licensetype.objects.all()
     context = {
         'FederalState': FederalState,
@@ -169,9 +170,10 @@ def customer_info(request, id):
                     'mother_name': f"{vouchers.rv_from.mother_name}",
                     'personal_id': f"{vouchers.rv_from.personal_id}",
                     'personal_id_type': f"{vouchers.rv_from.personal_id_type.personal_name}",
-                    'license': f"{license.reg_no}" if license else 'no Lecenses',
+                    'license': f"{license.reg_no}" if license else 'No License',
                     'expire_date': f"{license.expired_date}" if license else 'None',
                     'new_expired_year': expired_year,
+                    'liecense_id': license.license_id,
                 }
 
                 return JsonResponse({'Message': message}, status=200)
@@ -196,6 +198,7 @@ def customer_info(request, id):
                 'isError': True,
                 'Message': f"On Error Occurs. { str(error)}. Please try again or contact system administrator"
             }
+
             return JsonResponse(message, status=200)
 
 
@@ -335,13 +338,13 @@ def manage_license(request, id):
         username = request.user.username
         name = request.user.first_name + ' ' + request.user.last_name
 
-        # message = {
-        #     'isError': True,
-        #     'title': "Server Error",
-        #     'type': "error",
-        #     'Message': 'On Error Occurs . Please try again or contact system administrator'
-        # }
-        # return JsonResponse(message, status=200)
+        message = {
+            'isError': True,
+            'title': "Server Error",
+            'type': "error",
+            'Message': error
+        }
+        return JsonResponse(message, status=200)
 
 
 # License Generator
