@@ -1,8 +1,24 @@
 $(document).ready(function () {
+  let UserType = $("#UserType");
+  let state = $("#state")
+
   let Image = "";
   $("#Image").on("change", function (e) {
     Image = e.target.files[0];
   });
+
+  UserType.on('change', function () {
+    console.log($(this).val())
+    if ($(this).val() !== 'Super') {
+      // if user is super user we dont need the state
+      state.prop('disabled', false);
+    }
+    else {
+      // if not super user we need state for that user
+      $("#state option:eq(0)").prop("selected", true);
+      state.prop('disabled', true);
+    }
+  })
 
   $("#Save").on("click", function (e) {
     e.preventDefault();
@@ -11,10 +27,7 @@ $(document).ready(function () {
     let LName = $("#LName").val();
     let Phone = $("#Phone").val();
     let Email = $("#Email").val();
-    let Position = $("#Position").val();
-    let Department = $("#Department").val();
     let Gender = $("#Gender").val();
-    let UserType = $("#UserType").val();
 
     formData.append("fname", FName);
     formData.append("lname", LName);
@@ -22,7 +35,15 @@ $(document).ready(function () {
     formData.append("email", Email);
     formData.append("gender", Gender);
     formData.append("image", Image);
-    formData.append("type", UserType);
+    formData.append("type", UserType.val());
+
+    if (UserType.val() !== 'Super') {
+      formData.append("state", state.val());
+    }
+
+    if (state.val() == 'Select State' && UserType.val() !== 'Super') {
+      return Swal.fire("Error", "Select A State", "error");
+    }
 
     $.ajax({
       method: "POST",
@@ -51,7 +72,7 @@ $(document).ready(function () {
           Swal.fire("Error!!", response.Message, "error");
         }
       },
-      error: function (response) {},
+      error: function (response) { },
     });
   });
 });
