@@ -65,7 +65,7 @@ $(document).ready(function () {
         });
         $.ajax({
           method: "POST",
-          url: "/customer/customer_info/" + rnLicenseId,
+          url: "/customer/manage_license/" + rnLicenseId,
           headers: { "X-CSRFToken": csrftoken },
           processData: false,
           contentType: false,

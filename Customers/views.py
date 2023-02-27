@@ -314,6 +314,8 @@ def unblockcompany(request, id):
             }
             return JsonResponse(message, status=200)
 
+# end unblock company
+
 
 @login_required(login_url="Login")
 def company_profile(request, id):
