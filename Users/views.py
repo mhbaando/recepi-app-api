@@ -61,7 +61,6 @@ def get_chart_data(request):
     vehicles = vehicle_model.vehicle.objects.annotate(
         month=ExtractMonth('created_at')).values('month').annotate(count=Count('vehicle_id')).values('month', 'count')
 
-
     context = {
         'vehicles': list(vehicles)
     }
@@ -233,8 +232,10 @@ def sendException(request, username, name, error, avatar='', model='', brand='')
 @login_required(login_url='Login')
 def Users(request):
     if request.user.has_perm('Users.add_users'):
+        states = customer_model.federal_state.objects.all()
         context = {
-            'pageTitle': 'Add New User'
+            'pageTitle': 'Add New User',
+            'states': states
         }
         return render(request, 'Users/add_user.html', context)
     else:
@@ -259,8 +260,7 @@ def UsersList(request):
             UsersList = models.Users.objects.filter(Q(username__icontains=SearchQuery) | Q(email__icontains=SearchQuery) | Q(
                 first_name__icontains=SearchQuery) | Q(last_name__icontains=SearchQuery) | Q(phone__icontains=SearchQuery), Q(is_superuser=True) | Q(is_admin=True), is_active=True)
         else:
-            UsersList = models.Users.objects.filter(
-                Q(is_superuser=True) | Q(is_admin=True), is_active=True)
+            UsersList = models.Users.objects.all()
 
         paginator = Paginator(UsersList, DataNumber)
 
@@ -347,7 +347,14 @@ def ManageUsers(request, action):
                     phone = request.POST.get('phone')
                     email = request.POST.get('email').lower()
                     gender = request.POST.get('gender')
+                    state = request.POST.get('state', None)
 
+                    federal_state = ''
+                    if state is not None:
+                        federal_state = customer_model.federal_state.objects.filter(
+                            state_id=state).first()
+
+                    print(federal_state)
                     try:
                         image = request.FILES['image']
                     except KeyError:
@@ -494,10 +501,20 @@ def ManageUsers(request, action):
                     is_supers = True if Type == 'Super' else False
 
                     if Type in ['Admin', 'State'] and request.user.has_perm('Users.add_users'):
-                        response = models.Users.create_user(
-                            fname, lname, email, phone, gender, image, is_admins, is_state, is_supers, request)
+                        if federal_state is None and is_state or federal_state is None and is_admins:
+                            return JsonResponse(
+                                {
+                                    'isError': True,
+                                    'title': 'Validate Error',
+                                    'type': 'danger',
+                                    'Message':  'select state'
+                                }
+                            )
 
+                        response = models.Users.create_user(
+                            fname, lname, email, phone, gender,  image, is_admins, is_state, is_supers, request, federal_state)
                         if response['isError'] == False:
+
                             username = request.user.username
                             names = request.user.first_name + ' ' + request.user.last_name
                             avatar = str(request.user.avatar)
@@ -729,7 +746,6 @@ def ViewManageGroupPage(request):
 
 @login_required(login_url='Login')
 def ManagePermission(request, id):
-
     allowed_users = ['AD', 'AG', 'EM']
     if id == '0':
         if request.method == 'POST':
