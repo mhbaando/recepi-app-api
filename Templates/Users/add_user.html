@@ -1,96 +1,123 @@
 {% extends "Base/index.html" %}
 {% load static %}
 {% block content %}
-{% csrf_token %}
-<div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Users /</span> {{ pageTitle }}</h4>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <a href={% url 'UsersList' %} class="btn btn-danger">Go Back</a>
-                </div>
-                <div class="card-body">
-                    <form action="javascript:void(0);">
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="mb-3">
-                                    <label for="firstNameinput" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter first name" id="FName">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-4">
-                                <div class="mb-3">
-                                    <label for="lastNameinput" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter last name" id="LName">
-                                </div>
-                            </div><!--end col-->
-                            
-                            <div class="col-4">
-                                <div class="mb-3">
-                                    <label for="phonenumberInput" class="form-label">Phone Number</label>
-                                    <input type="number" maxlength="3" class="form-control" placeholder="123" id="Phone">
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-4">
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" placeholder="example@gmail.com" id="Email">
-                                </div>
-                            </div><!--end col-->
-                           
-                            <div class="col-4">
-                                <div class="mb-3">
-                                    <label for="UserType" class="form-label">User Type</label>
-                                    <select id="UserType" class="form-select">
-                                     
-                                        <option selected value="">Select User Type</option>
-                                        <option value="Admin">Admin</option>
-                                        <option value="State">State</option>
-                                        {% if request.user.is_superuser %}
-                                        <option value="Super">Superuser</option>
-                                        {% endif %}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="mb-3">
-                                    <label for="Gender" class="form-label">Gender</label>
-                                    <select id="Gender" class="form-select">
-                                        <option selected value="">Select Gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                      
-                                    </select>
-                                </div>
-                            </div><!--end col-->
-                     
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <div>
-                                        <label for="formFile" class="form-label">Upload Image</label>
-                                        <input class="form-control" type="file" id="Image">
+    {% csrf_token %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4">
+            <span class="text-muted fw-light">Users /</span> {{ pageTitle }}
+        </h4>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <a href={% url 'UsersList' %} class="btn btn-danger">Go Back</a>
+                    </div>
+                    <div class="card-body">
+                        <form action="javascript:void(0);">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="mb-3">
+                                        <label for="firstNameinput" class="form-label">First Name</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Enter first name"
+                                               id="FName">
                                     </div>
-                                       
                                 </div>
-                            </div><!--end col-->
-                            <div class="col-lg-12">
-                                <div class="text-end">
-                                    <button type="submit"  id="Save"class="btn btn-primary">Submit</button>
+                                <!--end col-->
+                                <div class="col-4">
+                                    <div class="mb-3">
+                                        <label for="lastNameinput" class="form-label">Last Name</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Enter last name"
+                                               id="LName">
+                                    </div>
                                 </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </form>
+                                <!--end col-->
+                                <div class="col-4">
+                                    <div class="mb-3">
+                                        <label for="phonenumberInput" class="form-label">Phone Number</label>
+                                        <input type="number"
+                                               maxlength="3"
+                                               class="form-control"
+                                               placeholder="123"
+                                               id="Phone">
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-4">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email"
+                                               class="form-control"
+                                               placeholder="example@gmail.com"
+                                               id="Email">
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-4">
+                                    <div class="mb-3">
+                                        <label for="UserType" class="form-label">User Type</label>
+                                        <select id="UserType" class="form-select">
+                                            <option selected value="">
+                                                Select User Type
+                                            </option>
+                                            <option value="Admin">
+                                                Admin
+                                            </option>
+                                            <option value="State">
+                                                State
+                                            </option>
+                                            {% if request.user.is_superuser %}
+                                                <option value="Super">
+                                                    Superuser
+                                                </option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mb-3">
+                                        <label for="Gender" class="form-label">Gender</label>
+                                        <select id="Gender" class="form-select">
+                                            <option selected value="">
+                                                Select Gender
+                                            </option>
+                                            <option value="Male">
+                                                Male
+                                            </option>
+                                            <option value="Female">
+                                                Female
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <div>
+                                            <label for="formFile" class="form-label">Upload Image</label>
+                                            <input class="form-control" type="file" id="Image">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-lg-12">
+                                    <div class="text-end">
+                                        <button type="submit"  id="Save"class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-   
-</div>
 {% endblock content %}
-
-
 {% block scriptData %}
-<script src={% static 'scripts/users/add_users.js' %}></script>
+    <script src={% static 'scripts/users/add_users.js' %}></script>
 {% endblock %}
