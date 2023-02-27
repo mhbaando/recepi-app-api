@@ -20,24 +20,20 @@ $(document).ready(()=>{
             success: function(response){
                 if (!response.isError) {
                    response.Message.forEach(vehicle => {
-                    //2. fill data to the html ellemets
+                    // 2. fill data to the html ellemets
                     $("#weight").attr('value', vehicle.weight)
                     $("#hp").attr('value', vehicle.hp)
                     $("#passenger_seats").attr('value', vehicle.pessenger_seat)
                     $("#registration_number").attr('value', vehicle.rv_number)
                     $("#engine_number").attr('value', vehicle.enginer_no)
-  
-                    $(`#model_brand option[value='${vehicle.brand_id}']`).attr('selected', true)
-                    $(`#origin option[value='${vehicle.country_id}']`).attr('selected', true)
-  
                     $(`#color option[value='${vehicle.color_id}']`).attr('selected', true)
                     $(`#year option[value='${vehicle.year}']`).attr('selected', true)
-  
                     $(`#cylinder option[value='${vehicle.cylinder_id}']`).attr('selected', true)
+                    $(`#vehicle_models option[value='${vehicle.vehicle_model_id}']`).attr('selected', true)
+                    $(`#origin option[value='${vehicle.origin_id}']`).attr('selected', true)
                     
                     
-                    
-                   console.log(vehicle.country_id);
+             
                     
                     
   
@@ -61,23 +57,23 @@ $(document).ready(()=>{
   
   
   
-    let years = ""
+    let year = ""
     $("#year").on("change",()=>{
         state = $("#year option:selected").val()
     })
   
-    let brands =""
-    $("#brand").on("change",()=>{
-        brand = $("#brand option:selected").val()
+    let brand =""
+    $("#vehicle_models").on("change",()=>{
+        brand = $("#vehicle_models option:selected").val()
     })
   
     let origin = ""
-    $("#origin").on("change",()=>{
+    $("#color").on("change",()=>{
         origin = $("#origin option:selected").val()
     })
   
     
-    let cylinders = ""
+    let cylinder = ""
     $("#cylinder").on('click',function(){
         dob =  $(this).val()
     })
@@ -101,14 +97,14 @@ $(document).ready(()=>{
      const enginer_no = $("#engine_number").val()
   
     
-    //  check if no change in state, nation, blooad group 
-    // if (weight.trim().length <= 0 || hp.trim().length <= 0 || passenger_seats.trim().length <=0 || rv_number.trim().length <= 0 || enginer_no.trim().length <= 0 ){
-    //     model_brand = $("#model_brand option:selected").val()
-    //     color = $("#color option:selected").val()
-    //     cylinder = $("#cylinder option:selected").val()
-    //     year =  $("#year option:selected").val()
-    //     origin=$("#origin option:selected").val()
-  
+     //  check if no change happens
+     if (year.trim().length <= 0 || brand.trim().length <= 0 || origin.trim().length <=0 || cylinder.trim().length <= 0 || color.trim().length <= 0 ){
+        year= $("#year option:selected").val()
+        brand = $("#vehicle_models option:selected").val()
+        color = $("#color option:selected").val()
+        cylinder = $("#cylinder").val()
+        origin = $("#origin").val()
+    }
   
    
     formData.append("weight", weight);
@@ -118,14 +114,15 @@ $(document).ready(()=>{
     formData.append("hp", hp);
     formData.append("passenger_seats", passenger_seats);
     formData.append("color", color);
-    formData.append("year", years)
-    formData.append("cylinder", cylinders);
+    formData.append("year", year);
+    formData.append("cylinder", cylinder);
     formData.append("origin", origin);
   
-    formData.append("model_brand", brands);
+    formData.append("model_brand", brand)
     formData.append("vehicleID",vehicleID);
 
     
+    console.log(formData)
     
   
      $.ajax({

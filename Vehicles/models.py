@@ -92,7 +92,7 @@ class plate(models.Model):
 class vehicle(models.Model):
     vehicle_id = models.AutoField(primary_key=True)
     vehicle_model = models.ForeignKey(model_brand, on_delete=models.RESTRICT)
-    year = models.IntegerField()
+    year = models.IntegerField(null=True, blank=True)
     origin = models.ForeignKey(
         customer_model.countries, on_delete=models.RESTRICT)
     color = models.ForeignKey(color, on_delete=models.RESTRICT)
@@ -101,7 +101,7 @@ class vehicle(models.Model):
         to=cylinder, on_delete=models.RESTRICT)
     weight = models.CharField(max_length=100, null=True, blank=True)
     hp = models.CharField(max_length=100, null=True, blank=True)
-    pessenger_seat = models.CharField(max_length=100, null=True, blank=True)
+    pessenger_seat = models.TextField(max_length=100, null=True, blank=True)
     vin = models.CharField(max_length=100, null=True, blank=True)
     enginer_no = models.CharField(max_length=100, null=True, blank=True)
     # TODO: rv here

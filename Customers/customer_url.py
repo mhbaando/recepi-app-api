@@ -6,6 +6,8 @@ urlpatterns = [
     path('company/', views.register_company, name='register_company'),
     path('company-views/', views.view_company, name='view_company'),
     path('company_block', views.block_company, name='comapny_block'),
+    path('company_unblock/<int:id>', views.unblockcompany, name='comapny_unblock'),
+
     path('company/profile/<int:id>', views.company_profile, name="company_profile"),
     path('search_owner/<str:search>', views.search_engine),
     path('updatecompany/', views.update_company),
@@ -24,6 +26,8 @@ urlpatterns = [
          license.SearchReceiptVoucher, name='SearchReceiptVoucher'),
     path('customer_info/<int:id>', license.customer_info, name='customer_info'),
     path('manage_license/<int:id>', license.manage_license, name='manage_license'),
+    #     path('find_liscence/<int:id>', license.find_liscence, name='find_liscence'),
+
 
     # customers
     # register customer

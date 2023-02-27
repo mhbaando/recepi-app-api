@@ -15,9 +15,12 @@ class Users(AbstractUser):
     avatar = models.FileField(upload_to="Avatars/")
     is_admin = models.BooleanField(default=False)
     is_state = models.BooleanField(default=False)
+    is_place_issue = models.BooleanField(default=False)
     modified_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     federal_state = models.ForeignKey(
         'Customers.federal_state', on_delete=models.RESTRICT, blank=True, null=True)  # Federal state
+    place_issues = models.ForeignKey(
+        'Customers.placeissue', on_delete=models.RESTRICT, blank=True, null=True)  # place of issue
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -47,7 +50,7 @@ class Users(AbstractUser):
             return self.avatar.url
 
     @classmethod
-    def create_user(cls, fname, lname, email, phone, gender, image, is_admins, is_state, is_supers, request, state=None):
+    def create_user(cls, fname, lname, email, phone, gender, image, is_admins, is_state, is_supers, is_place_issue, request, state=None):
         try:
             username = generateUsername()
             Users = cls(
@@ -61,6 +64,7 @@ class Users(AbstractUser):
                 is_admin=is_admins,
                 is_state=is_state,
                 is_superuser=is_supers,
+                is_place_issue=is_place_issue,
                 is_active=False if is_state else True,
                 federal_state=state
             )

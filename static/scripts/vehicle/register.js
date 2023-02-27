@@ -62,6 +62,7 @@ $(document).ready(function () {
       
       }
     })
+   
     
     $("#reg_form").on('submit',function(e){
         e.preventDefault();
@@ -87,7 +88,7 @@ $(document).ready(function () {
         formData.append("cylinders", cylinders);
         formData.append('owner_id', owner)
         formData.append('rv_num', rv_num)
-
+        
 
       if(!model_brand || model_brand === "Select a Model brand"){
           return Swal.fire("Error", "Select A Model_brand", "error");
