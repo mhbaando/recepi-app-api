@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+  let rnLicenseId;
+
 
   $("#submit").on("click", function () {
 
@@ -8,6 +10,7 @@ $(document).ready(function () {
     let place_issue = $("#place_issue").val();
     let state_name = $("#state_name").val();
     let license_type = $("#license_type").val();
+    let expiredate = $("#new_expired_year").val();
     let formData = new FormData();
 
     // Validations
@@ -43,6 +46,9 @@ $(document).ready(function () {
         formData.append("federal_state", state_name);
         formData.append("license_type", license_type);
         formData.append("Type", "renew_license");
+        formData.append("licenseId", rnLicenseId);
+        formData.append("expdate", expiredate);
+
    
         Swal.fire({
           title: "Are you sure",
@@ -54,39 +60,40 @@ $(document).ready(function () {
           confirmButtonText: "Yes, renew it!",
         }).then(function (e) {
           if (e.value) {
-            $.ajax({
-              method: "POST",
-              url: "/customer/manage_license/" + 0,
-              headers: { "X-CSRFToken": csrftoken },
-              processData: false,
-              contentType: false,
-              data: formData,
-              async: true,
-              success: function (data) {
-                if (!data.isError) {
-                  Swal.fire({
-                    title: data.title,
-                    text: data.Message,
-                    icon: data.type,
-                    confirmButtonColor: "#2ab57d",
-                    cancelButtonColor: "#fd625e",
-                    confirmButtonText: "Ok it!",
-                  }).then(function (e) {
-                    if (e.value) {
-                      window.location.reload();
-                    }
-                  });
-                } else {
-                  Swal.fire(data.title, data.Message, data.type);
-                }
-              },
-              error: function (error) {
-                //(error);
-              },
-            });
+         
           }
         });
-      
+        $.ajax({
+          method: "POST",
+          url: "/customer/customer_info/" + rnLicenseId,
+          headers: { "X-CSRFToken": csrftoken },
+          processData: false,
+          contentType: false,
+          data: formData,
+          async: true,
+          success: function (data) {
+            if (!data.isError) {
+              Swal.fire({
+                title: data.title,
+                text: data.Message,
+                icon: data.type,
+                confirmButtonColor: "#2ab57d",
+                cancelButtonColor: "#fd625e",
+                confirmButtonText: "Ok it!",
+              }).then(function (e) {
+                if (e.value) {
+                  window.location.reload();
+                }
+              });
+            } else {
+              Swal.fire(data.title, data.Message, data.type);
+            }
+          },
+          error: function (error) {
+            //(error);
+            Swal.fire(error, error ,error);
+          },
+        });
     }
   });
 
@@ -153,7 +160,7 @@ $(document).ready(function () {
           $("#licence_no").val(data.Message.license);
           $("#expire_date").val(data.Message.expire_date);
           $("#new_expired_year").val(data.Message.new_expired_year);
-       
+          rnLicenseId = data.Message.liecense_id
         } else {
           Swal.fire( data.title, data.Message,  data.type);
         }
