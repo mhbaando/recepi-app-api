@@ -238,7 +238,7 @@ def block_company(request):
                     Q(company_id=co_id), federal_state=request.user.federal_state).first()
 
             if company is not None:
-                company. is_blocked = True
+                company.is_blocked = True
                 company.document = c_doc
                 company.description = co_desc
                 company.save()
@@ -254,6 +254,51 @@ def block_company(request):
                            avatar, action, module, path)
 
                 return JsonResponse({'isError': False, 'Message': 'Company blocked'}, status=200)
+
+            return JsonResponse({'isError': True, 'Message': 'Company not found'}, status=404)
+
+        except Exception as error:
+            username = request.user.username
+            name = request.user.first_name + ' ' + request.user.last_name
+            # register the error
+            sendException(
+                request, username, name, error)
+            message = {
+                'isError': True,
+                'Message': 'On Error Occurs . Please try again or contact system administrator'
+            }
+            return JsonResponse(message, status=200)
+
+
+# unblocked company
+
+@login_required(login_url='Login')
+def unblockcompany(request, id):
+    if request.method == 'GET':
+        try:
+            # find the company for admin
+            if request.user.is_superuser:
+                company = customer_model.company.objects.filter(
+                    Q(company_id=id)).first()
+            else:
+                # for regular users
+                company = customer_model.company.objects.filter(
+                    Q(company_id=id), federal_state=request.user.federal_state).first()
+
+            if company is not None:
+                company.is_blocked = False
+                company.save()
+
+                username = request.user.username
+                names = request.user.first_name + ' ' + request.user.last_name
+                avatar = str(request.user.avatar)
+                module = "Customer / company_unblock"
+                action = f'Un block A Company {company.company_name}'
+                path = request.path
+                sendTrials(request, username, names,
+                           avatar, action, module, path)
+
+                return JsonResponse({'isError': False, 'Message': 'Unblocked Succefully'}, status=200)
 
             return JsonResponse({'isError': True, 'Message': 'Company not found'}, status=404)
 
