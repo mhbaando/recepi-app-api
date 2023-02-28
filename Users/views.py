@@ -251,6 +251,7 @@ def UsersList(request):
         DataNumber = 10
         SearchQuery = ''
         UsersList = []
+        states = customer_model.federal_state.objects.all()
 
         if CheckDataNumber:
             DataNumber = int(request.GET['DataNumber'])
@@ -276,7 +277,8 @@ def UsersList(request):
             'DataNumber': DataNumber,
             'TotalUsers': len(UsersList),
             'Pages': Pages,
-            'pageTitle': 'Users List'
+            'pageTitle': 'Users List',
+            'states': states
         }
 
         return render(request, 'Users/user_lists.html', context)
@@ -1661,3 +1663,38 @@ def ManageErrorLogs(request, action):
                     'Message': '403-Unauthorized access.you do not have permission to access this page.'
                 }
                 return JsonResponse(message, status=200)
+
+
+@login_required(login_url='Login')
+def find_user(request, id):
+    # TODO: Check Permission
+    if request.method == 'GET':
+        if id is not None:
+            # find user
+            user_to_edit = models.Users.objects.filter(id=id).first()
+            if user_to_edit is not None:
+                return JsonResponse({
+                    'fname': user_to_edit.first_name,
+                    'lname': user_to_edit.last_name,
+                    'email': user_to_edit.email,
+                    'phone': user_to_edit.phone,
+                    'state': user_to_edit.federal_state.state_id if user_to_edit.federal_state else None,
+                    'gender': user_to_edit.gender,
+                    'img': user_to_edit.avatar.url if user_to_edit.avatar else None,
+                    'type': user_to_edit.is_superuser
+                })
+            else:
+                return JsonResponse({
+                    'isError': True,
+                    'Message': 'User not found'
+                })
+        else:
+            return JsonResponse({
+                'isError': True,
+                'Message': 'Provide user ID'
+            })
+    else:
+        return JsonResponse({
+            'isError': True,
+            'Message': 'Method Not Supported'
+        })
