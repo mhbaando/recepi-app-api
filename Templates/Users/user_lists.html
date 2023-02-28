@@ -1,6 +1,7 @@
 {% extends "Base/index.html" %}
 {% load static %}
 {% block content %}
+    {% include "./edit_user.html" %}
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">Users /</span> {{ pageTitle }}
@@ -64,9 +65,10 @@
                                             <th>Name</th>
                                             <th>Username</th>
                                             <th>Email</th>
-                                            <th>Gender</th>
                                             <th>Phone</th>
+                                            <th>Status</th>
                                             <th>Created Date</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -77,9 +79,21 @@
                                                     <td>{{ users.first_name }} {{ users.last_name }} ({{ users.getUserType }})</td>
                                                     <td>{{ users.username }}</td>
                                                     <td>{{ users.email }}</td>
-                                                    <td>{{ users.gender }}</td>
                                                     <td>{{ users.phone }}</td>
+                                                    <td style="text-center">
+                                                        <span class="badge bg-{{ users.show_status.class }}">{{ users.show_status.status }}</span>
+                                                    </td>
                                                     <td>{{ users.date_joined }}</td>
+                                                    <td>
+                                                        <button class="btn btn-primary" id="edit" data-userid="{{ users.id }}">
+                                                            <i class='bx bx-edit-alt'></i>
+                                                        </button>
+                                                        {% if users.is_active %}
+                                                            <button class="btn btn-danger">Deactiavte</button>
+                                                        {% else %}
+                                                            <button class="btn btn-success ">Activate</button>
+                                                        {% endif %}
+                                                    </td>
                                                 </tr>
                                             {% endfor %}
                                         {% else %}
@@ -133,4 +147,5 @@
 {% endblock content %}
 {% block scriptData %}
     <script src={% static "scripts/users/users_list.js" %}></script>
+    <script src="{% static "scripts/users/editUser.js" %}"></script>
 {% endblock scriptData %}

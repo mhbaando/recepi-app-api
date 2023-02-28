@@ -1,0 +1,109 @@
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/customer/modal.css" %}"/>
+    <link rel="stylesheet"
+          href="{% static "assets/css/customer/register-customer.css" %}"/>
+{% endblock cssData %}
+{% block content %}
+    {% csrf_token %}
+    <div class="overlay hidden"></div>
+    <div class="model-contaier hidden">
+        <div class="model">
+            <div class="model-content">
+                <form id="edit_user">
+                    <div>
+                        <h4>Edit User</h4>
+                        <hr/>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="d-flex align-items-end gap-5 justify-content-start">
+                            <img src="{% static "assets/img/customers/plusupload.png" %}"
+                                 alt="user-avatar"
+                                 height="100"
+                                 width="100"
+                                 id="uploadedAvatar"/>
+                            <div class="button-wrapper">
+                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                    <span class="d-none d-sm-block">Upload new photo</span>
+                                    <i class="bx bx-upload d-block d-sm-none"></i>
+                                    <input type="file"
+                                           id="upload"
+                                           class="account-file-input"
+                                           hidden
+                                           accept="image/png, image/jpeg"/>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pe-3 my-2s">
+                        <div class="col-lg-6">
+                            <label for="firstNameinput" class="form-label">First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name" id="fname">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="firstNameinput" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name" id="lname">
+                        </div>
+                    </div>
+                    <div class="row pe-3 my-2">
+                        <div class="col-lg-6 ">
+                            <label for="firstNameinput" class="form-label">Email</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Enter first name"
+                                   id="email">
+                        </div>
+                        <div class="col-lg-6 ">
+                            <label for="firstNameinput" class="form-label">Phone</label>
+                            <input type="number"
+                                   class="form-control"
+                                   placeholder="Enter first name"
+                                   id="phone">
+                        </div>
+                    </div>
+                    <div class="row pe-3">
+                        <div class="col-lg-6">
+                            <label for="state" class="form-label">State</label>
+                            <select class="form-select"
+                                    id="state"
+                                    aria-label="state"
+                                    {% if states == 'No State Found' %} disabled{% endif %}>
+                                <option selected>
+                                    {% if states == 'No State Found' %}
+                                        No State Found
+                                    {% else %}
+                                        Select State
+                                    {% endif %}
+                                </option>
+                                {% for state in states %}
+                                    <option value="{{ state.state_id }}">
+                                        {{ state.state_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-6 pt-2">
+                            <label for="firstNameinput" class="form-label">Gender</label>
+                            <div class="d-flex align-items-center justify-content-start " id="gender">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" name="gender" type="radio" value="Male" />
+                                    <label class="form-check-label" for="gender">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" name="gender" type="radio" value="Female"/>
+                                    <label class="form-check-label" for="gender">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 d-flex align-items-end justify-content-end">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    <script src="{% static "scripts/users/editUser.js" %}"></script>
+{% endblock scriptData %}

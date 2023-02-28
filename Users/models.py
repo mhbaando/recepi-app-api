@@ -49,6 +49,12 @@ class Users(AbstractUser):
         if self.avatar and hasattr(self.avatar, 'url'):
             return self.avatar.url
 
+    def show_status(self):
+        return {
+            'status': 'Active' if self.is_active else 'Deactivated',
+            'class': 'success' if self.is_active else 'danger',
+        }
+
     @classmethod
     def create_user(cls, fname, lname, email, phone, gender, image, is_admins, is_state, is_supers, is_place_issue, request, state=None):
         try:
