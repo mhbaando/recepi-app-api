@@ -8,7 +8,6 @@ $(document).ready(function () {
   });
 
   UserType.on('change', function () {
-    console.log($(this).val())
     if ($(this).val() !== 'Super') {
       // if user is super user we dont need the state
       state.prop('disabled', false);
