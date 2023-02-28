@@ -18,7 +18,7 @@ expired_year = current_date.replace(year=years_to_add)
 @login_required(login_url='Login')
 def NewLicense(request):
     states = []
-    place_issues = []
+    place_issues =[]
 
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
@@ -380,23 +380,23 @@ def update_liscence(request):
     pass
 
 
-# @login_required(login_url="Login")
-# def find_liscence(request, id):
-#     if request.method == 'GET':
-#         if id is not None:
-#             liscence = ''
-#             if request.user.is_superuser:
-#                 # for admin user
-#                 liscence = customer_model.license.objects.filter(
-#                     Q(liscence_id=id)).values()
-#             else:
-#                 # for state user
-#                 liscence = customer_model.liscence.objects.filter(
-#                     Q(liscence_id=id), federal_state=request.user.federal_state).values()
+@login_required(login_url="Login")
+def find_liscence(request, id):
+    if request.method == 'GET':
+        if id is not None:
+            liscence = ''
+            if request.user.is_superuser:
+                # for admin user
+                liscence = customer_model.license.objects.filter(
+                    Q(license_id=id)).values()
+            else:
+                # for state user
+                liscence = customer_model.license.objects.filter(
+                    Q(license_id=id), federal_state=request.user.federal_state).values()
 
-#             return JsonResponse({'isErro': False, 'Message': list(liscence)}, status=200)
-#         else:
-#             return JsonResponse({'isErro': False, 'Message': 'Liscence Not Found'}, status=404)
+            return JsonResponse({'isErro': False, 'Message': list(liscence)}, status=200)
+        else:
+            return JsonResponse({'isErro': False, 'Message': 'Liscence Not Found'}, status=404)
 
 
 @login_required(login_url="Login")
