@@ -7,7 +7,6 @@ $(document).ready(() => {
         overlay.attr('class', 'overlay')
         modal.attr('class', 'model-contaier')
         companyID = $(this).data('company')
-        console.log($(this))
 
         // prepapulate data to the model
         // 1. get the selected compnay
