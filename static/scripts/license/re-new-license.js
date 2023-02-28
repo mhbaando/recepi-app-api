@@ -16,84 +16,84 @@ $(document).ready(function () {
     // Validations
     if (rv_id == undefined || rv_number == "") {
       Swal.fire("Warning!!", "Please enter receipt voucher", "warning");
-    } 
-    
+    }
+
     else if (place_issue == "") {
       Swal.fire(
         "Warning!!",
         "Please select place issued",
         "warning"
       );
-    } 
+    }
     else if (state_name == "") {
       Swal.fire(
         "Warning!!",
         "Please select state",
         "warning"
       );
-    } 
+    }
     else if (license_type == "") {
       Swal.fire(
         "Warning!!",
         "Please select type",
         "warning"
       );
-    } 
+    }
     else {
-        formData.append("rv_id", rv_id);
-        formData.append("rv_number", rv_number);
-        formData.append("federal_state", state_name);
-        formData.append("federal_state", state_name);
-        formData.append("license_type", license_type);
-        formData.append("Type", "renew_license");
-        formData.append("licenseId", rnLicenseId);
-        formData.append("expdate", expiredate);
+      formData.append("rv_id", rv_id);
+      formData.append("rv_number", rv_number);
+      formData.append("federal_state", state_name);
+      formData.append("federal_state", state_name);
+      formData.append("license_type", license_type);
+      formData.append("Type", "renew_license");
+      formData.append("licenseId", rnLicenseId);
+      formData.append("expdate", expiredate);
 
-   
-        Swal.fire({
-          title: "Are you sure",
-          text: "to renew this license ?",
-          icon: "warning",
-          showCancelButton: !0,
-          confirmButtonColor: "#2ab57d",
-          cancelButtonColor: "#fd625e",
-          confirmButtonText: "Yes, renew it!",
-        }).then(function (e) {
-          if (e.value) {
-         
+
+      Swal.fire({
+        title: "Are you sure",
+        text: "to renew this license ?",
+        icon: "warning",
+        showCancelButton: !0,
+        confirmButtonColor: "#2ab57d",
+        cancelButtonColor: "#fd625e",
+        confirmButtonText: "Yes, renew it!",
+      }).then(function (e) {
+        if (e.value) {
+
+        }
+      });
+      $.ajax({
+        method: "POST",
+        url: "/customer/renewlicense/" + rnLicenseId,
+        headers: { "X-CSRFToken": csrftoken },
+        processData: false,
+        contentType: false,
+        data: formData,
+        async: true,
+        success: function (data) {
+          if (!data.isError) {
+            Swal.fire({
+              title: data.title,
+              text: data.Message,
+              icon: data.type,
+              confirmButtonColor: "#2ab57d",
+              cancelButtonColor: "#fd625e",
+              confirmButtonText: "Ok it!",
+            }).then(function (e) {
+              if (e.value) {
+                window.location.reload();
+              }
+            });
+          } else {
+            return Swal.fire("Error", data.Message, "error");
           }
-        });
-        $.ajax({
-          method: "POST",
-          url: "/customer/manage_license/" + rnLicenseId,
-          headers: { "X-CSRFToken": csrftoken },
-          processData: false,
-          contentType: false,
-          data: formData,
-          async: true,
-          success: function (data) {
-            if (!data.isError) {
-              Swal.fire({
-                title: data.title,
-                text: data.Message,
-                icon: data.type,
-                confirmButtonColor: "#2ab57d",
-                cancelButtonColor: "#fd625e",
-                confirmButtonText: "Ok it!",
-              }).then(function (e) {
-                if (e.value) {
-                  window.location.reload();
-                }
-              });
-            } else {
-              Swal.fire(data.title, data.Message, data.type);
-            }
-          },
-          error: function (error) {
-            //(error);
-            Swal.fire(error, error ,error);
-          },
-        });
+        },
+        error: function (error) {
+          //(error);
+          Swal.fire(error, error.Message, error);
+        },
+      });
     }
   });
 
@@ -162,7 +162,7 @@ $(document).ready(function () {
           $("#new_expired_year").val(data.Message.new_expired_year);
           rnLicenseId = data.Message.liecense_id
         } else {
-          Swal.fire( data.title, data.Message,  data.type);
+          Swal.fire(data.title, data.Message, data.type);
         }
       },
       error: function (error) {
@@ -170,5 +170,4 @@ $(document).ready(function () {
       },
     });
   }
-  });
-  
+});
