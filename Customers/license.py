@@ -18,7 +18,7 @@ expired_year = current_date.replace(year=years_to_add)
 @login_required(login_url='Login')
 def NewLicense(request):
     states = []
-    place_issues = []
+    place_issues =[]
 
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
