@@ -163,6 +163,7 @@ def SearchReceiptVoucher(request, search):
 def customer_info(request, id):
     if request.method == 'GET':
         try:
+
             vouchers = finance_model.receipt_voucher.objects.get(
                 rv_id=id)
             licenses = customer_model.license.objects.filter(
@@ -183,6 +184,7 @@ def customer_info(request, id):
                     'expire_date': f"{license.expired_date}" if license else 'None',
                     'new_expired_year': new_expired_year,
                     'liecense_id': license.license_id,
+
                 }
 
                 return JsonResponse({'Message': message}, status=200)
