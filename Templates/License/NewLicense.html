@@ -94,20 +94,20 @@
                             </div>
                             <div class="col-md-4 mb-0">
                                 <div class="mb-3">
-                                    <label class="form-label">Place Issued</label>
-                                    <select id="place_issue"class="form-select">
-                                        {% if place_issues %}
+                                    <label class="form-label">Place issue</label>
+                                    <select id="place_issue" class="form-select">
+                                       
                                             <option value="">
-                                                Select a place issues
+                                                Select A place issue
                                             </option>
                                             {% for item in place_issues %}
                                                 <option value={{ item.place_id }}>{{ item.place_name }}
                                                 </option>
                                             {% endfor %}
-                                        {% endif %}
                                     </select>
                                 </div>
                             </div>
+                   
                             <div class="col-md-4 mb-0">
                                 <div class="mb-3">
                                     <label class="form-label">Type</label>
