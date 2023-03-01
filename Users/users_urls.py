@@ -10,6 +10,7 @@ urlpatterns = [
     path('manage_users/<str:action>',
          ManageUsers, name='ManageUsers'),
     path('find_user/<int:id>', find_user),
+    path('user_activation/<str:action>/<int:id>', user_activation),
 
 
     # Audit and logs
