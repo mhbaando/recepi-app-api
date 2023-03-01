@@ -402,3 +402,159 @@ def savereciept(request, action):
 
     # If there is not action matching
     return render(request, 'receipt_list.html')
+
+
+# update account
+@login_required(login_url="Login")
+def find_account(request, id):
+    if id is not None:
+        found_account = account.objects.filter(account_id=id).first()
+        if found_account is not None:
+            return JsonResponse({
+                'isError': False,
+                'account_number': found_account.account_number,
+                'account_type': found_account.account_type.name,
+                'account_name': found_account.account_name,
+                'amount': found_account.amount
+            })
+        return JsonResponse({
+            'isError': True,
+            'Message': 'Account Not Found'
+        })
+
+    return JsonResponse({
+        'isError': True,
+        'Message': 'Provide an ID'
+    })
+
+
+@login_required(login_url="Login")
+def find_reciept(request, id):
+    if id is not None:
+        found_receipt = receipt_voucher.objects.filter(rv_id=id).first()
+        if found_receipt is not None:
+            return JsonResponse({
+                'isError': False,
+                'rv_number': found_receipt . rv_number,
+                'rv_from': found_receipt . rv_from,
+                'rv_amount': found_receipt .   rv_amount,
+                'reason': found_receipt .reason
+            })
+        return JsonResponse({
+            'isError': True,
+            'Message': 'receipt Not Found'
+        })
+
+    return JsonResponse({
+        'isError': True,
+        'Message': 'Provide an ID'
+    })
+
+
+# update reciept
+@login_required(login_url="Login")
+def update_reviept(request, id):
+    try:
+
+        account_id = request.POST.get('account_id', None)
+        rvnumber = request.POST.get('rvnumber', None)
+        rcfrom = request.POST.get('rcfrom', None)
+        reason = request.POST.get('reason', None)
+        amaount = request.POST.get('amount', None)
+
+        if account_id is not None:
+            account = models.receipt_voucher.objects.filter(
+                account_id=account_id).first()
+
+            if receipt_voucher is not None:
+                if rvnumber is None or rcfrom is None or reason is None or amaount is None:
+                    return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
+
+                receipt_voucher.rv_number = rvnumber
+                receipt_voucher.rv_from = rcfrom
+                receipt_voucher.reason = reason
+                receipt_voucher.rv_amount = amaount
+
+                receipt.save()
+
+                # for auditory
+                username = request.user.username
+                names = request.user.first_name + ' ' + request.user.last_name
+                avatar = str(request.user.avatar)
+                module = "finance / update"
+                action = 'updated a reciept' + receipt.rv_id
+                path = request.path
+                sendTrials(request, username, names,
+                           avatar, action, module, path)
+                return JsonResponse({'isError': False, 'Message': 'reciept has been updated'}, status=200)
+            return JsonResponse({'isErro': False, 'Message': 'reciept feild is required'}, status=400)
+
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + '' + request.user.last_name
+        sendException(
+            request, username, name, error
+        )
+        message = {
+            'isError': True,
+            'Message': 'on Error occurs . please try again or contact system adminstrator'
+
+        }
+        return JsonResponse(message, status=200)
+
+
+# update an account
+
+
+@ login_required(login_url="Login")
+def update_account(request):
+    try:
+        account_id = request.POST.get('account_id', None)
+        rvnumber = request.POST.get('rvnumber', None)
+        accnumber = request.POST.get('accnumber', None)
+        accountype = request.POST.get('acctype', None)
+        accname = request.POST.get('accname', None)
+
+        amount = request.POST.get('amount', None)
+
+        if account_id is not None:
+            account = customer_model.company.objects.filter(
+                company_id=account_id).first()
+
+            if account is not None:
+                if rvnumber is None or accname is None or accnumber is None or accountype is None or amount is None:
+                    return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
+                state = customer_model.federal_state.objects.filter(
+                    Q(account_id)).first()
+
+                account.account_name = rvnumber
+                account.account_type = accountype
+                account.account_number = accnumber
+                account. amount = amount
+
+                account.save()
+
+                # for auditory
+                username = request.user.username
+                names = request.user.first_name + ' ' + request.user.last_name
+                avatar = str(request.user.avatar)
+                module = "Finance / update"
+                action = 'updated a accont' + account.account_name
+                path = request.path
+                sendTrials(request, username, names,
+                           avatar, action, module, path)
+                return JsonResponse({'isError': False, 'Message': 'account has been updated'}, status=200)
+            return JsonResponse({'isErro': False, 'Message': 'company feild is required'}, status=400)
+
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + '' + request.user.last_name
+        sendException(
+            request, username, name, error
+        )
+        message = {
+            'isError': True,
+            'Message': 'on Error occurs . please try again or contact system adminstrator'
+
+        }
+        return JsonResponse(message, status=200)

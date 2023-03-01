@@ -92,6 +92,7 @@ $(document).ready(function () {
         error: function (error) {
           //(error);
           Swal.fire(error, error.Message, error);
+          
         },
       });
     }
@@ -171,3 +172,4 @@ $(document).ready(function () {
     });
   }
 });
+

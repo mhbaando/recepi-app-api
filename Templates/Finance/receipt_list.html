@@ -1,6 +1,8 @@
 {% extends "Base/index.html" %}
 {% load static %}
 {% block content %}
+    {% include "./editmodalrecipt.html" %}
+    {% csrf_token %}
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">Payment /</span> {{ pageTitle }}
@@ -60,6 +62,7 @@
                                             <th scope="col">Recieved From</th>
                                             <th scope="col">Reason</th>
                                             <th scope="col">Amount</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -70,6 +73,11 @@
                                                     <td>{{ item.rv_from }}</td>
                                                     <td>{{ item.reason }}</td>
                                                     <td>$ {{ item.rv_amount }}</td>
+                                                    <td>
+                                                        <button class="btn btn-outline-primary "
+                                                                id="edit"
+                                                                data-rvid="{{ receipt_voucher.rv_number }}">Edit</button>
+                                                    </td>
                                                 </tr>
                                             {% endfor %}
                                         {% endif %}
@@ -116,4 +124,5 @@
 {% endblock content %}
 {% block scriptData %}
     <script src={% static "scripts/finance/receipt.js" %}></script>
+    <script src="{% static "scripts/finance/editmodalreciept.js" %}"></script>
 {% endblock scriptData %}

@@ -429,7 +429,7 @@ def find_company(request, id):
     #  update company
 
 
-@ login_required(login_url="Login")
+@login_required(login_url="Login")
 def update_company(request):
     try:
         company_id = request.POST.get('company_id', None)
@@ -503,3 +503,4 @@ def Searchcustomer(request, search):
                 }
             )
         return JsonResponse({'Message': message}, status=200)
+
