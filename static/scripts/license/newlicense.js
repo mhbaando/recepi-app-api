@@ -40,7 +40,7 @@ $(document).ready(function () {
         formData.append("rv_id", rv_id);
         formData.append("rv_number", rv_number);
         formData.append("federal_state", state_name);
-        formData.append("federal_state", state_name);
+        formData.append("place_issue", place_issue);
         formData.append("license_type", license_type);
         formData.append("Type", "new_license");
    
@@ -74,6 +74,7 @@ $(document).ready(function () {
                   }).then(function (e) {
                     if (e.value) {
                       window.location.reload();
+                      location.replace('/customer/license_lists')
                     }
                   });
                 } else {

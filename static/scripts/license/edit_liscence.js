@@ -50,7 +50,7 @@ $(document).ready(()=>{
                         $(`#state option[value='${liscence.federal_state_id}']`).attr('selected', true)
                         $(`#type option[value='${liscence.type_id}']`).attr('selected', true)
                         $(`#place option[value='${liscence.place_of_issue_id}']`).attr('selected', true)
-                        liscence.status === 'Active' ? $("#gender input[value='Active']").attr('checked',true) : $("#gender input[value='suspended']").attr('checked',true)
+                        // liscence.status === 'Active' ? $("#status input[value='Active']").attr('checked',true) : liscence.status === 'Lost' ? $("#status input[value='Lost']").attr('checked',true) : liscence.status === 'Expired' ?  $("#status input[value='Expired']").attr('checked',true) : $("#status input[value='Suspended']").attr('checked',true)  
                        });
                       } else {
                         Swal.fire("Error", response.Message, "error");
@@ -114,16 +114,6 @@ $(document).ready(()=>{
         formData.append("owner_lis", owner_lis);
         formData.append("status_r", status_r);
         formData.append("license_ID", license_ID);
-
-        
-
-        
-        
-    
-        
-        console.log(formData)
-        
-      
      $.ajax({
             method: "POST",
             url: `/customer/edit_liscence/${license_ID}`,
