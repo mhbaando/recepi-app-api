@@ -1709,49 +1709,55 @@ def user_activation(request, action, id):
             user = models.Users.objects.filter(id=id).first()
             if user is not None:
                 # check an action whether is activation or deactivation
-                if action is not None:
-                    if action == 'activate':
-                        if user.is_active:  # check if the user is already activated
+                if not user.is_superuser:
+                    if action is not None:
+                        if action == 'activate':
+                            if user.is_active:  # check if the user is already activated
+                                return JsonResponse({
+                                    'isError': True,
+                                    'Message': 'User Already Activated'
+                                })
+
+                            # activate user based on action
+                            user.is_active = True
+                            user.save()
+
+                            # TODO: add autditory log
                             return JsonResponse({
-                                'isError': True,
-                                'Message': 'User Already Activated'
+                                'isError': False,
+                                'Message': 'User Activated Succefully'
                             })
 
-                        # activate user based on action
-                        user.is_active = True
-                        user.save()
+                        elif action == 'deactiavte':
+                            if not user.is_active:  # check if the user already deactivated
+                                return JsonResponse({
+                                    'isError': True,
+                                    'Message': 'User Already was Deactivated'
+                                })
 
-                        # TODO: add autditory log
-                        return JsonResponse({
-                            'isError': False,
-                            'Message': 'User Activated Succefully'
-                        })
+                            # deactivate user based on action
+                            user.is_active = False
+                            user.save()
 
-                    elif action == 'deactiavte':
-                        if not user.is_active:  # check if the user already deactivated
+                            # TODO: add autditory log
+                            return JsonResponse({
+                                'isError': False,
+                                'Message': 'User Deactiavted Succefully'
+                            })
+                        else:
                             return JsonResponse({
                                 'isError': True,
-                                'Message': 'User Already was Deactivated'
+                                'Message': 'Bad Request Action not allowed'
                             })
-
-                        # deactivate user based on action
-                        user.is_active = False
-                        user.save()
-
-                        # TODO: add autditory log
-                        return JsonResponse({
-                            'isError': False,
-                            'Message': 'User Deactiavted Succefully'
-                        })
                     else:
                         return JsonResponse({
                             'isError': True,
-                            'Message': 'Bad Request Action not allowed'
+                            'Message': 'Bad Request Provide an action'
                         })
                 else:
                     return JsonResponse({
                         'isError': True,
-                        'Message': 'Bad Request Provide an action'
+                        'Message': 'Super User Can\'t be disabled nor actiavted'
                     })
             else:
                 return JsonResponse({
