@@ -3,6 +3,7 @@
 {% block content %}
   <!--End Page header-->
   {% include "./edit_model.html" %}
+  {% include "./manage.html" %}
   <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">
       <span class="text-muted fw-light">License /</span> {{ pageTitle }}
@@ -83,8 +84,10 @@
                       <th class="wd-20p border-bottom-0">Registered Date</th>
                       <th class="wd-15p border-bottom-0">Expire Date</th>
                       <th class="wd-10p border-bottom-0">State</th>
+                      {% comment %} <th class="wd-10p border-bottom-0">Status</th> {% endcomment %}
                       <th class="wd-10p border-bottom-0">Status</th>
-                      <th class="wd-10p border-bottom-0">Edit</th>
+                      <th class="wd-10p border-bottom-0">Manage Liscence</th>
+
                     </tr>
                   </thead>
                   <tbody>
@@ -97,9 +100,39 @@
                           <td>{{ item.created_at }}</td>
                           <td>{{ item.expired_date }}</td>
                           <td>{{ item.federal_state.state_name }}</td>
-                          <td>
+                          {% comment %} <td>
                             <span class="badge bg-{% if item.status == 'Active' %}success{% elif item.status == 'suspended' %}warning{% else %}danger{% endif %}">{{ item.status }}</span
                               >
+                            </td> {% endcomment %}
+                            <td>
+                              {% if item.status == 'Active' %}
+                              <button type="button"
+                                      class="btn btn-success text-white"
+                                      id="manage_btn"
+                                      data-liscences="{{ item.license_id }}">
+                                Active
+                              </button>
+                              {% elif item.status == 'Lost' %}
+                              <button type="button"
+                                      class="btn btn-danger text-white"
+                                      id="manage_btn"
+                                      data-liscences="{{ item.license_id }}">
+                                Lost
+                              </button>
+                              {% elif item.status == 'Suspended' %}
+                              <button type="button"
+                                      class="btn btn-warning text-white"
+                                      id="manage_btn"
+                                      data-liscences="{{ item.license_id }}">
+                               Suspended
+                              {% else %} 
+                              <button type="button"
+                                      class="btn btn-warning text-white"
+                                      id="manage_btn"
+                                      data-liscences="{{ item.license_id }}">
+                              Expired
+                              </button>
+                              {% endif %}
                             </td>
                             <td>
                               <button type="button"
@@ -160,6 +193,7 @@
   {% endblock content %}
   {% block scriptData %}
     <script src={% static "scripts/license/edit_liscence.js" %}></script>
+    <script src={% static "scripts/license/manage_liscence.js" %}></script>
     <script>
   $("#DataNumber").val($("#DataNumber").attr("DataNumber"));
   $("#Status").val($("#Status").attr("Status"));
