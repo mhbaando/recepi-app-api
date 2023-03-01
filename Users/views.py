@@ -1698,3 +1698,79 @@ def find_user(request, id):
             'isError': True,
             'Message': 'Method Not Supported'
         })
+
+
+@login_required(login_url="Login")
+def user_activation(request, action, id):
+    # TODO: check permissions
+    if request.method == 'GET':
+        if id is not None:
+            # find user to deactivate or activate
+            user = models.Users.objects.filter(id=id).first()
+            if user is not None:
+                # check an action whether is activation or deactivation
+                if not user.is_superuser:
+                    if action is not None:
+                        if action == 'activate':
+                            if user.is_active:  # check if the user is already activated
+                                return JsonResponse({
+                                    'isError': True,
+                                    'Message': 'User Already Activated'
+                                })
+
+                            # activate user based on action
+                            user.is_active = True
+                            user.save()
+
+                            # TODO: add autditory log
+                            return JsonResponse({
+                                'isError': False,
+                                'Message': 'User Activated Succefully'
+                            })
+
+                        elif action == 'deactiavte':
+                            if not user.is_active:  # check if the user already deactivated
+                                return JsonResponse({
+                                    'isError': True,
+                                    'Message': 'User Already was Deactivated'
+                                })
+
+                            # deactivate user based on action
+                            user.is_active = False
+                            user.save()
+
+                            # TODO: add autditory log
+                            return JsonResponse({
+                                'isError': False,
+                                'Message': 'User Deactiavted Succefully'
+                            })
+                        else:
+                            return JsonResponse({
+                                'isError': True,
+                                'Message': 'Bad Request Action not allowed'
+                            })
+                    else:
+                        return JsonResponse({
+                            'isError': True,
+                            'Message': 'Bad Request Provide an action'
+                        })
+                else:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'Super User Can\'t be disabled nor actiavted'
+                    })
+            else:
+                return JsonResponse({
+                    'isError': True,
+                    'Message': 'User Not Found'
+                })
+        else:
+            return JsonResponse({
+                'isError': True,
+                'Message': 'Bad Request Provide User ID'
+            })
+    else:
+        return JsonResponse({
+            'isError': True,
+            'Message': 'Method Not Allowed'
+        })

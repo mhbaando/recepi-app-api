@@ -88,10 +88,14 @@
                                                         <button class="btn btn-primary" id="edit" data-userid="{{ users.id }}">
                                                             <i class='bx bx-edit-alt'></i>
                                                         </button>
-                                                        {% if users.is_active %}
-                                                            <button class="btn btn-danger">Deactiavte</button>
-                                                        {% else %}
-                                                            <button class="btn btn-success ">Activate</button>
+                                                        {% if not users.is_superuser %}
+                                                            {% if users.is_active %}
+                                                                <button class="btn btn-danger"
+                                                                        id="deactivatebtn"
+                                                                        data-userid="{{ users.id }}">Deactiavte</button>
+                                                            {% else %}
+                                                                <button class="btn btn-success" id="avtivatebtn" data-userid="{{ users.id }}">Activate</button>
+                                                            {% endif %}
                                                         {% endif %}
                                                     </td>
                                                 </tr>

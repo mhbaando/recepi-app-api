@@ -60,10 +60,13 @@ $(document).ready(function () {
     });
 
     // hide modal on click
-    overlay.on('click', function () {
+    $("#cancelbtn").on('click', function () {
         overlay.attr('class', 'hidden')
         modal.attr('class', 'hidden')
     })
+
+
+
 
 
 })

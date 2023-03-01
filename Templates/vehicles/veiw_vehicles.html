@@ -102,7 +102,10 @@
                                                                     id="assign_btn"
                                                                     data-assignvehicleid="{{ veh.vehicle_id }}">
                                                                 Assign plate
+                                                               
                                                             </button>
+                                                        {% else %}
+                                                            <p>Already Assigned</p>
                                                         {% endif %}
                                                     </td>
                                                     <td>

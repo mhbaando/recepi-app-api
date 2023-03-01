@@ -33,8 +33,8 @@ $(document).ready(function () {
       );
     } else {
       window.location.replace(
-     
-          `/user_lists?DataNumber=${entries}&SearchQuery=${search}&page=${page}`
+
+        `/user_lists?DataNumber=${entries}&SearchQuery=${search}&page=${page}`
       );
     }
   }
@@ -69,7 +69,7 @@ $(document).ready(function () {
           });
         }
       },
-      error: function (response) {},
+      error: function (response) { },
     });
   });
 
@@ -130,7 +130,7 @@ $(document).ready(function () {
             });
           }
         },
-        error: function (response) {},
+        error: function (response) { },
       });
     }
   });
@@ -182,7 +182,7 @@ $(document).ready(function () {
           });
         }
       },
-      error: function (response) {},
+      error: function (response) { },
     });
   });
 
@@ -255,7 +255,141 @@ $(document).ready(function () {
           });
         }
       },
-      error: function (response) {},
+      error: function (response) { },
     });
   });
+
+
+  // User activation or deactivation
+  const deactivateBtns = document.querySelectorAll("#deactivatebtn")
+  const activateBtns = document.querySelectorAll("#avtivatebtn")
+
+  deactivateBtns.forEach(deactivateBtn => {
+    // all deactivations actions
+    deactivateBtn.addEventListener('click', function () {
+      const userID = $(this).data('userid')
+      swal.fire({
+        title: 'Deactivate User',
+        text: "Are You Want Deactivate User?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        confirmButtonClass: "btn btn-success w-xs me-2",
+        buttonsStyling: !1,
+        cancelButtonClass: "btn btn-danger",
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          // Send Request to the server
+          $.ajax({
+            method: "GET",
+            url: "/user_activation/deactiavte/" + userID,
+            headers: { "X-CSRFToken": csrftoken },
+            processData: false,
+            contentType: false,
+            async: true,
+            success: function (response) {
+              if (!response.isError) {
+                Swal.fire({
+                  title: "Success",
+                  text: response.Message,
+                  icon: "success",
+                  confirmButtonClass: "btn btn-primary w-xs mt-2",
+                  buttonsStyling: !1,
+                  showCloseButton: !0,
+                }).then((e) => {
+                  // refresh the page
+                  document.location.reload()
+                });
+              } else {
+                Swal.fire({
+                  title: "Error",
+                  text: response.Message,
+                  icon: "error",
+                  confirmButtonClass: "btn btn-primary w-xs mt-2",
+                  buttonsStyling: !1,
+                  showCloseButton: !0,
+                });
+              }
+            },
+            error: function (response) {
+              Swal.fire({
+                title: "Error",
+                text: response.Message,
+                icon: "error",
+                confirmButtonClass: "btn btn-primary w-xs mt-2",
+                buttonsStyling: !1,
+                showCloseButton: !0,
+              });
+            },
+          });
+        }
+      })
+    })
+  })
+
+  activateBtns.forEach(activeBtn => {
+    // all activation btns
+    activeBtn.addEventListener('click', function () {
+      const userID = $(this).data('userid')
+      swal.fire({
+        title: 'Activate User',
+        text: "Are You Want Activate User?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        confirmButtonClass: "btn btn-success w-xs me-2",
+        buttonsStyling: !1,
+        cancelButtonClass: "btn btn-danger",
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          // Send Request to the server
+          $.ajax({
+            method: "GET",
+            url: "/user_activation/activate/" + userID,
+            headers: { "X-CSRFToken": csrftoken },
+            processData: false,
+            contentType: false,
+            async: true,
+            success: function (response) {
+              if (!response.isError) {
+                Swal.fire({
+                  title: "Success",
+                  text: response.Message,
+                  icon: "success",
+                  confirmButtonClass: "btn btn-primary w-xs mt-2",
+                  buttonsStyling: !1,
+                  showCloseButton: !0,
+                }).then((e) => {
+                  // refresh the page
+                  document.location.reload()
+                });
+              } else {
+                Swal.fire({
+                  title: "Error",
+                  text: response.Message,
+                  icon: "error",
+                  confirmButtonClass: "btn btn-primary w-xs mt-2",
+                  buttonsStyling: !1,
+                  showCloseButton: !0,
+                });
+              }
+            },
+            error: function (response) {
+              Swal.fire({
+                title: "Error",
+                text: response.Message,
+                icon: "error",
+                confirmButtonClass: "btn btn-primary w-xs mt-2",
+                buttonsStyling: !1,
+                showCloseButton: !0,
+              });
+            },
+          });
+        }
+      })
+    })
+  })
+
+
+
 });

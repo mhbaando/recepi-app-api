@@ -399,7 +399,7 @@ def view_vehicle(request):
                'SearchQuery': SearchQuery,
                'DataNumber': DataNumber,
                "vehicles": vehicles,
-               #    "states": states,
+               "states": states,
                "types": types,
                "currentYear": datetime.now().year,
                "plate_number": plate_number,
