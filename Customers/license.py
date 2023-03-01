@@ -223,6 +223,7 @@ def manage_license(request, id):
                 federal_state = request.POST.get('federal_state')
                 place_of_issue = request.POST.get('place_of_issue')
                 license_type = request.POST.get('license_type')
+               
 
                 rv_id = request.POST.get('rv_id')
                 is_voucher_exist = customer_model.license.objects.filter(
