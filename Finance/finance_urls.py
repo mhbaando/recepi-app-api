@@ -10,15 +10,7 @@ urlpatterns = [
     path('find_account/<int:id>', views.find_account),
     path('find_reciept/<int:id>', views.find_reciept),
     path('update_account/', views.update_account),
-
-    path('update_recietp/', views.update_reviept),
-
-
-
-
-
-
-
+    path('updatereciept/<int:id>', views.update_reviept),
 
 
 

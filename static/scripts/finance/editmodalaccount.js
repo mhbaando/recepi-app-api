@@ -19,7 +19,9 @@ $(document).ready(() => {
             success: function (response) {
                 if (!response.isError) {
                     $("#accnumber").attr('value', response.account_number)
-                    $("#acctype").attr('value', response.account_type)
+                    $("#acctype ").attr('value', response.account_type)
+                    $(`#acctype option[value='${response.account_type.id}']`).attr('selected', true)
+
                     $("#accname").attr('value', response.account_name)
                     $("#accamount").attr('value', response.amount)
                 } else {
@@ -48,7 +50,7 @@ $(document).ready(() => {
         //  check if no change in state, nation, blooad group 
   
         const accnumber = $("#accnumber").val()
-        const acctype = $("acctype").val()
+        const acctype = $("#acctype option:selected").val()
         const accname = $("#accname").val()
         const accamount = $("#accamount").val()
 
