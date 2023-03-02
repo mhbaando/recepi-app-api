@@ -19,7 +19,7 @@ from Customers import models as customer_model
 def AccountsPage(request):
 
     accounts = account.objects.all()
-
+    account_type = models.account_types.objects.all()
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
@@ -41,7 +41,8 @@ def AccountsPage(request):
                'page_obj': page_obj,
                'SearchQuery': SearchQuery,
                'DataNumber': DataNumber,
-               "accounts": accounts
+               "accounts": accounts,
+               'acc_types': account_type
                }
     return render(request, 'Finance/account_list.html', context)
 
@@ -413,7 +414,9 @@ def find_account(request, id):
             return JsonResponse({
                 'isError': False,
                 'account_number': found_account.account_number,
-                'account_type': found_account.account_type.name,
+                'account_type': {
+                    'id': found_account.account_type.type_id
+                },
                 'account_name': found_account.account_name,
                 'amount': found_account.amount
             })
@@ -435,10 +438,10 @@ def find_reciept(request, id):
         if found_receipt is not None:
             return JsonResponse({
                 'isError': False,
-                'rv_number': found_receipt . rv_number,
-                'rv_from': found_receipt . rv_from,
-                'rv_amount': found_receipt .   rv_amount,
-                'reason': found_receipt .reason
+                'rv_number': found_receipt.rv_number,
+                'rv_from': f"{found_receipt.rv_from.full_name} - {found_receipt.rv_from.personal_id}",
+                'rv_amount': found_receipt.rv_amount,
+                'reason': found_receipt.reason
             })
         return JsonResponse({
             'isError': True,
@@ -455,34 +458,31 @@ def find_reciept(request, id):
 @login_required(login_url="Login")
 def update_reviept(request, id):
     try:
-
-        account_id = request.POST.get('account_id', None)
         rvnumber = request.POST.get('rvnumber', None)
-        rcfrom = request.POST.get('rcfrom', None)
+        # rcfrom = request.POST.get('rcfrom', None)
         reason = request.POST.get('reason', None)
         amaount = request.POST.get('amount', None)
 
-        if account_id is not None:
-            account = models.receipt_voucher.objects.filter(
-                account_id=account_id).first()
+        if id is not None:
+            rv = models.receipt_voucher.objects.filter(
+                rv_id=id).first()
 
-            if receipt_voucher is not None:
-                if rvnumber is None or rcfrom is None or reason is None or amaount is None:
+            if rv is not None:
+                if rvnumber is None or reason is None or amaount is None:
                     return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
 
-                receipt_voucher.rv_number = rvnumber
-                receipt_voucher.rv_from = rcfrom
-                receipt_voucher.reason = reason
-                receipt_voucher.rv_amount = amaount
+                rv.rv_number = rvnumber
+                rv.reason = reason
+                rv.rv_amount = amaount
 
-                receipt.save()
+                rv.save()
 
                 # for auditory
                 username = request.user.username
                 names = request.user.first_name + ' ' + request.user.last_name
                 avatar = str(request.user.avatar)
                 module = "finance / update"
-                action = 'updated a reciept' + receipt.rv_id
+                action = f"updated a reciept {rv.rv_id}"
                 path = request.path
                 sendTrials(request, username, names,
                            avatar, action, module, path)
@@ -510,26 +510,25 @@ def update_reviept(request, id):
 def update_account(request):
     try:
         account_id = request.POST.get('account_id', None)
-        rvnumber = request.POST.get('rvnumber', None)
         accnumber = request.POST.get('accnumber', None)
         accountype = request.POST.get('acctype', None)
         accname = request.POST.get('accname', None)
-
-        amount = request.POST.get('amount', None)
+        amount = request.POST.get('accamount', None)
 
         if account_id is not None:
-            account = customer_model.company.objects.filter(
-                company_id=account_id).first()
+            account = models.account.objects.filter(
+                account_id=account_id).first()
 
             if account is not None:
-                if rvnumber is None or accname is None or accnumber is None or accountype is None or amount is None:
+                if accname is None or accnumber is None or accountype is None or amount is None:
                     return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
-                state = customer_model.federal_state.objects.filter(
-                    Q(account_id)).first()
 
-                account.account_name = rvnumber
-                account.account_type = accountype
+                account_type = models.account_types.objects.filter(
+                    type_id=accountype).first()
+
                 account.account_number = accnumber
+                account.account_type = account_type
+                account.account_name = accname
                 account. amount = amount
 
                 account.save()
