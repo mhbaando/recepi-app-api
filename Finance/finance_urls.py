@@ -7,6 +7,15 @@ urlpatterns = [
     path('accounts', views.AccountsPage, name='AccountsPage'),
     path('add_account', views.AddAccount, name='AddAccount'),
     path('manage_accounts/<str:action>', views.ManageAccounts),
+    path('find_account/<int:id>', views.find_account),
+    path('find_reciept/<int:id>', views.find_reciept),
+    path('update_account/', views.update_account),
+
+    path('update_recietp/', views.update_reviept),
+
+
+
+
 
 
 
@@ -22,6 +31,8 @@ urlpatterns = [
     path('findaccount/<str:name>', views.find_account),
     path('findrfrom/<str:name>', views.find_rcfrom),
     path('save_reciept/<str:action>', views.savereciept, name='savereciept'),
+    path('updatereciept/', views.update_reviept),
+
 
 
 

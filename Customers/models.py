@@ -180,7 +180,7 @@ class licensetype(models.Model):
     def __str__(self) -> str:
         return self.type
 
-
+ 
 class license(models.Model):
     license_id = models.AutoField(primary_key=True)
     place_of_issue = models.ForeignKey(
