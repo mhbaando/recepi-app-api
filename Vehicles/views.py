@@ -8,9 +8,12 @@ from Customers import models as customer_model
 from Finance import models as finance_model
 from django.db.models import Q
 from Users.views import sendException, sendTrials
+from django.contrib.auth.models import Permission
+from django.contrib.auth.decorators import login_required, permission_required
 
 
 @login_required(login_url="Login")
+@permission_required('Vehicles.add_vehicle', raise_exception=True)
 def register_vehicle(request):
     vehicle_models = vehicle_model.model_brand.objects.all()
     colors = vehicle_model.color.objects.all()
@@ -256,6 +259,7 @@ def seach_transferrr(request, search):
 
 
 @login_required(login_url="Login")
+@permission_required('Vehicles.add_transfare_vehicle', raise_exception=True)
 def tranfercreate(request):
     if request.method == 'POST':
         old_owner_id = request.POST.get('olold_hid_id', None)
@@ -298,12 +302,11 @@ def tranfercreate(request):
 
 
 @login_required(login_url="Login")
+@permission_required('Vehicles.view_vehicle', raise_exception=True)
 def view_vehicle(request):
     year = []
     vehicles = []
     noplates = []
-    vehcile_lists = []
-    vehicle_lists = []
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
             Q(state_name=request.user.federal_state))
@@ -384,11 +387,16 @@ def view_vehicle(request):
         Status = request.GET.get('Status')
     if CheckSearchQuery:
         SearchQuery = request.GET['SearchQuery']
-        vehicle_lists = vehicle_model.vehicle.objects.filter(
-            Q(weight__icontains=SearchQuery)
+        print(SearchQuery)
+        if request.user.is_admin or request.user.is_superuser:
+            vehicles = vehicle_model.vehicle.objects.filter(
+                Q(vehicle_model__brand_name__icontains=SearchQuery) |
+                Q(vin__icontains=SearchQuery)
 
-        ).order_by('-created_at')
 
+
+
+            ).order_by('-created_at')
     paginator = Paginator(vehicles, DataNumber)
 
     page_number = request.GET.get('page')

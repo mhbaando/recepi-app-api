@@ -426,7 +426,6 @@ def edit_liscence(request, id):
     ltype = request.POST.get('type', None)
     lstate = request.POST.get('state', None)
     lplace = request.POST.get('place', None)
-    status = request.POST.get('gender', None)
 
     liscence = customer_model.license.objects.filter(
         Q(license_id=lisence_iD)).first()
@@ -451,7 +450,6 @@ def edit_liscence(request, id):
     liscence.expired_date = lexp_date
     liscence.created_at = lreg_date
     liscence.owner.customer_id = lis_owne
-    liscence.status = status
 
     liscence.save()
 
