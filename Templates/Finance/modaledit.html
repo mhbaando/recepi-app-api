@@ -23,14 +23,19 @@
                                    id="accnumber"/>
                         </div>
                     </div>
-                    <div class="col row gap-2">
+                    <div class="row gap-2">
                         <div class="col">
                             <label for="company">Account Type</label>
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="Account type"
-                                   required="required"
-                                   id="acctype"/>
+                            <select class="form-select" id="acctype">
+                                <option selected>
+                                    Select Account
+                                </option>
+                                {% for acc_type in acc_types %}
+                                    <option value="{{ acc_type.type_id }}">
+                                        {{ acc_type.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="col">
                             <label for="company">Account Name</label>
