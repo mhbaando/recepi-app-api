@@ -3,11 +3,11 @@ $(document).ready(() => {
     const modal = $(".model-contaier")
     let  rvID;
     // show model on click
-    $(".edit").on('click', function () {
+    $("#edit").on('click', function () {
         overlay.attr('class', 'overlay')
         modal.attr('class', 'model-contaier')
         rvID = $(this).data('rvid')
-
+ 
         // prepapulate data to the model
         // 1. get the selected compnay
         $.ajax({
@@ -19,12 +19,12 @@ $(document).ready(() => {
                 if (!response.isError) {
                     
                         //2. fill data to the html ellemets
-                        $("#rvnumber").attr('value', response. rv_number )
-                        $("#rcfrom").attr('value',  response.rv_from)
-                        $("#reason").attr('value',  response. reason)
-                        $("#rvamount").attr('value',  response.rv_amount)
+                        $("#rvnumber").attr('value',response. rv_number )
+                        $("#rcfrom").attr('value',response.rv_from)
+                        $("#reason").val(response.reason)
+                        $("#rvamount").attr('value',response.rv_amount)
                       
-
+                        console.log(response.reason)
                     
                 } else {
                     Swal.fire("Error", response.Message, "error");
@@ -55,23 +55,20 @@ $(document).ready(() => {
         //  check if no change in state, nation, blooad group 
        
         const rvnumber= $("#rvnumber").val()
-        const recievedfrom = $("#rcfrom").val()
-        const rreason = $("#rreason").val()
+        const recievedfrom = $("#rcfrom").val().split('-')[1]
+        const rreason = $("#reason").val()
         const rvamount = $("#rvamount").val()
-       
 
        
         let formData = new FormData(this);
-
         formData.append("rvnumber", rvnumber);
-        formData.append("accnumber", recievedfrom);
-        formData.append("acctype", rreason);
-        formData.append("accname", rvamount);
+        formData.append("reason", rreason);
+        formData.append("amount", rvamount);
 
 
         $.ajax({
             method: "POST",
-            url: `/finance/updatereciept/`,
+            url: `/finance/updatereciept/${rvID}`,
             headers: { "X-CSRFToken": csrftoken },
             processData: false,
             contentType: false,
