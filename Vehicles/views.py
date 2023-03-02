@@ -269,36 +269,52 @@ def tranfercreate(request):
         description = request.POST.get('description', None)
         vehicle_id = request.POST.get('vehicleID', None)
         document = request.FILES['transfer_document']
+        if (document.size > 1000000):
+            return JsonResponse({'isError': True, 'Message': 'you can not  upload more then 1mb'}, status=200)
 
-        vehicle_old_id = vehicle_model.vehicle.objects.filter(
-            Q(owner=old_owner_id)).first()
+        is_voucher_exist = vehicle_model.transfare_vehicles.objects.filter(
+            rv_number=receipt_number).first()
 
-        old_customer = customer_model.customer.objects.filter(
-            Q(customer_id=old_owner_id)).first()
+        if is_voucher_exist is not None:
+            return JsonResponse(
+                {
+                    'isError': True,
+                    'title': "Duplicate Error!!",
+                    'type': "warning",
+                    'Message': f'This receipt voucher already been used'
+                }
+            )
+        else:
 
-        car_to_update = vehicle_model.vehicle.objects.filter(
-            vehicle_id=vehicle_id).first()
-        new_owner = customer_model.customer.objects.filter(
-            customer_id=new_owner_id).first()
-        car_to_update.owner = new_owner
-        car_to_update.save()
+            vehicle_old_id = vehicle_model.vehicle.objects.filter(
+                Q(owner=old_owner_id)).first()
 
-        new_transfering = vehicle_model.transfare_vehicles(
-            old_owner_id=old_customer.customer_id,
-            new_owner_id=new_owner_id,
-            vehicle_id=vehicle_old_id.vehicle_id,
-            description=description,
-            document=document,
-            rv_number=receipt_number,
-            transfare_reason=reason,
-            reg_user_id=request.user.id,
-        )
+            old_customer = customer_model.customer.objects.filter(
+                Q(customer_id=old_owner_id)).first()
 
-        new_transfering.save()
+            car_to_update = vehicle_model.vehicle.objects.filter(
+                vehicle_id=vehicle_id).first()
+            new_owner = customer_model.customer.objects.filter(
+                customer_id=new_owner_id).first()
+            car_to_update.owner = new_owner
+            car_to_update.save()
 
-    return JsonResponse({
-        'successfully saved': "azuu"
-    })
+            new_transfering = vehicle_model.transfare_vehicles(
+                old_owner_id=old_customer.customer_id,
+                new_owner_id=new_owner_id,
+                vehicle_id=vehicle_old_id.vehicle_id,
+                description=description,
+                document=document,
+                rv_number=receipt_number,
+                transfare_reason=reason,
+                reg_user_id=request.user.id,
+            )
+
+            new_transfering.save()
+
+            return JsonResponse({
+                'successfully saved': "azuu"
+            })
 
 
 @login_required(login_url="Login")
@@ -387,15 +403,10 @@ def view_vehicle(request):
         Status = request.GET.get('Status')
     if CheckSearchQuery:
         SearchQuery = request.GET['SearchQuery']
-        print(SearchQuery)
         if request.user.is_admin or request.user.is_superuser:
             vehicles = vehicle_model.vehicle.objects.filter(
                 Q(vehicle_model__brand_name__icontains=SearchQuery) |
                 Q(vin__icontains=SearchQuery)
-
-
-
-
             ).order_by('-created_at')
     paginator = Paginator(vehicles, DataNumber)
 
