@@ -22,7 +22,7 @@ def register_vehicle(request):
     owners = customer_model.customer.objects.all()
     year = []
 
-    for i in range(1960, datetime.now().year):
+    for i in range(1960, datetime.now().year + 1):
         year.append(i)
 
     year.reverse()
@@ -333,6 +333,7 @@ def tranfercreate(request):
 @login_required(login_url="Login")
 @permission_required('Vehicles.view_vehicle', raise_exception=True)
 def view_vehicle(request):
+    plate_code = vehicle_model.code_plate.objects.all()
     year = []
     vehicles = []
     noplates = []
@@ -432,6 +433,7 @@ def view_vehicle(request):
                'DataNumber': DataNumber,
                "vehicles": vehicles,
                "states": states,
+               "plate_code": plate_code,
                "types": types,
                "currentYear": datetime.now().year,
                "plate_number": plate_number,
