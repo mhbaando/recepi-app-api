@@ -270,7 +270,7 @@ def tranfercreate(request):
         vehicle_id = request.POST.get('vehicleID', None)
         document = request.FILES['transfer_document']
         if (document.size > 1000000):
-            return JsonResponse({'isError': True, 'Message': 'you can not  upload more then 1mb'}, status=200)
+            return JsonResponse({'isError': True, 'Message': 'you can not  upload more then 2mb'}, status=200)
 
         is_voucher_exist = vehicle_model.transfare_vehicles.objects.filter(
             rv_number=receipt_number).first()
@@ -282,6 +282,19 @@ def tranfercreate(request):
                     'title': "Duplicate Error!!",
                     'type': "warning",
                     'Message': f'This receipt voucher already been used'
+                }
+            )
+
+        isperson_exit = vehicle_model.vehicle.objects.filter(
+            owner_id=new_owner_id).first()
+
+        if isperson_exit is not None:
+            return JsonResponse(
+                {
+                    'isError': True,
+                    'title': "Duplicate Error!!",
+                    'type': "warning",
+                    'Message': f"you can't transfer a Vehicle to the same person "
                 }
             )
         else:
