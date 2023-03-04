@@ -1774,3 +1774,32 @@ def user_activation(request, action, id):
             'isError': True,
             'Message': 'Method Not Allowed'
         })
+
+
+@login_required(login_url="Login")
+def updateUser(request):
+    userID = request.POST.get('userID', None)
+    gender = request.POST.get('gender', None)
+    fname = request.POST.get('fname', None)
+    lname = request.POST.get('lname', None)
+    phone = request.POST.get('phone', None)
+    email = request.POST.get('email', None)
+    state = request.POST.get('state', None)
+
+    users = models.Users.objects.filter(
+        Q(id=userID)).first()
+    user_state = customer_model.federal_state.objects.filter(
+        Q(state_id=state)).first()
+
+    users.email = email
+    users.gender = gender
+    users.first_name = fname
+    users.last_name = lname
+    users.phone = phone
+    users.federal_state = user_state
+    # users.avatar=
+    users.save()
+
+    return JsonResponse({
+        'saved': "succesfully"
+    })

@@ -64,6 +64,82 @@ $(document).ready(function () {
         overlay.attr('class', 'hidden')
         modal.attr('class', 'hidden')
     })
+    let state = ""
+    $("#state").on('click',function(){
+        state =  $(this).val()
+    })
+  
+  
+    // submit
+    $("#edit_user").on('submit', function(e){
+        e.preventDefault()
+     
+     let formData = new FormData(this);
+   
+     const fname = $("#fname").val()
+     const lname = $("#lname").val()
+     const email = $("#email").val()
+     const phone = $("#phone").val()
+     
+  
+    
+     //  check if no change happens
+     if (state.trim().length <= 0 ){
+        state= $("#state option:selected").val()
+        gender=$("#gender input[type='radio']:checked").val()
+       
+    }
+  
+   
+    formData.append("fname", fname);
+    
+    formData.append("lname", lname);
+    formData.append("email", email);
+    formData.append("phone", phone);
+    formData.append("state", state);
+    formData.append("userID", userID)
+    
+
+  
+    
+
+    
+    console.log(formData)
+    
+  
+     $.ajax({
+        method: "POST",
+        url: "/updateuser/",
+        headers: { "X-CSRFToken": csrftoken },
+        processData: false,
+        contentType: false,
+        data :formData,
+        async: true,
+        success: function(response){
+            if (!response.isError) {
+                Swal.fire({
+                    title: "Success",
+                    text: response.Message,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                    confirmButtonClass: "btn btn-success mt-2",
+                    buttonsStyling: !1,
+                  }).then(function (e) {
+                    if (e.value) {
+                      Swal.DismissReason.cancel;
+                      location.reload()
+                    }
+                  });
+            
+              } else {
+                Swal.fire("Error", response.Message, "error");
+              }
+        },
+        error: function(error){
+            Swal.fire("Error", error.responseText, "error");
+        }
+    })
+    })
 
 
 

@@ -114,7 +114,7 @@
                               </button>
                               {% elif item.status == 'Lost' %}
                               <button type="button"
-                                      class="btn btn-danger text-white"
+                                      class="btn btn-warning text-white"
                                       id="manage_btn"
                                       data-liscences="{{ item.license_id }}">
                                 Lost
@@ -127,7 +127,7 @@
                                Suspended
                               {% else %} 
                               <button type="button"
-                                      class="btn btn-warning text-white"
+                                      class="btn btn-danger text-white"
                                       id="manage_btn"
                                       data-liscences="{{ item.license_id }}">
                               Expired
