@@ -8,7 +8,7 @@
         <div class="model">
             <div class="model-content">
                 <div>
-                    <h4>Edit acount</h4>
+                    <h4>Edit Acconut</h4>
                     <hr/>
                 </div>
                 <form id="updateaccform">
@@ -22,47 +22,49 @@
                                    required="required"
                                    id="accnumber"/>
                         </div>
-                        <div class="row gap-2">
-                            <div class="col">
-                                <label for="company">Account Type</label>
-                                <select class="form-select" id="acctype">
-                                    <option selected>
-                                        Select Account
+                    </div>
+                    <div class="col row gap-2">
+                        <div class="col">
+                            <label for="company">Account Type</label>
+                            <select class="form-select" id="acctype">
+                                <option selected>
+                                    Select Account
+                                </option>
+                                {% for acc_type in acc_types %}
+                                    <option value="{{ acc_type.type_id }}">
+                                        {{ acc_type.name }}
                                     </option>
-                                    {% for acc_type in acc_types %}
-                                        <option value="{{ acc_type.type_id }}">
-                                            {{ acc_type.name }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="col">
-                                <label for="company">Account Name</label>
-                                <input type="text"
-                                       class="form-control"
-                                       placeholder="Email"
-                                       required="required"
-                                       id="accname"/>
-                            </div>
+                                {% endfor %}
+                            </select>
                         </div>
-                        <div class="row mb-4 gap-2 pt-3">
-                            <div class="col">
-                                <label for="company">Amount</label>
-                                <input type="text"
-                                       class="form-control"
-                                       placeholder="Address"
-                                       required="required"
-                                       id="accamount"/>
-                            </div>
-                        </div
-                        <div class="mt-4 d-flex align-items-end justify-content-end">
-                            <button type="submit" class="btn btn-primary " id="update">Update</button>
+                        <div class="col">
+                            <label for="company">Account Name</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="account name"
+                                   required="required"
+                                   id="accname"/>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="row mb-4 gap-2 pt-3">
+                        <div class="col">
+                            <label for="company">Amount</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="amount"
+                                   required="required"
+                                   id="accamount"/>
+                        </div>
+                    </div
+                    >
+                    <div class="mt-4 d-flex align-items-end justify-content-end">
+                        <button type="submit" class="btn btn-primary" id="update">Update</button>
+                    </div>
+                </form>
             </div>
         </div>
-    {% endblock content %}
-    {% block scriptData %}
-        <script src="{% static "scripts/finance/editmodalaccount.js" %}"></script>
-    {% endblock scriptData %}
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    <script src="{% static "scripts/finance/editmodalaccount.js" %}"></script>
+{% endblock scriptData %}
