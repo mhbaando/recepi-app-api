@@ -33,7 +33,7 @@ class personal_id_type(models.Model):
 
 
 class placeissue(models.Model):
-    place_id =models.AutoField(primary_key=True)
+    place_id = models.AutoField(primary_key=True)
     place_name = models.CharField(max_length=100, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     modified_at = models.DateTimeField(auto_now=True, null=True, blank=True)
@@ -180,11 +180,11 @@ class licensetype(models.Model):
     def __str__(self) -> str:
         return self.type
 
- 
+
 class license(models.Model):
     license_id = models.AutoField(primary_key=True)
     place_of_issue = models.ForeignKey(
-        placeissue, on_delete=models.RESTRICT, null=True, blank=True)
+        'placeissue', on_delete=models.RESTRICT, null=True, blank=True)
     expired_date = models.DateField()
     federal_state = models.ForeignKey(
         to=federal_state, on_delete=models.RESTRICT)  # Federal state
