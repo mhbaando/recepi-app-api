@@ -3,10 +3,14 @@ $(document).ready(() => {
     const modal = $(".model-contaier")
     let accountID;
     // show model on click
+
+    
+    const updatebtn = document.querySelectorAll("#update")
+
+
     $("#edit").on('click', function () {
         overlay.attr('class', 'overlay')
         modal.attr('class', 'model-contaier')
-        
         accountID = $(this).data('accountid')
         
         // prepapulate data to the model

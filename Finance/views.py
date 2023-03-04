@@ -44,6 +44,7 @@ def AccountsPage(request):
                "accounts": accounts,
                'acc_types': account_type
                }
+
     return render(request, 'Finance/account_list.html', context)
 
 

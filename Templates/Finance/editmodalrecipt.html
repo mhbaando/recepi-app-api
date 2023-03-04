@@ -8,12 +8,22 @@
         <div class="model">
             <div class="model-content">
                 <div>
-                    <h4>Edit reciept</h4>
+                    <h4>Edit Receipt</h4>
                     <hr/>
                 </div>
                 <form id="updaterecitfrom">
                     {% csrf_token %}
-                    <div class="row pb-3c gap-2">
+                    <div class="row pb-3">
+                        <div class="col">
+                            <label for="company">Recieved From</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="recieved from"
+                                   required="required"
+                                   id="rcfrom"/>
+                        </div>
+                    </div>
+                    <div class="col row gap-2">
                         <div class="col">
                             <label for="company">Rv Number</label>
                             <input type="text"
@@ -22,35 +32,23 @@
                                    required="required"
                                    id="rvnumber"/>
                         </div>
-                    </div>
-                    <div class="col row pb-3">
-                        <div class="col">
-                            <label for="company">Recieved From</label>
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="rcfrom"
-                                   required="required"
-                                   id="rcfrom"/>
-                        </div>
-                        <div class="form-outline">
-                            <label class="form-label" for="desc">Reason</label>
-                            <textarea class="form-control"
-                                      id="reason"
-                                      placeholder="write your reason here"
-                                      rows="4"
-                                      required="required"></textarea>
-                        </div>
-                    </div>
-                    <div class="row mb-4 gap-2 pt-3">
                         <div class="col">
                             <label for="company">Amount</label>
                             <input type="text"
                                    class="form-control"
-                                   placeholder="rvamount"
+                                   placeholder="amount"
                                    required="required"
                                    id="rvamount"/>
                         </div>
                     </div>
+                    <div class="row mb-4 gap-2 pt-3">
+                        <div class="col">
+                            <label for="reciept">Reason</label>
+                            <textarea class="form-control" id="reason" placeholder="write your reason here" rows="4" id="reason" required="required">
+                                </textarea>
+                        </div>
+                    </div
+                    >
                     <div class="mt-4 d-flex align-items-end justify-content-end">
                         <button type="submit" class="btn btn-primary" id="update">Update</button>
                     </div>
@@ -60,5 +58,5 @@
     </div>
 {% endblock content %}
 {% block scriptData %}
-    <script src="{% static "scripts/finance/editmodalreciept.js" %}"></script>
+    <script src="{% static "scripts/company/editModal.js" %}"></script>
 {% endblock scriptData %}

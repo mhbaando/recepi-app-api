@@ -7,6 +7,10 @@ from Users.models import Users
 class account_types(models.Model):
     type_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    modified_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    reg_user = models.ForeignKey(
+        Users, on_delete=models.RESTRICT, null=True, blank=True)
 
     class Meta:
         db_table = 'account_types'
