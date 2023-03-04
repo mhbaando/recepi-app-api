@@ -42,4 +42,5 @@ urlpatterns = [
 
     path('', Dashboard, name='Dashboard'),
     path('chart/', get_chart_data),
+    path('updateuser/', updateUser),
 ]
