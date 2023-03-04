@@ -31,11 +31,6 @@ $(document).ready(()=>{
                     $(`#cylinder option[value='${vehicle.cylinder_id}']`).attr('selected', true)
                     $(`#vehicle_models option[value='${vehicle.vehicle_model_id}']`).attr('selected', true)
                     $(`#origin option[value='${vehicle.origin_id}']`).attr('selected', true)
-                    
-                    
-             
-                    
-                    
   
                    });
                   } else {
