@@ -54,13 +54,13 @@ $(document).ready(function () {
         });
         
       }
-      else{
-        // reste when chars are lesthe 4 charsd
-        ownar_name.attr('value', "")
-        owner_mother.attr('value', "")
-        personalID.attr('value', "")
+      // else{
+      //   // reste when chars are lesthe 4 charsd
+      //   ownar_name.attr('value', "")
+      //   owner_mother.attr('value', "")
       
-      }
+      
+      // }
     })
    
     
