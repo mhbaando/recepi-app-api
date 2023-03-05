@@ -244,3 +244,4 @@ poetry.toml
 # ruff
 .ruff_cache/
 nvim-linux64.deb
+/*.deb
