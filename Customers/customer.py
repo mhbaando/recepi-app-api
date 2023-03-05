@@ -142,6 +142,13 @@ def activate_customer(request):
             c_personalID = request.POST.get('perosonalID').strip()
             c_desc = request.POST.get('desc')
             c_doc = request.FILES['customerDoc']
+
+            if c_doc.size > 1000000:
+                return JsonResponse({
+                    'isError':True,
+                    'Message': 'File Uppload exceeded Maximum size of 2MB'
+                    })
+                
             customer = ""
             if c_personalID is None or c_desc is None or c_doc is None:
                 return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)

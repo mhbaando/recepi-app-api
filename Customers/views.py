@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from Customers import models as customer_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
