@@ -68,6 +68,17 @@ def register_vehicle(request):
                             'Message': f'This receipt voucher already used by {is_voucher_exist.owner.full_name}'
                         }
                     )
+                isvoucer_in_liscence = customer_model.license.objects.filter(
+                    receipt_voucher=rv_num).exists()
+                if isvoucer_in_liscence is not None:
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': "Duplicate Error!!",
+                                     'type': "warning",
+                                     'Message': f'this voucher is already used in Liscence'
+                        }
+                    )
                 else:
 
                     owner = customer_model.customer.objects.filter(
@@ -597,24 +608,38 @@ def asign_plate(request):
             selected_vehicle = vehicle_model.vehicle.objects.filter(
                 Q(vehicle_id=vehicleiddd)).first()
 
-            # create plate
-            new_plate = vehicle_model.plate(
-                plate_code=code,
-                state=selected_state,
-                plate_no=number,
-                year=year,
-                type=selected_type,
-                reg_user_id=request.user.id,
-            )
+            is_plate_exist = vehicle_model.plate.objects.filter(
+                Q(plate_no=number)).first()
 
-            new_plate.save()
+            if is_plate_exist is not None:
+                return JsonResponse(
+                    {
+                        'isError': True,
+                        'title': "Duplicate Error!!",
+                        'type': "warning",
+                        'Message': f'this plate number is already taken by some one '
+                    }
+                )
+            else:
 
-            # assign plate to the car
-            vehicle_to_assign_plate = vehicle_model.vehicle.objects.filter(
-                Q(vehicle_id=vehicleiddd)).first()
-            if vehicle_to_assign_plate is not None:
-                vehicle_to_assign_plate.plate_no = new_plate
-                vehicle_to_assign_plate.save()
+                # create plate
+                new_plate = vehicle_model.plate(
+                    plate_code=code,
+                    state=selected_state,
+                    plate_no=number,
+                    year=year,
+                    type=selected_type,
+                    reg_user_id=request.user.id,
+                )
+
+                new_plate.save()
+
+                # assign plate to the car
+                vehicle_to_assign_plate = vehicle_model.vehicle.objects.filter(
+                    Q(vehicle_id=vehicleiddd)).first()
+                if vehicle_to_assign_plate is not None:
+                    vehicle_to_assign_plate.plate_no = new_plate
+                    vehicle_to_assign_plate.save()
 
     return render(request, 'vehicles/assign_model.html', context)
 
