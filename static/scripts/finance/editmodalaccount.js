@@ -3,9 +3,9 @@ $(document).ready(() => {
     const modal = $(".model-contaier")
     let accountID;
     // show model on click
-
+    const btnupdate = document.querySelectorAll("#update")
     
-    const updatebtn = document.querySelectorAll("#update")
+    
 
 
     $("#edit").on('click', function () {
