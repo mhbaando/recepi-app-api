@@ -335,15 +335,15 @@ def receipt(request, id):
 
 
 @login_required(login_url='Login')
-def find_account(request, name):
+def find_account(request, id):
     if request.method == 'GET':
         # if name is not None:
         rv_account = models.account.objects.filter(
-            Q(account_name__icontains=name))
+            Q(account_name__icontains=id))
         message = []
         if rv_account is not None:
             for xSearch in range(0, len(rv_account)):
-                message.append(    
+                message.append(
                     {
                         'label': f"{rv_account[xSearch].account_name}",
                         'value': f"{rv_account[xSearch].account_name}",
@@ -406,11 +406,11 @@ def savereciept(request, action):
     return render(request, 'receipt_list.html')
 
 
-# update account
+# updated accout
 @login_required(login_url="Login")
-def find_account(request, id):
+def findupdatedaccount(request, name):
     if id is not None:
-        found_account = account.objects.filter(account_id=id).first()
+        found_account = account.objects.filter(account_id=name).first()
         if found_account is not None:
             return JsonResponse({
                 'isError': False,
@@ -425,11 +425,6 @@ def find_account(request, id):
             'isError': True,
             'Message': 'Account Not Found'
         })
-
-    return JsonResponse({
-        'isError': True,
-        'Message': 'Provide an ID'
-    })
 
 
 @login_required(login_url="Login")

@@ -19,11 +19,11 @@ urlpatterns = [
     path('receipt/<int:id>', views.receipt, name='receipt'),
     path('SearchReceiptVoucher/<str:search>',
          views.SearchReceiptVoucher, name='SearchReceiptVoucher'),
-    path('findaccount/<str:name>', views.find_account),
+    path('findaccount/<str:id>', views.find_account),
     path('findrfrom/<str:name>', views.find_rcfrom),
     path('save_reciept/<str:action>', views.savereciept, name='savereciept'),
     path('updatereciept/', views.update_reviept),
-    path('find_account/<int:id>', views.find_account),
+    path('findupdatedaccount/<int:name>', views.findupdatedaccount),
 
 
 
