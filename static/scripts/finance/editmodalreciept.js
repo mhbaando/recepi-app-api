@@ -3,11 +3,17 @@ $(document).ready(() => {
     const modal = $(".model-contaier")
     let  rvID;
     // show model on click
+
+    const btnupdate = document.querySelectorAll("#update")
+
     $("#edit").on('click', function () {
-        overlay.attr('class', 'overlay')
-        modal.attr('class', 'model-contaier')
-        rvID = $(this).data('rvid')
- 
+        btnupdate.forEach(btn =>{
+            rvID = $(this).data('rvid')
+            overlay.attr('class', 'overlay')
+            modal.attr('class', 'model-contaier')
+
+        })
+
         // prepapulate data to the model
         // 1. get the selected compnay
         $.ajax({
