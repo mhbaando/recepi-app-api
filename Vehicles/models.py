@@ -67,6 +67,22 @@ class cylinder(models.Model):
         return self.cylinder_name
 
 
+class code_plate(models.Model):
+    code_id = models.AutoField(primary_key=True)
+    code_name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    # Todo: user relation
+    reg_user = models.ForeignKey(Users, on_delete=models.RESTRICT)
+
+    class Meta:
+        db_table = 'code_plate'
+
+    def __str__(self):
+        return self.code_name
+
+
 class plate(models.Model):
     plate_id = models.AutoField(primary_key=True)
     plate_code = models.CharField(max_length=100)
@@ -92,7 +108,7 @@ class plate(models.Model):
 class vehicle(models.Model):
     vehicle_id = models.AutoField(primary_key=True)
     vehicle_model = models.ForeignKey(model_brand, on_delete=models.RESTRICT)
-    year = models.IntegerField(null=True, blank=True)
+    year = models.DateField(null=True, blank=True)
     origin = models.ForeignKey(
         customer_model.countries, on_delete=models.RESTRICT)
     color = models.ForeignKey(color, on_delete=models.RESTRICT)

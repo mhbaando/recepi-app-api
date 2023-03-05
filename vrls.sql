@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1deb5ubuntu1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 19, 2023 at 06:52 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.0.25
+-- Host: localhost:3306
+-- Generation Time: Mar 05, 2023 at 09:44 AM
+-- Server version: 8.0.32-0ubuntu0.22.04.2
+-- PHP Version: 8.1.2-1ubuntu2.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,21 +28,15 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `account` (
-  `account_id` int(11) NOT NULL,
+  `account_id` int NOT NULL,
   `account_name` varchar(100) NOT NULL,
-  `amount` int(11) NOT NULL,
+  `account_number` int DEFAULT NULL,
+  `amount` int NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `account_type_id` int(11) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `account`
---
-
-INSERT INTO `account` (`account_id`, `account_name`, `amount`, `created_at`, `modified_at`, `account_type_id`, `reg_user_id`) VALUES
-(1, 'New License', 45, '2023-02-18 12:51:23.526754', '2023-02-18 12:51:23.526754', 2, 1);
+  `account_type_id` int NOT NULL,
+  `reg_user_id` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -51,18 +45,21 @@ INSERT INTO `account` (`account_id`, `account_name`, `amount`, `created_at`, `mo
 --
 
 CREATE TABLE `account_types` (
-  `type_id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `type_id` int NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `created_at` datetime(6) DEFAULT NULL,
+  `modified_at` datetime(6) DEFAULT NULL,
+  `reg_user_id` bigint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `account_types`
 --
 
-INSERT INTO `account_types` (`type_id`, `name`) VALUES
-(1, 'Vehicle'),
-(2, 'Liecense'),
-(3, 'Plate');
+INSERT INTO `account_types` (`type_id`, `name`, `created_at`, `modified_at`, `reg_user_id`) VALUES
+(1, 'Vehicle', '2023-03-05 08:44:11.744076', '2023-03-05 08:44:11.759784', NULL),
+(2, 'Liecense', '2023-03-05 08:44:11.744076', '2023-03-05 08:44:11.759784', NULL),
+(3, 'Plate', '2023-03-05 08:44:11.744076', '2023-03-05 08:44:11.759784', NULL);
 
 -- --------------------------------------------------------
 
@@ -71,7 +68,7 @@ INSERT INTO `account_types` (`type_id`, `name`) VALUES
 --
 
 CREATE TABLE `audittrials` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `Avatar` varchar(100) NOT NULL,
   `Username` varchar(20) NOT NULL,
   `path` varchar(60) DEFAULT NULL,
@@ -83,60 +80,7 @@ CREATE TABLE `audittrials` (
   `browser` varchar(200) NOT NULL,
   `ip_address` varchar(200) NOT NULL,
   `user_agent` longtext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `audittrials`
---
-
-INSERT INTO `audittrials` (`id`, `Avatar`, `Username`, `path`, `Name`, `Actions`, `Module`, `date_of_action`, `operating_system`, `browser`, `ip_address`, `user_agent`) VALUES
-(1, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-11 11:58:36.878453', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(2, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-11 12:09:30.210679', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(3, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-12 06:02:42.108436', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(4, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-12 06:34:11.702720', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(5, '', 'admin', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-12 06:36:07.442179', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(6, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-12 10:22:44.701850', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(7, '', 'admin', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 05:44:09.072011', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(8, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 07:08:20.371662', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(9, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-13 07:23:30.249287', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(10, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-13 07:43:37.234742', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(11, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-13 07:45:34.303377', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(12, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-13 07:46:47.302234', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(13, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 08:18:11.036520', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(14, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/', ' ', 'Registered A Customer', 'Customer / Register', '2023-02-13 08:33:28.813782', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(15, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/logout/', ' ', '  Logged out the System', 'Users Module', '2023-02-13 08:39:43.072694', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(16, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 08:39:47.791668', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(17, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 09:28:04.517758', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(18, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 10:10:45.679851', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(19, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 10:28:20.915629', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(20, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-13 11:53:15.191844', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(21, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/activate', ' ', 'Activated A Customer Maxamed Ali Maxamed Maxamuud', 'Customer / Activate', '2023-02-13 11:53:32.175337', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(22, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-14 06:42:24.339367', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(23, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-14 10:46:44.962803', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(24, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-14 12:08:06.453699', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(25, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-15 07:13:37.363144', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(26, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-15 10:51:00.596635', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(27, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-15 12:55:30.973051', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(28, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-16 11:42:51.628480', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(29, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-16 11:59:05.518381', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(30, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 06:06:48.461544', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(31, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 07:15:21.791621', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(32, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 10:38:43.370839', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(33, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 11:50:45.092697', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(34, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xasen Ali Jaamac Axmed', 'Customer / Update', '2023-02-18 11:54:56.191988', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(35, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xasen Ali Jaamac Axmed', 'Customer / Update', '2023-02-18 11:58:44.699828', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(36, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xalima Axmed Liban Farayare', 'Customer / Update', '2023-02-18 12:03:05.698844', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(37, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xalima Axmed Liban Cabdi', 'Customer / Update', '2023-02-18 12:07:51.929056', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(38, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xalima Axmed Liban Cabdi', 'Customer / Update', '2023-02-18 12:08:19.462905', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(39, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xalima Axmed Liban Cabdi', 'Customer / Update', '2023-02-18 12:12:34.355896', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(40, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/updatecustomer/', ' ', 'Updated A Customer Xalima Axmed Liban Cabdi', 'Customer / Update', '2023-02-18 12:13:56.789811', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(41, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 12:47:33.849225', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(42, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 13:21:20.957681', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(43, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/customer/activate', ' ', 'Activated A Customer Ahmed Jaamac Geedi Jaamac', 'Customer / Activate', '2023-02-18 13:30:42.333621', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(44, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 13:52:38.444344', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(45, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 15:20:18.579328', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(46, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-18 16:04:15.907838', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge'),
-(47, 'Avatars/7309681-removebg-preview.png', 'AD00001', '/login', ' ', '  logged into the System', 'Users Module', '2023-02-19 08:43:58.224397', 'Windows', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -145,9 +89,9 @@ INSERT INTO `audittrials` (`id`, `Avatar`, `Username`, `path`, `Name`, `Actions`
 --
 
 CREATE TABLE `auth_group` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `name` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -156,10 +100,10 @@ CREATE TABLE `auth_group` (
 --
 
 CREATE TABLE `auth_group_permissions` (
-  `id` bigint(20) NOT NULL,
-  `group_id` int(11) NOT NULL,
-  `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` bigint NOT NULL,
+  `group_id` int NOT NULL,
+  `permission_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -168,11 +112,11 @@ CREATE TABLE `auth_group_permissions` (
 --
 
 CREATE TABLE `auth_permission` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
-  `content_type_id` int(11) NOT NULL,
+  `content_type_id` int NOT NULL,
   `codename` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `auth_permission`
@@ -247,46 +191,54 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (66, 'Can change federal_state', 17, 'change_federal_state'),
 (67, 'Can delete federal_state', 17, 'delete_federal_state'),
 (68, 'Can view federal_state', 17, 'view_federal_state'),
-(69, 'Can add personal_id_type', 18, 'add_personal_id_type'),
-(70, 'Can change personal_id_type', 18, 'change_personal_id_type'),
-(71, 'Can delete personal_id_type', 18, 'delete_personal_id_type'),
-(72, 'Can view personal_id_type', 18, 'view_personal_id_type'),
-(73, 'Can add license', 19, 'add_license'),
-(74, 'Can change license', 19, 'change_license'),
-(75, 'Can delete license', 19, 'delete_license'),
-(76, 'Can view license', 19, 'view_license'),
-(77, 'Can add color', 20, 'add_color'),
-(78, 'Can change color', 20, 'change_color'),
-(79, 'Can delete color', 20, 'delete_color'),
-(80, 'Can view color', 20, 'view_color'),
-(81, 'Can add cylinder', 21, 'add_cylinder'),
-(82, 'Can change cylinder', 21, 'change_cylinder'),
-(83, 'Can delete cylinder', 21, 'delete_cylinder'),
-(84, 'Can view cylinder', 21, 'view_cylinder'),
-(85, 'Can add model_brand', 22, 'add_model_brand'),
-(86, 'Can change model_brand', 22, 'change_model_brand'),
-(87, 'Can delete model_brand', 22, 'delete_model_brand'),
-(88, 'Can view model_brand', 22, 'view_model_brand'),
-(89, 'Can add vehicle', 23, 'add_vehicle'),
-(90, 'Can change vehicle', 23, 'change_vehicle'),
-(91, 'Can delete vehicle', 23, 'delete_vehicle'),
-(92, 'Can view vehicle', 23, 'view_vehicle'),
-(93, 'Can add transfare_vehicles', 24, 'add_transfare_vehicles'),
-(94, 'Can change transfare_vehicles', 24, 'change_transfare_vehicles'),
-(95, 'Can delete transfare_vehicles', 24, 'delete_transfare_vehicles'),
-(96, 'Can view transfare_vehicles', 24, 'view_transfare_vehicles'),
+(69, 'Can add license', 18, 'add_license'),
+(70, 'Can change license', 18, 'change_license'),
+(71, 'Can delete license', 18, 'delete_license'),
+(72, 'Can view license', 18, 'view_license'),
+(73, 'Can add licensetype', 19, 'add_licensetype'),
+(74, 'Can change licensetype', 19, 'change_licensetype'),
+(75, 'Can delete licensetype', 19, 'delete_licensetype'),
+(76, 'Can view licensetype', 19, 'view_licensetype'),
+(77, 'Can add personal_id_type', 20, 'add_personal_id_type'),
+(78, 'Can change personal_id_type', 20, 'change_personal_id_type'),
+(79, 'Can delete personal_id_type', 20, 'delete_personal_id_type'),
+(80, 'Can view personal_id_type', 20, 'view_personal_id_type'),
+(81, 'Can add placeissue', 21, 'add_placeissue'),
+(82, 'Can change placeissue', 21, 'change_placeissue'),
+(83, 'Can delete placeissue', 21, 'delete_placeissue'),
+(84, 'Can view placeissue', 21, 'view_placeissue'),
+(85, 'Can add color', 22, 'add_color'),
+(86, 'Can change color', 22, 'change_color'),
+(87, 'Can delete color', 22, 'delete_color'),
+(88, 'Can view color', 22, 'view_color'),
+(89, 'Can add cylinder', 23, 'add_cylinder'),
+(90, 'Can change cylinder', 23, 'change_cylinder'),
+(91, 'Can delete cylinder', 23, 'delete_cylinder'),
+(92, 'Can view cylinder', 23, 'view_cylinder'),
+(93, 'Can add model_brand', 24, 'add_model_brand'),
+(94, 'Can change model_brand', 24, 'change_model_brand'),
+(95, 'Can delete model_brand', 24, 'delete_model_brand'),
+(96, 'Can view model_brand', 24, 'view_model_brand'),
 (97, 'Can add plate', 25, 'add_plate'),
 (98, 'Can change plate', 25, 'change_plate'),
 (99, 'Can delete plate', 25, 'delete_plate'),
 (100, 'Can view plate', 25, 'view_plate'),
-(101, 'Can add type', 26, 'add_type'),
-(102, 'Can change type', 26, 'change_type'),
-(103, 'Can delete type', 26, 'delete_type'),
-(104, 'Can view type', 26, 'view_type'),
-(105, 'Can add licensetype', 27, 'add_licensetype'),
-(106, 'Can change licensetype', 27, 'change_licensetype'),
-(107, 'Can delete licensetype', 27, 'delete_licensetype'),
-(108, 'Can view licensetype', 27, 'view_licensetype');
+(101, 'Can add vehicle', 26, 'add_vehicle'),
+(102, 'Can change vehicle', 26, 'change_vehicle'),
+(103, 'Can delete vehicle', 26, 'delete_vehicle'),
+(104, 'Can view vehicle', 26, 'view_vehicle'),
+(105, 'Can add type', 27, 'add_type'),
+(106, 'Can change type', 27, 'change_type'),
+(107, 'Can delete type', 27, 'delete_type'),
+(108, 'Can view type', 27, 'view_type'),
+(109, 'Can add transfare_vehicles', 28, 'add_transfare_vehicles'),
+(110, 'Can change transfare_vehicles', 28, 'change_transfare_vehicles'),
+(111, 'Can delete transfare_vehicles', 28, 'delete_transfare_vehicles'),
+(112, 'Can view transfare_vehicles', 28, 'view_transfare_vehicles'),
+(113, 'Can add code_plate', 29, 'add_code_plate'),
+(114, 'Can change code_plate', 29, 'change_code_plate'),
+(115, 'Can delete code_plate', 29, 'delete_code_plate'),
+(116, 'Can view code_plate', 29, 'view_code_plate');
 
 -- --------------------------------------------------------
 
@@ -295,24 +247,85 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 --
 
 CREATE TABLE `blood_group` (
-  `blood_group_id` int(11) NOT NULL,
+  `blood_group_id` int NOT NULL,
   `blood_group_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `blood_group`
 --
 
 INSERT INTO `blood_group` (`blood_group_id`, `blood_group_name`, `created_at`, `modified_at`) VALUES
-(1, 'A+', '2023-02-05 10:35:13.000000', '2023-02-05 10:35:13.000000'),
-(2, 'A-', '2023-02-05 10:35:13.000000', '2023-02-05 10:35:13.000000'),
-(3, 'O+', '2023-02-05 10:36:15.000000', '2023-02-05 10:36:15.000000'),
-(4, 'B-', '2023-02-05 10:36:15.000000', '2023-02-05 10:36:15.000000'),
-(5, 'O-', '2023-02-05 10:37:15.000000', '2023-02-05 10:37:15.000000'),
-(6, 'AB+', '2023-02-05 10:37:32.000000', '2023-02-05 10:37:32.000000'),
-(7, 'AB-', '2023-02-05 10:37:47.000000', '2023-02-05 10:37:47.000000');
+(1, 'A+', '2023-03-05 08:44:11.708834', '2023-03-05 08:44:11.722012'),
+(2, 'A-', '2023-03-05 08:44:11.708834', '2023-03-05 08:44:11.722012'),
+(3, 'O+', '2023-03-05 08:44:11.708834', '2023-03-05 08:44:11.722012'),
+(4, 'B-', '2023-03-05 08:44:11.708834', '2023-03-05 08:44:11.722012'),
+(5, 'O-', '2023-03-05 08:44:11.708834', '2023-03-05 08:44:11.722012'),
+(6, 'AB+', '2023-03-05 08:44:11.708834', '2023-03-05 08:44:11.722012'),
+(7, 'AB-', '2023-03-05 08:44:11.708834', '2023-03-05 08:44:11.722012');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `code_plate`
+--
+
+CREATE TABLE `code_plate` (
+  `code_id` int NOT NULL,
+  `code_name` varchar(100) NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `modified_at` datetime(6) NOT NULL,
+  `reg_user_id` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `code_plate`
+--
+
+INSERT INTO `code_plate` (`code_id`, `code_name`, `created_at`, `modified_at`, `reg_user_id`) VALUES
+(1, 'A', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 2),
+(2, 'AA', '2023-03-04 14:23:46.091746', '2023-03-04 14:24:06.053633', 2),
+(3, 'AB', '2023-03-04 14:24:40.315794', '2023-03-04 14:24:40.315794', 2),
+(4, 'Ac', '2023-03-04 14:24:58.541787', '2023-03-04 14:24:58.541787', 2),
+(5, 'AD', '2023-03-05 08:59:41.451176', '2023-03-05 08:59:41.451176', 2),
+(6, 'AE', '2023-03-05 09:00:00.008244', '2023-03-05 09:00:00.008244', 2),
+(7, 'AF', '2023-03-05 09:00:09.407298', '2023-03-05 09:00:09.407298', 2),
+(8, 'AG', '2023-03-05 09:00:19.598722', '2023-03-05 09:00:19.598722', 2),
+(9, 'AH', '2023-03-05 09:00:33.942555', '2023-03-05 09:00:33.942555', 2),
+(10, 'AI', '2023-03-05 09:00:53.735372', '2023-03-05 09:00:53.735372', 2),
+(11, 'AM', '2023-03-05 09:01:00.565711', '2023-03-05 09:01:00.565711', 2),
+(12, 'B', '2023-03-05 09:01:16.624733', '2023-03-05 09:01:16.624733', 2),
+(13, 'M1A', '2023-03-05 09:01:29.887669', '2023-03-05 09:01:29.887669', 2),
+(14, 'M2A', '2023-03-05 09:02:00.072583', '2023-03-05 09:02:00.072583', 2),
+(15, 'M3A', '2023-03-05 09:02:18.391755', '2023-03-05 09:02:18.391755', 2),
+(16, 'M4A', '2023-03-05 09:02:30.991371', '2023-03-05 09:02:30.991371', 2),
+(17, 'M5A', '2023-03-05 09:02:49.943728', '2023-03-05 09:02:49.943728', 2),
+(18, 'M6A', '2023-03-05 09:03:31.974213', '2023-03-05 09:03:31.974213', 2),
+(19, 'MA', '2023-03-05 09:03:48.648617', '2023-03-05 09:03:48.648617', 2),
+(20, 'MA1-', '2023-03-05 09:04:07.846544', '2023-03-05 09:04:07.846544', 2),
+(21, 'MB', '2023-03-05 09:04:26.367695', '2023-03-05 09:04:26.367695', 2),
+(22, 'MC', '2023-03-05 09:04:35.120778', '2023-03-05 09:04:35.120778', 2),
+(23, 'MD', '2023-03-05 09:06:43.335074', '2023-03-05 09:06:43.335074', 2),
+(24, 'ME', '2023-03-05 09:07:10.815568', '2023-03-05 09:07:10.815568', 2),
+(25, 'MF', '2023-03-05 09:07:17.607185', '2023-03-05 09:07:17.607185', 2),
+(26, 'MG', '2023-03-05 09:07:24.640323', '2023-03-05 09:07:24.640323', 2),
+(27, 'MH', '2023-03-05 09:07:32.431371', '2023-03-05 09:07:32.431371', 2),
+(28, 'MJ', '2023-03-05 09:07:56.815287', '2023-03-05 09:07:56.815287', 2),
+(29, 'Mk', '2023-03-05 09:08:02.983240', '2023-03-05 09:08:02.984243', 2),
+(30, 'ML', '2023-03-05 09:09:15.150475', '2023-03-05 09:09:24.702962', 2),
+(31, 'MM', '2023-03-05 09:09:43.202809', '2023-03-05 09:09:43.202809', 2),
+(32, 'MO', '2023-03-05 09:09:51.621689', '2023-03-05 09:09:51.622688', 2),
+(33, 'MP', '2023-03-05 09:12:01.919065', '2023-03-05 09:12:01.919065', 2),
+(34, 'MQ', '2023-03-05 09:12:10.311534', '2023-03-05 09:12:10.311534', 2),
+(35, 'MR', '2023-03-05 09:12:17.655426', '2023-03-05 09:12:17.655426', 2),
+(36, 'MS', '2023-03-05 09:12:58.223248', '2023-03-05 09:12:58.223248', 2),
+(37, 'MT', '2023-03-05 09:13:05.494146', '2023-03-05 09:13:05.494146', 2),
+(38, 'MW', '2023-03-05 09:13:18.877422', '2023-03-05 09:13:18.877422', 2),
+(39, 'MX', '2023-03-05 09:13:25.443235', '2023-03-05 09:13:25.443235', 2),
+(40, 'MY', '2023-03-05 09:13:34.510484', '2023-03-05 09:13:34.510484', 2),
+(41, 'MZ', '2023-03-05 09:13:43.429957', '2023-03-05 09:13:54.867007', 2);
 
 -- --------------------------------------------------------
 
@@ -321,162 +334,162 @@ INSERT INTO `blood_group` (`blood_group_id`, `blood_group_name`, `created_at`, `
 --
 
 CREATE TABLE `color` (
-  `color_id` int(11) NOT NULL,
+  `color_id` int NOT NULL,
   `color_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `reg_user_id` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `color`
 --
 
 INSERT INTO `color` (`color_id`, `color_name`, `created_at`, `modified_at`, `reg_user_id`) VALUES
-(213, 'Black', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(214, 'Graphite Black', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(215, 'Black Steal', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(216, 'Dark Silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(217, 'Silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(218, 'Blue Silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(219, 'Steel Gray', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(220, 'Shadow Silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(221, 'Stone Silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(222, 'Midnight Silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(223, 'Gun Metal', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(224, 'Anthracite Grey', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(225, 'Matte Gray', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(226, 'Matte Light Grey', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(227, 'Util Black Poly', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(228, 'Util Dark silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(229, 'Util Silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(230, 'Util Gun Metal', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(231, 'Util Shadow Silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(232, 'Graphite', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(233, 'Silver Grey', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(234, 'Silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(235, 'Blue Silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(236, 'Shadow Silver', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(237, 'Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(238, 'Torino Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(239, 'Formula Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(240, 'Blaze Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(241, 'Graceful Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(242, 'Garnet Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(243, 'Desert Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(244, 'Cabernet Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(245, 'Candy Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(246, 'Sunrise Orange', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(247, 'Classic Gold', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(248, 'Orange', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(249, 'Dark Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(250, 'Matte Yellow', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(251, 'Bright Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(252, 'Garnet Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(253, 'Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(254, 'Golden Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(255, 'Dark Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(256, 'Dark Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(257, 'Racing Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(258, 'Sea Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(259, 'Olive Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(260, 'Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(261, 'Gasoline Blue Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(262, 'Lime Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(263, 'Dark Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(264, 'Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(265, 'Dark Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(266, 'Worn Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(267, 'Sea Wash', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(268, 'Midnight Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(269, 'Dark Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(270, 'Saxony Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(271, 'Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(272, 'Mariner Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(273, 'Harbor Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(274, 'Diamond Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(275, 'Surf Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(276, 'Nautical Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(277, 'Bright Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(278, 'Purple Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(279, 'Spinnaker Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(280, 'Ultra Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(281, 'Bright Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(282, 'Dark Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(283, 'Midnight Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(284, 'Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(285, 'Sea Foam Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(286, 'Lightning blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(287, 'Maui Blue Poly', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(288, 'Util Bright Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(289, 'Matte Dark Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(290, 'Matte Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(291, 'Matte Midnight Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(292, 'Light blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(293, 'Taxi Yellow', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(294, 'Race Yellow', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(295, ' Bronze', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(296, 'Yellow Bird', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(297, 'Lime', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(298, 'Champagne', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(299, 'Pueblo Beige', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(300, 'Dark Ivory', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(301, 'Choco Brown', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(302, 'Golden Brown', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(303, 'Light Brown', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(304, 'Straw Beige', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(305, 'Moss Brown', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(306, 'Biston Brown', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(307, 'Beechwood', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(308, 'Dark Beechwood', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(309, 'Choco Orange', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(310, ' Beach Sand', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(311, 'Sun Bleeched Sand', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(312, 'Cream', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(313, 'Brown', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(314, 'Medium Brown', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(315, 'Light Brown', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(316, 'White', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(317, 'Frost White', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(318, 'Honey Beige', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(319, 'Brown', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(320, 'Dark Brown', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(321, 'straw beige', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(322, 'Steel', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(323, 'Black steel', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(324, 'Brushed Aluminium', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(325, 'Chrome', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(326, 'Worn Off White', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(327, 'Util Off White', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(328, 'Light Orange', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(329, 'Securicor Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(330, 'Taxi Yellow', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(331, 'police car blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(332, 'Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(333, 'Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(334, 'Olive Army Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(335, 'Hot Pink', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(336, 'Salmon pink', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(337, 'Vermillion Pink', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(338, 'Orange', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(339, 'Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(340, 'Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(341, 'Black Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(342, 'Purple', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(343, 'Black Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(344, 'hunter green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(345, 'Purple', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(346, 'V Dark Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(347, 'MODSHOP BLACK1', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(348, 'Purple', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(349, 'Dark Purple', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(350, 'Lava Red', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(351, 'Desert Tan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(352, 'Foilage Green', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(353, 'DEFAULT ALLOY COLOR', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(354, 'Epsilon Blue', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(355, 'Gold', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(356, 'Brushed Gold', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0);
+(213, 'Black', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(214, 'Graphite Black', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(215, 'Black Steal', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(216, 'Dark Silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(217, 'Silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(218, 'Blue Silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(219, 'Steel Gray', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(220, 'Shadow Silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(221, 'Stone Silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(222, 'Midnight Silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(223, 'Gun Metal', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(224, 'Anthracite Grey', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(225, 'Matte Gray', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(226, 'Matte Light Grey', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(227, 'Util Black Poly', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(228, 'Util Dark silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(229, 'Util Silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(230, 'Util Gun Metal', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(231, 'Util Shadow Silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(232, 'Graphite', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(233, 'Silver Grey', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(234, 'Silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(235, 'Blue Silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(236, 'Shadow Silver', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(237, 'Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(238, 'Torino Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(239, 'Formula Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(240, 'Blaze Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(241, 'Graceful Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(242, 'Garnet Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(243, 'Desert Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(244, 'Cabernet Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(245, 'Candy Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(246, 'Sunrise Orange', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(247, 'Classic Gold', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(248, 'Orange', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(249, 'Dark Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(250, 'Matte Yellow', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(251, 'Bright Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(252, 'Garnet Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(253, 'Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(254, 'Golden Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(255, 'Dark Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(256, 'Dark Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(257, 'Racing Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(258, 'Sea Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(259, 'Olive Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(260, 'Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(261, 'Gasoline Blue Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(262, 'Lime Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(263, 'Dark Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(264, 'Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(265, 'Dark Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(266, 'Worn Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(267, 'Sea Wash', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(268, 'Midnight Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(269, 'Dark Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(270, 'Saxony Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(271, 'Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(272, 'Mariner Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(273, 'Harbor Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(274, 'Diamond Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(275, 'Surf Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(276, 'Nautical Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(277, 'Bright Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(278, 'Purple Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(279, 'Spinnaker Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(280, 'Ultra Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(281, 'Bright Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(282, 'Dark Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(283, 'Midnight Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(284, 'Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(285, 'Sea Foam Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(286, 'Lightning blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(287, 'Maui Blue Poly', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(288, 'Util Bright Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(289, 'Matte Dark Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(290, 'Matte Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(291, 'Matte Midnight Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(292, 'Light blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(293, 'Taxi Yellow', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(294, 'Race Yellow', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(295, ' Bronze', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(296, 'Yellow Bird', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(297, 'Lime', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(298, 'Champagne', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(299, 'Pueblo Beige', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(300, 'Dark Ivory', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(301, 'Choco Brown', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(302, 'Golden Brown', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(303, 'Light Brown', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(304, 'Straw Beige', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(305, 'Moss Brown', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(306, 'Biston Brown', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(307, 'Beechwood', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(308, 'Dark Beechwood', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(309, 'Choco Orange', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(310, ' Beach Sand', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(311, 'Sun Bleeched Sand', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(312, 'Cream', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(313, 'Brown', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(314, 'Medium Brown', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(315, 'Light Brown', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(316, 'White', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(317, 'Frost White', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(318, 'Honey Beige', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(319, 'Brown', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(320, 'Dark Brown', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(321, 'straw beige', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(322, 'Steel', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(323, 'Black steel', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(324, 'Brushed Aluminium', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(325, 'Chrome', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(326, 'Worn Off White', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(327, 'Util Off White', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(328, 'Light Orange', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(329, 'Securicor Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(330, 'Taxi Yellow', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(331, 'police car blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(332, 'Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(333, 'Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(334, 'Olive Army Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(335, 'Hot Pink', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(336, 'Salmon pink', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(337, 'Vermillion Pink', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(338, 'Orange', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(339, 'Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(340, 'Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(341, 'Black Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(342, 'Purple', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(343, 'Black Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(344, 'hunter green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(345, 'Purple', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(346, 'V Dark Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(347, 'MODSHOP BLACK1', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(348, 'Purple', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(349, 'Dark Purple', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(350, 'Lava Red', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(351, 'Desert Tan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(352, 'Foilage Green', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(353, 'DEFAULT ALLOY COLOR', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(354, 'Epsilon Blue', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(355, 'Gold', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(356, 'Brushed Gold', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0);
 
 -- --------------------------------------------------------
 
@@ -485,30 +498,23 @@ INSERT INTO `color` (`color_id`, `color_name`, `created_at`, `modified_at`, `reg
 --
 
 CREATE TABLE `company` (
-  `company_id` int(11) NOT NULL,
+  `company_id` int NOT NULL,
   `company_name` varchar(100) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `address` varchar(100) DEFAULT NULL,
   `phone` varchar(100) DEFAULT NULL,
   `logo` varchar(100) DEFAULT NULL,
   `website` varchar(100) DEFAULT NULL,
-  `reg_no` longtext DEFAULT NULL,
-  `document` varchar(100) DEFAULT NULL,
-  `description` longtext DEFAULT NULL,
+  `reg_no` longtext,
+  `document` varchar(80) DEFAULT NULL,
+  `description` longtext,
   `is_blocked` tinyint(1) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `federal_state_id` int(11) DEFAULT NULL,
-  `owner_id` int(11) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `company`
---
-
-INSERT INTO `company` (`company_id`, `company_name`, `email`, `address`, `phone`, `logo`, `website`, `reg_no`, `document`, `description`, `is_blocked`, `created_at`, `modified_at`, `federal_state_id`, `owner_id`, `reg_user_id`) VALUES
-(1, 'Maandhis', 'info@maandhis.com', 'Hodan Talex mogadishu Somalia', '+252634034190', '', 'https://maadhis.com', '478499556', '', 'Maandhis', 0, '2023-02-18 13:36:29.922984', '2023-02-18 13:36:29.922984', 1, 1, 1);
+  `federal_state_id` int DEFAULT NULL,
+  `owner_id` int NOT NULL,
+  `reg_user_id` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -517,213 +523,213 @@ INSERT INTO `company` (`company_id`, `company_name`, `email`, `address`, `phone`
 --
 
 CREATE TABLE `countries` (
-  `country_id` int(11) NOT NULL,
+  `country_id` int NOT NULL,
   `country_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `countries`
 --
 
 INSERT INTO `countries` (`country_id`, `country_name`, `created_at`, `modified_at`) VALUES
-(2, 'Afghanistan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(3, 'Albania', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(4, 'Algeria', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(5, 'Andorra', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(6, 'Angola', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(7, 'Antigua and Barbuda', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(8, 'Argentina', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(9, 'Armenia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(10, 'Australia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(11, 'Austria', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(12, 'Azerbaijan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(13, 'Bahamas', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(14, 'Bahrain', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(15, 'Bangladesh', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(16, 'Barbados', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(17, 'Belarus', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(18, 'Belgium', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(19, 'Belize', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(20, 'Benin', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(21, 'Bhutan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(22, 'Bolivia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(23, 'Bosnia and Herzegovina', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(24, 'Botswana', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(25, 'Brazil', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(26, 'Brunei', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(27, 'Bulgaria', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(28, 'Burkina Faso', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(29, 'Burundi', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(30, 'Cape Verde', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(31, 'Cambodia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(32, 'Cameroon', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(33, 'Canada', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(34, 'Central African Republic', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(35, 'Chad', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(36, 'Chile', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(37, 'China', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(38, 'Colombia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(39, 'Comoros', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(40, 'Congo, Democratic Republic', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(41, 'Congo', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(42, 'Costa Rica', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(43, 'Cote D\'Ivoire', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(44, 'Croatia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(45, 'Cuba', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(46, 'Cyprus', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(47, 'Czech Republic', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(48, 'Denmark', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(49, 'Djibouti', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(50, 'Dominica', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(51, 'Dominican Republic', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(52, 'Ecuador', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(53, 'Egypt', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(54, 'El Salvador', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(55, 'Equatorial Guinea', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(56, 'Eritrea', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(57, 'Estonia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(58, 'Eswatini', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(59, 'Ethiopia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(60, 'Fiji', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(61, 'Finland', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(62, 'France', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(63, 'Gabon', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(64, 'Gambia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(65, 'Georgia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(66, 'Germany', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(67, 'Ghana', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(68, 'Greece', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(69, 'Grenada', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(70, 'Guatemala', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(71, 'Guinea', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(72, 'Guinea-Bissau', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(73, 'Guyana', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(74, 'Greenland', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(75, 'Haiti', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(76, 'Honduras', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(77, 'Hungary', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(78, 'Iceland', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(79, 'India', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(80, 'Indonesia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(81, 'Iran', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(82, 'Iraq', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(83, 'Ireland', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(84, 'Italy', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(85, 'Jamaica', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(86, 'Japan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(87, 'Jordan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(88, 'Kazakhstan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(89, 'Kenya', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(90, 'Kiribati', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(91, 'Kosovo', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(92, 'Kuwait', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(93, 'Kyrgyzstan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(94, 'Laos', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(95, 'Latvia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(96, 'Lebanon', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(97, 'Lesotho', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(98, 'Liberia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(99, 'Libyan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(100, 'Liechtenstein', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(101, 'Lithuania', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(102, 'Luxembourg', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(103, 'Madagascar', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(104, 'Malawi', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(105, 'Malaysia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(106, 'Maldives', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(107, 'Mali', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(108, 'Malta', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(109, 'Marshall Islands', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(110, 'Mauritania', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(111, 'Mauritius', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(112, 'Mexico', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(113, 'Micronesia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(114, 'Moldova', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(115, 'Monaco', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(116, 'Mongolia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(117, 'Montenegro', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(118, 'Morocco', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(119, 'Mozambique', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(120, 'Myanmar', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(121, 'Macedonia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(122, 'Namibia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(123, 'Nauru', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(124, 'Nepal', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(125, 'Netherlands', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(126, 'New Zealand', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(127, 'Nicaragua', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(128, 'Niger', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(129, 'Nigeria', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(130, 'North Korea', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(131, 'Norway', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(132, 'Oman', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(133, 'Pakistan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(134, 'Palau', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(135, 'Palestine', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(136, 'Panama', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(137, 'Papua New Guinea', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(138, 'Paraguay', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(139, 'Peru', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(140, 'Philippines', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(141, 'Poland', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(142, 'Portugal', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(143, 'Puerto Rico', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(144, 'Qatar', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(145, 'Romania', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(146, 'Russia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(147, 'Rwanda', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(148, 'St. Kitts & Nevis', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(149, 'St. Lucia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(150, 'St. Vincent & Grenadines', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(151, 'Samoa', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(152, 'San Marino', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(153, 'Sao Tome and Principe', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(154, 'Saudi Arabia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(155, 'Senegal', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(156, 'Serbia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(157, 'Seychelles', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(158, 'Sierra Leone', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(159, 'Singapore', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(160, 'Slovakia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(161, 'Slovenia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(162, 'Solomon Islands', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(163, 'Somalia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(164, 'South Africa', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(165, 'South Korea', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(166, 'South Sudan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(167, 'Spain', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(168, 'Sri Lanka', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(169, 'Sudan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(170, 'Suriname', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(171, 'Swaziland', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(172, 'Sweden', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(173, 'Switzerland', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(174, 'Syria', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(175, 'Taiwan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(176, 'Tajikistan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(177, 'Tanzania', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(178, 'Thailand', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(179, 'Togo', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(180, 'Tonga', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(181, 'Trinidad and Tobago', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(182, 'Tunisia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(183, 'Turkey', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(184, 'Turkmenistan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(185, 'Tuvalu', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(186, 'Uganda', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(187, 'Ukraine', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(188, 'United Arab Emirates', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(189, 'United Kingdom', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(190, 'Uruguay', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(191, 'Uzbekistan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(192, 'Vanuatu', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(193, 'Vatican City', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(194, 'Venezuela', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(195, 'Vietnam', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(196, 'Zambia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(197, 'Zimbabwe', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000');
+(2, 'Afghanistan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(3, 'Albania', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(4, 'Algeria', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(5, 'Andorra', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(6, 'Angola', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(7, 'Antigua and Barbuda', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(8, 'Argentina', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(9, 'Armenia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(10, 'Australia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(11, 'Austria', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(12, 'Azerbaijan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(13, 'Bahamas', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(14, 'Bahrain', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(15, 'Bangladesh', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(16, 'Barbados', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(17, 'Belarus', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(18, 'Belgium', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(19, 'Belize', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(20, 'Benin', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(21, 'Bhutan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(22, 'Bolivia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(23, 'Bosnia and Herzegovina', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(24, 'Botswana', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(25, 'Brazil', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(26, 'Brunei', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(27, 'Bulgaria', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(28, 'Burkina Faso', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(29, 'Burundi', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(30, 'Cape Verde', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(31, 'Cambodia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(32, 'Cameroon', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(33, 'Canada', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(34, 'Central African Republic', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(35, 'Chad', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(36, 'Chile', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(37, 'China', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(38, 'Colombia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(39, 'Comoros', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(40, 'Congo, Democratic Republic', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(41, 'Congo', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(42, 'Costa Rica', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(43, 'Cote D\'Ivoire', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(44, 'Croatia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(45, 'Cuba', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(46, 'Cyprus', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(47, 'Czech Republic', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(48, 'Denmark', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(49, 'Djibouti', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(50, 'Dominica', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(51, 'Dominican Republic', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(52, 'Ecuador', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(53, 'Egypt', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(54, 'El Salvador', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(55, 'Equatorial Guinea', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(56, 'Eritrea', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(57, 'Estonia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(58, 'Eswatini', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(59, 'Ethiopia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(60, 'Fiji', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(61, 'Finland', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(62, 'France', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(63, 'Gabon', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(64, 'Gambia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(65, 'Georgia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(66, 'Germany', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(67, 'Ghana', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(68, 'Greece', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(69, 'Grenada', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(70, 'Guatemala', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(71, 'Guinea', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(72, 'Guinea-Bissau', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(73, 'Guyana', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(74, 'Greenland', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(75, 'Haiti', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(76, 'Honduras', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(77, 'Hungary', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(78, 'Iceland', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(79, 'India', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(80, 'Indonesia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(81, 'Iran', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(82, 'Iraq', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(83, 'Ireland', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(84, 'Italy', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(85, 'Jamaica', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(86, 'Japan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(87, 'Jordan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(88, 'Kazakhstan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(89, 'Kenya', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(90, 'Kiribati', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(91, 'Kosovo', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(92, 'Kuwait', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(93, 'Kyrgyzstan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(94, 'Laos', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(95, 'Latvia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(96, 'Lebanon', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(97, 'Lesotho', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(98, 'Liberia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(99, 'Libyan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(100, 'Liechtenstein', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(101, 'Lithuania', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(102, 'Luxembourg', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(103, 'Madagascar', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(104, 'Malawi', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(105, 'Malaysia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(106, 'Maldives', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(107, 'Mali', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(108, 'Malta', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(109, 'Marshall Islands', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(110, 'Mauritania', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(111, 'Mauritius', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(112, 'Mexico', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(113, 'Micronesia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(114, 'Moldova', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(115, 'Monaco', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(116, 'Mongolia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(117, 'Montenegro', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(118, 'Morocco', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(119, 'Mozambique', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(120, 'Myanmar', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(121, 'Macedonia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(122, 'Namibia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(123, 'Nauru', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(124, 'Nepal', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(125, 'Netherlands', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(126, 'New Zealand', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(127, 'Nicaragua', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(128, 'Niger', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(129, 'Nigeria', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(130, 'North Korea', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(131, 'Norway', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(132, 'Oman', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(133, 'Pakistan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(134, 'Palau', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(135, 'Palestine', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(136, 'Panama', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(137, 'Papua New Guinea', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(138, 'Paraguay', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(139, 'Peru', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(140, 'Philippines', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(141, 'Poland', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(142, 'Portugal', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(143, 'Puerto Rico', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(144, 'Qatar', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(145, 'Romania', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(146, 'Russia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(147, 'Rwanda', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(148, 'St. Kitts & Nevis', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(149, 'St. Lucia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(150, 'St. Vincent & Grenadines', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(151, 'Samoa', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(152, 'San Marino', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(153, 'Sao Tome and Principe', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(154, 'Saudi Arabia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(155, 'Senegal', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(156, 'Serbia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(157, 'Seychelles', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(158, 'Sierra Leone', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(159, 'Singapore', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(160, 'Slovakia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(161, 'Slovenia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(162, 'Solomon Islands', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(163, 'Somalia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(164, 'South Africa', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(165, 'South Korea', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(166, 'South Sudan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(167, 'Spain', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(168, 'Sri Lanka', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(169, 'Sudan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(170, 'Suriname', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(171, 'Swaziland', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(172, 'Sweden', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(173, 'Switzerland', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(174, 'Syria', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(175, 'Taiwan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(176, 'Tajikistan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(177, 'Tanzania', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(178, 'Thailand', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(179, 'Togo', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(180, 'Tonga', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(181, 'Trinidad and Tobago', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(182, 'Tunisia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(183, 'Turkey', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(184, 'Turkmenistan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(185, 'Tuvalu', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(186, 'Uganda', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(187, 'Ukraine', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(188, 'United Arab Emirates', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(189, 'United Kingdom', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(190, 'Uruguay', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(191, 'Uzbekistan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(192, 'Vanuatu', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(193, 'Vatican City', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(194, 'Venezuela', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(195, 'Vietnam', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(196, 'Zambia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629'),
+(197, 'Zimbabwe', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629');
 
 -- --------------------------------------------------------
 
@@ -732,7 +738,7 @@ INSERT INTO `countries` (`country_id`, `country_name`, `created_at`, `modified_a
 --
 
 CREATE TABLE `customers` (
-  `customer_id` int(11) NOT NULL,
+  `customer_id` int NOT NULL,
   `firstname` varchar(100) DEFAULT NULL,
   `middle_name` varchar(100) DEFAULT NULL,
   `lastname` varchar(100) DEFAULT NULL,
@@ -750,26 +756,14 @@ CREATE TABLE `customers` (
   `document` varchar(100) DEFAULT NULL,
   `is_verified` tinyint(1) NOT NULL,
   `created_at` datetime(6) NOT NULL,
+  `description` longtext,
   `modified_at` datetime(6) NOT NULL,
-  `blood_group_id` int(11) DEFAULT NULL,
-  `federal_state_id` int(11) DEFAULT NULL,
-  `nationality_id` int(11) NOT NULL,
-  `personal_id_type_id` int(11) DEFAULT NULL,
-  `reg_user_id` bigint(20) NOT NULL,
-  `description` longtext DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `customers`
---
-
-INSERT INTO `customers` (`customer_id`, `firstname`, `middle_name`, `lastname`, `fourth_name`, `mother_name`, `full_name`, `gender`, `date_of_birth`, `place_of_birth`, `personal_id`, `email`, `address`, `phone`, `photo`, `document`, `is_verified`, `created_at`, `modified_at`, `blood_group_id`, `federal_state_id`, `nationality_id`, `personal_id_type_id`, `reg_user_id`, `description`) VALUES
-(1, 'Ahmed', 'Jaamac', 'Geedi', 'Jaamac', 'Hindi Maxamud Jamac', 'Ahmed Jaamac Geedi Jaamac', 'Male', '2023-02-12', NULL, '458787846693', 'a@me.com', 'Mogadishu', '13243546798', 'customer_images/7309681-removebg-preview_2udf4g7.png', 'customer_document/liiska_lamabarada_a8MnFXm.pdf', 1, '2023-02-12 06:36:07.440182', '2023-02-18 13:30:42.332785', 1, 1, 3, 1, 1, 'verified'),
-(2, 'Xalima', 'Axmed', 'Liban', 'Cabdi', 'Marwo Cali Xassen Axmed', 'Xalima Axmed Liban Cabdi', 'Female', '2007-05-20', NULL, 'P0779874577', 'halima@gmail.com', 'Hodan Talex mogadishu Somalia', '615121489', 'customer_images/7309681-removebg-preview_vpAxNkC.png', 'customer_document/printer-test-page-color_UNlZZ4e.pdf', 0, '2023-02-13 07:23:30.249287', '2023-02-18 12:13:56.785912', 3, 1, 163, 1, 1, NULL),
-(3, 'Xamid', 'Ali', 'Xasen', 'Raage', 'Aamino Maxamed Cali', 'Xamid Ali Xasen Raage', 'Male', '2023-02-13', NULL, 'P07798745', 'xamdi@gmail.com', 'Hodan Banaadir', '615478596', 'customer_images/7309681-removebg-preview_HFoWPy1.png', '', 0, '2023-02-13 07:43:37.231742', '2023-02-13 07:43:37.231742', 3, 1, 3, 1, 1, NULL),
-(4, 'Asad', 'Xalane', 'Abshir', 'Afyare', 'Marwo Cali Xassen Cilmi', 'Asad Xalane Abshir Afyare', 'Male', '2023-02-13', NULL, 'P0777987', 'a@gmain.com', 'Hodan Banaadir', '614253696', 'customer_images/7309681-removebg-preview_FUD9iWg.png', 'printer-test-page-color.pdf', 0, '2023-02-13 07:45:34.300387', '2023-02-13 07:45:34.300387', 2, 1, 2, 1, 1, 'qofkaan wlahubiyay'),
-(5, 'Maxamed', 'Ali', 'Maxamed', 'Maxamuud', 'Isniino Ali Abdi', 'Maxamed Ali Maxamed Maxamuud', 'Female', '2023-02-13', NULL, 'P0789696', 'is@gmain.com', 'Hodan Talex', '615478525', 'customer_images/7309681-removebg-preview_XxXTXiM.png', 'customer_document/printer-test-page-color_aQ6MmV5.pdf', 1, '2023-02-13 07:46:47.299805', '2023-02-13 11:53:32.173329', 4, 1, 5, 1, 1, 'sddsfgds'),
-(6, 'Xasen', 'Ali', 'Jaamac', 'Axmed', 'Asiyo Jaamac', 'Xasen Ali Jaamac Axmed', 'Male', '2011-02-14', NULL, 'P077984985', 'a@gmain.com', 'Hodan Banaadir Mogadishu Somalia', '64597984', 'customer_images/7309681-removebg-preview_TgSBrgO.png', 'customer_document/liiska_lamabarada.pdf', 1, '2023-02-13 08:33:28.813782', '2023-02-18 11:58:44.695844', 3, 1, 163, 1, 1, 'liiska lamabrada');
+  `blood_group_id` int DEFAULT NULL,
+  `federal_state_id` int DEFAULT NULL,
+  `nationality_id` int NOT NULL,
+  `personal_id_type_id` int DEFAULT NULL,
+  `reg_user_id` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -778,26 +772,26 @@ INSERT INTO `customers` (`customer_id`, `firstname`, `middle_name`, `lastname`, 
 --
 
 CREATE TABLE `cylinder` (
-  `cylinder_id` int(11) NOT NULL,
+  `cylinder_id` int NOT NULL,
   `cylinder_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `reg_user_id` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `cylinder`
 --
 
 INSERT INTO `cylinder` (`cylinder_id`, `cylinder_name`, `created_at`, `modified_at`, `reg_user_id`) VALUES
-(2, '3', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(3, '4', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(4, '5', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(5, '6', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(6, '8', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(7, '10', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(8, '12', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(9, '16', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0);
+(2, '3', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(3, '4', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(4, '5', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(5, '6', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(6, '8', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(7, '10', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(8, '12', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(9, '16', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0);
 
 -- --------------------------------------------------------
 
@@ -806,43 +800,15 @@ INSERT INTO `cylinder` (`cylinder_id`, `cylinder_name`, `created_at`, `modified_
 --
 
 CREATE TABLE `django_admin_log` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `action_time` datetime(6) NOT NULL,
-  `object_id` longtext DEFAULT NULL,
+  `object_id` longtext,
   `object_repr` varchar(200) NOT NULL,
-  `action_flag` smallint(5) UNSIGNED NOT NULL CHECK (`action_flag` >= 0),
+  `action_flag` smallint UNSIGNED NOT NULL,
   `change_message` longtext NOT NULL,
-  `content_type_id` int(11) DEFAULT NULL,
-  `user_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `django_admin_log`
---
-
-INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
-(1, '2023-02-13 05:58:17.711162', '1', 'mo@nisa.com', 2, '[{\"changed\": {\"fields\": [\"Username\", \"Phone\", \"Avatar\"]}}]', 8, 1),
-(2, '2023-02-15 07:14:50.111793', '1', 'Audi', 1, '[{\"added\": {}}]', 23, 1),
-(3, '2023-02-15 13:04:45.075515', '1', 'plate object (1)', 1, '[{\"added\": {}}]', 25, 1),
-(4, '2023-02-18 12:49:52.829838', '1', 'licensetype object (1)', 1, '[{\"added\": {}}]', 27, 1),
-(5, '2023-02-18 12:50:00.278818', '2', 'licensetype object (2)', 1, '[{\"added\": {}}]', 27, 1),
-(6, '2023-02-18 12:50:07.155614', '3', 'licensetype object (3)', 1, '[{\"added\": {}}]', 27, 1),
-(7, '2023-02-18 12:51:23.528878', '1', 'account object (1)', 1, '[{\"added\": {}}]', 9, 1),
-(8, '2023-02-18 12:51:54.161536', '1', 'receipt_voucher object (1)', 1, '[{\"added\": {}}]', 11, 1),
-(9, '2023-02-18 12:52:17.417318', '1', 'license object (1)', 1, '[{\"added\": {}}]', 19, 1),
-(10, '2023-02-18 13:22:16.340668', '1', 'transfare_vehicles object (1)', 1, '[{\"added\": {}}]', 24, 1),
-(11, '2023-02-18 13:36:29.925148', '1', 'company object (1)', 1, '[{\"added\": {}}]', 13, 1),
-(12, '2023-02-18 14:09:22.230142', '1', 'receipt_voucher object (1)', 2, '[{\"changed\": {\"fields\": [\"Rv number\"]}}]', 11, 1),
-(13, '2023-02-18 14:10:16.869272', '2', 'receipt_voucher object (2)', 1, '[{\"added\": {}}]', 11, 1),
-(14, '2023-02-18 14:11:52.040260', '2', 'license object (2)', 2, '[{\"changed\": {\"fields\": [\"Expired date\"]}}]', 19, 1),
-(15, '2023-02-18 14:26:12.397275', '4', 'licensetype object (4)', 1, '[{\"added\": {}}]', 27, 1),
-(16, '2023-02-18 14:26:20.001182', '5', 'licensetype object (5)', 1, '[{\"added\": {}}]', 27, 1),
-(17, '2023-02-18 14:26:26.850904', '6', 'licensetype object (6)', 1, '[{\"added\": {}}]', 27, 1),
-(18, '2023-02-18 14:26:33.501485', '7', 'licensetype object (7)', 1, '[{\"added\": {}}]', 27, 1),
-(19, '2023-02-18 14:26:44.907258', '8', 'licensetype object (8)', 1, '[{\"added\": {}}]', 27, 1),
-(20, '2023-02-18 14:26:57.485954', '9', 'licensetype object (9)', 1, '[{\"added\": {}}]', 27, 1),
-(21, '2023-02-18 14:53:16.356988', '3', 'license object (3)', 1, '[{\"added\": {}}]', 19, 1),
-(22, '2023-02-19 08:49:39.697818', '4', 'license object (4)', 1, '[{\"added\": {}}]', 19, 1);
+  `content_type_id` int DEFAULT NULL,
+  `user_id` bigint NOT NULL
+) ;
 
 -- --------------------------------------------------------
 
@@ -851,10 +817,10 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 --
 
 CREATE TABLE `django_content_type` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `app_label` varchar(100) NOT NULL,
   `model` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `django_content_type`
@@ -871,9 +837,10 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (15, 'Customers', 'customer'),
 (16, 'Customers', 'customer_fingers'),
 (17, 'Customers', 'federal_state'),
-(19, 'Customers', 'license'),
-(27, 'Customers', 'licensetype'),
-(18, 'Customers', 'personal_id_type'),
+(18, 'Customers', 'license'),
+(19, 'Customers', 'licensetype'),
+(20, 'Customers', 'personal_id_type'),
+(21, 'Customers', 'placeissue'),
 (9, 'Finance', 'account'),
 (10, 'Finance', 'account_types'),
 (11, 'Finance', 'receipt_voucher'),
@@ -881,13 +848,14 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (6, 'Users', 'audittrials'),
 (7, 'Users', 'errorlogs'),
 (8, 'Users', 'users'),
-(20, 'Vehicles', 'color'),
-(21, 'Vehicles', 'cylinder'),
-(22, 'Vehicles', 'model_brand'),
+(29, 'Vehicles', 'code_plate'),
+(22, 'Vehicles', 'color'),
+(23, 'Vehicles', 'cylinder'),
+(24, 'Vehicles', 'model_brand'),
 (25, 'Vehicles', 'plate'),
-(24, 'Vehicles', 'transfare_vehicles'),
-(26, 'Vehicles', 'type'),
-(23, 'Vehicles', 'vehicle');
+(28, 'Vehicles', 'transfare_vehicles'),
+(27, 'Vehicles', 'type'),
+(26, 'Vehicles', 'vehicle');
 
 -- --------------------------------------------------------
 
@@ -896,47 +864,41 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 --
 
 CREATE TABLE `django_migrations` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `app` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `django_migrations`
 --
 
 INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
-(1, 'contenttypes', '0001_initial', '2023-02-11 11:51:40.158588'),
-(2, 'contenttypes', '0002_remove_content_type_name', '2023-02-11 11:51:40.189760'),
-(3, 'auth', '0001_initial', '2023-02-11 11:51:40.299122'),
-(4, 'auth', '0002_alter_permission_name_max_length', '2023-02-11 11:51:40.314735'),
-(5, 'auth', '0003_alter_user_email_max_length', '2023-02-11 11:51:40.314735'),
-(6, 'auth', '0004_alter_user_username_opts', '2023-02-11 11:51:40.330358'),
-(7, 'auth', '0005_alter_user_last_login_null', '2023-02-11 11:51:40.330358'),
-(8, 'auth', '0006_require_contenttypes_0002', '2023-02-11 11:51:40.330358'),
-(9, 'auth', '0007_alter_validators_add_error_messages', '2023-02-11 11:51:40.345992'),
-(10, 'auth', '0008_alter_user_username_max_length', '2023-02-11 11:51:40.345992'),
-(11, 'auth', '0009_alter_user_last_name_max_length', '2023-02-11 11:51:40.345992'),
-(12, 'auth', '0010_alter_group_name_max_length', '2023-02-11 11:51:40.361605'),
-(13, 'auth', '0011_update_proxy_permissions', '2023-02-11 11:51:40.361605'),
-(14, 'auth', '0012_alter_user_first_name_max_length', '2023-02-11 11:51:40.361605'),
-(15, 'Finance', '0001_initial', '2023-02-11 11:51:40.392851'),
-(16, 'Customers', '0001_initial', '2023-02-11 11:51:40.487478'),
-(17, 'Customers', '0002_initial', '2023-02-11 11:51:40.519043'),
-(18, 'Users', '0001_initial', '2023-02-11 11:51:40.690886'),
-(19, 'Customers', '0003_initial', '2023-02-11 11:51:40.983887'),
-(20, 'Finance', '0002_initial', '2023-02-11 11:51:41.140037'),
-(21, 'Vehicles', '0001_initial', '2023-02-11 11:51:41.608725'),
-(22, 'admin', '0001_initial', '2023-02-11 11:51:41.671485'),
-(23, 'admin', '0002_logentry_remove_auto_add', '2023-02-11 11:51:41.687505'),
-(24, 'admin', '0003_logentry_add_action_flag_choices', '2023-02-11 11:51:41.687505'),
-(25, 'sessions', '0001_initial', '2023-02-11 11:51:41.703247'),
-(26, 'Customers', '0004_customer_description', '2023-02-13 10:23:48.976605'),
-(27, 'Vehicles', '0002_type', '2023-02-18 06:06:21.656903'),
-(28, 'Vehicles', '0003_plate_type', '2023-02-18 06:06:21.703801'),
-(29, 'Customers', '0005_licensetype_license_type', '2023-02-18 12:47:21.458681'),
-(30, 'Finance', '0003_receipt_voucher_reason', '2023-02-18 13:29:22.332128');
+(1, 'contenttypes', '0001_initial', '2023-03-05 09:36:20.837650'),
+(2, 'contenttypes', '0002_remove_content_type_name', '2023-03-05 09:36:20.934211'),
+(3, 'auth', '0001_initial', '2023-03-05 09:36:21.306773'),
+(4, 'auth', '0002_alter_permission_name_max_length', '2023-03-05 09:36:21.377073'),
+(5, 'auth', '0003_alter_user_email_max_length', '2023-03-05 09:36:21.389973'),
+(6, 'auth', '0004_alter_user_username_opts', '2023-03-05 09:36:21.403146'),
+(7, 'auth', '0005_alter_user_last_login_null', '2023-03-05 09:36:21.420116'),
+(8, 'auth', '0006_require_contenttypes_0002', '2023-03-05 09:36:21.430538'),
+(9, 'auth', '0007_alter_validators_add_error_messages', '2023-03-05 09:36:21.444939'),
+(10, 'auth', '0008_alter_user_username_max_length', '2023-03-05 09:36:21.457523'),
+(11, 'auth', '0009_alter_user_last_name_max_length', '2023-03-05 09:36:21.466776'),
+(12, 'auth', '0010_alter_group_name_max_length', '2023-03-05 09:36:21.491159'),
+(13, 'auth', '0011_update_proxy_permissions', '2023-03-05 09:36:21.505096'),
+(14, 'auth', '0012_alter_user_first_name_max_length', '2023-03-05 09:36:21.519470'),
+(15, 'Customers', '0001_initial', '2023-03-05 09:36:21.854238'),
+(16, 'Users', '0001_initial', '2023-03-05 09:36:22.541811'),
+(17, 'Finance', '0001_initial', '2023-03-05 09:36:22.642748'),
+(18, 'Customers', '0002_initial', '2023-03-05 09:36:24.176867'),
+(19, 'Finance', '0002_initial', '2023-03-05 09:36:24.582642'),
+(20, 'Vehicles', '0001_initial', '2023-03-05 09:36:26.343894'),
+(21, 'admin', '0001_initial', '2023-03-05 09:36:26.570019'),
+(22, 'admin', '0002_logentry_remove_auto_add', '2023-03-05 09:36:26.593812'),
+(23, 'admin', '0003_logentry_add_action_flag_choices', '2023-03-05 09:36:26.609407'),
+(24, 'sessions', '0001_initial', '2023-03-05 09:36:26.668008');
 
 -- --------------------------------------------------------
 
@@ -948,15 +910,7 @@ CREATE TABLE `django_session` (
   `session_key` varchar(40) NOT NULL,
   `session_data` longtext NOT NULL,
   `expire_date` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `django_session`
---
-
-INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('jjskjwceyy9nc2df8yzmi895gbm2w58t', '.eJxVjMsOwiAUBf-FtSG8oV269xvIvYAWtWAKXRn_3TbpQrdnZs6beFj75NeWFp8jGQknp98NITxS2UG8Q7lVGmrpS0a6K_SgjV5qTM_z4f4dTNCmrUYFDIOMRg-BK5a0QMdAqWCdMQ6jgMHp4Sql1dwyFQcDKHm0AYPYFLGfttRarsXnkrvveU6tw_zyZOTGGrvlQlDLpdOSf746u0Wk:1pTccE:r-NDkVOf53d_68w6c4puqsjqEzBUis_DFtW-JtR2qNI', '2023-03-05 08:52:02.713853'),
-('zfmfv2uch5c9qf8drlemf1uoxdyv9m20', '.eJxVjMsOwiAUBf-FtSFcyrNL934DuTy0qAVT6Mr477ZJN92emTlf4lpqLdficsnd9Tyn1nH-ODKC0gpAa2moNCBA8AtxuPbJrS0tLkcyEiCnzWN4pbKD-MTyqDTU0pfs6a7QgzZ6qzG9r4d7OpiwTVvtBTIfhqikDSBYktwbhkIEbZQyPnK0Rtr7MGgJmoloFfoBog4-8E3h5PcH-NVFnQ:1pQonO:bQRIQDwH2bLkNsGR2JSelBEOW-8ekxiil1mFCcg9nwQ', '2023-02-25 12:15:58.589394');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -965,38 +919,19 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 --
 
 CREATE TABLE `errorlogs` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `Username` varchar(20) NOT NULL,
   `Name` varchar(500) NOT NULL,
   `Expected_error` varchar(500) NOT NULL,
   `field_error` varchar(500) NOT NULL,
   `trace_back` longtext NOT NULL,
-  `line_number` int(11) NOT NULL,
+  `line_number` int NOT NULL,
   `date_recorded` datetime(6) NOT NULL,
   `browser` varchar(500) NOT NULL,
   `ip_address` varchar(500) NOT NULL,
   `user_agent` longtext NOT NULL,
   `Avatar` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `errorlogs`
---
-
-INSERT INTO `errorlogs` (`id`, `Username`, `Name`, `Expected_error`, `field_error`, `trace_back`, `line_number`, `date_recorded`, `browser`, `ip_address`, `user_agent`, `Avatar`) VALUES
-(1, 'AD00001', ' ', '<class \'AttributeError\'>', '\'QuerySet\' object has no attribute \'save\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 476, in activate_customer\n    customer.save()\n    ^^^^^^^^^^^^^\nAttributeError: \'QuerySet\' object has no attribute \'save\'\n', 476, '2023-02-13 10:28:43.233754', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(2, 'AD00001', ' ', '<class \'AttributeError\'>', '\'NoneType\' object has no attribute \'is_verified\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 473, in activate_customer\n    customer.is_verified = True\n    ^^^^^^^^^^^^^^^^^^^^\nAttributeError: \'NoneType\' object has no attribute \'is_verified\'\n', 473, '2023-02-13 10:29:43.219383', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(3, 'AD00001', ' ', '<class \'AttributeError\'>', '\'NoneType\' object has no attribute \'full_name\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 473, in activate_customer\n    print(customer.full_name)\n          ^^^^^^^^^^^^^^^^^^\nAttributeError: \'NoneType\' object has no attribute \'full_name\'\n', 473, '2023-02-13 10:31:26.373960', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(4, 'AD00001', ' ', '<class \'AttributeError\'>', '\'NoneType\' object has no attribute \'full_name\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 473, in activate_customer\n    print(customer.full_name)\n          ^^^^^^^^^^^^^^^^^^\nAttributeError: \'NoneType\' object has no attribute \'full_name\'\n', 473, '2023-02-13 10:31:52.207236', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(5, 'AD00001', ' ', '<class \'AttributeError\'>', '\'NoneType\' object has no attribute \'full_name\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 473, in activate_customer\n    print(customer.full_name)\n          ^^^^^^^^^^^^^^^^^^\nAttributeError: \'NoneType\' object has no attribute \'full_name\'\n', 473, '2023-02-13 10:32:26.906826', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(6, 'AD00001', ' ', '<class \'AttributeError\'>', '\'NoneType\' object has no attribute \'full_name\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 473, in activate_customer\n    print(customer.full_name)\n          ^^^^^^^^^^^^^^^^^^\nAttributeError: \'NoneType\' object has no attribute \'full_name\'\n', 473, '2023-02-13 10:40:34.595615', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(7, 'AD00001', ' ', '<class \'AttributeError\'>', '\'QuerySet\' object has no attribute \'full_name\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 474, in activate_customer\n    print(customer.full_name)\n          ^^^^^^^^^^^^^^^^^^\nAttributeError: \'QuerySet\' object has no attribute \'full_name\'\n', 474, '2023-02-13 10:47:45.508766', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(8, 'AD00001', ' ', '<class \'AttributeError\'>', '\'customer\' object has no attribute \'update\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 479, in activate_customer\n    customer.update()\n    ^^^^^^^^^^^^^^^\nAttributeError: \'customer\' object has no attribute \'update\'\n', 479, '2023-02-13 10:54:37.339885', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(9, 'AD00001', ' ', '<class \'AttributeError\'>', '\'customer\' object has no attribute \'update\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 476, in activate_customer\n    customer.update(is_verified=True,\n    ^^^^^^^^^^^^^^^\nAttributeError: \'customer\' object has no attribute \'update\'\n', 476, '2023-02-13 10:59:16.473254', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(10, 'AD00001', ' ', '<class \'AttributeError\'>', '\'customer\' object has no attribute \'update\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 476, in activate_customer\n    customer.update(is_verified=True,\n    ^^^^^^^^^^^^^^^\nAttributeError: \'customer\' object has no attribute \'update\'\n', 476, '2023-02-13 10:59:44.790552', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(11, 'AD00001', ' ', '<class \'AttributeError\'>', '\'customer\' object has no attribute \'update\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 476, in activate_customer\n    customer.update(is_verified=True,\n    ^^^^^^^^^^^^^^^\nAttributeError: \'customer\' object has no attribute \'update\'\n', 476, '2023-02-13 10:59:59.514020', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(12, 'AD00001', ' ', '<class \'AttributeError\'>', '\'QuerySet\' object has no attribute \'save\'', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 477, in activate_customer\n    customer.save()\n    ^^^^^^^^^^^^^\nAttributeError: \'QuerySet\' object has no attribute \'save\'\n', 477, '2023-02-13 11:26:12.339984', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png'),
-(13, 'AD00001', ' ', '<class \'ValueError\'>', 'Cannot assign \"<QuerySet [<blood_group: O+>]>\": \"customer.blood_group\" must be a \"blood_group\" instance.', 'Traceback (most recent call last):\n  File \"D:\\gaadiidka\\Customers\\views.py\", line 665, in update_customer\n    customer.blood_group = bload_group\n    ^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\gaadiidka\\env\\Lib\\site-packages\\django\\db\\models\\fields\\related_descriptors.py\", line 237, in __set__\n    raise ValueError(\nValueError: Cannot assign \"<QuerySet [<blood_group: O+>]>\": \"customer.blood_group\" must be a \"blood_group\" instance.\n', 665, '2023-02-18 11:51:02.643659', 'ChromiumEdge', '127.0.0.1', '127.0.0.1,Windows,ChromiumEdge', 'Avatars/7309681-removebg-preview.png');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -1005,11 +940,11 @@ INSERT INTO `errorlogs` (`id`, `Username`, `Name`, `Expected_error`, `field_erro
 --
 
 CREATE TABLE `federal_state` (
-  `state_id` int(11) NOT NULL,
+  `state_id` int NOT NULL,
   `state_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `federal_state`
@@ -1031,11 +966,11 @@ INSERT INTO `federal_state` (`state_id`, `state_name`, `created_at`, `modified_a
 --
 
 CREATE TABLE `fingerprints` (
-  `id` bigint(20) NOT NULL,
-  `finger_print_template` longtext DEFAULT NULL,
-  `finger_print_image` longtext DEFAULT NULL,
-  `customer_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` bigint NOT NULL,
+  `finger_print_template` longtext,
+  `finger_print_image` longtext,
+  `customer_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -1044,30 +979,20 @@ CREATE TABLE `fingerprints` (
 --
 
 CREATE TABLE `license` (
-  `license_id` int(11) NOT NULL,
-  `place_of_issue` varchar(100) NOT NULL,
+  `license_id` int NOT NULL,
   `expired_date` date NOT NULL,
   `status` varchar(100) NOT NULL,
-  `reg_no` longtext DEFAULT NULL,
+  `reg_no` longtext,
   `document` varchar(100) DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `federal_state_id` int(11) NOT NULL,
-  `owner_id` int(11) NOT NULL,
-  `receipt_voucher_id` int(11) DEFAULT NULL,
-  `reg_user_id` bigint(20) NOT NULL,
-  `type_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `license`
---
-
-INSERT INTO `license` (`license_id`, `place_of_issue`, `expired_date`, `status`, `reg_no`, `document`, `created_at`, `modified_at`, `federal_state_id`, `owner_id`, `receipt_voucher_id`, `reg_user_id`, `type_id`) VALUES
-(1, 'Mogadishu', '2023-02-28', 'Active', '1477855474', '', '2023-02-18 12:52:17.416322', '2023-02-18 12:52:17.416322', 1, 1, 1, 1, 1),
-(2, 'Banaadir', '2023-02-17', 'Expired', '2355475', '', '2023-02-18 14:10:31.364611', '2023-02-18 14:11:54.311185', 1, 3, 2, 1, 1),
-(3, 'Mogadishu', '2023-02-28', 'Active', '12312312312', '', '2023-02-18 14:53:16.354888', '2023-02-18 14:53:16.354888', 1, 3, 2, 1, 6),
-(4, 'Banaadir', '2023-02-20', 'Active', '45512012', '', '2023-02-19 08:49:39.696478', '2023-02-19 08:49:39.696478', 1, 3, 1, 1, 3);
+  `federal_state_id` int NOT NULL,
+  `owner_id` int NOT NULL,
+  `place_of_issue_id` int DEFAULT NULL,
+  `receipt_voucher_id` int DEFAULT NULL,
+  `reg_user_id` bigint NOT NULL,
+  `type_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -1076,12 +1001,12 @@ INSERT INTO `license` (`license_id`, `place_of_issue`, `expired_date`, `status`,
 --
 
 CREATE TABLE `licensetype` (
-  `type_id` int(11) NOT NULL,
+  `type_id` int NOT NULL,
   `type` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `reg_user_id` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `licensetype`
@@ -1105,81 +1030,81 @@ INSERT INTO `licensetype` (`type_id`, `type`, `created_at`, `modified_at`, `reg_
 --
 
 CREATE TABLE `model_brand` (
-  `brand_id` int(11) NOT NULL,
+  `brand_id` int NOT NULL,
   `brand_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `reg_user_id` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `model_brand`
 --
 
 INSERT INTO `model_brand` (`brand_id`, `brand_name`, `created_at`, `modified_at`, `reg_user_id`) VALUES
-(1, 'Abarth', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(2, 'Alfa Romeo', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(3, 'Aston Martin', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(4, 'Audi', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(5, 'Bentley', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(6, 'BMW', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(7, 'Bugatti', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(8, 'Cadillac', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(9, 'Chevrolet', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(10, 'Chrysler', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(11, 'Citroën', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(12, 'Dacia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(13, 'Daewoo', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(14, 'Daihatsu', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(15, 'Dodge', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(16, 'Donkervoort', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(17, 'DS', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(18, 'Ferrari', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(19, 'Fiat', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(20, 'Fisker', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(21, 'Ford', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(22, 'Honda', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(23, 'Hummer', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(24, 'Hyundai', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(25, 'Infiniti', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(26, 'Iveco', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(27, 'Jaguar', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(28, 'Jeep', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(29, 'Kia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(30, 'KTM', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(31, 'Lamborghini', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(32, 'Lancia', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(33, 'Land Rover', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(34, 'Landwind', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(35, 'Lexus', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(36, 'Lotus', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(37, 'Maserati', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(38, 'Maybach', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(39, 'Mazda', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(40, 'McLaren', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(41, 'Mercedes-Benz', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(42, 'MG', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(43, 'Mini', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(44, 'Mitsubishi', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(45, 'Morgan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(46, 'Nissan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(47, 'Opel', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(48, 'Peugeot', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(49, 'Porsche', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(50, 'Renault', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(51, 'Rolls-Royce', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(52, 'Rover', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(53, 'Saab', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(54, 'Seat', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(55, 'Skoda', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(56, 'Smart', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(57, 'SsangYong', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(58, 'Subaru', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(59, 'Suzuki', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(60, 'Tesla', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(61, 'Toyota', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(62, 'Volkswagen', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0),
-(63, 'Volvo', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0);
+(1, 'Abarth', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(2, 'Alfa Romeo', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(3, 'Aston Martin', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(4, 'Audi', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(5, 'Bentley', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(6, 'BMW', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(7, 'Bugatti', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(8, 'Cadillac', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(9, 'Chevrolet', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(10, 'Chrysler', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(11, 'Citroën', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(12, 'Dacia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(13, 'Daewoo', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(14, 'Daihatsu', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(15, 'Dodge', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(16, 'Donkervoort', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(17, 'DS', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(18, 'Ferrari', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(19, 'Fiat', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(20, 'Fisker', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(21, 'Ford', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(22, 'Honda', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(23, 'Hummer', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(24, 'Hyundai', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(25, 'Infiniti', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(26, 'Iveco', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(27, 'Jaguar', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(28, 'Jeep', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(29, 'Kia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(30, 'KTM', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(31, 'Lamborghini', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(32, 'Lancia', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(33, 'Land Rover', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(34, 'Landwind', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(35, 'Lexus', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(36, 'Lotus', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(37, 'Maserati', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(38, 'Maybach', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(39, 'Mazda', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(40, 'McLaren', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(41, 'Mercedes-Benz', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(42, 'MG', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(43, 'Mini', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(44, 'Mitsubishi', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(45, 'Morgan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(46, 'Nissan', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(47, 'Opel', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(48, 'Peugeot', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(49, 'Porsche', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(50, 'Renault', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(51, 'Rolls-Royce', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(52, 'Rover', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(53, 'Saab', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(54, 'Seat', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(55, 'Skoda', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(56, 'Smart', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(57, 'SsangYong', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(58, 'Subaru', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(59, 'Suzuki', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(60, 'Tesla', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(61, 'Toyota', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(62, 'Volkswagen', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0),
+(63, 'Volvo', '2023-03-04 14:23:35.387629', '2023-03-04 14:23:35.387629', 0);
 
 -- --------------------------------------------------------
 
@@ -1188,11 +1113,11 @@ INSERT INTO `model_brand` (`brand_id`, `brand_name`, `created_at`, `modified_at`
 --
 
 CREATE TABLE `personal_id_type` (
-  `personal_id` int(11) NOT NULL,
+  `personal_id` int NOT NULL,
   `personal_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `personal_id_type`
@@ -1201,7 +1126,34 @@ CREATE TABLE `personal_id_type` (
 INSERT INTO `personal_id_type` (`personal_id`, `personal_name`, `created_at`, `modified_at`) VALUES
 (1, 'Passport', '2023-02-05 11:55:16.000000', '2023-02-05 11:55:16.000000'),
 (2, 'License', '2023-02-05 11:55:16.000000', '2023-02-05 11:55:16.000000'),
-(3, 'Dhalasho & Sugnaan', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000');
+(3, 'Dhalasho & Sugnaan', '2023-02-05 11:55:16.000000', '2023-02-05 11:55:16.000000');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `place_issue`
+--
+
+CREATE TABLE `place_issue` (
+  `place_id` int NOT NULL,
+  `place_name` varchar(100) DEFAULT NULL,
+  `created_at` datetime(6) DEFAULT NULL,
+  `modified_at` datetime(6) DEFAULT NULL,
+  `reg_user_id` bigint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `place_issue`
+--
+
+INSERT INTO `place_issue` (`place_id`, `place_name`, `created_at`, `modified_at`, `reg_user_id`) VALUES
+(1, 'Mogadishu', '2023-02-28 12:14:47.222861', '2023-02-28 12:14:47.222861', 2),
+(3, 'Jowhar', '2023-02-28 16:05:04.500852', '2023-02-28 16:05:04.500852', 2),
+(4, 'Baydhabo', '2023-02-28 16:05:12.634662', '2023-02-28 16:05:12.634662', 2),
+(5, 'Dhusamareb', '2023-02-28 16:05:21.682784', '2023-02-28 16:05:21.682784', 2),
+(6, 'Garowe', '2023-02-28 16:05:30.252599', '2023-02-28 16:05:30.252599', 2),
+(7, 'Kismayo', '2023-02-28 16:05:37.299666', '2023-02-28 16:05:37.299666', 2),
+(8, 'Hargeisa', '2023-02-28 16:05:53.927490', '2023-02-28 16:05:53.927490', 2);
 
 -- --------------------------------------------------------
 
@@ -1210,24 +1162,16 @@ INSERT INTO `personal_id_type` (`personal_id`, `personal_name`, `created_at`, `m
 --
 
 CREATE TABLE `plate` (
-  `plate_id` int(11) NOT NULL,
+  `plate_id` int NOT NULL,
   `plate_code` varchar(100) NOT NULL,
-  `plate_no` int(11) NOT NULL,
-  `year` int(11) NOT NULL,
+  `plate_no` varchar(100) DEFAULT NULL,
+  `year` int NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL,
-  `state_id` int(11) NOT NULL,
-  `vehicle_id` int(11) NOT NULL,
-  `type_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `plate`
---
-
-INSERT INTO `plate` (`plate_id`, `plate_code`, `plate_no`, `year`, `created_at`, `modified_at`, `reg_user_id`, `state_id`, `vehicle_id`, `type_id`) VALUES
-(1, 'A', 1, 2022, '2023-02-15 13:04:45.074002', '2023-02-15 13:04:45.074002', 1, 1, 1, NULL);
+  `reg_user_id` bigint NOT NULL,
+  `state_id` int NOT NULL,
+  `type_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -1236,23 +1180,15 @@ INSERT INTO `plate` (`plate_id`, `plate_code`, `plate_no`, `year`, `created_at`,
 --
 
 CREATE TABLE `receipt_voucher` (
-  `rv_id` int(11) NOT NULL,
+  `rv_id` int NOT NULL,
   `rv_number` varchar(100) NOT NULL,
   `rv_amount` varchar(50) NOT NULL,
   `created_at` datetime(6) NOT NULL,
+  `reason` varchar(250) DEFAULT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL,
-  `rv_from_id` int(11) NOT NULL,
-  `reason` varchar(250) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `receipt_voucher`
---
-
-INSERT INTO `receipt_voucher` (`rv_id`, `rv_number`, `rv_amount`, `created_at`, `modified_at`, `reg_user_id`, `rv_from_id`, `reason`) VALUES
-(1, '14259', '45', '2023-02-18 12:51:54.159618', '2023-02-18 14:09:22.230142', 1, 1, NULL),
-(2, '475869', '50', '2023-02-18 14:10:16.867879', '2023-02-18 14:10:16.867879', 1, 3, 'New License');
+  `reg_user_id` bigint NOT NULL,
+  `rv_from_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -1261,12 +1197,24 @@ INSERT INTO `receipt_voucher` (`rv_id`, `rv_number`, `rv_amount`, `created_at`, 
 --
 
 CREATE TABLE `type` (
-  `type_id` int(11) NOT NULL,
+  `type_id` int NOT NULL,
   `type_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `reg_user_id` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `type`
+--
+
+INSERT INTO `type` (`type_id`, `type_name`, `created_at`, `modified_at`, `reg_user_id`) VALUES
+(1, 'MIL', '2023-03-01 09:38:28.098572', '2023-03-01 09:38:28.098572', 2),
+(2, 'Gov', '2023-03-01 09:38:37.848207', '2023-03-01 09:38:37.848207', 2),
+(3, 'MUN', '2023-03-01 09:38:44.472839', '2023-03-01 09:38:44.473828', 2),
+(4, 'OAU', '2023-03-01 09:38:51.872944', '2023-03-01 09:38:51.872944', 2),
+(5, 'POL', '2023-03-01 09:38:59.039620', '2023-03-01 09:38:59.039620', 2),
+(6, 'AU', '2023-03-01 09:39:06.768981', '2023-03-01 09:39:06.768981', 2);
 
 -- --------------------------------------------------------
 
@@ -1275,7 +1223,7 @@ CREATE TABLE `type` (
 --
 
 CREATE TABLE `users` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `password` varchar(128) NOT NULL,
   `last_login` datetime(6) DEFAULT NULL,
   `is_superuser` tinyint(1) NOT NULL,
@@ -1291,16 +1239,11 @@ CREATE TABLE `users` (
   `avatar` varchar(100) NOT NULL,
   `is_admin` tinyint(1) NOT NULL,
   `is_state` tinyint(1) NOT NULL,
+  `is_place_issue` tinyint(1) NOT NULL,
   `modified_at` datetime(6) DEFAULT NULL,
-  `federal_state_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `is_staff`, `is_active`, `date_joined`, `email`, `phone`, `gender`, `avatar`, `is_admin`, `is_state`, `modified_at`, `federal_state_id`) VALUES
-(1, 'pbkdf2_sha256$390000$sKaDcWtVLU6KzjGeJ8p6tj$QnKAkFcFuIAhSNg7EOSu9s90br8//2V7CTgPAtU5tP0=', '2023-02-19 08:43:58.218976', 1, 'AD00001', '', '', 1, 1, '2023-02-11 11:58:20.000000', 'mo@nisa.com', 'q121', NULL, 'Avatars/7309681-removebg-preview.png', 0, 0, '2023-02-13 05:58:17.706174', NULL);
+  `federal_state_id` int DEFAULT NULL,
+  `place_issues_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -1309,10 +1252,10 @@ INSERT INTO `users` (`id`, `password`, `last_login`, `is_superuser`, `username`,
 --
 
 CREATE TABLE `users_groups` (
-  `id` bigint(20) NOT NULL,
-  `users_id` bigint(20) NOT NULL,
-  `group_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` bigint NOT NULL,
+  `users_id` bigint NOT NULL,
+  `group_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -1321,10 +1264,10 @@ CREATE TABLE `users_groups` (
 --
 
 CREATE TABLE `users_user_permissions` (
-  `id` bigint(20) NOT NULL,
-  `users_id` bigint(20) NOT NULL,
-  `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` bigint NOT NULL,
+  `users_id` bigint NOT NULL,
+  `permission_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -1333,57 +1276,44 @@ CREATE TABLE `users_user_permissions` (
 --
 
 CREATE TABLE `vehicle` (
-  `vehicle_id` int(11) NOT NULL,
-  `year` int(11) NOT NULL,
+  `vehicle_id` int NOT NULL,
+  `year` date DEFAULT NULL,
   `weight` varchar(100) DEFAULT NULL,
   `hp` varchar(100) DEFAULT NULL,
-  `pessenger_seat` varchar(100) DEFAULT NULL,
+  `pessenger_seat` longtext,
   `vin` varchar(100) DEFAULT NULL,
   `enginer_no` varchar(100) DEFAULT NULL,
   `rv_number` varchar(100) DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `color_id` int(11) NOT NULL,
-  `cylinder_id` int(11) NOT NULL,
-  `origin_id` int(11) NOT NULL,
-  `owner_id` int(11) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL,
-  `vehicle_model_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `vehicle`
---
-
-INSERT INTO `vehicle` (`vehicle_id`, `year`, `weight`, `hp`, `pessenger_seat`, `vin`, `enginer_no`, `rv_number`, `created_at`, `modified_at`, `color_id`, `cylinder_id`, `origin_id`, `owner_id`, `reg_user_id`, `vehicle_model_id`) VALUES
-(1, 2020, '1500', '12000', '4', '4789562', '78499647466', '412536', '2023-02-15 07:14:50.109798', '2023-02-15 07:14:50.109798', 213, 5, 2, 1, 1, 4);
+  `color_id` int NOT NULL,
+  `cylinder_id` int NOT NULL,
+  `origin_id` int NOT NULL,
+  `owner_id` int NOT NULL,
+  `plate_no_id` int DEFAULT NULL,
+  `reg_user_id` bigint NOT NULL,
+  `vehicle_model_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vehicles_transfare_vehicles`
+-- Table structure for table `Vehicles_transfare_vehicles`
 --
 
-CREATE TABLE `vehicles_transfare_vehicles` (
-  `transfare_id` int(11) NOT NULL,
+CREATE TABLE `Vehicles_transfare_vehicles` (
+  `transfare_id` int NOT NULL,
   `rv_number` varchar(50) NOT NULL,
   `document` varchar(100) DEFAULT NULL,
-  `description` longtext DEFAULT NULL,
+  `description` longtext,
   `transfare_reason` longtext NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `new_owner_id` int(11) NOT NULL,
-  `old_owner_id` int(11) NOT NULL,
-  `reg_user_id` bigint(20) NOT NULL,
-  `vehicle_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `vehicles_transfare_vehicles`
---
-
-INSERT INTO `vehicles_transfare_vehicles` (`transfare_id`, `rv_number`, `document`, `description`, `transfare_reason`, `created_at`, `modified_at`, `new_owner_id`, `old_owner_id`, `reg_user_id`, `vehicle_id`) VALUES
-(1, 'RV14259', '', 'walakala wrejjiyaay', 'wuu iska gaday', '2023-02-18 13:22:16.338445', '2023-02-18 13:22:16.338445', 2, 1, 1, 1);
+  `new_owner_id` int NOT NULL,
+  `old_owner_id` int NOT NULL,
+  `reg_user_id` bigint NOT NULL,
+  `vehicle_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Indexes for dumped tables
@@ -1401,7 +1331,8 @@ ALTER TABLE `account`
 -- Indexes for table `account_types`
 --
 ALTER TABLE `account_types`
-  ADD PRIMARY KEY (`type_id`);
+  ADD PRIMARY KEY (`type_id`),
+  ADD KEY `account_types_reg_user_id_356b40e1_fk_users_id` (`reg_user_id`);
 
 --
 -- Indexes for table `audittrials`
@@ -1436,6 +1367,13 @@ ALTER TABLE `auth_permission`
 --
 ALTER TABLE `blood_group`
   ADD PRIMARY KEY (`blood_group_id`);
+
+--
+-- Indexes for table `code_plate`
+--
+ALTER TABLE `code_plate`
+  ADD PRIMARY KEY (`code_id`),
+  ADD KEY `code_plate_reg_user_id_85a2a0ab_fk_users_id` (`reg_user_id`);
 
 --
 -- Indexes for table `color`
@@ -1531,6 +1469,7 @@ ALTER TABLE `license`
   ADD PRIMARY KEY (`license_id`),
   ADD KEY `license_federal_state_id_3830e544_fk_federal_state_state_id` (`federal_state_id`),
   ADD KEY `license_owner_id_f487e78c_fk_customers_customer_id` (`owner_id`),
+  ADD KEY `license_place_of_issue_id_a5b2f983_fk_place_issue_place_id` (`place_of_issue_id`),
   ADD KEY `license_receipt_voucher_id_4942b888_fk_receipt_voucher_rv_id` (`receipt_voucher_id`),
   ADD KEY `license_reg_user_id_946be48d_fk_users_id` (`reg_user_id`),
   ADD KEY `license_type_id_6aec3442_fk_licensetype_type_id` (`type_id`);
@@ -1556,14 +1495,20 @@ ALTER TABLE `personal_id_type`
   ADD PRIMARY KEY (`personal_id`);
 
 --
+-- Indexes for table `place_issue`
+--
+ALTER TABLE `place_issue`
+  ADD PRIMARY KEY (`place_id`),
+  ADD KEY `place_issue_reg_user_id_5f0f51cf_fk_users_id` (`reg_user_id`);
+
+--
 -- Indexes for table `plate`
 --
 ALTER TABLE `plate`
   ADD PRIMARY KEY (`plate_id`),
+  ADD KEY `plate_type_id_ae5aca22_fk_type_type_id` (`type_id`),
   ADD KEY `plate_reg_user_id_744c09e8_fk_users_id` (`reg_user_id`),
-  ADD KEY `plate_state_id_3b014cea_fk_federal_state_state_id` (`state_id`),
-  ADD KEY `plate_vehicle_id_8ac47235_fk_vehicle_vehicle_id` (`vehicle_id`),
-  ADD KEY `plate_type_id_ae5aca22_fk_type_type_id` (`type_id`);
+  ADD KEY `plate_state_id_3b014cea_fk_federal_state_state_id` (`state_id`);
 
 --
 -- Indexes for table `receipt_voucher`
@@ -1587,7 +1532,8 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`),
   ADD UNIQUE KEY `email` (`email`),
-  ADD KEY `users_federal_state_id_a5c6fb46_fk_federal_state_state_id` (`federal_state_id`);
+  ADD KEY `users_federal_state_id_a5c6fb46_fk_federal_state_state_id` (`federal_state_id`),
+  ADD KEY `users_place_issues_id_66a5e082_fk_place_issue_place_id` (`place_issues_id`);
 
 --
 -- Indexes for table `users_groups`
@@ -1614,13 +1560,14 @@ ALTER TABLE `vehicle`
   ADD KEY `vehicle_cylinder_id_0fb3b025_fk_cylinder_cylinder_id` (`cylinder_id`),
   ADD KEY `vehicle_origin_id_042ff3fe_fk_countries_country_id` (`origin_id`),
   ADD KEY `vehicle_owner_id_9c24cb49_fk_customers_customer_id` (`owner_id`),
+  ADD KEY `vehicle_plate_no_id_bf286d14_fk_plate_plate_id` (`plate_no_id`),
   ADD KEY `vehicle_reg_user_id_713ecd80_fk_users_id` (`reg_user_id`),
   ADD KEY `vehicle_vehicle_model_id_2a7997b8_fk_model_brand_brand_id` (`vehicle_model_id`);
 
 --
--- Indexes for table `vehicles_transfare_vehicles`
+-- Indexes for table `Vehicles_transfare_vehicles`
 --
-ALTER TABLE `vehicles_transfare_vehicles`
+ALTER TABLE `Vehicles_transfare_vehicles`
   ADD PRIMARY KEY (`transfare_id`),
   ADD KEY `Vehicles_transfare_v_new_owner_id_a8719238_fk_customers` (`new_owner_id`),
   ADD KEY `Vehicles_transfare_v_old_owner_id_7cee99c1_fk_customers` (`old_owner_id`),
@@ -1635,181 +1582,193 @@ ALTER TABLE `vehicles_transfare_vehicles`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `account_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `account_types`
 --
 ALTER TABLE `account_types`
-  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `type_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `audittrials`
 --
 ALTER TABLE `audittrials`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `auth_group`
 --
 ALTER TABLE `auth_group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `auth_group_permissions`
 --
 ALTER TABLE `auth_group_permissions`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 
 --
 -- AUTO_INCREMENT for table `blood_group`
 --
 ALTER TABLE `blood_group`
-  MODIFY `blood_group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `blood_group_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `code_plate`
+--
+ALTER TABLE `code_plate`
+  MODIFY `code_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `color`
 --
 ALTER TABLE `color`
-  MODIFY `color_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=357;
+  MODIFY `color_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=357;
 
 --
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `company_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=198;
+  MODIFY `country_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=198;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `customer_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `cylinder`
 --
 ALTER TABLE `cylinder`
-  MODIFY `cylinder_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `cylinder_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `errorlogs`
 --
 ALTER TABLE `errorlogs`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `federal_state`
 --
 ALTER TABLE `federal_state`
-  MODIFY `state_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `state_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `fingerprints`
 --
 ALTER TABLE `fingerprints`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `license`
 --
 ALTER TABLE `license`
-  MODIFY `license_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `license_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `licensetype`
 --
 ALTER TABLE `licensetype`
-  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `type_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `model_brand`
 --
 ALTER TABLE `model_brand`
-  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `brand_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `personal_id_type`
 --
 ALTER TABLE `personal_id_type`
-  MODIFY `personal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `personal_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `place_issue`
+--
+ALTER TABLE `place_issue`
+  MODIFY `place_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `plate`
 --
 ALTER TABLE `plate`
-  MODIFY `plate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `plate_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `receipt_voucher`
 --
 ALTER TABLE `receipt_voucher`
-  MODIFY `rv_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `rv_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `type`
 --
 ALTER TABLE `type`
-  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `type_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users_user_permissions`
 --
 ALTER TABLE `users_user_permissions`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `vehicle_id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `vehicles_transfare_vehicles`
+-- AUTO_INCREMENT for table `Vehicles_transfare_vehicles`
 --
-ALTER TABLE `vehicles_transfare_vehicles`
-  MODIFY `transfare_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `Vehicles_transfare_vehicles`
+  MODIFY `transfare_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -1823,6 +1782,12 @@ ALTER TABLE `account`
   ADD CONSTRAINT `account_reg_user_id_f7e09af6_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
 
 --
+-- Constraints for table `account_types`
+--
+ALTER TABLE `account_types`
+  ADD CONSTRAINT `account_types_reg_user_id_356b40e1_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
 -- Constraints for table `auth_group_permissions`
 --
 ALTER TABLE `auth_group_permissions`
@@ -1834,6 +1799,12 @@ ALTER TABLE `auth_group_permissions`
 --
 ALTER TABLE `auth_permission`
   ADD CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`);
+
+--
+-- Constraints for table `code_plate`
+--
+ALTER TABLE `code_plate`
+  ADD CONSTRAINT `code_plate_reg_user_id_85a2a0ab_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `color`
@@ -1884,6 +1855,7 @@ ALTER TABLE `fingerprints`
 ALTER TABLE `license`
   ADD CONSTRAINT `license_federal_state_id_3830e544_fk_federal_state_state_id` FOREIGN KEY (`federal_state_id`) REFERENCES `federal_state` (`state_id`),
   ADD CONSTRAINT `license_owner_id_f487e78c_fk_customers_customer_id` FOREIGN KEY (`owner_id`) REFERENCES `customers` (`customer_id`),
+  ADD CONSTRAINT `license_place_of_issue_id_a5b2f983_fk_place_issue_place_id` FOREIGN KEY (`place_of_issue_id`) REFERENCES `place_issue` (`place_id`),
   ADD CONSTRAINT `license_receipt_voucher_id_4942b888_fk_receipt_voucher_rv_id` FOREIGN KEY (`receipt_voucher_id`) REFERENCES `receipt_voucher` (`rv_id`),
   ADD CONSTRAINT `license_reg_user_id_946be48d_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `license_type_id_6aec3442_fk_licensetype_type_id` FOREIGN KEY (`type_id`) REFERENCES `licensetype` (`type_id`);
@@ -1901,13 +1873,18 @@ ALTER TABLE `model_brand`
   ADD CONSTRAINT `model_brand_reg_user_id_c3636f74_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
 
 --
+-- Constraints for table `place_issue`
+--
+ALTER TABLE `place_issue`
+  ADD CONSTRAINT `place_issue_reg_user_id_5f0f51cf_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`);
+
+--
 -- Constraints for table `plate`
 --
 ALTER TABLE `plate`
   ADD CONSTRAINT `plate_reg_user_id_744c09e8_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `plate_state_id_3b014cea_fk_federal_state_state_id` FOREIGN KEY (`state_id`) REFERENCES `federal_state` (`state_id`),
-  ADD CONSTRAINT `plate_type_id_ae5aca22_fk_type_type_id` FOREIGN KEY (`type_id`) REFERENCES `type` (`type_id`),
-  ADD CONSTRAINT `plate_vehicle_id_8ac47235_fk_vehicle_vehicle_id` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`vehicle_id`);
+  ADD CONSTRAINT `plate_type_id_ae5aca22_fk_type_type_id` FOREIGN KEY (`type_id`) REFERENCES `type` (`type_id`);
 
 --
 -- Constraints for table `receipt_voucher`
@@ -1926,7 +1903,8 @@ ALTER TABLE `type`
 -- Constraints for table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_federal_state_id_a5c6fb46_fk_federal_state_state_id` FOREIGN KEY (`federal_state_id`) REFERENCES `federal_state` (`state_id`);
+  ADD CONSTRAINT `users_federal_state_id_a5c6fb46_fk_federal_state_state_id` FOREIGN KEY (`federal_state_id`) REFERENCES `federal_state` (`state_id`),
+  ADD CONSTRAINT `users_place_issues_id_66a5e082_fk_place_issue_place_id` FOREIGN KEY (`place_issues_id`) REFERENCES `place_issue` (`place_id`);
 
 --
 -- Constraints for table `users_groups`
@@ -1950,13 +1928,14 @@ ALTER TABLE `vehicle`
   ADD CONSTRAINT `vehicle_cylinder_id_0fb3b025_fk_cylinder_cylinder_id` FOREIGN KEY (`cylinder_id`) REFERENCES `cylinder` (`cylinder_id`),
   ADD CONSTRAINT `vehicle_origin_id_042ff3fe_fk_countries_country_id` FOREIGN KEY (`origin_id`) REFERENCES `countries` (`country_id`),
   ADD CONSTRAINT `vehicle_owner_id_9c24cb49_fk_customers_customer_id` FOREIGN KEY (`owner_id`) REFERENCES `customers` (`customer_id`),
+  ADD CONSTRAINT `vehicle_plate_no_id_bf286d14_fk_plate_plate_id` FOREIGN KEY (`plate_no_id`) REFERENCES `plate` (`plate_id`),
   ADD CONSTRAINT `vehicle_reg_user_id_713ecd80_fk_users_id` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `vehicle_vehicle_model_id_2a7997b8_fk_model_brand_brand_id` FOREIGN KEY (`vehicle_model_id`) REFERENCES `model_brand` (`brand_id`);
 
 --
--- Constraints for table `vehicles_transfare_vehicles`
+-- Constraints for table `Vehicles_transfare_vehicles`
 --
-ALTER TABLE `vehicles_transfare_vehicles`
+ALTER TABLE `Vehicles_transfare_vehicles`
   ADD CONSTRAINT `Vehicles_transfare_v_new_owner_id_a8719238_fk_customers` FOREIGN KEY (`new_owner_id`) REFERENCES `customers` (`customer_id`),
   ADD CONSTRAINT `Vehicles_transfare_v_old_owner_id_7cee99c1_fk_customers` FOREIGN KEY (`old_owner_id`) REFERENCES `customers` (`customer_id`),
   ADD CONSTRAINT `Vehicles_transfare_v_vehicle_id_bdf6795e_fk_vehicle_v` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`vehicle_id`),
