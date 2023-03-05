@@ -9,6 +9,7 @@ from django.db.models import Q, OuterRef, Exists
 from Finance import models as finance_model
 from Customers import models as customer_model
 from Finance import models as finance_model
+from Vehicles import models as vehicle_model
 current_date = date.today()
 currentDatetime = datetime.now()
 years_to_add = current_date.year + 3
@@ -231,6 +232,18 @@ def manage_license(request, id):
                                 'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
                             }
                             return JsonResponse(message, status=200)
+                        isvoucer_in_vehicle = vehicle_model.vehicle.objects.filter(
+                            Q(owner_id=rv_id)).first()
+                        if isvoucer_in_vehicle is not None:
+                            return JsonResponse(
+                                {
+                                    'isError': True,
+                                    'title': "Duplicate Error!!",
+                                             'type': "warning",
+                                             'Message': f'this voucher is already used in Vehicle'
+                                }
+                            )
+
                         else:
 
                             # get instance of license type
@@ -381,16 +394,25 @@ def find_liscence(request, id):
 
         if id is not None:
             liscence = ''
+            rv = ''
+            # receiptvoucher = ""
             if request.user.is_superuser:
                 # for admin user
                 liscence = customer_model.license.objects.filter(
-                    Q(license_id=id)).values()
+                    Q(license_id=id)).first()
             else:
                 # for state user
                 liscence = customer_model.license.objects.filter(
-                    Q(license_id=id), federal_state=request.user.federal_state).values()
+                    Q(license_id=id), federal_state=request.user.federal_state).first()
 
-            return JsonResponse({'isErro': False, 'Message': list(liscence)}, status=200)
+           
+
+            
+
+            # rv = finance_model.receipt_voucher.objects.filter(
+            #     Q(rv_number=receiptvoucher)).first()
+
+            return JsonResponse({'isErro': False, 'Message': list(liscence), }, status=200)
         else:
             return JsonResponse({'isErro': False, 'Message': 'Liscence Not Found'}, status=404)
 
