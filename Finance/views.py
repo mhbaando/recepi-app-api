@@ -406,30 +406,25 @@ def savereciept(request, action):
     return render(request, 'receipt_list.html')
 
 
-# update account
-# @login_required(login_url="Login")
-# def find_account(request, name):
-#     if id is not None:
-#         found_account = account.objects.filter(account_id=name).first()
-#         if found_account is not None:
-#             return JsonResponse({
-#                 'isError': False,
-#                 'account_number': found_account.account_number,
-#                 'account_type': {
-#                     'id': found_account.account_type.type_id
-#                 },
-#                 'account_name': found_account.account_name,
-#                 'amount': found_account.amount
-#             })
-#         return JsonResponse({
-#             'isError': True,
-#             'Message': 'Account Not Found'
-#         })
-
-    return JsonResponse({
-        'isError': True,
-        'Message': 'Provide an ID'
-    })
+# updated accout
+@login_required(login_url="Login")
+def findupdatedaccount(request, name):
+    if id is not None:
+        found_account = account.objects.filter(account_id=name).first()
+        if found_account is not None:
+            return JsonResponse({
+                'isError': False,
+                'account_number': found_account.account_number,
+                'account_type': {
+                    'id': found_account.account_type.type_id
+                },
+                'account_name': found_account.account_name,
+                'amount': found_account.amount
+            })
+        return JsonResponse({
+            'isError': True,
+            'Message': 'Account Not Found'
+        })
 
 
 @login_required(login_url="Login")

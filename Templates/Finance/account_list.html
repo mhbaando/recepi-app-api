@@ -73,12 +73,13 @@
                                                     <td>{{ item.account_type }}</td>
                                                     <td>{{ item.account_name }}</td>
                                                     <td>$ {{ item.amount }}</td>
-                                                    <td> {{ item.created_at }}</td>
-
+                                                    <td>{{ item.created_at }}</td>
                                                     <td>
                                                         <button class="btn btn-outline-primary"
                                                                 id="edit"
-                                                                data-accountid="{{ item.account_id }}">Edit</button>
+                                                                data-accountid="{{ item.account_id }}">
+                                                            <i class='bx bx-edit-alt'></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             {% endfor %}

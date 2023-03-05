@@ -9,15 +9,20 @@ $(document).ready(() => {
 
 
     $("#edit").on('click', function () {
-        overlay.attr('class', 'overlay')
-        modal.attr('class', 'model-contaier')
-        accountID = $(this).data('accountid')
+        companyID = $(this).data('companyid')
+        btnupdate.forEach(btn =>{
+            overlay.attr('class', 'overlay')
+            modal.attr('class', 'model-contaier')
+            accountID = $(this).data('accountid')
+
+        })
+     
         
         // prepapulate data to the model
         // 1. get the selected 
         $.ajax({
             method: "GET",
-            url: `/finance/find_account/${accountID}`,
+            url: `/finance/findupdatedaccount/${accountID}`,
             headers: { "X-CSRFToken": csrftoken },
             async: true,
             success: function (response) {
