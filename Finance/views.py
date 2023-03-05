@@ -19,7 +19,7 @@ from Customers import models as customer_model
 def AccountsPage(request):
 
     accounts = account.objects.all()
-    account_type = models.account_types.objects.all()
+    account_type = models.account_types.objects.all().order_by('created_at')
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
@@ -120,7 +120,7 @@ def ManageAccounts(request, action):
 
 # This will display the receipts list
 def ReceiptPage(request):
-    receipt_vouchers = receipt_voucher.objects.all()
+    receipt_vouchers = receipt_voucher.objects.all().order_by('created_at')
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
@@ -335,11 +335,11 @@ def receipt(request, id):
 
 
 @login_required(login_url='Login')
-def find_account(request, name):
+def find_account(request, id):
     if request.method == 'GET':
         # if name is not None:
         rv_account = models.account.objects.filter(
-            Q(account_name__icontains=name))
+            Q(account_name__icontains=id))
         message = []
         if rv_account is not None:
             for xSearch in range(0, len(rv_account)):
@@ -406,11 +406,11 @@ def savereciept(request, action):
     return render(request, 'receipt_list.html')
 
 
-# update account
+# updated accout
 @login_required(login_url="Login")
-def find_account(request, id):
+def findupdatedaccount(request, name):
     if id is not None:
-        found_account = account.objects.filter(account_id=id).first()
+        found_account = account.objects.filter(account_id=name).first()
         if found_account is not None:
             return JsonResponse({
                 'isError': False,
@@ -425,11 +425,6 @@ def find_account(request, id):
             'isError': True,
             'Message': 'Account Not Found'
         })
-
-    return JsonResponse({
-        'isError': True,
-        'Message': 'Provide an ID'
-    })
 
 
 @login_required(login_url="Login")

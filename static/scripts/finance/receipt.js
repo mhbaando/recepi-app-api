@@ -27,11 +27,11 @@ $(document).ready(function () {
 
 
 
-  function rvaccount(name) {
+  function rvaccount(id) {
     let list = [];
     $.ajax({
       method: "GET",
-      url: "/finance/findaccount/" + name,
+      url: "/finance/findaccount/" + id,
       async: false,
       headers: { "X-CSRFToken": csrftoken },
       success: function (data) {

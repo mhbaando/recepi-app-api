@@ -27,7 +27,7 @@ urlpatterns = [
     path('customer_info/<int:id>', license.customer_info, name='customer_info'),
     path('manage_license/<int:id>', license.manage_license, name='manage_license'),
     #     path('find_liscence/<int:id>', license.find_liscence, name='find_liscence'),
-    #     path('renewlicense/<int:id>', license.renew_license),
+    path('renewlicense/<int:id>', license.renew_license),
     path('find_liscence/<int:id>', license.find_liscence, name='find_liscence'),
     path('edit_liscence/<int:id>', license.edit_liscence),
     path('status_licenses/<int:id>', license.find_status, name='find_license'),
