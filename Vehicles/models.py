@@ -108,7 +108,7 @@ class plate(models.Model):
 class vehicle(models.Model):
     vehicle_id = models.AutoField(primary_key=True)
     vehicle_model = models.ForeignKey(model_brand, on_delete=models.RESTRICT)
-    year = models.DateField(null=True, blank=True)
+    year = models.IntegerField(null=True, blank=True)
     origin = models.ForeignKey(
         customer_model.countries, on_delete=models.RESTRICT)
     color = models.ForeignKey(color, on_delete=models.RESTRICT)
