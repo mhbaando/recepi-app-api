@@ -1778,28 +1778,60 @@ def user_activation(request, action, id):
 
 @login_required(login_url="Login")
 def updateUser(request):
-    userID = request.POST.get('userID', None)
-    gender = request.POST.get('gender', None)
-    fname = request.POST.get('fname', None)
-    lname = request.POST.get('lname', None)
-    phone = request.POST.get('phone', None)
-    email = request.POST.get('email', None)
-    state = request.POST.get('state', None)
+    
+    if request.method == 'POST':
 
-    users = models.Users.objects.filter(
+        userID = request.POST.get('userID', None)
+        gender = request.POST.get('gender', None)
+        fname = request.POST.get('fname', None)
+        lname = request.POST.get('lname', None)
+        phone = request.POST.get('phone', None)
+        email = request.POST.get('email', None)
+        image = ''
+
+        if 'img' in request.FILES:
+            image = request.FILES['img']
+
+        state = request.POST.get('state', None)
+        
+        if userID is None or gender is None or fname is None or lname is None or phone is None or email is None:
+            return JsonResponse({
+                'isError':True,
+                'Message':'All Feilds are required'
+                })
+
+        user = models.Users.objects.filter(
         Q(id=userID)).first()
-    user_state = customer_model.federal_state.objects.filter(
-        Q(state_id=state)).first()
 
-    users.email = email
-    users.gender = gender
-    users.first_name = fname
-    users.last_name = lname
-    users.phone = phone
-    users.federal_state = user_state
-    # users.avatar=
-    users.save()
+        if not request.user.is_superuser:
+            if state is None or state == 'Select State':
+                return JsonResponse({
+                    'isError':True,
+                    'Message':'State is Required'
+                    })
 
-    return JsonResponse({
-        'saved': "succesfully"
-    })
+            user_state = customer_model.federal_state.objects.filter(
+            Q(state_id=state)).first()
+
+            if user_state is not None:
+                user.federal_state = user_state  # only update state for the state user and admins only
+
+
+        user.email = email
+        user.gender = gender
+        user.first_name = fname
+        user.last_name = lname
+        user.phone = phone
+        user.avatar = image if image else user.avatar
+
+        user.save()
+
+        return JsonResponse({
+            'isError':False,
+            'Message':'User Updaed Succefully'
+        })
+
+    return ({
+        'isError':True,
+        'Message':'Not Allowed'
+        })
