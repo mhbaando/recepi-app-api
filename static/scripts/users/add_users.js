@@ -8,7 +8,7 @@ $(document).ready(function () {
   });
 
   UserType.on('change', function () {
-    if ($(this).val() !== 'Super') {
+    if ($(this).val() !== 'Superuser') {
       // if user is super user we dont need the state
       state.prop('disabled', false);
     }
@@ -36,11 +36,11 @@ $(document).ready(function () {
     formData.append("image", Image);
     formData.append("type", UserType.val());
 
-    if (UserType.val() !== 'Super') {
+    if (UserType.val() !== 'Superuser') {
       formData.append("state", state.val());
     }
 
-    if (state.val() == 'Select State' && UserType.val() !== 'Super') {
+    if (state.val() == 'Select State' && UserType.val() !== 'Superuser') {
       return Swal.fire("Error", "Select A State", "error");
     }
 

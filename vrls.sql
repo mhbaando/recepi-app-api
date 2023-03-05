@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 05, 2023 at 09:44 AM
+-- Generation Time: Mar 05, 2023 at 10:19 AM
 -- Server version: 8.0.32-0ubuntu0.22.04.2
 -- PHP Version: 8.1.2-1ubuntu2.11
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 --
 CREATE TABLE `account` (
   `account_id` int NOT NULL,
-  `account_name` varchar(100) NOT NULL,
+  `account_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `account_number` int DEFAULT NULL,
   `amount` int NOT NULL,
   `created_at` datetime(6) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `account` (
 --
 CREATE TABLE `account_types` (
   `type_id` int NOT NULL,
-  `name` varchar(100) NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) DEFAULT NULL,
   `modified_at` datetime(6) DEFAULT NULL,
   `reg_user_id` bigint DEFAULT NULL
@@ -82,12 +82,12 @@ VALUES (
 --
 CREATE TABLE `audittrials` (
   `id` bigint NOT NULL,
-  `Avatar` varchar(100) NOT NULL,
-  `Username` varchar(20) NOT NULL,
-  `path` varchar(60) DEFAULT NULL,
-  `Name` varchar(200) NOT NULL,
-  `Actions` varchar(400) NOT NULL,
-  `Module` varchar(400) NOT NULL,
+  `Avatar` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Username` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `path` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Actions` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Module` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_of_action` datetime(6) NOT NULL,
   `operating_system` varchar(200) NOT NULL,
   `browser` varchar(200) NOT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE `auth_group_permissions` (
 --
 CREATE TABLE `auth_permission` (
   `id` int NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `content_type_id` int NOT NULL,
   `codename` varchar(100) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
@@ -497,7 +497,7 @@ VALUES (1, 'Can add log entry', 1, 'add_logentry'),
 --
 CREATE TABLE `blood_group` (
   `blood_group_id` int NOT NULL,
-  `blood_group_name` varchar(100) NOT NULL,
+  `blood_group_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
@@ -558,7 +558,7 @@ VALUES (
 --
 CREATE TABLE `code_plate` (
   `code_id` int NOT NULL,
-  `code_name` varchar(100) NOT NULL,
+  `code_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
@@ -866,7 +866,7 @@ VALUES (
 --
 CREATE TABLE `color` (
   `color_id` int NOT NULL,
-  `color_name` varchar(100) NOT NULL,
+  `color_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
@@ -1895,15 +1895,15 @@ VALUES (
 --
 CREATE TABLE `company` (
   `company_id` int NOT NULL,
-  `company_name` varchar(100) NOT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `address` varchar(100) DEFAULT NULL,
-  `phone` varchar(100) DEFAULT NULL,
-  `logo` varchar(100) DEFAULT NULL,
-  `website` varchar(100) DEFAULT NULL,
-  `reg_no` longtext,
-  `document` varchar(80) DEFAULT NULL,
-  `description` longtext,
+  `company_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reg_no` longtext COLLATE utf8mb4_unicode_ci,
+  `document` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
   `is_blocked` tinyint(1) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
@@ -1917,7 +1917,7 @@ CREATE TABLE `company` (
 --
 CREATE TABLE `countries` (
   `country_id` int NOT NULL,
-  `country_name` varchar(100) NOT NULL,
+  `country_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
@@ -3112,24 +3112,24 @@ VALUES (
 --
 CREATE TABLE `customers` (
   `customer_id` int NOT NULL,
-  `firstname` varchar(100) DEFAULT NULL,
-  `middle_name` varchar(100) DEFAULT NULL,
-  `lastname` varchar(100) DEFAULT NULL,
-  `fourth_name` varchar(100) DEFAULT NULL,
-  `mother_name` varchar(100) DEFAULT NULL,
-  `full_name` longtext NOT NULL,
-  `gender` varchar(100) DEFAULT NULL,
+  `firstname` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `middle_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fourth_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mother_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `full_name` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
-  `place_of_birth` varchar(100) DEFAULT NULL,
-  `personal_id` varchar(100) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `address` varchar(100) DEFAULT NULL,
-  `phone` varchar(100) DEFAULT NULL,
-  `photo` varchar(100) DEFAULT NULL,
-  `document` varchar(100) DEFAULT NULL,
+  `place_of_birth` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `personal_id` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `photo` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `document` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_verified` tinyint(1) NOT NULL,
   `created_at` datetime(6) NOT NULL,
-  `description` longtext,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
   `modified_at` datetime(6) NOT NULL,
   `blood_group_id` int DEFAULT NULL,
   `federal_state_id` int DEFAULT NULL,
@@ -3143,7 +3143,7 @@ CREATE TABLE `customers` (
 --
 CREATE TABLE `cylinder` (
   `cylinder_id` int NOT NULL,
-  `cylinder_name` varchar(100) NOT NULL,
+  `cylinder_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
@@ -3221,10 +3221,10 @@ VALUES (
 CREATE TABLE `django_admin_log` (
   `id` int NOT NULL,
   `action_time` datetime(6) NOT NULL,
-  `object_id` longtext,
-  `object_repr` varchar(200) NOT NULL,
+  `object_id` longtext COLLATE utf8mb4_unicode_ci,
+  `object_repr` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action_flag` smallint UNSIGNED NOT NULL,
-  `change_message` longtext NOT NULL,
+  `change_message` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `content_type_id` int DEFAULT NULL,
   `user_id` bigint NOT NULL
 );
@@ -3276,8 +3276,8 @@ VALUES (1, 'admin', 'logentry'),
 --
 CREATE TABLE `django_migrations` (
   `id` bigint NOT NULL,
-  `app` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `app` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `applied` datetime(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 --
@@ -3433,8 +3433,8 @@ VALUES (
 -- Table structure for table `django_session`
 --
 CREATE TABLE `django_session` (
-  `session_key` varchar(40) NOT NULL,
-  `session_data` longtext NOT NULL,
+  `session_key` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `session_data` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `expire_date` datetime(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 -- --------------------------------------------------------
@@ -3443,11 +3443,11 @@ CREATE TABLE `django_session` (
 --
 CREATE TABLE `errorlogs` (
   `id` bigint NOT NULL,
-  `Username` varchar(20) NOT NULL,
-  `Name` varchar(500) NOT NULL,
-  `Expected_error` varchar(500) NOT NULL,
-  `field_error` varchar(500) NOT NULL,
-  `trace_back` longtext NOT NULL,
+  `Username` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Name` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Expected_error` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `field_error` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trace_back` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `line_number` int NOT NULL,
   `date_recorded` datetime(6) NOT NULL,
   `browser` varchar(500) NOT NULL,
@@ -3461,7 +3461,7 @@ CREATE TABLE `errorlogs` (
 --
 CREATE TABLE `federal_state` (
   `state_id` int NOT NULL,
-  `state_name` varchar(100) NOT NULL,
+  `state_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
@@ -3522,8 +3522,8 @@ VALUES (
 --
 CREATE TABLE `fingerprints` (
   `id` bigint NOT NULL,
-  `finger_print_template` longtext,
-  `finger_print_image` longtext,
+  `finger_print_template` longtext COLLATE utf8mb4_unicode_ci,
+  `finger_print_image` longtext COLLATE utf8mb4_unicode_ci,
   `customer_id` int DEFAULT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 -- --------------------------------------------------------
@@ -3533,9 +3533,9 @@ CREATE TABLE `fingerprints` (
 CREATE TABLE `license` (
   `license_id` int NOT NULL,
   `expired_date` date NOT NULL,
-  `status` varchar(100) NOT NULL,
-  `reg_no` longtext,
-  `document` varchar(100) DEFAULT NULL,
+  `status` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reg_no` longtext COLLATE utf8mb4_unicode_ci,
+  `document` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `federal_state_id` int NOT NULL,
@@ -3551,7 +3551,7 @@ CREATE TABLE `license` (
 --
 CREATE TABLE `licensetype` (
   `type_id` int NOT NULL,
-  `type` varchar(100) NOT NULL,
+  `type` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
@@ -3635,7 +3635,7 @@ VALUES (
 --
 CREATE TABLE `model_brand` (
   `brand_id` int NOT NULL,
-  `brand_name` varchar(100) NOT NULL,
+  `brand_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
@@ -4097,7 +4097,7 @@ VALUES (
 --
 CREATE TABLE `personal_id_type` (
   `personal_id` int NOT NULL,
-  `personal_name` varchar(100) NOT NULL,
+  `personal_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
@@ -4134,7 +4134,7 @@ VALUES (
 --
 CREATE TABLE `place_issue` (
   `place_id` int NOT NULL,
-  `place_name` varchar(100) DEFAULT NULL,
+  `place_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime(6) DEFAULT NULL,
   `modified_at` datetime(6) DEFAULT NULL,
   `reg_user_id` bigint DEFAULT NULL
@@ -4204,8 +4204,8 @@ VALUES (
 --
 CREATE TABLE `plate` (
   `plate_id` int NOT NULL,
-  `plate_code` varchar(100) NOT NULL,
-  `plate_no` varchar(100) DEFAULT NULL,
+  `plate_code` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `plate_no` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `year` int NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
@@ -4219,10 +4219,10 @@ CREATE TABLE `plate` (
 --
 CREATE TABLE `receipt_voucher` (
   `rv_id` int NOT NULL,
-  `rv_number` varchar(100) NOT NULL,
-  `rv_amount` varchar(50) NOT NULL,
+  `rv_number` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rv_amount` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
-  `reason` varchar(250) DEFAULT NULL,
+  `reason` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL,
   `rv_from_id` int NOT NULL
@@ -4233,7 +4233,7 @@ CREATE TABLE `receipt_voucher` (
 --
 CREATE TABLE `type` (
   `type_id` int NOT NULL,
-  `type_name` varchar(100) NOT NULL,
+  `type_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
@@ -4296,19 +4296,19 @@ VALUES (
 --
 CREATE TABLE `users` (
   `id` bigint NOT NULL,
-  `password` varchar(128) NOT NULL,
+  `password` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_login` datetime(6) DEFAULT NULL,
   `is_superuser` tinyint(1) NOT NULL,
-  `username` varchar(150) NOT NULL,
-  `first_name` varchar(150) NOT NULL,
-  `last_name` varchar(150) NOT NULL,
+  `username` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_staff` tinyint(1) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `date_joined` datetime(6) NOT NULL,
-  `email` varchar(254) NOT NULL,
-  `phone` varchar(50) NOT NULL,
-  `gender` varchar(10) DEFAULT NULL,
-  `avatar` varchar(100) NOT NULL,
+  `email` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_admin` tinyint(1) NOT NULL,
   `is_state` tinyint(1) NOT NULL,
   `is_place_issue` tinyint(1) NOT NULL,
@@ -4341,12 +4341,12 @@ CREATE TABLE `users_user_permissions` (
 CREATE TABLE `vehicle` (
   `vehicle_id` int NOT NULL,
   `year` date DEFAULT NULL,
-  `weight` varchar(100) DEFAULT NULL,
-  `hp` varchar(100) DEFAULT NULL,
-  `pessenger_seat` longtext,
-  `vin` varchar(100) DEFAULT NULL,
-  `enginer_no` varchar(100) DEFAULT NULL,
-  `rv_number` varchar(100) DEFAULT NULL,
+  `weight` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `hp` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pessenger_seat` longtext COLLATE utf8mb4_unicode_ci,
+  `vin` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `enginer_no` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rv_number` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `color_id` int NOT NULL,
@@ -4363,10 +4363,10 @@ CREATE TABLE `vehicle` (
 --
 CREATE TABLE `Vehicles_transfare_vehicles` (
   `transfare_id` int NOT NULL,
-  `rv_number` varchar(50) NOT NULL,
-  `document` varchar(100) DEFAULT NULL,
-  `description` longtext,
-  `transfare_reason` longtext NOT NULL,
+  `rv_number` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `document` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `transfare_reason` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `new_owner_id` int NOT NULL,

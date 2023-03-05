@@ -1,4 +1,16 @@
 {% extends "Base/index.html" %}
+{% block cssData %}
+  <style>
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+  </style>
+{% endblock cssData %}
+
 {% load static %}
 {% block content %}
     {% csrf_token %}
@@ -41,7 +53,7 @@
                                         <input type="number"
                                                maxlength="3"
                                                class="form-control"
-                                               placeholder="123"
+                                               placeholder="Phone Number"
                                                id="Phone">
                                     </div>
                                 </div>
@@ -70,7 +82,7 @@
                                                 State
                                             </option>
                                             {% if request.user.is_superuser %}
-                                                <option value="Super">
+                                                <option value="Superuser">
                                                     Superuser
                                                 </option>
                                             {% endif %}
