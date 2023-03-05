@@ -15,7 +15,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `vrls`
@@ -36,7 +36,7 @@ CREATE TABLE `account` (
   `modified_at` datetime(6) NOT NULL,
   `account_type_id` int NOT NULL,
   `reg_user_id` bigint NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -50,7 +50,7 @@ CREATE TABLE `account_types` (
   `created_at` datetime(6) DEFAULT NULL,
   `modified_at` datetime(6) DEFAULT NULL,
   `reg_user_id` bigint DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `account_types`
@@ -80,7 +80,7 @@ CREATE TABLE `audittrials` (
   `browser` varchar(200) NOT NULL,
   `ip_address` varchar(200) NOT NULL,
   `user_agent` longtext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -91,7 +91,7 @@ CREATE TABLE `audittrials` (
 CREATE TABLE `auth_group` (
   `id` int NOT NULL,
   `name` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -103,7 +103,7 @@ CREATE TABLE `auth_group_permissions` (
   `id` bigint NOT NULL,
   `group_id` int NOT NULL,
   `permission_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -116,7 +116,7 @@ CREATE TABLE `auth_permission` (
   `name` varchar(255) NOT NULL,
   `content_type_id` int NOT NULL,
   `codename` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `auth_permission`
@@ -251,7 +251,7 @@ CREATE TABLE `blood_group` (
   `blood_group_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `blood_group`
@@ -278,7 +278,7 @@ CREATE TABLE `code_plate` (
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `code_plate`
@@ -339,7 +339,7 @@ CREATE TABLE `color` (
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `color`
@@ -514,7 +514,7 @@ CREATE TABLE `company` (
   `federal_state_id` int DEFAULT NULL,
   `owner_id` int NOT NULL,
   `reg_user_id` bigint NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -527,7 +527,7 @@ CREATE TABLE `countries` (
   `country_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `countries`
@@ -763,7 +763,7 @@ CREATE TABLE `customers` (
   `nationality_id` int NOT NULL,
   `personal_id_type_id` int DEFAULT NULL,
   `reg_user_id` bigint NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -777,7 +777,7 @@ CREATE TABLE `cylinder` (
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `cylinder`
@@ -820,7 +820,7 @@ CREATE TABLE `django_content_type` (
   `id` int NOT NULL,
   `app_label` varchar(100) NOT NULL,
   `model` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `django_content_type`
@@ -868,7 +868,7 @@ CREATE TABLE `django_migrations` (
   `app` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `django_migrations`
@@ -910,7 +910,7 @@ CREATE TABLE `django_session` (
   `session_key` varchar(40) NOT NULL,
   `session_data` longtext NOT NULL,
   `expire_date` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -931,7 +931,7 @@ CREATE TABLE `errorlogs` (
   `ip_address` varchar(500) NOT NULL,
   `user_agent` longtext NOT NULL,
   `Avatar` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -944,7 +944,7 @@ CREATE TABLE `federal_state` (
   `state_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `federal_state`
@@ -970,7 +970,7 @@ CREATE TABLE `fingerprints` (
   `finger_print_template` longtext,
   `finger_print_image` longtext,
   `customer_id` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -992,7 +992,7 @@ CREATE TABLE `license` (
   `receipt_voucher_id` int DEFAULT NULL,
   `reg_user_id` bigint NOT NULL,
   `type_id` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1006,7 +1006,7 @@ CREATE TABLE `licensetype` (
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `licensetype`
@@ -1035,7 +1035,7 @@ CREATE TABLE `model_brand` (
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `model_brand`
@@ -1117,7 +1117,7 @@ CREATE TABLE `personal_id_type` (
   `personal_name` varchar(100) NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `personal_id_type`
@@ -1140,7 +1140,7 @@ CREATE TABLE `place_issue` (
   `created_at` datetime(6) DEFAULT NULL,
   `modified_at` datetime(6) DEFAULT NULL,
   `reg_user_id` bigint DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `place_issue`
@@ -1171,7 +1171,7 @@ CREATE TABLE `plate` (
   `reg_user_id` bigint NOT NULL,
   `state_id` int NOT NULL,
   `type_id` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1188,7 +1188,7 @@ CREATE TABLE `receipt_voucher` (
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL,
   `rv_from_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1202,7 +1202,7 @@ CREATE TABLE `type` (
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
   `reg_user_id` bigint NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `type`
@@ -1243,7 +1243,7 @@ CREATE TABLE `users` (
   `modified_at` datetime(6) DEFAULT NULL,
   `federal_state_id` int DEFAULT NULL,
   `place_issues_id` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1255,7 +1255,7 @@ CREATE TABLE `users_groups` (
   `id` bigint NOT NULL,
   `users_id` bigint NOT NULL,
   `group_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1267,7 +1267,7 @@ CREATE TABLE `users_user_permissions` (
   `id` bigint NOT NULL,
   `users_id` bigint NOT NULL,
   `permission_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1293,7 +1293,7 @@ CREATE TABLE `vehicle` (
   `plate_no_id` int DEFAULT NULL,
   `reg_user_id` bigint NOT NULL,
   `vehicle_model_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1313,7 +1313,7 @@ CREATE TABLE `Vehicles_transfare_vehicles` (
   `old_owner_id` int NOT NULL,
   `reg_user_id` bigint NOT NULL,
   `vehicle_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Indexes for dumped tables
