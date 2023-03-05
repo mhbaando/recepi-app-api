@@ -356,7 +356,6 @@ def ManageUsers(request, action):
                         federal_state = customer_model.federal_state.objects.filter(
                             state_id=state).first()
 
-                    print(federal_state)
                     try:
                         image = request.FILES['image']
                     except KeyError:
@@ -500,7 +499,7 @@ def ManageUsers(request, action):
 
                     is_state = True if Type == 'State' else False
                     is_admins = True if Type == 'Admin' else False
-                    is_supers = True if Type == 'Super' else False
+                    is_supers = True if Type == 'Superuser' else False
 
                     if Type in ['Admin', 'State'] and request.user.has_perm('Users.add_users'):
                         if federal_state is None and is_state or federal_state is None and is_admins:
@@ -513,9 +512,24 @@ def ManageUsers(request, action):
                                 }
                             )
 
-                        response = models.Users.create_user(
-                            fname, lname, email, phone, gender,  image, is_admins, is_state, is_supers, request, federal_state)
-                        if response['isError'] == False:
+                        try:
+                            username = models.generateUsername()
+                            User = models.Users(
+                                first_name=fname.strip(),
+                                last_name=lname.strip(),
+                                username=username,
+                                phone=phone,
+                                gender=gender,
+                                email=email,
+                                avatar=image,
+                                is_admin=is_admins,
+                                is_state=is_state,
+                                is_superuser=is_supers,
+                                is_active=False if is_state or is_admins else True,
+                                federal_state=federal_state
+                            )
+                            User.set_password('123')
+                            User.save()
 
                             username = request.user.username
                             names = request.user.first_name + ' ' + request.user.last_name
@@ -528,32 +542,70 @@ def ManageUsers(request, action):
                                        avatar, action, module, path)
                             message = {
                                 'isError': False,
-                                'Message': fname+' has been successfully added'
+                                'Message': fname + ' has been successfully added'
                             }
-                            return JsonResponse(message, status=200)
-                        else:
-                            return JsonResponse(response, status=200)
+                            return JsonResponse({
+                                'isError': False,
+                                'Message': 'User has being created succefully'
+                            })
 
-                    elif Type == 'Super' and request.user.is_superuser:
-                        response = models.Users.create_user(
-                            fname, lname, email, phone, gender,  image, is_admins, is_state, is_supers, request)
+                        except Exception as error:
+                            username = request.user.username
+                            name = request.user.first_name + ' ' + request.user.last_name
+                            message = sendException(
+                                request, username, name, error)
+                            return JsonResponse({
+                                'isError': True,
+                                'Message': 'On Error Occurs . Please try again or contact system administrator'
+                            })
 
-                        if response['isError'] == False:
+                    elif Type == 'Superuser' and request.user.is_superuser:
+                        try:
+                            username = models.generateUsername()
+                            User = models.Users(
+                                first_name=fname.strip(),
+                                last_name=lname.strip(),
+                                username=username,
+                                phone=phone,
+                                gender=gender,
+                                email=email,
+                                avatar=image,
+                                is_admin=is_admins,
+                                is_state=is_state,
+                                is_superuser=is_supers,
+                                is_active=False if is_state or is_admins else True,
+                            )
+                            User.set_password('123')
+                            User.save()
+
                             username = request.user.username
                             names = request.user.first_name + ' ' + request.user.last_name
                             avatar = str(request.user.avatar)
                             module = "Users Module / users Table"
-                            action = "Created new superuser name of " + fname+" "+lname
+                            action = f"Created new {Type.lower()} name of " + \
+                                fname+" "+lname
                             path = request.path
                             sendTrials(request, username, names,
                                        avatar, action, module, path)
                             message = {
                                 'isError': False,
-                                'Message': fname+' has been successfully added'
+                                'Message': fname + ' has been successfully added'
                             }
-                            return JsonResponse(message, status=200)
-                        else:
-                            return JsonResponse(response, status=200)
+                            return JsonResponse({
+                                'isError': False,
+                                'Message': 'User has being created succefully'
+                            })
+
+                        except Exception as error:
+                            username = request.user.username
+                            name = request.user.first_name + ' ' + request.user.last_name
+                            message = sendException(
+                                request, username, name, error)
+                            return JsonResponse({
+                                'isError': True,
+                                'Message': 'On Error Occurs . Please try again or contact system administrator'
+                            })
+
                     else:
                         message = {
                             'isError': True,
@@ -1778,7 +1830,7 @@ def user_activation(request, action, id):
 
 @login_required(login_url="Login")
 def updateUser(request):
-    
+
     if request.method == 'POST':
 
         userID = request.POST.get('userID', None)
@@ -1793,29 +1845,29 @@ def updateUser(request):
             image = request.FILES['img']
 
         state = request.POST.get('state', None)
-        
+
         if userID is None or gender is None or fname is None or lname is None or phone is None or email is None:
             return JsonResponse({
-                'isError':True,
-                'Message':'All Feilds are required'
-                })
+                'isError': True,
+                'Message': 'All Feilds are required'
+            })
 
         user = models.Users.objects.filter(
-        Q(id=userID)).first()
+            Q(id=userID)).first()
 
         if not request.user.is_superuser:
             if state is None or state == 'Select State':
                 return JsonResponse({
-                    'isError':True,
-                    'Message':'State is Required'
-                    })
+                    'isError': True,
+                    'Message': 'State is Required'
+                })
 
             user_state = customer_model.federal_state.objects.filter(
-            Q(state_id=state)).first()
+                Q(state_id=state)).first()
 
             if user_state is not None:
-                user.federal_state = user_state  # only update state for the state user and admins only
-
+                # only update state for the state user and admins only
+                user.federal_state = user_state
 
         user.email = email
         user.gender = gender
@@ -1827,11 +1879,11 @@ def updateUser(request):
         user.save()
 
         return JsonResponse({
-            'isError':False,
-            'Message':'User Updaed Succefully'
+            'isError': False,
+            'Message': 'User Updaed Succefully'
         })
 
     return ({
-        'isError':True,
-        'Message':'Not Allowed'
-        })
+        'isError': True,
+        'Message': 'Not Allowed'
+    })
