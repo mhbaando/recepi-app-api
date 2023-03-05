@@ -23,7 +23,7 @@ urlpatterns = [
     path('findrfrom/<str:name>', views.find_rcfrom),
     path('save_reciept/<str:action>', views.savereciept, name='savereciept'),
     path('updatereciept/', views.update_reviept),
-    path('find_account/<int:name>', views.find_account),
+    # path('find_account/<int:name>', views.find_account),
 
 
 
