@@ -19,7 +19,7 @@ from Customers import models as customer_model
 def AccountsPage(request):
 
     accounts = account.objects.all()
-    account_type = models.account_types.objects.all()
+    account_type = models.account_types.objects.all().order_by('created_at')
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
@@ -120,7 +120,7 @@ def ManageAccounts(request, action):
 
 # This will display the receipts list
 def ReceiptPage(request):
-    receipt_vouchers = receipt_voucher.objects.all()
+    receipt_vouchers = receipt_voucher.objects.all().order_by('created_at')
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
@@ -343,7 +343,7 @@ def find_account(request, name):
         message = []
         if rv_account is not None:
             for xSearch in range(0, len(rv_account)):
-                message.append(
+                message.append(    
                     {
                         'label': f"{rv_account[xSearch].account_name}",
                         'value': f"{rv_account[xSearch].account_name}",
