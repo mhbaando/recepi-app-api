@@ -40,10 +40,10 @@ $(document).ready(()=>{
                 async: true,
                 success: function(response){
                     if (!response.isError) {
+                        console.log(response.Message)
                        response.Message.forEach(liscence => {
                         // 2. fill data to the html ellemets
                         $("#reg_number").attr('value', liscence.reg_no)
-                        $("#r_number").attr('value', liscence.receipt_voucher_id)
                         $("#exp_date").attr('value', liscence.expired_date)
                         $("#reg_date").attr('value', liscence.created_at)
                         $("#owner_lis").attr('value', liscence.owner_id)
