@@ -5,13 +5,19 @@
 {% block content %}
     {% include "./transfer_model.html" %}
     {% include "./assign_model.html" %}
+    {% include "./code.html" %}
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">Home / Vehicle  /</span> {{ pageTitle }}
         </h4>
-        <div class="col-sm-3">
+        {% comment %} <div class="col-sm-3">
             <a href ={% url 'register-vehicle' %} class="btn btn-primary">Add new vehicle</a>
-        </div>
+        </div> {% endcomment %}
+      <div class="col-sm-8.5">
+            <p align="right">
+            <button type="button" id="code_btn" class="btn btn-primary">Add Plate Code</button>
+            </p>
+        </div> 
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -169,6 +175,7 @@
     <script src={% static "scripts/vehicle/vehicles.js" %}></script>
     <script src={% static "scripts/vehicle/assign_model.js" %}></script>
     <script src={% static "scripts/vehicle/transfereModel.js" %}></script>
+    <script src={% static "scripts/vehicle/code.js" %}></script>
     <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
     {% comment %} <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> {% endcomment %}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
