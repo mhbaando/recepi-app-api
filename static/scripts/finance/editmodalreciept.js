@@ -1,47 +1,42 @@
 $(document).ready(() => {
     const overlay = $(".overlay")
     const modal = $(".model-contaier")
-    let  rvID;
+    let rvID;
     // show model on click
+    const editbtns = document.querySelectorAll("#edit")
 
-    const edit = document.querySelectorAll("#edit")
-
-    $("#edit").on('click', function () {
-        edit.forEach(btn =>{
-            rvID = $(this).data('rvid')
-            overlay.attr('class', 'overlay')
+    editbtns.forEach(btn => {
+        btn.addEventListener('click', function () {
             modal.attr('class', 'model-contaier')
+            overlay.attr('class', 'overlay')
+            rvID = $(this).data('rvid')
 
-        })
-
-        // prepapulate data to the model
-        // 1. get the selected compnay
-        $.ajax({
-            method: "GET",
-            url: `/finance/find_reciept/${rvID}`,
-            headers: { "X-CSRFToken": csrftoken },
-            async: true,
-            success: function (response) {
-                if (!response.isError) {
-                    
-                        //2. fill data to the html ellemets
+            // prepapulate data to the model
+            // 1. get the selected 
+            $.ajax({
+                method: "GET",
+                url: `/finance/find_reciept/${rvID}`,
+                headers: { "X-CSRFToken": csrftoken },
+                async: true,
+                success: function (response) {
+                    if (!response.isError) {
                         $("#rvnumber").attr('value',response. rv_number )
-                        $("#rcfrom").attr('value',response.rv_from)
-                        $("#reason").val(response.reason)
-                        $("#rvamount").attr('value',response.rv_amount)
-                      
-                        console.log(response.reason)
-                    
-                } else {
-                    Swal.fire("Error", response.Message, "error");
+                            $("#rcfrom").attr('value',response.rv_from)
+                            $("#reason").val(response.reason)
+                            $("#rvamount").attr('value',response.rv_amount)
+                        
+                    } else {
+                        Swal.fire("Error", response.Message, "error");
+                    }
+                },
+                error: function (error) {
+                    Swal.fire("Error", error.responseText, "error");
                 }
-            },
-            error: function (error) {
-                Swal.fire("Error", error.responseText, "error");
-            }
+            })
         })
-        console.log(rvID)
+
     })
+
 
     // hide modal on click
     overlay.on('click', function () {
