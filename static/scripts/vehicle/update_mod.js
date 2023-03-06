@@ -1,6 +1,7 @@
 $(document).ready(()=>{
     const overlay = $(".overlay")
     const modal = $(".model-contaier")
+    const cancle = $(".Close-btn")
     let vehicleID ;
     // show model on click
     $(".edit").on('click', function(){
@@ -45,6 +46,11 @@ $(document).ready(()=>{
   
     // hide modal on click
     overlay.on('click', function(){
+        overlay.attr('class', 'hidden')
+        modal.attr('class','hidden')
+    })
+
+    cancle.on('click',function(){
         overlay.attr('class', 'hidden')
         modal.attr('class','hidden')
     })
