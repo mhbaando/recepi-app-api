@@ -14,13 +14,15 @@
                 <form id="update_form">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-sm-12 col-lg-6">
+                        <div class="col-md-6 mb-0">
+                            <div class="mb-3">
                             <label for="defaultFormControlInput" class="form-label">Weight</label>
                             <input type="text"
                                    class="form-control"
                                    id="weight"
                                    placeholder="Enter a weight"
                                    required="required"/>
+                            <div>
                         </div>
                         <div class="col-sm-12 col-lg-6">
                             <label for="defaultFormControlInput" class="form-label">House Power</label>

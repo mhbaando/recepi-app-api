@@ -85,6 +85,9 @@
                                                     </td>
                                                     <td>{{ users.date_joined }}</td>
                                                     <td>
+                                                      <button type="button" class="btn btn-primary">
+                                                      <i class='bx bxs-user'></i>
+                                                      </button>
                                                         <button class="btn btn-primary" id="edit" data-userid="{{ users.id }}">
                                                             <i class='bx bx-edit-alt'></i>
                                                         </button>
@@ -97,7 +100,6 @@
                                                                 <button class="btn btn-success" id="avtivatebtn" data-userid="{{ users.id }}">Activate</button>
                                                             {% endif %}
                                                         {% endif %}
-                                                        <button type="button" class="btn btn-primary">Reset</button>
                                                     </td>
                                                 </tr>
                                             {% endfor %}

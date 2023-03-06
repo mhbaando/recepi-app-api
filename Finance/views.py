@@ -18,8 +18,8 @@ from Customers import models as customer_model
 
 def AccountsPage(request):
 
-    accounts = account.objects.all().order_by('-created_at')
-    account_type = models.account_types.objects.all()
+    accounts = account.objects.all()
+    account_type = models.account_types.objects.all().order_by('created_at')
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckStatus = 'Status' in request.GET
 
@@ -146,7 +146,7 @@ def ManageAccounts(request, action):
 
 # This will display the receipts list
 def ReceiptPage(request):
-    receipt_vouchers = receipt_voucher.objects.all().order_by('-created_at')
+    receipt_vouchers = receipt_voucher.objects.all().order_by('created_at')
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
