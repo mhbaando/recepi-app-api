@@ -4,10 +4,10 @@ $(document).ready(() => {
     let  rvID;
     // show model on click
 
-    const edit = document.querySelectorAll("#edit")
+    const btnupdate = document.querySelectorAll("#update")
 
     $("#edit").on('click', function () {
-        edit.forEach(btn =>{
+        btnupdate.forEach(btn =>{
             rvID = $(this).data('rvid')
             overlay.attr('class', 'overlay')
             modal.attr('class', 'model-contaier')

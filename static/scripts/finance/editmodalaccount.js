@@ -3,42 +3,46 @@ $(document).ready(() => {
     const modal = $(".model-contaier")
     let accountID;
     // show model on click
-    const editbtns = document.querySelectorAll("#edit")
+    const btnupdate = document.querySelectorAll("#update")
+    
+    
 
-    editbtns.forEach(btn => {
-        btn.addEventListener('click', function () {
-            modal.attr('class', 'model-contaier')
+
+    $("#edit").on('click', function () {
+        companyID = $(this).data('companyid')
+        btnupdate.forEach(btn =>{
             overlay.attr('class', 'overlay')
+            modal.attr('class', 'model-contaier')
             accountID = $(this).data('accountid')
 
-            // prepapulate data to the model
-            // 1. get the selected 
-            $.ajax({
-                method: "GET",
-                url: `/finance/findupdatedaccount/${accountID}`,
-                headers: { "X-CSRFToken": csrftoken },
-                async: true,
-                success: function (response) {
-                    if (!response.isError) {
-                        $("#accnumber").attr('value', response.account_number)
-                        $("#acctype ").attr('value', response.account_type)
-                        $(`#acctype option[value='${response.account_type.id}']`).attr('selected', true)
+        })
+     
+        
+        // prepapulate data to the model
+        // 1. get the selected 
+        $.ajax({
+            method: "GET",
+            url: `/finance/findupdatedaccount/${accountID}`,
+            headers: { "X-CSRFToken": csrftoken },
+            async: true,
+            success: function (response) {
+                if (!response.isError) {
+                    $("#accnumber").attr('value', response.account_number)
+                    $("#acctype ").attr('value', response.account_type)
+                    $(`#acctype option[value='${response.account_type.id}']`).attr('selected', true)
 
-                        $("#accname").attr('value', response.account_name)
-                        $("#accamount").attr('value', response.amount)
-                    } else {
-                        Swal.fire("Error", response.Message, "error");
-                    }
-                },
-                error: function (error) {
-                    Swal.fire("Error", error.responseText, "error");
+                    $("#accname").attr('value', response.account_name)
+                    $("#accamount").attr('value', response.amount)
+                } else {
+                    Swal.fire("Error", response.Message, "error");
                 }
-            })
+            },
+            error: function (error) {
+                Swal.fire("Error", error.responseText, "error");
+            }
         })
 
     })
-
-
 
     // hide modal on click
     overlay.on('click', function () {
@@ -53,7 +57,7 @@ $(document).ready(() => {
     $("#updateaccform").on('submit', function (e) {
         e.preventDefault()
         //  check if no change in state, nation, blooad group 
-
+  
         const accnumber = $("#accnumber").val()
         const acctype = $("#acctype option:selected").val()
         const accname = $("#accname").val()
@@ -66,7 +70,7 @@ $(document).ready(() => {
         formData.append("acctype", acctype);
         formData.append("accname", accname);
         formData.append("accamount", accamount);
-
+      
 
 
         $.ajax({
