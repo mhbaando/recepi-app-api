@@ -55,8 +55,9 @@ def register_vehicle(request):
                             'Message':  'Fill All Required Fields'
                         }
                     )
-                
-                found_rv = finance_model.receipt_voucher.objects.filter(Q(rv_number = rv_num)).first()
+
+                found_rv = finance_model.receipt_voucher.objects.filter(
+                    Q(rv_number=rv_num)).first()
 
                 is_voucher_exist = vehicle_model.vehicle.objects.filter(
                     rv_number=rv_num).first()
@@ -70,12 +71,14 @@ def register_vehicle(request):
                             'Message': f'This receipt voucher already used by {is_voucher_exist.owner.full_name}'
                         }
                     )
-                
-                isvoucer_in_liscence =''
-                if found_rv is not None:
-                    isvoucer_in_liscence = customer_model.license.objects.filter(receipt_voucher=found_rv).exists()
 
-                if isvoucer_in_liscence:                    return JsonResponse(
+                isvoucer_in_liscence = ''
+                if found_rv is not None:
+                    isvoucer_in_liscence = customer_model.license.objects.filter(
+                        receipt_voucher=found_rv).exists()
+
+                if isvoucer_in_liscence:
+                    return JsonResponse(
                         {
                             'isError': True,
                             'title': "Duplicate Error!!",

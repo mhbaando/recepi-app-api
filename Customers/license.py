@@ -235,6 +235,18 @@ def manage_license(request, id):
                                 'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
                             }
                             return JsonResponse(message, status=200)
+
+                        isvoucer_in_vehicle = vehicle_model.vehicle.objects.filter(
+                            Q(owner_id=rv_id)).first()
+                        if isvoucer_in_vehicle is not None:
+                            return JsonResponse(
+                                {
+                                    'isError': True,
+                                    'title': "Duplicate Error!!",
+                                             'type': "warning",
+                                             'Message': f'this voucher is already used in Vehicle'
+                                }
+                            )
                         else:
 
                             # get instance of license type
