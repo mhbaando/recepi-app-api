@@ -56,8 +56,18 @@ def register_vehicle(request):
                         }
                     )
 
-                found_rv = finance_model.receipt_voucher.objects.filter(
-                    Q(rv_number=rv_num)).first()
+                is_owner_id = customer_model.customer.objects.filter(
+                    customer_id=owner_id).first()
+
+                if not is_owner_id.is_verified:
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': "Duplicate Error!!",
+                            'type': "warning",
+                            'Message': f'You have to Verify First before Registering a Car'
+                        }
+                    )
 
                 is_voucher_exist = vehicle_model.vehicle.objects.filter(
                     rv_number=rv_num).first()
@@ -71,6 +81,8 @@ def register_vehicle(request):
                             'Message': f'This receipt voucher already used by {is_voucher_exist.owner.full_name}'
                         }
                     )
+                found_rv = finance_model.receipt_voucher.objects.filter(
+                    Q(rv_number=rv_num)).first()
 
                 isvoucer_in_liscence = ''
                 if found_rv is not None:
@@ -272,86 +284,110 @@ def seach_transferrr(request, search):
         })
     return JsonResponse({
         'isError': True,
-        'message': 'Method not allowd'
+        'message': 'Method not allowed'
     }, status=400)
 
 
 @login_required(login_url="Login")
-@permission_required('Vehicles.add_transfare_vehicle', raise_exception=True)
+@permission_required('Vehicles.add_transfare_vehicles', raise_exception=True)
 def tranfercreate(request):
-    if request.method == 'POST':
-        old_owner_id = request.POST.get('olold_hid_id', None)
-        reason = request.POST.get('reason', None)
-        new_owner_id = request.POST.get('new_hid_id', None)
-        receipt_number = request.POST.get('receipt_number', None)
-        description = request.POST.get('description', None)
-        vehicle_id = request.POST.get('vehicleID', None)
-        document = request.FILES['transfer_document']
-        if (document.size > 1000000):
-            return JsonResponse({'isError': True, 'Message': 'you can not  upload more then 2mb'}, status=200)
+    try:
 
-        is_voucher_exist = vehicle_model.transfare_vehicles.objects.filter(
-            rv_number=receipt_number).first()
+        if request.user.has_perm('Vehicles.add_transfare_vehicles'):
+            if request.method == 'POST':
+                old_owner_id = request.POST.get('olold_hid_id', None)
+                reason = request.POST.get('reason', None)
+                new_owner_id = request.POST.get('new_hid_id', None)
+                receipt_number = request.POST.get('receipt_number', None)
+                description = request.POST.get('description', None)
+                vehicle_id = request.POST.get('vehicleID', None)
+                document = request.FILES['transfer_document']
 
-        if is_voucher_exist is not None:
-            return JsonResponse(
-                {
-                    'isError': True,
-                    'title': "Duplicate Error!!",
-                    'type': "warning",
-                    'Message': f'This receipt voucher already been used'
-                }
-            )
+                is_voucher_exist = vehicle_model.transfare_vehicles.objects.filter(
+                    rv_number=receipt_number).first()
 
-        isperson_exit = vehicle_model.vehicle.objects.filter(
-            owner_id=new_owner_id).first()
+                if is_voucher_exist is not None:
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': "Duplicate Error!!",
+                            'type': "warning",
+                            'Message': f'This receipt voucher already been used'
+                        }
+                    )
 
-        if isperson_exit is not None:
-            return JsonResponse(
-                {
-                    'isError': True,
-                    'title': "Duplicate Error!!",
-                    'type': "warning",
-                    'Message': f"you can't transfer a Vehicle to the same person "
-                }
-            )
+                isperson_exit = vehicle_model.vehicle.objects.filter(
+                    owner_id=new_owner_id).first()
+
+                if isperson_exit is not None:
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': "Duplicate Error!!",
+                            'type': "warning",
+                            'Message': f"you can't transfer a Vehicle to the same person "
+                        }
+                    )
+                else:
+
+                    vehicle_old_id = vehicle_model.vehicle.objects.filter(
+                        Q(owner=old_owner_id)).first()
+
+                    old_customer = customer_model.customer.objects.filter(
+                        Q(customer_id=old_owner_id)).first()
+
+                    car_to_update = vehicle_model.vehicle.objects.filter(
+                        vehicle_id=vehicle_id).first()
+                    new_owner = customer_model.customer.objects.filter(
+                        customer_id=new_owner_id).first()
+                    car_to_update.owner = new_owner
+                    car_to_update.save()
+
+                    new_transfering = vehicle_model.transfare_vehicles(
+                        old_owner_id=old_customer.customer_id,
+                        new_owner_id=new_owner_id,
+                        vehicle_id=vehicle_old_id.vehicle_id,
+                        description=description,
+                        document=document,
+                        rv_number=receipt_number,
+                        transfare_reason=reason,
+                        reg_user_id=request.user.id,
+                    )
+
+                    new_transfering.save()
+                    username = request.user.username
+                    names = request.user.first_name + ' ' + request.user.last_name
+                    avatar = str(request.user.avatar)
+                    module = "Vehicle / View Vehicle"
+                    action = f'Registered A New Transfer{datetime.now()}'
+                    path = request.path
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
+                    # return for post method
+                    return JsonResponse({'isError': False, 'Message': 'A New Transfer has been Succesfully Saved'}, status=200)
+
         else:
 
-            vehicle_old_id = vehicle_model.vehicle.objects.filter(
-                Q(owner=old_owner_id)).first()
+            return redirect('un_authorized')
 
-            old_customer = customer_model.customer.objects.filter(
-                Q(customer_id=old_owner_id)).first()
-
-            car_to_update = vehicle_model.vehicle.objects.filter(
-                vehicle_id=vehicle_id).first()
-            new_owner = customer_model.customer.objects.filter(
-                customer_id=new_owner_id).first()
-            car_to_update.owner = new_owner
-            car_to_update.save()
-
-            new_transfering = vehicle_model.transfare_vehicles(
-                old_owner_id=old_customer.customer_id,
-                new_owner_id=new_owner_id,
-                vehicle_id=vehicle_old_id.vehicle_id,
-                description=description,
-                document=document,
-                rv_number=receipt_number,
-                transfare_reason=reason,
-                reg_user_id=request.user.id,
-            )
-
-            new_transfering.save()
-
-            return JsonResponse({
-                'successfully saved': "azuu"
-            })
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + ' ' + request.user.last_name
+        # register the error
+        sendException(
+            request, username, name, error)
+        message = {
+            'isError': True,
+            'Message': 'On Error Occurs . Please try again or contact system administrator'
+        }
+        return JsonResponse(message, status=200)
 
 
 @login_required(login_url="Login")
 @permission_required('Vehicles.view_vehicle', raise_exception=True)
 def view_vehicle(request):
-    plate_code = vehicle_model.code_plate.objects.all()
+    plate_c = vehicle_model.code_plate.objects.all().order_by(
+        '-created_at')
     year = []
     vehicles = []
     noplates = []
@@ -451,7 +487,7 @@ def view_vehicle(request):
                'DataNumber': DataNumber,
                "vehicles": vehicles,
                "states": states,
-               "plate_code": plate_code,
+               "plate_c": plate_c,
                "types": types,
                "currentYear": datetime.now().year,
                "plate_number": plate_number,
@@ -669,3 +705,20 @@ def Searchcustomer(request, search):
                 }
             )
         return JsonResponse({'Message': message}, status=200)
+
+
+@ login_required(login_url='Login')
+def code_plate_name(request):
+
+    codeplate = request.POST.get('code', None)
+
+    new_code = vehicle_model.code_plate(
+        code_name=codeplate,
+        reg_user_id=request.user.id,
+
+    )
+    new_code.save()
+
+    return JsonResponse({
+        'saved': 4
+    })

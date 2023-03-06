@@ -21,6 +21,7 @@ urlpatterns = [
 
 
     path('findvehicle/<int:id>', views.find_vehicle),
+    path('codeplate/', views.code_plate_name),
 
 
 
