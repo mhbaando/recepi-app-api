@@ -13,7 +13,7 @@
                 </div>
                 <form id="updaterecitfrom">
                     {% csrf_token %}
-                    <div class="row pb-3">
+                    <div class="row pb-3 me-2">
                         <div class="col">
                             <label for="company">Recieved From</label>
                             <input type="text"
@@ -23,7 +23,7 @@
                                    id="rcfrom"/>
                         </div>
                     </div>
-                    <div class="col row gap-2">
+                    <div class="col row gap-2 me-2">
                         <div class="col">
                             <label for="company">Rv Number</label>
                             <input type="text"
@@ -32,7 +32,7 @@
                                    required="required"
                                    id="rvnumber"/>
                         </div>
-                        <div class="col">
+                        <div class="col me-2">
                             <label for="company">Amount</label>
                             <input type="text"
                                    class="form-control"
@@ -41,7 +41,7 @@
                                    id="rvamount"/>
                         </div>
                     </div>
-                    <div class="row mb-4 gap-2 pt-3">
+                    <div class="row mb-4 gap-2 pt-3 me-2">
                         <div class="col">
                             <label for="reciept">Reason</label>
                             <textarea class="form-control" id="reason" placeholder="write your reason here" rows="4" id="reason" required="required">
