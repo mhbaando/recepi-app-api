@@ -1,0 +1,23 @@
+p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+h3 {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.main_profile{
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+
+.user_name{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
