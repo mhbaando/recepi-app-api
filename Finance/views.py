@@ -22,10 +22,11 @@ def AccountsPage(request):
     account_type = models.account_types.objects.all().order_by('created_at')
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckStatus = 'Status' in request.GET
-
+    Status = 'search'
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
     SearchQuery = ''
+    payments = []
 
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
@@ -34,19 +35,17 @@ def AccountsPage(request):
         DataNumber = int(request.GET['DataNumber'])
 
     if CheckStatus:
-        Status
+
         Status = request.GET.get('Status')
 
     if CheckSearchQuery:
         SearchQuery = request.GET['SearchQuery']
-        # verified = True if Status == 'Verified'else False
 
-        # for state user
         if request.user.is_state or request.user.is_admin:
-            payments
+
             payments = models.account.objects.filter(federal_state=request.user.federal_state
                                                      ).filter(Q(account_name__icontains=SearchQuery)).order_by('-created_at')
-        # for admin users
+
         else:
             payments = models.account.objects.filter(
                 Q(account_number__icontains=SearchQuery)).order_by('-created_at')
