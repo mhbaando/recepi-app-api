@@ -208,19 +208,24 @@ def customer_info(request, id):
 @login_required(login_url='Login')
 def manage_license(request, id):
     try:
+
         # TODO: check permision
         if request.user.has_perm('Customers.add_license'):
-            if request.method == 'POST':
-                # owner = request.POST.get('owner')
-                federal_state = request.POST.get('federal_state')
-                place_of_issue = request.POST.get('place_of_issue')
-                license_type = request.POST.get('license_type')
+            if id == 0:
+                # Post new  Weapon model and check if the user is allowed to create
+                if request.method == 'POST':
+                    Type = request.POST.get('Type')
+                    if Type == "new_license":
+                        # owner = request.POST.get('owner')
+                        federal_state = request.POST.get('federal_state')
+                        place_of_issue = request.POST.get('place_issue')
+                        license_type = request.POST.get('license_type')
 
-                rv_id = request.POST.get('rv_id')
-                is_voucher_exist = customer_model.license.objects.filter(
-                    receipt_voucher=rv_id).exists()
+                        rv_id = request.POST.get('rv_id')
+                        is_voucher_exist = customer_model.license.objects.filter(
+                            receipt_voucher=rv_id).exists()
 
-                if is_voucher_exist:
+                        if is_voucher_exist:
                             get_voucher = customer_model.license.objects.get(
                                 receipt_voucher=rv_id)
                             message = {
@@ -230,112 +235,111 @@ def manage_license(request, id):
                                 'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
                             }
                             return JsonResponse(message, status=200)
-                isvoucer_in_vehicle = vehicle_model.vehicle.objects.filter(
-                            Q(owner_id=rv_id)).first()
-                if isvoucer_in_vehicle is not None:
-                            return JsonResponse(
-                                {
-                                    'isError': True,
-                                    'title': "Duplicate Error!!",
-                                             'type': "warning",
-                                             'Message': f'this voucher is already used in Vehicle'
-                                }
+                        else:
+
+                            # get instance of license type
+                            get_license_type = customer_model.licensetype.objects.get(
+                                type_id=license_type)
+                            # get instance of receipt voucher
+                            get_rv_number = finance_model.receipt_voucher.objects.get(
+                                rv_id=rv_id)
+
+                            # get instance of owner
+                            get_owner = customer_model.customer.objects.get(
+                                customer_id=get_rv_number.rv_from.customer_id)
+
+                            # get instance of federal state
+                            get_federal_state = customer_model.federal_state.objects.get(
+                                state_id=federal_state)
+                            get_place_issue = customer_model.placeissue.objects.get(
+                                place_id=place_of_issue)
+
+                            save_license = customer_model.license(
+                                federal_state=get_federal_state,
+                                owner=get_owner,
+                                type=get_license_type,
+                                expired_date=expired_year,
+                                place_of_issue=get_place_issue,
+                                reg_user=request.user,
+                                receipt_voucher=get_rv_number,
+                                reg_no=GenerateLicenseNumber()
                             )
+                            save_license.save()
+                            # TODO: Add to Trial
+                            message = {
+                                'isError': False,
+                                'title': "Successfully!!!",
+                                'type': "success",
+                                'Message': 'New license has been successfully created'
+                            }
 
-                else:
+                            return JsonResponse(message, status=200)
+                    elif Type == "renew_license":
+                        # owner = request.POST.get('owner')
+                        federal_state = request.POST.get('federal_state')
 
-                    # get instance of license type
-                    get_license_type = customer_model.licensetype.objects.get(
-                        type_id=license_type)
-                    # get instance of receipt voucher
-                    get_rv_number = finance_model.receipt_voucher.objects.get(
-                        rv_id=rv_id)
+                        license_type = request.POST.get('license_type')
 
-                    # get instance of owner
-                    get_owner = customer_model.customer.objects.get(
-                        customer_id=get_rv_number.rv_from.customer_id)
+                        rv_id = request.POST.get('rv_id')
+                        is_voucher_exist = customer_model.license.objects.filter(
+                            receipt_voucher=rv_id).exists()
 
-                    # get instance of federal state
-                    get_federal_state = customer_model.federal_state.objects.get(
-                        state_id=federal_state)
-                    save_license = customer_model.license(
-                        federal_state=get_federal_state,
-                        owner=get_owner,
-                        type=get_license_type,
-                        expired_date=expired_year,
-                        place_of_issue=get_federal_state.state_name,
-                        reg_user=request.user,
-                        receipt_voucher=get_rv_number,
-                        reg_no=GenerateLicenseNumber()
-                    )
-                    save_license.save()
-                    # TODO: Add to Trial
-                    message = {
-                        'isError': False,
-                        'title': "Successfully!!!",
-                        'type': "success",
-                        'Message': 'New license has been successfully created'
-                    }
+                        if is_voucher_exist:
+                            get_voucher = customer_model.license.objects.get(
+                                receipt_voucher=rv_id)
+                            message = {
+                                'isError': True,
+                                'title': "Duplicate Error!!",
+                                'type': "warning",
+                                'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
+                            }
+                            return JsonResponse(message, status=200)
+                        else:
 
-                    return JsonResponse(message, status=200)
+                            # get instance of license type
+                            get_license_type = customer_model.licensetype.objects.get(
+                                type_id=license_type)
+                            # get instance of receipt voucher
+                            get_rv_number = finance_model.receipt_voucher.objects.get(
+                                rv_id=rv_id)
 
-            # owner = request.POST.get('owner')
-            federal_state = request.POST.get('federal_state')
+                            # get instance of owner
+                            get_owner = customer_model.customer.objects.get(
+                                customer_id=get_rv_number.rv_from.customer_id)
 
-            license_type = request.POST.get('license_type')
+                            # get instance of federal state
+                            get_federal_state = customer_model.federal_state.objects.get(
+                                state_id=federal_state)
+                            get_lasted_license = customer_model.license.objects.filter(
+                                owner=get_owner.customer_id).order_by('-license_id')[0]
+                            save_license = customer_model.license(
+                                federal_state=get_federal_state,
+                                owner=get_owner,
+                                type=get_license_type,
+                                expired_date=expired_year,
+                                place_of_issue=get_federal_state.state_name,
+                                reg_user=request.user,
+                                receipt_voucher=get_rv_number,
+                                reg_no=get_lasted_license.reg_no
+                            )
+                            save_license.save()
+                            # TODO: Add to Trial
+                            message = {
+                                'isError': False,
+                                'title': "Successfully!!!",
+                                'type': "success",
+                                'Message': 'New license has been successfully created'
+                            }
 
-            rv_id = request.POST.get('rv_id')
-            is_voucher_exist = customer_model.license.objects.filter(
-                receipt_voucher=rv_id).exists()
-
-            if is_voucher_exist:
-                get_voucher = customer_model.license.objects.get(
-                    receipt_voucher=rv_id)
-                message = {
-                    'isError': True,
-                    'title': "Duplicate Error!!",
-                    'type': "warning",
-                    'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
-                }
-                return JsonResponse(message, status=200)
-            else:
-
-                # get instance of license type
-                get_license_type = customer_model.licensetype.objects.get(
-                    type_id=license_type)
-                # get instance of receipt voucher
-                get_rv_number = finance_model.receipt_voucher.objects.get(
-                    rv_id=rv_id)
-
-                # get instance of owner
-                get_owner = customer_model.customer.objects.get(
-                    customer_id=get_rv_number.rv_from.customer_id)
-
-                # get instance of federal state
-                get_federal_state = customer_model.federal_state.objects.get(
-                    state_id=federal_state)
-                get_lasted_license = customer_model.license.objects.filter(
-                    owner=get_owner.customer_id).order_by('-license_id')[0]
-                save_license = customer_model.license(
-                    federal_state=get_federal_state,
-                    owner=get_owner,
-                    type=get_license_type,
-                    expired_date=expired_year,
-                    place_of_issue=get_federal_state.state_name,
-                    reg_user=request.user,
-                    receipt_voucher=get_rv_number,
-                    reg_no=get_lasted_license.reg_no
-                )
-                save_license.save()
-                # TODO: Add to Trial
-                message = {
-                    'isError': False,
-                    'title': "Successfully!!!",
-                    'type': "success",
-                    'Message': 'New license has been successfully created'
-                }
-
-                return JsonResponse(message, status=200)
+                            return JsonResponse(message, status=200)
+                    else:
+                        message = {
+                            'isError': True,
+                            'title': "Duplicate Error!!",
+                            'type': "warning",
+                            'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
+                        }
+                        return JsonResponse(message, status=200)
     except Exception as error:
         username = request.user.username
         name = request.user.first_name + ' ' + request.user.last_name
@@ -392,10 +396,6 @@ def find_liscence(request, id):
                 # for state user
                 liscence = customer_model.license.objects.filter(
                     Q(license_id=id), federal_state=request.user.federal_state).first()
-
-           
-
-            
 
             # rv = finance_model.receipt_voucher.objects.filter(
             #     Q(rv_number=receiptvoucher)).first()
