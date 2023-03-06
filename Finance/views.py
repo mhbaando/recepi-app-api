@@ -21,17 +21,42 @@ def AccountsPage(request):
     accounts = account.objects.all()
     account_type = models.account_types.objects.all().order_by('created_at')
     CheckSearchQuery = 'SearchQuery' in request.GET
+    CheckStatus = 'Status' in request.GET
+    Status = 'search'
     CheckDataNumber = 'DataNumber' in request.GET
     DataNumber = 10
     SearchQuery = ''
+    payments = []
 
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
 
+    if CheckDataNumber:
+        DataNumber = int(request.GET['DataNumber'])
+
+    if CheckStatus:
+
+        Status = request.GET.get('Status')
+
     if CheckSearchQuery:
         SearchQuery = request.GET['SearchQuery']
+
+        if request.user.is_state or request.user.is_admin:
+
+            payments = models.account.objects.filter(federal_state=request.user.federal_state
+                                                     ).filter(Q(account_name__icontains=SearchQuery)).order_by('-created_at')
+
+        else:
+            payments = models.account.objects.filter(
+                Q(account_number__icontains=SearchQuery)).order_by('-created_at')
+
     else:
-        pass
+
+        if request.user.is_superuser:
+            payments = models.account.objects.all().order_by('-created_at')
+        else:
+            payments = models.account.objects.filter(
+                Q(federal_state=request.user.federal_state)).order_by('-created_at')
 
     paginator = Paginator(accounts, DataNumber)
 

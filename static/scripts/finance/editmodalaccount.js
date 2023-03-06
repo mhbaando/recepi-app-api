@@ -3,43 +3,37 @@ $(document).ready(() => {
     const modal = $(".model-contaier")
     let accountID;
     // show model on click
-    const btnupdate = document.querySelectorAll("#update")
-    
-    
+    const editbtns = document.querySelectorAll("#edit")
 
-
-    $("#edit").on('click', function () {
-        companyID = $(this).data('companyid')
-        btnupdate.forEach(btn =>{
-            overlay.attr('class', 'overlay')
+    editbtns.forEach(btn => {
+        btn.addEventListener('click', function () {
             modal.attr('class', 'model-contaier')
+            overlay.attr('class', 'overlay')
             accountID = $(this).data('accountid')
 
-        })
-     
-        
-        // prepapulate data to the model
-        // 1. get the selected 
-        $.ajax({
-            method: "GET",
-            url: `/finance/findupdatedaccount/${accountID}`,
-            headers: { "X-CSRFToken": csrftoken },
-            async: true,
-            success: function (response) {
-                if (!response.isError) {
-                    $("#accnumber").attr('value', response.account_number)
-                    $("#acctype ").attr('value', response.account_type)
-                    $(`#acctype option[value='${response.account_type.id}']`).attr('selected', true)
-
-                    $("#accname").attr('value', response.account_name)
-                    $("#accamount").attr('value', response.amount)
-                } else {
-                    Swal.fire("Error", response.Message, "error");
+            // prepapulate data to the model
+            // 1. get the selected 
+            $.ajax({
+                method: "GET",
+                url: `/finance/findupdatedaccount/${accountID}`,
+                headers: { "X-CSRFToken": csrftoken },
+                async: true,
+                success: function (response) {
+                    if (!response.isError) {
+                        $("#accnumber").attr('value', response.account_number)
+                        $("#acctype ").attr('value', response.account_type)
+                        $(`#acctype option[value='${response.account_type.id}']`).attr('selected', true)
+    
+                        $("#accname").attr('value', response.account_name)
+                        $("#accamount").attr('value', response.amount)
+                    } else {
+                        Swal.fire("Error", response.Message, "error");
+                    }
+                },
+                error: function (error) {
+                    Swal.fire("Error", error.responseText, "error");
                 }
-            },
-            error: function (error) {
-                Swal.fire("Error", error.responseText, "error");
-            }
+            })
         })
 
     })
