@@ -1,7 +1,10 @@
 {% extends 'Base/index.html' %}
 {% load static %}
 {% block cssData %}
-  <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
+    <link rel="stylesheet"
+          href="{% static "assets/css/vehicle/register-vehicle.css" %}"/>
+          <link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
+          <style>.ui-autocomplete { z-index:2147483647; }</style>
 {% endblock cssData %}
 {% block content %}
   <div class="container-xxl flex-grow-1 container-p-y">
@@ -17,14 +20,18 @@
           <div class="row">
             <div class="col-md-6 mb-0">
               <div class="mb-3">
-                <label class="form-label">Receipt No</label>
-                <input type="text"
-                       class="form-control"
-                       id="rv_num"
-                       placeholder="Enter Receipt Number"
-                       required="required">
+                  <label class="form-label">Search Invoice</label>
+                  <div class="input-group input-group-merge">
+                      <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                      <input id="search_rv"
+                             type="text"
+                             class="form-control"
+                             placeholder="Search..."
+                             aria-label="Search..."
+                             aria-describedby="basic-addon-search31"/>
+                  </div>
               </div>
-            </div>
+          </div>
             <div class="col-md-6 mb-0">
               <div class="mb-3">
                 <input type="text"
@@ -35,7 +42,7 @@
                 <label class="form-label">Ownar's Name</label>
                 <input type="text"
                        class="form-control"
-                       id="ownar_name"
+                       id="rv_num"
                        disabled
                        placeholder="Owner's Name"
                        required="required"/>
@@ -46,7 +53,7 @@
                 <label class="form-label">Owner Mother's Name</label>
                 <input type="text"
                        class="form-control"
-                       id="ownar_mother"
+                       id="m_name"
                        disabled
                        placeholder="Owner's Mother Name"
                        required="required"/>
@@ -216,4 +223,6 @@
 {% endblock content %}
 {% block scriptData %}
   <script src="{% static "scripts/vehicle/register.js" %}"></script>
+  <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
+  <script>src="https://code.jquery.com/jquery-3.1.1.slim.min.js"</script>
 {% endblock scriptData %}

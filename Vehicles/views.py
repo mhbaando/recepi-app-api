@@ -44,7 +44,7 @@ def register_vehicle(request):
                     'registration_number', None)
                 engine_number = request.POST.get('engine_number', None)
                 owner_id = request.POST.get('owner_id', None)
-                rv_num = request.POST.get('rv_num', None)
+                rv_num = request.POST.get('rv_number', None)
 
                 if model_brand is None or color is None or origin is None or year is None or cylinder is None or hp is None or weight is None or passenger_seats is None or registration_number is None or engine_number is None or rv_num is None or owner_id is None:
                     return JsonResponse(
@@ -55,7 +55,7 @@ def register_vehicle(request):
                             'Message':  'Fill All Required Fields'
                         }
                     )
-
+                # checking if customer is verified or not
                 is_owner_id = customer_model.customer.objects.filter(
                     customer_id=owner_id).first()
 
@@ -63,12 +63,12 @@ def register_vehicle(request):
                     return JsonResponse(
                         {
                             'isError': True,
-                            'title': "Duplicate Error!!",
+                            'title': "Owner is Not Verified!!",
                             'type': "warning",
                             'Message': f'You have to Verify First before Registering a Car'
                         }
                     )
-
+                # receipt checking if it was used before in vehicles
                 is_voucher_exist = vehicle_model.vehicle.objects.filter(
                     rv_number=rv_num).first()
 
@@ -81,21 +81,22 @@ def register_vehicle(request):
                             'Message': f'This receipt voucher already used by {is_voucher_exist.owner.full_name}'
                         }
                     )
+                # receipt checking if it was used anywhere else
                 found_rv = finance_model.receipt_voucher.objects.filter(
                     Q(rv_number=rv_num)).first()
 
                 isvoucer_in_liscence = ''
                 if found_rv is not None:
                     isvoucer_in_liscence = customer_model.license.objects.filter(
-                        receipt_voucher=found_rv).exists()
+                        receipt_voucher=found_rv).first()
 
                 if isvoucer_in_liscence:
                     return JsonResponse(
                         {
                             'isError': True,
                             'title': "Duplicate Error!!",
-                                     'type': "warning",
-                                     'Message': f'this voucher is already used in Liscence'
+                            'type': "warning",
+                            'Message': f'this voucher is already used in Liscence'
                         }
                     )
                 else:
@@ -166,37 +167,37 @@ def register_vehicle(request):
                "cylenders": cylinders, "owners": owners, 'year': year, "pageTitle": 'Register vehicle'}
     return render(request, "vehicles/register_vehicle.html", context)
 
-
-@login_required(login_url="Login")
-def seach_owner(request, search):
-
-    if request.method == 'GET':
-        # look up the rv
-        find_rv = finance_model.receipt_voucher.objects.filter(
-            Q(rv_number__icontains=search)).first()
-
-        if find_rv is not None:
-            return JsonResponse({
-                'isError': False,
-                "owner_id": find_rv.rv_from.customer_id,
-                'owner_name': f"{ find_rv.rv_from.firstname} {find_rv.rv_from.middle_name} {find_rv.rv_from.lastname} ",
-                'mother_name': find_rv.rv_from.mother_name,
-                'personal_id': find_rv.rv_from.personal_id
-            })
-
-        return JsonResponse({
-            'isError': True,
-            'message': 'RV Not Found'
-        })
-    return JsonResponse({
-        'isError': True,
-        'message': 'Method not allowd'
-    })
+# searching receipt for their owner
 
 
-@login_required(login_url="Login")
+# @login_required(login_url="Login")
+# def seach_owner(request, search):
+#     if request.method == 'GET':
+#         # look up the rv
+#         find_rv = finance_model.receipt_voucher.objects.filter(
+#             Q(rv_number__icontains=search)).first()
+
+#         if find_rv is not None:
+#             return JsonResponse({
+#                 'isError': False,
+#                 "owner_id": find_rv.rv_from.customer_id,
+#                 'owner_name': f"{ find_rv.rv_from.firstname} {find_rv.rv_from.middle_name} {find_rv.rv_from.lastname} ",
+#                 'mother_name': find_rv.rv_from.mother_name,
+#                 'personal_id': find_rv.rv_from.personal_id
+#             })
+
+#         return JsonResponse({
+#             'isError': True,
+#             'message': 'RV Not Found'
+#         })
+#     return JsonResponse({
+#         'isError': True,
+#         'message': 'Method not allowd'
+#     })
+
+
+@ login_required(login_url="Login")
 def seach_transfer(request, search):
-
     if request.method == 'GET':
         # look up the rv
         find_rv = finance_model.receipt_voucher.objects.filter(
@@ -223,10 +224,12 @@ def seach_transfer(request, search):
         'message': 'Method not allowd'
     })
 
+# searching owner for verification purpose
+# autogenerated plate number
 
-@login_required(login_url="Login")
+
+@ login_required(login_url="Login")
 def vehicle_plate_info(request, id):
-
     if request.method == 'GET':
         # look up the rv
         # find_rv = finance_model.receipt_voucher.objects.filter(
@@ -259,7 +262,7 @@ def vehicle_plate_info(request, id):
     }, status=400)
 
 
-@login_required(login_url="Login")
+@ login_required(login_url="Login")
 def seach_transferrr(request, search):
 
     if request.method == 'GET':
@@ -288,8 +291,8 @@ def seach_transferrr(request, search):
     }, status=400)
 
 
-@login_required(login_url="Login")
-@permission_required('Vehicles.add_transfare_vehicles', raise_exception=True)
+@ login_required(login_url="Login")
+@ permission_required('Vehicles.add_transfare_vehicles', raise_exception=True)
 def tranfercreate(request):
     try:
 
@@ -383,8 +386,8 @@ def tranfercreate(request):
         return JsonResponse(message, status=200)
 
 
-@login_required(login_url="Login")
-@permission_required('Vehicles.view_vehicle', raise_exception=True)
+@ login_required(login_url="Login")
+@ permission_required('Vehicles.view_vehicle', raise_exception=True)
 def view_vehicle(request):
     plate_c = vehicle_model.code_plate.objects.all().order_by(
         '-created_at')
@@ -429,10 +432,13 @@ def view_vehicle(request):
     ]
 
     stateappr = ""
-    types = vehicle_model.type.objects.all()
-    plate_number = vehicle_model.plate.objects.all()
+    types = vehicle_model.type.objects.all().order_by(
+        '-created_at')
+    plate_number = vehicle_model.plate.objects.all().order_by(
+        '-created_at')
 
-    all_vehicles = vehicle_model.vehicle.objects.all()
+    all_vehicles = vehicle_model.vehicle.objects.all().order_by(
+        '-created_at')
 
     if all_vehicles is not None:
         for vh in all_vehicles:
@@ -498,13 +504,17 @@ def view_vehicle(request):
     return render(request, 'vehicles/veiw_vehicles.html', context)
 
 
-@login_required(login_url="Login")
+@ login_required(login_url="Login")
 def vehicle_profile(request, pk):
 
-    cylenders = vehicle_model.cylinder.objects.all()
-    colors = vehicle_model.color.objects.all()
-    vehicle_models = vehicle_model.model_brand.objects.all()
-    origins = customer_model.countries.objects.all()
+    cylenders = vehicle_model.cylinder.objects.all().order_by(
+        '-created_at')
+    colors = vehicle_model.color.objects.all().order_by(
+        '-created_at')
+    vehicle_models = vehicle_model.model_brand.objects.all().order_by(
+        '-created_at')
+    origins = customer_model.countries.objects.all().order_by(
+        '-created_at')
 
     # cylinders = vehicle_model.cylinder.objects.all()
     year = []
@@ -523,7 +533,7 @@ def vehicle_profile(request, pk):
             else:
                 # for state user
                 vehicle = vehicle_model.vehicle.objects.filter(
-                    Q(vehicle_id=pk), federal_state=request.user.federal_state).first()
+                    Q(vehicle_id=pk)).first()
 
             transfares = vehicle_model.transfare_vehicles.objects.filter(
                 Q(vehicle=vehicle)).all()
@@ -538,14 +548,7 @@ def vehicle_profile(request, pk):
 
             return render(request, 'vehicles/vehicle_profile.html', context)
         else:
-            return JsonResponse({'isError': True, 'Message': 'Provide a Vehicle ID'}, status=400)
-    # # vehic_id=vehicle.objects.get(id=pk)
-    # vehicles = vehicle_model.vehicle.objects.filter(vehicle_id=pk).all()
-
-    # context = {
-    #     'pageTitle': 'Profile',
-    #     "vehicles": vehicles
-    # }
+            return JsonResponse({'isError': True, 'Message': 'Provide a Vehicle ID'}, status=4)
 
 
 @ login_required(login_url="Login")
@@ -561,7 +564,7 @@ def find_vehicle(request, id):
             else:
                 # for state user
                 vehicle = vehicle_model.vehicle.objects.filter(
-                    Q(vehicle_id=id), federal_state=request.user.federal_state).values()
+                    Q(vehicle_id=id)).values()
 
             return JsonResponse({'isErro': False, 'Message': list(vehicle)}, status=200)
         else:
@@ -569,120 +572,174 @@ def find_vehicle(request, id):
 
 
 @ login_required(login_url="Login")
+@ permission_required('Vehicles.change_vehicle', raise_exception=True)
 def update_vehicle(request):
-    vehicle_id = request.POST.get('vehicleID', None)
-    vweight = request.POST.get('weight', None)
-    vhp = request.POST.get('hp', None)
-    vpassenger_seats = request.POST.get('passenger_seats', None)
-    vengine_no = request.POST.get('engine_no', None)
-    rv_number = request.POST.get('rv_number', None)
-    vcolor = request.POST.get('color', None)
-    vcylinder = request.POST.get('cylinder', None)
-    vbrand = request.POST.get('model_brand', None)
-    year = request.POST.get('year', None)
-    vorigin = request.POST.get('origin', None)
+    try:
+        if request.user.has_perm('Vehicles.add_vehicle'):
+            if request.method == 'POST':
+                vehicle_id = request.POST.get('vehicleID', None)
+                vweight = request.POST.get('weight', None)
+                vhp = request.POST.get('hp', None)
+                vpassenger_seats = request.POST.get('passenger_seats', None)
+                vengine_no = request.POST.get('engine_no', None)
+                rv_number = request.POST.get('rv_number', None)
+                vcolor = request.POST.get('color', None)
+                vcylinder = request.POST.get('cylinder', None)
+                vbrand = request.POST.get('model_brand', None)
+                year = request.POST.get('year', None)
+                vorigin = request.POST.get('origin', None)
 
-    vehicle = vehicle_model.vehicle.objects.filter(
-        Q(vehicle_id=vehicle_id)).first()
+                vehicle = vehicle_model.vehicle.objects.filter(
+                    Q(vehicle_id=vehicle_id)).first()
 
-    c_color = vehicle_model.color.objects.filter(
-        Q(color_id=vcolor)).first()
+                c_color = vehicle_model.color.objects.filter(
+                    Q(color_id=vcolor)).first()
 
-    c_cylinder = vehicle_model.cylinder.objects.filter(
-        Q(cylinder_id=vcylinder)).first()
+                c_cylinder = vehicle_model.cylinder.objects.filter(
+                    Q(cylinder_id=vcylinder)).first()
 
-    c_origin = customer_model.countries.objects.filter(
-        Q(country_id=vorigin)).first()
+                c_origin = customer_model.countries.objects.filter(
+                    Q(country_id=vorigin)).first()
 
-    c_brand = vehicle_model.model_brand.objects.filter(
-        Q(brand_id=vbrand)).first()
+                c_brand = vehicle_model.model_brand.objects.filter(
+                    Q(brand_id=vbrand)).first()
 
-    vehicle.weight = vweight
-    vehicle.hp = vhp
-    vehicle.pessenger_seat = vpassenger_seats
-    vehicle.enginer_no = vengine_no
-    vehicle.rv_number = rv_number
-    vehicle.year = year
-    vehicle.color = c_color
-    vehicle.cylinder = c_cylinder
-    vehicle.origin = c_origin
-    vehicle.vehicle_model = c_brand
+                vehicle.weight = vweight
+                vehicle.hp = vhp
+                vehicle.pessenger_seat = vpassenger_seats
+                vehicle.enginer_no = vengine_no
+                vehicle.rv_number = rv_number
+                vehicle.year = year
+                vehicle.color = c_color
+                vehicle.cylinder = c_cylinder
+                vehicle.origin = c_origin
+                vehicle.vehicle_model = c_brand
 
-    vehicle.save()
+                vehicle.save()
 
-    return JsonResponse({
-        'hellw': 4
-    })
+                username = request.user.username
+                names = request.user.first_name + ' ' + request.user.last_name
+                avatar = str(request.user.avatar)
+                module = "Vehicle / Register"
+                action = f'Updated A Vehicle {vbrand} at {datetime.now()}'
+                path = request.path
+                sendTrials(request, username, names,
+                           avatar, action, module, path)
+                # return for post method
+                return JsonResponse({'isError': False, 'Message': 'Vehicle has been updated succesfully'}, status=200)
+        else:
+
+            return redirect('un_authorized')
+
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + ' ' + request.user.last_name
+        # register the error
+        sendException(
+            request, username, name, error)
+        message = {
+            'isError': True,
+            'Message': 'On Error Occurs . Please try again or contact system administrator'
+        }
+        return JsonResponse(message, status=200)
 
 
 @ login_required(login_url="Login")
+@ permission_required('Vehicles.add_plate', raise_exception=True)
 def asign_plate(request):
-    if request.user.has_perm('Vehicles.view_customer'):
+    try:
+        if request.user.has_perm('Vehicles.add_plate'):
 
-        year = []
-        types = vehicle_model.type.objects.all()
+            year = []
+            types = vehicle_model.type.objects.all()
 
-        for i in range(1960, datetime.now().year):
-            year.append(i)
+            for i in range(1960, datetime.now().year):
+                year.append(i)
 
-        year.reverse()
+            year.reverse()
 
-        context = {
+            if request.method == 'POST':
+                vehicleiddd = request.POST.get('vehicleIdd', None)
+                code = request.POST.get('code', None)
+                state = request.POST.get('state', None)
 
-            "types": types,
-            "currentYear": datetime.now().year,
-        }
+                types = request.POST.get('type', None)
+                number = request.POST.get('number', None)
+                year = request.POST.get('year')
 
-        if request.method == 'POST':
-            vehicleiddd = request.POST.get('vehicleIdd', None)
-            code = request.POST.get('code', None)
-            state = request.POST.get('state', None)
+                selected_type = vehicle_model.type.objects.filter(
+                    type_id=types).first()
 
-            types = request.POST.get('type', None)
-            number = request.POST.get('number', None)
-            year = request.POST.get('year')
+                selected_state = customer_model.federal_state.objects.filter(
+                    Q(state_id=state)).first()
 
-            selected_type = vehicle_model.type.objects.filter(
-                type_id=types).first()
-
-            selected_state = customer_model.federal_state.objects.filter(
-                Q(state_id=state)).first()
-
-            selected_vehicle = vehicle_model.vehicle.objects.filter(
-                Q(vehicle_id=vehicleiddd)).first()
-
-            is_plate_exist = vehicle_model.plate.objects.filter(
-                Q(plate_no=number)).first()
-
-            if is_plate_exist is not None:
-                return JsonResponse(
-                    {
-                        'isError': True,
-                        'title': "Duplicate Error!!",
-                        'type': "warning",
-                        'Message': f'this plate number is already taken by some one '
-                    }
-                )
-            else:
-
-                # create plate
-                new_plate = vehicle_model.plate(
-                    plate_code=code,
-                    state=selected_state,
-                    plate_no=number,
-                    year=year,
-                    type=selected_type,
-                    reg_user_id=request.user.id,
-                )
-
-                new_plate.save()
-
-                # assign plate to the car
-                vehicle_to_assign_plate = vehicle_model.vehicle.objects.filter(
+                selected_vehicle = vehicle_model.vehicle.objects.filter(
                     Q(vehicle_id=vehicleiddd)).first()
-                if vehicle_to_assign_plate is not None:
-                    vehicle_to_assign_plate.plate_no = new_plate
-                    vehicle_to_assign_plate.save()
+
+                is_plate_exist = vehicle_model.plate.objects.filter(
+                    Q(plate_no=number)).first()
+
+                selected_code = vehicle_model.code_plate.objects.filter(
+                    Q(code_id=code)).first()
+
+                if is_plate_exist is not None:
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': "Duplicate Error!!",
+                            'type': "warning",
+                            'Message': f'this plate number is already taken by some one '
+                        }
+                    )
+                else:
+
+                    # create plate
+                    new_plate = vehicle_model.plate(
+                        plate_code=selected_code,
+                        state=selected_state,
+                        plate_no=number,
+                        year=year,
+                        type=selected_type,
+                        reg_user_id=request.user.id,
+                    )
+
+                    new_plate.save()
+                    # assign plate to the car
+                    vehicle_to_assign_plate = vehicle_model.vehicle.objects.filter(
+                        Q(vehicle_id=vehicleiddd)).first()
+                    if vehicle_to_assign_plate is not None:
+                        vehicle_to_assign_plate.plate_no = new_plate
+                        vehicle_to_assign_plate.save()
+                    username = request.user.username
+                    names = request.user.first_name + ' ' + request.user.last_name
+                    avatar = str(request.user.avatar)
+                    module = "Vehicle / View Vehicle"
+                    action = f'Registered A plate {code} at {datetime.now()}'
+                    path = request.path
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
+                    # return for post method
+                    return JsonResponse({'isError': False, 'Message': 'A New Plate has been registered '}, status=200)
+
+        else:
+
+            return redirect('un_authorized')
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + ' ' + request.user.last_name
+        # register the error
+        sendException(
+            request, username, name, error)
+        message = {
+            'isError': True,
+            'Message': 'On Error Occurs . Please try again or contact system administrator'
+        }
+        return JsonResponse(message, status=200)
+    context = {
+
+        "types": types,
+        "currentYear": datetime.now().year,
+    }
 
     return render(request, 'vehicles/assign_model.html', context)
 
@@ -708,17 +765,61 @@ def Searchcustomer(request, search):
 
 
 @ login_required(login_url='Login')
+# Search Query
+def SearchReceiptVoucher(request, search):
+    if request.method == 'GET':
+        searchQuery = finance_model.receipt_voucher.objects.filter(
+            Q(rv_number__icontains=search))
+        message = []
+        for xSearch in range(0, len(searchQuery)):
+            message.append(
+                {
+                    'label': f"{searchQuery[xSearch].rv_number}",
+                    'value': f"{searchQuery[xSearch].rv_number}",
+                    'rv_id': searchQuery[xSearch].rv_id,
+
+                }
+            )
+        return JsonResponse({'Message': message}, status=200),
+
+
+@ login_required(login_url='Login')
+@ permission_required('Vehicles.add_code_plate', raise_exception=True)
 def code_plate_name(request):
 
-    codeplate = request.POST.get('code', None)
+    try:
+        if request.user.has_perm('Vehicles.add_code_plate'):
+            if request.user.has_perm('Vehicles.add_code_plate'):
 
-    new_code = vehicle_model.code_plate(
-        code_name=codeplate,
-        reg_user_id=request.user.id,
+                codeplate = request.POST.get('code', None)
 
-    )
-    new_code.save()
+                new_code = vehicle_model.code_plate(
+                    code_name=codeplate,
+                    reg_user_id=request.user.id,
 
-    return JsonResponse({
-        'saved': 4
-    })
+                )
+                new_code.save()
+                username = request.user.username
+                names = request.user.first_name + ' ' + request.user.last_name
+                avatar = str(request.user.avatar)
+                module = "Vehicle / Register"
+                action = f'Registered A New Code Plate {codeplate} at {datetime.now()}'
+                path = request.path
+                sendTrials(request, username, names,
+                           avatar, action, module, path)
+                # return for post method
+                return JsonResponse({'isError': False, 'Message': 'A New Code Plate has been Registered'}, status=200)
+        else:
+            return redirect('un_authorized')
+
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + ' ' + request.user.last_name
+        # register the error
+        sendException(
+            request, username, name, error)
+        message = {
+            'isError': True,
+            'Message': 'On Error Occurs . Please try again or contact system administrator'
+        }
+        return JsonResponse(message, status=200)

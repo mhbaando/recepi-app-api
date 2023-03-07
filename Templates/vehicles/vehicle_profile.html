@@ -50,11 +50,13 @@
                             <p class="fw-semibold">Status:</p>
                             <span>{{ vehicle.owner.show_verify.verified_status }}</span>
                         </div>
+                        {% if perms.Vehicles.change_vehicle %}
                         <button class="btn btn-primary btn-large w-100 edit mt-3 edit"
                                 data-vehicle="{{ vehicle.vehicle_id }}">
                             <i class="bx bxs-edit-alt me-3"></i>
                             Edit
                         </button>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-sm-12 col-lg-9 rounded gap-3 d-flex flex-column align-item-start">

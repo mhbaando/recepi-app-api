@@ -13,10 +13,14 @@
         {% comment %} <div class="col-sm-3">
             <a href ={% url 'register-vehicle' %} class="btn btn-primary">Add new vehicle</a>
         </div> {% endcomment %}
+    {% if perms.Vehicles.add_code_plate %}
       <div class="col-sm-8.5">
             <p align="right">
             <button type="button" id="code_btn" class="btn btn-primary">Add Plate Code</button>
             </p>
+            {% endif %}
+        <div class="col-sm-8.5">
+            <input type="text" class="form-control" hidden="true">
         </div> 
         <div class="row">
             <div class="col-md-12">
@@ -102,7 +106,8 @@
                                                         </a>
                                                     </td>
                                                     <td>
-                                                        {% if veh.plate_no is None %}
+                                                        {% comment %} {% if perms.Vehicles.add_plate %}  {% endcomment %}
+                                                            {%if veh.plate_no is None %}
                                                             <button type="button"
                                                                     class="btn btn-success text-white"
                                                                     id="assign_btn"
@@ -114,13 +119,16 @@
                                                             <p>Already Assigned</p>
                                                         {% endif %}
                                                     </td>
+                                                
                                                     <td>
+                                                        {% if perms.Vehicles.add_transfare_vehicles %}
                                                         <button type="button"
                                                                 class="btn btn-primary text-white"
                                                                 id="transferbtn"
                                                                 data-vehicleid="{{ veh.vehicle_id }}">
                                                             Transfer
                                                         </button>
+                                                        {% endif %}
                                                     </td>
                                                 </tr>
                                             {% endfor %}
