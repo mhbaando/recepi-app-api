@@ -13,7 +13,7 @@
                 </div>
                 <form id="updateaccform">
                     {% csrf_token %}
-                    <div class="row pb-3">
+                    <div class="row pb-3 me-2">
                         <div class="col">
                             <label for="company">Account Number</label>
                             <input type="text"
@@ -23,7 +23,7 @@
                                    id="accnumber"/>
                         </div>
                     </div>
-                    <div class="col row gap-2">
+                    <div class="col row gap-2 me-2">
                         <div class="col">
                             <label for="company">Account Type</label>
                             <select class="form-select" id="acctype">
@@ -37,7 +37,7 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="col">
+                        <div class="col me-2">
                             <label for="company">Account Name</label>
                             <input type="text"
                                    class="form-control"
@@ -46,7 +46,7 @@
                                    id="accname"/>
                         </div>
                     </div>
-                    <div class="row mb-4 gap-2 pt-3">
+                    <div class="row mb-4 gap-2 pt-3 me-2">
                         <div class="col">
                             <label for="company">Amount</label>
                             <input type="text"

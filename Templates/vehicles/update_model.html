@@ -1,6 +1,9 @@
 {% load static %}
 {% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
+    <link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
     <link rel="stylesheet" href="{% static "assets/css/customer/modal.css" %}"/>
+    <style>.ui-autocomplete { z-index:2147483647; }</style>
 {% endblock cssData %}
 {% block content %}
     <div class="overlay hidden"></div>
@@ -8,143 +11,149 @@
         <div class="model">
             <div class="model-content">
                 <div>
-                    <h4>Edit Vehicle</h4>
+                    <h4>Update Vehicle</h4>
                     <hr/>
                 </div>
                 <form id="update_form">
                     {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                            <label for="defaultFormControlInput" class="form-label">Weight</label>
-                            <input type="text"
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label for="defaultFormControlInput" class="form-label">Weight</label>
+                                    <input type="text"
                                    class="form-control"
                                    id="weight"
                                    placeholder="Enter a weight"
                                    required="required"/>
-                            <div>
-                        </div>
-                        <div class="col-sm-12 col-lg-6">
-                            <label for="defaultFormControlInput" class="form-label">House Power</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label for="defaultFormControlInput" class="form-label">House Power</label>
                             <input type="text"
                                    class="form-control"
                                    id="hp"
                                    placeholder="Hours Power"
                                    required="required"/>
-                        </div>
-                        <div class="col-sm-12 col-lg-6">
-                            <div class="mb-3">
-                                <label class="form-label">Passenger Seats</label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="passenger_seats"
-                                       placeholder="Passenger seats"
-                                       required="required"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12 col-lg-6">
-                            <div class="mb-3">
-                                <label class="form-label">Rv Number</label>
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Passenger Seats</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="passenger_seats"
+                                           placeholder="Passenger seats"
+                                           required="required"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Rv Number</label>
                                 <input type="text"
                                        class="form-control"
                                        id="registration_number"
                                        placeholder="Reg Number"
                                        required="required"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12 col-lg-6">
-                            <div class="mb-3">
-                                <label class="form-label">Engine Number</label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="engine_number"
-                                       placeholder="engine_no"
-                                       required="required"/>
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Engine Number</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="engine_number"
+                                           placeholder="engine_no"
+                                           required="required"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Model Brand</label>
-                                <select id="vehicle_models" class="form-control form-select select2">
-                                    <option>
-                                        Select a Brand Name
-                                    </option>
-                                    {% for i in vehicle_models %}
-                                        <option value="{{ i.brand_id }}">
-                                            {{ i.brand_name }}
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Model Brand</label>
+                                    <select id="vehicle_models" class="form-control form-select select2">
+                                        <option>
+                                            Select a Brand Name
                                         </option>
-                                    {% endfor %}
-                                </select>
+                                        {% for i in vehicle_models %}
+                                            <option value="{{ i.brand_id }}">
+                                                {{ i.brand_name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Year</label>
-                                <select id="year" class="form-control form-select select2">
-                                    <option selected>
-                                        Select a year
-                                    </option>
-                                    {% for y in year %}
-                                        <option value="{{ y }}">
-                                            {{ y }}
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Year</label>
+                                    <select id="year" class="form-control form-select select2">
+                                        <option selected>
+                                            Select a year
                                         </option>
-                                    {% endfor %}
-                                </select>
+                                        {% for y in year %}
+                                            <option value="{{ y }}">
+                                                {{ y }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Color</label>
-                                <select id="color" class="form-control form-select select2">
-                                    <option>
-                                        Select a Color
-                                    </option>
-                                    {% for i in colors %}
-                                        <option value="{{ i.color_id }}">
-                                            {{ i.color_name }}
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Color</label>
+                                    <select id="color" class="form-control form-select select2">
+                                        <option>
+                                            Select a Color
                                         </option>
-                                    {% endfor %}
-                                </select>
+                                        {% for i in colors %}
+                                            <option value="{{ i.color_id }}">
+                                                {{ i.color_name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Origin</label>
-                                <select id="origin" class="form-control form-select select2">
-                                    <option>
-                                        Select Origin
-                                    </option>
-                                    {% for i in origins %}
-                                        <option value="{{ i.country_id }}">
-                                            {{ i.country_name }}
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Origin</label>
+                                    <select id="origin" class="form-control form-select select2">
+                                        <option>
+                                            Select Origin
                                         </option>
-                                    {% endfor %}
-                                </select>
+                                        {% for i in origins %}
+                                            <option value="{{ i.country_id }}">
+                                                {{ i.country_name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label class="form-label">Acylender</label>
-                                <select id="cylinder" class="form-control form-select select2">
-                                    <option selected>
-                                        Select a Cylender
-                                    </option>
-                                    {% for i in cylenders %}
-                                        <option value={{ i.cylinder_id }}>
-                                            {{ i.cylinder_name }}
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Acylender</label>
+                                    <select id="cylinder" class="form-control form-select select2">
+                                        <option selected>
+                                            Select a Cylender
                                         </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mt-4 d-flex align-items-end justify-content-end">
-                            <button type="submit" class="btn btn-primary">Update</button>
-                        </div>
-                    </form>
+                                        {% for i in cylenders %}
+                                            <option value={{ i.cylinder_id }}>
+                                                {{ i.cylinder_name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                </div>
+               
+                <div class="action-btn">
+                    <button type="button" class="btn btn-outline-danger me-4 Close-btn">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
+</div>
+</div>
+</div>
 {% endblock content %}
 {% block scriptData %}
     <script src="{% static "scripts/vehicle/update_mod.js" %}"></script>

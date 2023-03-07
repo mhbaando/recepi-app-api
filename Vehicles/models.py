@@ -85,7 +85,8 @@ class code_plate(models.Model):
 
 class plate(models.Model):
     plate_id = models.AutoField(primary_key=True)
-    plate_code = models.CharField(max_length=100)
+    plate_code = models.ForeignKey(
+        code_plate, on_delete=models.RESTRICT, null=True, blank=True)
     plate_no = models.CharField(max_length=100, null=True, blank=True)
     type = models.ForeignKey(type, on_delete=models.RESTRICT, null=True)
     year = models.IntegerField()
