@@ -1,0 +1,156 @@
+{% extends "Base/index.html" %}
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/users/users.css" %}"/>
+{% endblock cssData %}
+{% block content %}
+    {% include "./changepassword.html" %}
+    {% csrf_token %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4">
+            <span class="text-muted fw-light">Users /</span> {{ pageTitle }}
+        </h4>
+        <div class="">
+            <div class="row gap-3 container-xxl mb-5">
+                <div class="col-sm-12 col-lg bg-white rounded p-4">
+                    <div class="main_profile ">
+                        <div class="usr_img rounded">
+                            <img src="{% if user.avatar %} {{ user.avatar.url }} {% else %} {% static "assets/img/customers/placeholder.png" %} {% endif %}"
+                                 width="150"
+                                 height="150"
+                                 class="rounded"
+                                 alt="">
+                        </div>
+                        <div class="user_name">
+                            <input type="text" id="user_id" hidden value="{{ user.id }}">
+                            <div class="top-part">
+                                <div>
+                                    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                                    <p >{{ user.getUserType }}</p>
+                                </div>
+                                <div>
+                                    {% if request.user.is_superuser %}
+                                        <button type="button" id="reset" class="btn btn-outline-primary">Reset</button>
+                                    {% else %}
+                                        <button type="button" id="change" class="btn btn-outline-primary">Change Password</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="line"></div>
+                            <div class="user__info">
+                                <div class="info">
+                                    <p>Phone:</p>
+                                    <p>{{ user.phone }}</p>
+                                </div>
+                                <div class="info">
+                                    <p>Email:</p>
+                                    <p>{{ user.email }}</p>
+                                </div>
+                                <div class="info">
+                                    <p>Gender:</p>
+                                    <p>{{ user.gender }}</p>
+                                </div>
+                                <div class="info">
+                                    <p>State:</p>
+                                    <p>
+                                        {% if user.federal_state %}
+                                            {{ user.federal_state }}
+                                        {% else %}
+                                            No State
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-lg use_activity bg-white rounded">
+                    <div class="col  rounded summary-card ">
+                        <div class="summary-cart_img">
+                            <img src="{% static "assets/img/dashboard/vehicle.png" %}"
+                                 alt="Vheicle"
+                                 width="auto"
+                                 height="40"/>
+                        </div>
+                        <div class="summary-card-info">
+                            <h3 class="mb-0">
+                                {% if vehicle_count %}
+                                    {{ vehicle_count }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </h3>
+                            <p class="mb-0">Vehicles</p>
+                        </div>
+                    </div>
+                    <div class="col bg-white rounded summary-card ">
+                        <div class="summary-cart_img">
+                            <img src="{% static "assets/img/dashboard/license.png" %}"
+                                 alt="Vheicle"
+                                 width="auto"
+                                 height="40"/>
+                        </div>
+                        <div class="summary-card-info">
+                            <h3 class="mb-0">
+                                {% if license_count %}
+                                    {{ license_count }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </h3>
+                            <p class="mb-0">Licenses</p>
+                        </div>
+                    </div>
+                    <div class="col bg-white rounded summary-card ">
+                        <div class="summary-cart_img">
+                            <img src="{% static "assets/img/dashboard/customers.png" %}"
+                                 alt="Vheicle"
+                                 width="auto"
+                                 height="40"/>
+                        </div>
+                        <div class="summary-card-info">
+                            <h3 class="mb-0">
+                                {% if customer_count %}
+                                    {{ customer_count }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </h3>
+                            <p class="mb-0">Customers</p>
+                        </div>
+                    </div>
+                    <div class="col bg-white rounded summary-card ">
+                        <div class="summary-cart_img">
+                            <img src="{% static "assets/img/dashboard/companies.png" %}"
+                                 alt="Vheicle"
+                                 width="auto"
+                                 height="40"/>
+                        </div>
+                        <div class="summary-card-info">
+                            <h3 class="mb-0">
+                                {% if company_count %}
+                                    {{ company_count }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </h3>
+                            <p class="mb-0">Companies</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% comment %} chart {% endcomment %}
+            <div class="row container-xxl">
+                <div class="bg-white rounded p-3 ">
+                    <h6>Registered Vehicles by {{ user.first_name }}</h6>
+                    <div id="totalRevenueChart" data-chart="{{ Vehicles }}" class="px-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    <script src="{% static "scripts/users/chart.js" %}"></script>
+    <script src={% static "scripts/users/users_list.js" %}></script>
+    <script src="{% static "scripts/users/passwords.js" %}"></script>
+{% endblock scriptData %}
