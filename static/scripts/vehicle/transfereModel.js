@@ -102,27 +102,27 @@ let vehicleID = ""
 
   // select new owner
   
-  // let customer = ""
-  // $("input[name='Typelist']").on('input', function(e){
-  //   customer= $(this).val().split("-")[1]?.trim();  
-  //   $.ajax({
-  //     type: 'GET',
-  //     url: '/vehicles/transfer-searchh/'+customer,
-  //     async: false,
-  //     headers: { "X-CSRFToken": csrftoken },
-  //     success: function (data) {
-  //       newOwnerMother.attr('value', data.newownermother_name)
-  //       phone.attr('value', data.phone)
-  //       new_owner_id.attr('value', data.new_owner_id)
+  let customer = ""
+  $("input[name='Typelist']").on('input', function(e){
+    customer= $(this).val().split("-")[1]?.trim();  
+    $.ajax({
+      type: 'GET',
+      url: '/vehicles/transfer-searchh/'+customer,
+      async: false,
+      headers: { "X-CSRFToken": csrftoken },
+      success: function (data) {
+        newOwnerMother.attr('value', data.newownermother_name)
+        phone.attr('value', data.phone)
+        new_owner_id.attr('value', data.new_owner_id)
 
-  //     },
-  //     error:function(err){
-  //       alert(err);
-  //     }
+      },
+      error:function(err){
+        alert(err);
+      }
       
-  // })
+  })
     
-  // })
+  })
 
   
   function findOwner (name){

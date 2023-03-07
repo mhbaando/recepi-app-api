@@ -172,6 +172,7 @@ def customer_info(request, id):
                     'ownar_name': f"{vouchers.rv_from.full_name}",
                     'mother_name': f"{vouchers.rv_from.mother_name}",
                     'personal_id': f"{vouchers.rv_from.personal_id}",
+                    'owner_cust': f"{vouchers.rv_from.customer_id}",
                     'personal_id_type': f"{vouchers.rv_from.personal_id_type.personal_name}",
                     'license': f"{license.reg_no}" if license else 'No License',
                     'expire_date': f"{license.expired_date}" if license else 'None',
@@ -184,6 +185,7 @@ def customer_info(request, id):
                 'ownar_name': f"{vouchers.rv_from.full_name}",
                 'mother_name': f"{vouchers.rv_from.mother_name}",
                 'personal_id': f"{vouchers.rv_from.personal_id}",
+                'owner_cust': f"{vouchers.rv_from.customer_id}",
                 'personal_id_type': f"{vouchers.rv_from.personal_id_type.personal_name}",
                 'license': 'no Lecenses',
                 'expire_date': 'None',
@@ -237,7 +239,7 @@ def manage_license(request, id):
                             return JsonResponse(message, status=200)
 
                         isvoucer_in_vehicle = vehicle_model.vehicle.objects.filter(
-                            Q(owner_id=rv_id)).first()
+                            Q(rv_number=rv_id)).exists()
                         if isvoucer_in_vehicle is not None:
                             return JsonResponse(
                                 {
