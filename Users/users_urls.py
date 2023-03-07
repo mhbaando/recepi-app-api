@@ -11,6 +11,10 @@ urlpatterns = [
     path("find_user/<int:id>", find_user),
     path("user_activation/<str:action>/<int:id>", user_activation),
     path("user_profile/<int:id>", User_profile, name="user_profile"),
+    path("user_chart/<int:id>", User_chart),
+    path("change_password", Change_password),
+    path("reset_password/<int:id>", Reset_password),
+
     # Audit and logs
     path("audit_trials", AuditTrials, name="AuditTrials"),
     path("error_logs", ErrorLogs, name="ErrorLogs"),

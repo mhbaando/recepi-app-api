@@ -39,7 +39,8 @@ def Dashboard(request):
     for liecense in licenses:
         type_count[liecense.type.type] += 1
 
-    customers = customer_model.customer.objects.all().order_by("-created_at")[:5]
+    customers = customer_model.customer.objects.all().order_by(
+        "-created_at")[:5]
 
     context = {
         "pageTitle": "Dashboard",
@@ -57,7 +58,8 @@ def Dashboard(request):
 @login_required(login_url="Login")
 def get_chart_data(request):
     vehicles = (
-        vehicle_model.vehicle.objects.annotate(month=ExtractMonth("created_at"))
+        vehicle_model.vehicle.objects.annotate(
+            month=ExtractMonth("created_at"))
         .values("month")
         .annotate(count=Count("vehicle_id"))
         .values("month", "count")
@@ -90,7 +92,8 @@ def Login(request):
                 action = name + " logged into the System"
                 module = "Users Module"
                 path = request.path
-                sendTrials(request, username, name, avatar, action, module, path)
+                sendTrials(request, username, name,
+                           avatar, action, module, path)
 
                 return redirect("Dashboard")
 
@@ -352,7 +355,8 @@ def CustomersList(request):
                 is_superuser=False,
             )
         else:
-            UsersList = models.Users.objects.filter(is_staff=True, is_superuser=False)
+            UsersList = models.Users.objects.filter(
+                is_staff=True, is_superuser=False)
 
         paginator = Paginator(UsersList, DataNumber)
 
@@ -503,7 +507,8 @@ def ManageUsers(request, action):
                         )
 
                     extention = image.name.split(".")[-1]
-                    extension_types = ["JPEG", "jpeg", "JPG", "jpg", "png", "PNG"]
+                    extension_types = ["JPEG", "jpeg",
+                                       "JPG", "jpg", "png", "PNG"]
 
                     if not extention in extension_types:
                         return JsonResponse(
@@ -620,7 +625,8 @@ def ManageUsers(request, action):
                             name = (
                                 request.user.first_name + " " + request.user.last_name
                             )
-                            message = sendException(request, username, name, error)
+                            message = sendException(
+                                request, username, name, error)
                             return JsonResponse(
                                 {
                                     "isError": True,
@@ -679,7 +685,8 @@ def ManageUsers(request, action):
                             name = (
                                 request.user.first_name + " " + request.user.last_name
                             )
-                            message = sendException(request, username, name, error)
+                            message = sendException(
+                                request, username, name, error)
                             return JsonResponse(
                                 {
                                     "isError": True,
@@ -770,7 +777,8 @@ def ManageUsers(request, action):
                     module = "Users Module / Department Table"
                     action = "Edited user"
                     path = request.path
-                    sendTrials(request, username, names, avatar, action, module, path)
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
                     return JsonResponse(
                         {
                             "isError": False,
@@ -1266,7 +1274,8 @@ def ManageGroupPermission(request, id, _id):
                         + group.name
                     )
                     path = request.path
-                    sendTrials(request, username, names, avatar, action, module, path)
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
                     message = "Permission removed from the group"
                     isError = False
 
@@ -1346,8 +1355,10 @@ def PermissonReport(request):
                     App = request.POST.get("app")
                     Modal = request.POST.get("modal")
                     list = []
-                    contentType = ContentType.objects.get(app_label=App, model=Modal)
-                    perms = Permission.objects.filter(content_type=contentType.id)
+                    contentType = ContentType.objects.get(
+                        app_label=App, model=Modal)
+                    perms = Permission.objects.filter(
+                        content_type=contentType.id)
                     for xCode in range(0, len(perms)):
                         list.append(
                             {
@@ -1379,7 +1390,8 @@ def PermissonReport(request):
                     if report == "Role":
                         perm = Permission.objects.get(codename=code)
                         users = models.Users.objects.filter(
-                            Q(groups__permissions=perm) | Q(user_permissions=perm)
+                            Q(groups__permissions=perm) | Q(
+                                user_permissions=perm)
                         ).distinct()
 
                         for xUser in range(0, len(users)):
@@ -1503,7 +1515,8 @@ def ManageGroup(request, id):
                     module = "Users-Permission Module"
                     action = "Added new Group with Name of:" + "_" + Name
                     path = request.path
-                    sendTrials(request, username, names, avatar, action, module, path)
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
 
                     return JsonResponse(
                         {"isError": False, "Message": "New group has been created"}
@@ -1655,7 +1668,8 @@ def ManageGroup(request, id):
                             permission.codename + " Added to the group of " + group.name
                         )
                     path = request.path
-                    sendTrials(request, username, names, avatar, action, module, path)
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
 
                     message = (
                         "Permission removed from the group"
@@ -1695,7 +1709,8 @@ def ManageGroup(request, id):
                     module = "Users-Permission Module"
                     action = "Deleted Group with Name of:" + "_" + group.name
                     path = request.path
-                    sendTrials(request, username, names, avatar, action, module, path)
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
 
                     return JsonResponse(
                         {
@@ -1758,7 +1773,8 @@ def RenameGroup(request):
                     module = "Users-Permission Module"
                     action = "Updated Group with Name of:" + "_" + Name
                     path = request.path
-                    sendTrials(request, username, names, avatar, action, module, path)
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
 
                     return JsonResponse(
                         {"isError": False, "Message": "Group has been renamed"}
@@ -1849,7 +1865,8 @@ def AuditTrials(request):
         page_obj = paginator.get_page(page_number)
 
         Pages = list(
-            paginator.get_elided_page_range(page_obj.number, on_each_side=0, on_ends=1)
+            paginator.get_elided_page_range(
+                page_obj.number, on_each_side=0, on_ends=1)
         )
 
         context = {
@@ -1898,7 +1915,8 @@ def ErrorLogs(request):
         page_obj = paginator.get_page(page_number)
 
         Pages = list(
-            paginator.get_elided_page_range(page_obj.number, on_each_side=1, on_ends=1)
+            paginator.get_elided_page_range(
+                page_obj.number, on_each_side=1, on_ends=1)
         )
 
         context = {
@@ -2157,6 +2175,122 @@ def User_profile(request, id):
     if not get_user:
         return render(request, "Base/403.html")
 
-    print(get_user.avatar)
-    context = {"pageTitle": "User Profile", "user": get_user}
+    vehicle_count = vehicle_model.vehicle.objects.filter(
+        Q(reg_user=get_user)).count()
+    license_count = customer_model.license.objects.filter(
+        Q(reg_user=get_user)).count()
+    customer_count = customer_model.customer.objects.filter(
+        Q(reg_user=get_user)
+    ).count()
+    company_count = customer_model.company.objects.filter(
+        Q(reg_user=get_user)).count()
+
+    # charts
+    vehicles = (
+        vehicle_model.vehicle.objects.filter(Q(reg_user=get_user))
+        .annotate(month=ExtractMonth("created_at"))
+        .values("month")
+        .annotate(count=Count("vehicle_id"))
+        .values("month", "count")
+    )
+
+    context = {
+        "pageTitle": "User Profile",
+        "user": get_user,
+        "vehicle_count": vehicle_count,
+        "license_count": license_count,
+        "customer_count": customer_count,
+        "company_count": company_count,
+        "vehicles": list(vehicles),
+    }
+
     return render(request, "Users/user_profile.html", context)
+
+
+@login_required(login_url="Login")
+def User_chart(request, id):
+    if not id:
+        return render(request, "Base/403.html")
+
+    get_user = models.Users.objects.filter(id=id).first()
+
+    if not get_user:
+        return render(request, "Base/403.html")
+
+    vehicles = (
+        vehicle_model.vehicle.objects.filter(Q(reg_user=get_user))
+        .annotate(month=ExtractMonth("created_at"))
+        .values("month")
+        .annotate(count=Count("vehicle_id"))
+        .values("month", "count")
+    )
+
+    customers = (
+        customer_model.customer.objects.filter(Q(reg_user=get_user))
+        .annotate(month=ExtractMonth("created_at"))
+        .values("month")
+        .annotate(count=Count("customer_id"))
+        .values("month", "count")
+    )
+
+    context = {"vehicles": list(vehicles), "customers": list(customers)}
+    return JsonResponse(context)
+
+
+@login_required(login_url="Login")
+def Change_password(request):
+    id = request.POST.get("id", None)
+    opassword = request.POST.get("opass", None)
+    cpassword = request.POST.get("cpass", None)
+    npassword = request.POST.get("npass", None)
+
+    if not id:
+        return JsonResponse({"isError": True, "Message": "No Id Is provided"})
+
+    if not opassword or not cpassword or not npassword:
+        return JsonResponse({"isError": True, "Message": "All feilds are rquired"})
+
+    # check if new pasword is equal to the old password
+    if npassword != cpassword:
+        return JsonResponse({"isError": True, "Message": "Passwords are not match"})
+
+    get_user = models.Users.objects.filter(Q(id=id)).first()
+    if not get_user:
+        return JsonResponse({"isError": True, "message": "User Not found"})
+
+    if not get_user.check_password(opassword):
+        return JsonResponse({"isError": True, "Message": "Incorrect Credentials"})
+
+    get_user.set_password(npassword)
+    get_user.save()
+
+    return JsonResponse({"isError": False, "Message": "Changed Succefully"})
+
+
+@login_required(login_url="Login")
+def Reset_password(request, id):
+    if request.user.is_state:
+        return JsonResponse({
+            'isError': True,
+            'Message': 'Only Admins Can Reset Password'
+        })
+
+    if not id:
+        return JsonResponse({
+            'isError': True,
+            'Message': 'Provide an ID'
+        })
+
+    get_user = models.Users.objects.filter(Q(id=id)).first()
+    if not get_user:
+        return JsonResponse({
+            'isError': True,
+            'Message': 'User Not found'
+        })
+    get_user.set_password('123')
+    get_user.save()
+
+    return JsonResponse({
+        'isError': False,
+        'Message': 'Reset Password Succefully'
+    })
