@@ -32,11 +32,13 @@
                             </span>
                         {% endif %}
                     </p>
-                    <button class="btn btn-primary btn-large w-100 edit"
-                            data-customer="{{ customer.customer_id }}">
-                        <i class="bx bxs-edit-alt me-3"></i>
-                        Edit
-                    </button>
+                    {% if perms.Customers.change_customer %}
+                        <button class="btn btn-primary btn-large w-100 edit"
+                                data-customer="{{ customer.customer_id }}">
+                            <i class="bx bxs-edit-alt me-3"></i>
+                            Edit
+                        </button>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-sm-12 col-lg-9  bg-white rounded pt-4">

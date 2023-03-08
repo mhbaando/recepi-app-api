@@ -93,15 +93,19 @@
                                                     <span class="badge bg-{{ customer.show_verify.verified_color }} text-black p-2">{{ customer.show_verify.verified_status }}</span>
                                                 </td>
                                                 <td>
-                                                    <a href="{% url 'customer_profile' customer.customer_id %}">
-                                                        <button class="btn btn-primary">View</button>
-                                                    </a>
-                                                    {% if customer.show_verify.show_btn %}
-                                                        <button class="btn btn-success text-white"
-                                                                id="verify-btn"
-                                                                data-customer="{{ customer.full_name }} -  {{ customer.personal_id }}">
-                                                            Verify
-                                                        </button>
+                                                    {% if perms.Customers.view_customer %}
+                                                        <a href="{% url 'customer_profile' customer.customer_id %}">
+                                                            <button class="btn btn-primary">View</button>
+                                                        </a>
+                                                    {% endif %}
+                                                    {% if perms.Customers.activate_customer %}
+                                                        {% if customer.show_verify.show_btn %}
+                                                            <button class="btn btn-success text-white"
+                                                                    id="verify-btn"
+                                                                    data-customer="{{ customer.full_name }} -  {{ customer.personal_id }}">
+                                                                Verify
+                                                            </button>
+                                                        {% endif %}
                                                     {% endif %}
                                                 </td>
                                             </tr>
