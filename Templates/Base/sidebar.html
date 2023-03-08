@@ -11,33 +11,40 @@
     <div class="menu-inner-shadow"></div>
     <ul class="menu-inner py-1">
         <!-- Dashboards -->
-        <li class="menu-item {% if pageTitle == 'Dashboard' %}active{% endif %}">
-            <a href="{% url 'Dashboard' %} " class="menu-link">
-                <i class="menu-icon tf-icons bx bx-envelope"></i>
-                <div data-i18n="Dashboard">Dashboard</div>
-            </a>
-        </li>
+        {% if perms.Customers.view_customer and perms.Customers.view_license and perms.Customers.view_licensetype and perms.Customers.view_company and perms.Vehicles.view_vehicle %}
+            <li class="menu-item {% if pageTitle == 'Dashboard' %}active{% endif %}">
+                <a href="{% url 'Dashboard' %} " class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-envelope"></i>
+                    <div data-i18n="Dashboard">Dashboard</div>
+                </a>
+            </li>
+        {% endif %}
         {% comment %} customers {% endcomment %}
-        <li class="menu-item {% if pageTitle == 'Register' or pageTitle == 'Activate' or pageTitle == 'List' or pageTitle == 'Profile' %} active open{% endif %}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon bx bx-user"></i>
-                <div data-i18n="Customers">Customer</div>
-            </a>
-            <ul class="menu-sub ">
-                {% comment %} {% if perms.Customers.add_customer %} {% endcomment %}
-                <li class="menu-item {% if pageTitle == 'Register' %} active{% endif %}">
-                    <a href="{% url 'register_customer' %}" class="menu-link">
-                        <div data-i18n="Register">Register</div>
-                    </a>
-                </li>
-                {% comment %} {% endif %} {% endcomment %}
-                <li class="menu-item {% if pageTitle == 'List' or pageTitle == 'Profile' %} active{% endif %}">
-                    <a href="{% url 'customer_list' %}" class="menu-link">
-                        <div data-i18n="Customer">Customer List</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        {% if perms.Customers.add_customer or perms.Customers.view_customer or perms.Customers.change_customer %}
+            <li class="menu-item {% if pageTitle == 'Register' or pageTitle == 'Activate' or pageTitle == 'List' or pageTitle == 'Profile' %} active open{% endif %}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon bx bx-user"></i>
+                    <div data-i18n="Customers">Customer</div>
+                </a>
+                <ul class="menu-sub ">
+                    {% comment %} {% if perms.Customers.add_customer %} {% endcomment %}
+                    {% if perms.Customers.add_customer %}
+                        <li class="menu-item {% if pageTitle == 'Register' %} active{% endif %}">
+                            <a href="{% url 'register_customer' %}" class="menu-link">
+                                <div data-i18n="Register">Register</div>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if perms.Customers.view_customer or perms.Customers.change_customer %}
+                        <li class="menu-item {% if pageTitle == 'List' or pageTitle == 'Profile' %} active{% endif %}">
+                            <a href="{% url 'customer_list' %}" class="menu-link">
+                                <div data-i18n="Customer">Customer List</div>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
         <!-- company -->
         <li class="menu-item {% if pageTitle == 'Register Company' or pageTitle == 'View Company' or pageTitle == 'detail company' or pageTitle == 'block company'  or  pageTitle == 'Company / Profile' %}active open{% endif %}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
