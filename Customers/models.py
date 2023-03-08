@@ -110,6 +110,9 @@ class customer(models.Model):
 
     class Meta:
         db_table = 'customers'
+        permissions = [
+            ("activate_customer", "Can Activate Customer"),
+        ]
 
     def show_verify(self):
         return {
