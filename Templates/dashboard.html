@@ -5,14 +5,14 @@
 {% endblock cssData %}
 {% block content %}
   {% csrf_token %}
-  <div class="container-xxl flex-grow-1 px-4">
+  <div class="container-xxl flex-grow-1 px-4 pb-5">
     <div>
       <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">Home /</span> {{ pageTitle }}
       </h4>
     </div>
     {% comment %} summary container {% endcomment %}
-    <div class="">
+    <div>
       <div class="row gap-3">
         <div class="col  rounded summary-card px-3 py-3">
           <div class="summary-cart_img">
@@ -213,10 +213,13 @@
                   Customer Name
                 </th>
                 <th>
-                  Customer Mother Name
+                  Customer Personal ID
                 </th>
                 <th>
-                  Customer Personal ID
+                  Phone Number
+                </th>
+                <th>
+                  State
                 </th>
                 <th>
                   Customer Status
@@ -227,7 +230,7 @@
               {% for customer in customers %}
                 <tr>
                   <th scope="row">
-                    {{ customer.customer_id }}
+                    {{ forloop.counter }}
                   </th>
                   <td>
                     {{ customer.created_at }}
@@ -236,10 +239,13 @@
                     {{ customer.full_name }}
                   </td>
                   <td>
-                    {{ customer.mother_name }}
+                    {{ customer.personal_id }}
                   </td>
                   <td>
-                    {{ customer.personal_id }}
+                    {{ customer.phone }}
+                  </td>
+                  <td>
+                    {{ customer.federal_state }}
                   </td>
                   <td>
                     <span class="badge bg-label-{{ customer.show_verify.verified_color }}">{{ customer.show_verify.verified_status }}</span>
