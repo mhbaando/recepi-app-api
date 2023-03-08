@@ -1,5 +1,4 @@
 import datetime
-import json
 import sys
 import traceback
 
@@ -14,7 +13,6 @@ from django.db.models import Count, Q
 from django.db.models.functions import ExtractMonth
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-
 from Customers import models as customer_model
 # Create your views here.
 from Vehicles import models as vehicle_model
@@ -24,49 +22,80 @@ from . import models
 
 @login_required(login_url="Login")
 def Dashboard(request):
-    vehicle_count = vehicle_model.vehicle.objects.all().count()
-    license_count = customer_model.license.objects.all().count()
-    customer_count = customer_model.customer.objects.all().count()
-    company_count = customer_model.company.objects.all().count()
+    try:
+        if request.user.has_perm('Vehicles.view_vehicle') and request.user.has_perm('Customers.view_customer') and request.user.has_perm('Customers.view_license') and request.user.has_perm('Customers.view_company') and request.user.has_perm('Customers.view_licensetype'):
 
-    licenses = customer_model.license.objects.all()
-    license_type = customer_model.licensetype.objects.all()
+            vehicle_count = vehicle_model.vehicle.objects.all().count()
+            license_count = customer_model.license.objects.all().count()
+            customer_count = customer_model.customer.objects.all().count()
+            company_count = customer_model.company.objects.all().count()
 
-    type_count = {}
-    for ltype in license_type:
-        type_count[ltype.type] = 0
+            licenses = customer_model.license.objects.all()
+            license_type = customer_model.licensetype.objects.all()
 
-    for liecense in licenses:
-        type_count[liecense.type.type] += 1
+            type_count = {}
+            for ltype in license_type:
+                type_count[ltype.type] = 0
 
-    customers = customer_model.customer.objects.all().order_by(
-        "-created_at")[:5]
+            for liecense in licenses:
+                type_count[liecense.type.type] += 1
 
-    context = {
-        "pageTitle": "Dashboard",
-        "vehicle_count": vehicle_count,
-        "license_count": license_count,
-        "customer_count": customer_count,
-        "company_count": company_count,
-        "type_count": type_count,
-        "customers": customers,
-    }
-    return render(request, "dashboard.html", context)
+            customers = []
+            if request.user.is_superuser != True and request.user.federal_state is not None:
+                customers = customer_model.customer.objects.filter(Q(federal_state=request.user.federal_state)).order_by(
+                    "-created_at")[:5]
 
+            else:
+                customers = customer_model.customer.objects.all().order_by(
+                    "-created_at")[:5]
+
+            context = {
+                "pageTitle": "Dashboard",
+                "vehicle_count": vehicle_count,
+                "license_count": license_count,
+                "customer_count": customer_count,
+                "company_count": company_count,
+                "type_count": type_count,
+                "customers": customers,
+            }
+
+            username = request.user.username
+            names = request.user.first_name + " " + request.user.last_name
+            avatar = str(request.user.avatar)
+            module = "Customer / Dashboard"
+            action = f"{names} waxa uu booqday Dashboardka"
+            path = request.path
+            sendTrials(request, username, names,
+                       avatar, action, module, path)
+            return render(request, "dashboard.html", context)
+        return render(request, 'Base/403.html')
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + " " + request.user.last_name
+        # register the error
+        sendException(request, username, name, error)
+        message = {
+            "isError": True,
+            "Message": "On Error Occurs . Please try again or contact system administrator",
+        }
+        return JsonResponse(message, status=200)
 
 # chart dashboard
+
+
 @login_required(login_url="Login")
 def get_chart_data(request):
-    vehicles = (
-        vehicle_model.vehicle.objects.annotate(
-            month=ExtractMonth("created_at"))
-        .values("month")
-        .annotate(count=Count("vehicle_id"))
-        .values("month", "count")
-    )
+    if request.user.has_perm('Vehicles.view_vehicle'):
+        vehicles = (
+            vehicle_model.vehicle.objects.annotate(
+                month=ExtractMonth("created_at"))
+            .values("month")
+            .annotate(count=Count("vehicle_id"))
+            .values("month", "count")
+        )
 
-    context = {"vehicles": list(vehicles)}
-    return JsonResponse(context)
+        context = {"vehicles": list(vehicles)}
+        return JsonResponse(context)
 
 
 def Login(request):
@@ -273,6 +302,15 @@ def Users(request):
     if request.user.has_perm("Users.add_users"):
         states = customer_model.federal_state.objects.all()
         context = {"pageTitle": "Add New User", "states": states}
+
+        username = request.user.username
+        names = request.user.first_name + " " + request.user.last_name
+        avatar = str(request.user.avatar)
+        module = "Users / Login"
+        action = f"{names} waxa uu booqday Add User Page"
+        path = request.path
+        sendTrials(request, username, names,
+                   avatar, action, module, path)
         return render(request, "Users/add_user.html", context)
     else:
         return render(request, "Base/403.html")
@@ -325,6 +363,14 @@ def UsersList(request):
             "states": states,
         }
 
+        username = request.user.username
+        names = request.user.first_name + " " + request.user.last_name
+        avatar = str(request.user.avatar)
+        module = "Users / Login"
+        action = f"{names} waxa uu booqday User List Page"
+        path = request.path
+        sendTrials(request, username, names,
+                   avatar, action, module, path)
         return render(request, "Users/user_lists.html", context)
     else:
         return render(request, "Base/403.html")
@@ -376,6 +422,14 @@ def CustomersList(request):
             "pageTitle": "Employee List",
         }
 
+        username = request.user.username
+        names = request.user.first_name + " " + request.user.last_name
+        avatar = str(request.user.avatar)
+        module = "Users / Login"
+        action = f"{names} waxa uu booqday Users List Page"
+        path = request.path
+        sendTrials(request, username, names,
+                   avatar, action, module, path)
         return render(request, "Users/employee_list.html", context)
     else:
         return render(request, "Base/403.html")
@@ -803,8 +857,9 @@ def ManageUsers(request, action):
         }
         return JsonResponse(message, status=200)
 
-
 # User Roles Report
+
+
 @login_required(login_url="Login")
 def ViewUserRolesReportPage(request):
     if request.user.has_perm("Users.role_report"):
