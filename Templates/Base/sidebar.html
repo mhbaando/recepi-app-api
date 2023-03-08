@@ -130,11 +130,13 @@
                         <div data-i18n="Analytics">Re-new License</div>
                     </a>
                 </li>
+                {% if perms.Customers.view_license %}
                 <li class="menu-item {% if pageTitle == 'License Lists' %}active{% endif %}">
                     <a href={% url 'LicenseLists' %} class="menu-link">
                         <div data-i18n="Analytics">License Lists</div>
                     </a>
                 </li>
+                {% endif %}
             </ul>
         </li>
         {% if perms.Users.add_users or perms.Users.view_users %}

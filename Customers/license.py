@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 # Create your views here.
 # Register License
@@ -10,6 +10,7 @@ from Finance import models as finance_model
 from Customers import models as customer_model
 from Finance import models as finance_model
 from Vehicles import models as vehicle_model
+from Users.views import sendException, sendTrials
 current_date = date.today()
 currentDatetime = datetime.now()
 years_to_add = current_date.year + 3
@@ -17,9 +18,10 @@ expired_year = current_date.replace(year=years_to_add)
 
 
 @login_required(login_url='Login')
+@permission_required('Customers.add_license', raise_exception=True)
 def NewLicense(request):
     states = []
-    place_issues = customer_model.placeissue.objects.all()
+    place_issues = customer_model.placeissue.objects.all().order_by('created_at')
 
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
@@ -44,7 +46,9 @@ def NewLicense(request):
 
 
 @login_required(login_url='Login')
+@permission_required('Customers.add_license', raise_exception=True)
 def ReNewLicense(request):
+    place_issue = customer_model.placeissue.objects.all()
     if request.user.is_admin or request.user.is_superuser:
         FederalState = customer_model.federal_state.objects.all()
 
@@ -57,7 +61,8 @@ def ReNewLicense(request):
         'FederalState': FederalState,
         'licensetype': licensetype,
         'expired_year': expired_year,
-        'pageTitle': 'Renew License'
+        'pageTitle': 'Renew License',
+        'place_issue': place_issue,
     }
 
     return render(request, 'License/ReNewLicense.html', context)
@@ -65,6 +70,7 @@ def ReNewLicense(request):
 
 
 @login_required(login_url='Login')
+@permission_required('Customers.view_license', raise_exception=True)
 def LicenseLists(request):
     CheckSearchQuery = 'SearchQuery' in request.GET
     CheckDataNumber = 'DataNumber' in request.GET
@@ -73,9 +79,9 @@ def LicenseLists(request):
     Status = "Active"
     SearchQuery = ''
     Licenselists = []
-    states = customer_model.federal_state.objects.all()
-    place_issues = customer_model.placeissue.objects.all()
-    licensetype = customer_model.licensetype.objects.all()
+    states = customer_model.federal_state.objects.all().order_by('created_at')
+    place_issues = customer_model.placeissue.objects.all().order_by('created_at')
+    licensetype = customer_model.licensetype.objects.all().order_by('created_at')
 
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
@@ -208,6 +214,7 @@ def customer_info(request, id):
 
 
 @login_required(login_url='Login')
+@permission_required('Customers.add_license', raise_exception=True)
 def manage_license(request, id):
     try:
 
@@ -239,8 +246,8 @@ def manage_license(request, id):
                             return JsonResponse(message, status=200)
 
                         isvoucer_in_vehicle = vehicle_model.vehicle.objects.filter(
-                            Q(rv_number=rv_id)).exists()
-                        if isvoucer_in_vehicle is not None:
+                            Q(rv_number=rv_id)).first()
+                        if isvoucer_in_vehicle:
                             return JsonResponse(
                                 {
                                     'isError': True,
@@ -354,6 +361,9 @@ def manage_license(request, id):
                             'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
                         }
                         return JsonResponse(message, status=200)
+        else:
+
+            return redirect('un_authorized')
     except Exception as error:
         username = request.user.username
         name = request.user.first_name + ' ' + request.user.last_name
@@ -397,24 +407,18 @@ def update_liscence(request):
 @login_required(login_url="Login")
 def find_liscence(request, id):
     if request.method == 'GET':
-
         if id is not None:
             liscence = ''
-            rv = ''
-            # receiptvoucher = ""
             if request.user.is_superuser:
                 # for admin user
                 liscence = customer_model.license.objects.filter(
-                    Q(license_id=id)).first()
+                    Q(license_id=id)).values()
             else:
                 # for state user
                 liscence = customer_model.license.objects.filter(
-                    Q(license_id=id), federal_state=request.user.federal_state).first()
+                    Q(license_id=id), federal_state=request.user.federal_state).values()
 
-            # rv = finance_model.receipt_voucher.objects.filter(
-            #     Q(rv_number=receiptvoucher)).first()
-
-            return JsonResponse({'isErro': False, 'Message': list(liscence), }, status=200)
+            return JsonResponse({'isErro': False, 'Message': list(liscence)}, status=200)
         else:
             return JsonResponse({'isErro': False, 'Message': 'Liscence Not Found'}, status=404)
 
@@ -440,42 +444,67 @@ def find_status(request, id):
 
 
 @login_required(login_url="Login")
+@permission_required('Customers.change_license', raise_exception=True)
 def edit_liscence(request, id):
-    lisence_iD = request.POST.get('license_ID', None)
-    reg = request.POST.get('reg_number', None)
-    lr_number = request.POST.get('r_number', None)
-    lreg_date = request.POST.get('reg_date', None)
-    lexp_date = request.POST.get('exp_date', None)
-    lowner_lis = request.POST.get('owner_lis', None)
-    ltype = request.POST.get('type', None)
-    lstate = request.POST.get('state', None)
-    lplace = request.POST.get('place', None)
+    try:
+        if request.user.has_perm('Customers.change_license'):
+            if request.method == 'POST':
+                lisence_iD = request.POST.get('license_ID', None)
+                reg = request.POST.get('reg_number', None)
+                lr_number = request.POST.get('r_number', None)
+                lreg_date = request.POST.get('reg_date', None)
+                lexp_date = request.POST.get('exp_date', None)
+                lowner_lis = request.POST.get('owner_lis', None)
+                ltype = request.POST.get('type', None)
+                lstate = request.POST.get('state', None)
+                lplace = request.POST.get('place', None)
 
-    liscence = customer_model.license.objects.filter(
-        Q(license_id=lisence_iD)).first()
+                liscence = customer_model.license.objects.filter(
+                    Q(license_id=lisence_iD)).first()
 
-    lis_state = customer_model.federal_state.objects.filter(
-        state_id=lstate).first()
+                lis_state = customer_model.federal_state.objects.filter(
+                    state_id=lstate).first()
 
-    lis_place = customer_model.placeissue.objects.filter(
-        place_id=lplace).first()
+                lis_place = customer_model.placeissue.objects.filter(
+                    place_id=lplace).first()
 
-    lis_type = customer_model.licensetype.objects.filter(type_id=ltype).first()
+                lis_type = customer_model.licensetype.objects.filter(
+                    type_id=ltype).first()
 
-    lis_rec = finance_model.receipt_voucher.objects.filter(rv_id=lr_number)
+                lis_rec = finance_model.receipt_voucher.objects.filter(
+                    rv_id=lr_number)
 
-    lis_owne = customer_model.customer.objects.filter(customer_id=lowner_lis)
+                lis_owne = customer_model.customer.objects.filter(
+                    customer_id=lowner_lis)
 
-    liscence.place_of_issue = lis_place
-    liscence.federal_state = lis_state
-    liscence.type = lis_type
-    liscence.reg_no = reg
-    liscence.receipt_voucher.rv_id = lis_rec
-    liscence.expired_date = lexp_date
-    liscence.created_at = lreg_date
-    liscence.owner.customer_id = lis_owne
+                liscence.place_of_issue = lis_place
+                liscence.federal_state = lis_state
+                liscence.type = lis_type
+                liscence.reg_no = reg
+                liscence.receipt_voucher.rv_id = lis_rec
+                liscence.expired_date = lexp_date
+                liscence.created_at = lreg_date
+                liscence.owner.customer_id = lis_owne
 
-    liscence.save()
+                liscence.save()
+                message = {
+                    'isError': False,
+                    'title': "Successfully!!!",
+                    'type': "success",
+                    'Message': 'liscence has Been Updated Succesfully'
+                }
+
+    except Exception as error:
+        username = request.user.username
+        name = request.user.first_name + ' ' + request.user.last_name
+        # register the error
+        sendException(
+            request, username, name, error)
+        message = {
+            'isError': True,
+            'Message': 'On Error Occurs . Please try again or contact system administrator'
+        }
+        return JsonResponse(message, status=200)
 
     return render(request, 'License/edit_model.html')
 
@@ -496,52 +525,54 @@ def edit_manage(request, id):
 
 
 @login_required(login_url='Login')
+@permission_required('Customers.add_license', raise_exception=True)
 def renew_license(request, id):
 
     # TODO: check permission
-    if request.method == 'POST':
-        if id is not None:
-            license_to_renew = customer_model.license.objects.filter(
-                license_id=id).first()
-            if license_to_renew is not None:
-                # check if the license is expired
-                new_expired_year = current_date.replace(
-                    year=license_to_renew.expired_date.year+3)
-                rv_number = request.POST.get('rv_number', None)
+    if request.user.has_perm('Customers.change_license'):
+        if request.method == 'POST':
+            if id is not None:
+                license_to_renew = customer_model.license.objects.filter(
+                    license_id=id).first()
+                if license_to_renew is not None:
+                    # check if the license is expired
+                    new_expired_year = current_date.replace(
+                        year=license_to_renew.expired_date.year+3)
+                    rv_number = request.POST.get('rv_number', None)
 
-                if rv_number is not None:
-                    rv_exist = customer_model.license.objects.filter(
-                        Q(receipt_voucher__rv_number=rv_number)).exists()
-                    if rv_exist:
-                        return JsonResponse({
-                            'isError': True,
-                            'Message': 'Recipt Already Used'
-                        })
-                    else:
-                        if license_to_renew.expired_date <= current_date:
-                            license_to_renew.expired_date = new_expired_year
-                            license_to_renew.save()
-                            return JsonResponse({
-                                'isError': False,
-                                'Message': 'License Renewed Succefully'
-                            })
-                        else:
+                    if rv_number is not None:
+                        rv_exist = customer_model.license.objects.filter(
+                            Q(receipt_voucher__rv_number=rv_number)).exists()
+                        if rv_exist:
                             return JsonResponse({
                                 'isError': True,
-                                'Message': 'License Not Expired',
+                                'Message': 'Recipt Already Used'
                             })
+                        else:
+                            if license_to_renew.expired_date <= current_date:
+                                license_to_renew.expired_date = new_expired_year
+                                license_to_renew.save()
+                                return JsonResponse({
+                                    'isError': False,
+                                    'Message': 'License Renewed Succefully'
+                                })
+                            else:
+                                return JsonResponse({
+                                    'isError': True,
+                                    'Message': 'License Not Expired',
+                                })
+                    else:
+                        return JsonResponse({
+                            'isError': True,
+                            'Message': 'Provide an RV Number',
+                        })
                 else:
                     return JsonResponse({
                         'isError': True,
-                        'Message': 'Provide an RV Number',
+                        'Message': 'License Not Found',
                     })
             else:
                 return JsonResponse({
                     'isError': True,
-                    'Message': 'License Not Found',
+                    'Message': 'please provide a liecense ID',
                 })
-        else:
-            return JsonResponse({
-                'isError': True,
-                'Message': 'please provide a liecense ID',
-            })
