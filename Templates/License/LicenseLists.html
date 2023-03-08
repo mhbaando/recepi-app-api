@@ -104,6 +104,7 @@
                             <span class="badge bg-{% if item.status == 'Active' %}success{% elif item.status == 'suspended' %}warning{% else %}danger{% endif %}">{{ item.status }}</span
                               >
                             </td> {% endcomment %}
+                          {% comment %} {% if perms.Customers.change_license %} {% endcomment %}
                             <td>
                               {% if item.status == 'Active' %}
                               <button type="button"

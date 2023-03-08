@@ -132,10 +132,10 @@
                                     <select id="place_issue"class="form-select">
                                         {% if FederalState %}
                                             <option value="">
-                                                Select State
+                                                Select A Place Issue
                                             </option>
-                                            {% for item in FederalState %}
-                                                <option value={{ item.state_id }}>{{ item.state_name }}
+                                            {% for item in place_issue %}
+                                                <option value={{ item.place_id }}>{{ item.place_name }}
                                                 </option>
                                             {% endfor %}
                                         {% endif %}
