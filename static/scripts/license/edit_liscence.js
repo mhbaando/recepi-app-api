@@ -41,15 +41,16 @@ $(document).ready(()=>{
                 success: function(response){
                     if (!response.isError) {
                         console.log(response.Message)
-                       response.Message.forEach(liscence => {
+                       response.Message.forEach(liscences => {
                         // 2. fill data to the html ellemets
-                        $("#reg_number").attr('value', liscence.reg_no)
-                        $("#exp_date").attr('value', liscence.expired_date)
-                        $("#reg_date").attr('value', liscence.created_at)
-                        $("#owner_lis").attr('value', liscence.owner_id)
-                        $(`#state option[value='${liscence.federal_state_id}']`).attr('selected', true)
-                        $(`#type option[value='${liscence.type_id}']`).attr('selected', true)
-                        $(`#place option[value='${liscence.place_of_issue_id}']`).attr('selected', true)
+                        $("#r_number").attr('value', liscences.receipt_voucher_id)
+                        $("#reg_number").attr('value', liscences.reg_no)
+                        $("#exp_date").attr('value', liscences.expired_date)
+                        $("#reg_date").attr('value', liscences.created_at)
+                        $("#owner_lis").attr('value', liscences.owner_id)
+                        $(`#state option[value='${liscences.federal_state_id}']`).attr('selected', true)
+                        $(`#type option[value='${liscences.type_id}']`).attr('selected', true)
+                        $(`#place option[value='${liscences.place_of_issue_id}']`).attr('selected', true)
                         // liscence.status === 'Active' ? $("#status input[value='Active']").attr('checked',true) : liscence.status === 'Lost' ? $("#status input[value='Lost']").attr('checked',true) : liscence.status === 'Expired' ?  $("#status input[value='Expired']").attr('checked',true) : $("#status input[value='Suspended']").attr('checked',true)  
                        });
                       } else {
