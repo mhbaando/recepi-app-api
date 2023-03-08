@@ -39,8 +39,8 @@ class Users(AbstractUser):
         if self.is_admin:
             return "Admin"
 
-        if self.is_staff:
-            return "Employee"
+        if self.is_state:
+            return "State"
 
         return "Anonymous"
     # Profile Url
