@@ -331,6 +331,15 @@ def tranfercreate(request):
                             'Message': f"you can't transfer a Vehicle to the same person "
                         }
                     )
+                if document.size > 2000000:
+                    return JsonResponse(
+                        {
+                            "isError": True,
+                            "Message": "File Uppload Must be 2MB Maximimum",
+                        }
+                    )
+                if request.user.is_superuser == False and request.user.federal_state is None:
+                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
                 else:
 
                     vehicle_old_id = vehicle_model.vehicle.objects.filter(
@@ -368,7 +377,6 @@ def tranfercreate(request):
                                avatar, action, module, path)
                     # return for post method
                     return JsonResponse({'isError': False, 'Message': 'A New Transfer has been Succesfully Saved'}, status=200)
-
         else:
 
             return redirect('un_authorized')
@@ -691,6 +699,8 @@ def asign_plate(request):
                             'Message': f'this plate number is already taken by some one '
                         }
                     )
+                if request.user.is_superuser == False and request.user.federal_state is None:
+                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
                 else:
 
                     # create plate
@@ -783,8 +793,8 @@ def SearchReceiptVoucher(request, search):
         return JsonResponse({'Message': message}, status=200),
 
 
-@ login_required(login_url='Login')
-@ permission_required('Vehicles.add_code_plate', raise_exception=True)
+@login_required(login_url='Login')
+@permission_required('Vehicles.add_code_plate', raise_exception=True)
 def code_plate_name(request):
 
     try:
@@ -792,6 +802,8 @@ def code_plate_name(request):
             if request.user.has_perm('Vehicles.add_code_plate'):
 
                 codeplate = request.POST.get('code', None)
+                if request.user.is_superuser == False and request.user.federal_state is None:
+                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
 
                 new_code = vehicle_model.code_plate(
                     code_name=codeplate,
