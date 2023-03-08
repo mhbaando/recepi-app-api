@@ -4,134 +4,141 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
+from . import models
+from django.contrib.auth.models import Permission
+from django.utils.itercompat import is_iterable
 
 
 from Users.views import sendException, sendTrials
 from Vehicles import models as vehilce_model
 from Finance import models as financemodel
 from datetime import datetime
+from Customers.autditory import save_error, save_log
+
 # Create your views here.
 # company
 
 
 @login_required(login_url='Login')
 def register_company(request):
+    try:
+        if request.user.has_perm('Customers.view_company') and request.user.has_perm('Customers.add_company'):
 
-    #  read all states for the users
-    states = []
-    customers = []
+            #  read all states for the users
+            states = []
+            customers = []
 
-    if request.user.is_state and request.user.federal_state is not None:
-        states = customer_model.federal_state.objects.filter(
-            Q(state_name=request.user.federal_state))
-    else:
-        # admins can view all users
-        states = customer_model.federal_state.objects.all()
-
-    if not request.user.is_superuser and request.user.federal_state is None:
-        return JsonResponse({
-            'isError': True,
-            'title': 'Validate Error',
-            'type': 'danger',
-            'Message':  'Update your state to register a compnay'
-        })
-
-    if request.user.is_superuser:
-        customers = customer_model.customer.objects.all()
-
-    else:
-        customers = customer_model.customer.objects.filter(
-            Q(federal_state__state_name=request.user.federal_state))
-
-    if request.method == 'POST':
-        try:
-            # get data from the request
-            c_name = request.POST.get('cname', None)
-            c_rnum = request.POST.get('rnumber', None)
-            c_webiste = request.POST.get('website', None)
-            c_owner = request.POST.get('owner', None)
-            c_phone = request.POST.get('phone', None)
-            c_email = request.POST.get('email', None)
-            c_address = request.POST.get('address', None)
-            c_state = request.POST.get('state', None)
-            c_logo = request.FILES['logo']
-            c_companyDoc = request.FILES['companyDoc']
-            c_desc = request.POST.get('desc')
-
-            if c_name is None or c_rnum is None or c_webiste is None or c_owner is None or c_phone is None or c_email is None or c_address is None or c_state is None or c_desc is None:
-                return JsonResponse(
-                    {
-                        'isError': True,
-                        'title': 'Validate Error',
-                        'type': 'danger',
-                        'Message':  'Fill All Required Fields'
-                    }
-                )
-
-            if not request.user.is_superuser and request.user.federal_state != states:
-                return JsonResponse({'isError': True, 'Message': 'You cant register another state'}, status=401)
-
-            selected_satate = customer_model.federal_state.objects.filter(
-                Q(state_id=c_state)).first()
-
-            # find owner by splitn the name and personal id
-            found_owner = customer_model.customer.objects.filter(
-                Q(customer_id=c_owner)).first()
-
-            if found_owner is not None:
-                if (c_companyDoc.size > 2000000):
-                    return JsonResponse({'isError': True, 'Message': 'you can not  upload more then 1mb'}, status=200)
-
-                # register new compnay
-                new_company = customer_model.company(
-                    company_name=c_name,
-                    email=c_email,
-                    address=c_address,
-                    federal_state=selected_satate,
-                    phone=c_phone,
-                    logo=c_logo,
-                    website=c_webiste,
-                    reg_no=c_rnum,
-                    document=c_companyDoc,
-                    description=c_desc,
-                    owner=found_owner,
-                    reg_user=request.user
-                )
-                new_company.save()
-
-                username = request.user.username
-                names = request.user.first_name + ' ' + request.user.last_name
-                avatar = str(request.user.avatar)
-                module = "Customer / Register"
-                action = f'Registered A Company {c_name} at {datetime.now()}'
-                path = request.path
-                sendTrials(request, username, names,
-                           avatar, action, module, path)
-                # return for post method
-                return JsonResponse({'isError': False, 'Message': 'Company has been successfully Saved'}, status=200)
+            if request.user.is_state or request.user.is_admin and request.user.federal_state is not None:
+                states = customer_model.federal_state.objects.filter(
+                    Q(state_name=request.user.federal_state)).first()
             else:
-                return JsonResponse({'isError': True, 'Message': 'Owner didnt extist'}, status=404)
-        except Exception as error:
-            username = request.user.username
-            name = request.user.first_name + ' ' + request.user.last_name
-            # register the error
-            sendException(
-                request, username, name, error)
-            message = {
-                'isError': True,
-                'Message': 'On Error Occurs . Please try again or contact system administrator'
+                # admins can view all users
+                states = customer_model.federal_state.objects.all()
+
+            if not request.user.is_superuser and request.user.federal_state is None:
+                return JsonResponse({
+                    'isError': True,
+                    'title': 'Validate Error',
+                    'type': 'danger',
+                    'Message':  'Update your state to register a compnay'
+                })
+
+            if request.user.is_superuser:
+                customers = customer_model.customer.objects.all()
+
+            else:
+                customers = customer_model.company.objects.filter(
+                    Q(federal_state__state_name=request.user.federal_state))
+                save_log(request, 'Company / Register',
+                         'waxa uu boqday Company Registration')
+                return render(request, "Company/register.html", context)
+             # Check permissions
+
+            if request.method == 'POST':
+
+                # get data from the request
+                c_name = request.POST.get('cname', None)
+                c_rnum = request.POST.get('rnumber', None)
+                c_webiste = request.POST.get('website', None)
+                c_owner = request.POST.get('owner', None)
+                c_phone = request.POST.get('phone', None)
+                c_email = request.POST.get('email', None)
+                c_address = request.POST.get('address', None)
+                c_state = request.POST.get('state', None)
+                c_logo = request.FILES['logo']
+                c_companyDoc = request.FILES['companyDoc']
+                c_desc = request.POST.get('desc')
+
+                if c_name is None or c_rnum is None or c_webiste is None or c_owner is None or c_phone is None or c_email is None or c_address is None or c_state is None or c_desc is None:
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': 'Validate Error',
+                            'type': 'danger',
+                            'Message':  'Fill All Required Fields'
+                        }
+                    )
+
+                if not request.user.is_superuser and request.user.federal_state != states:
+                    return JsonResponse({'isError': True, 'Message': 'You cant register another state'})
+
+                selected_satate = customer_model.federal_state.objects.filter(
+                    Q(state_id=c_state)).first()
+
+                # find owner by splitn the name and personal id
+                found_owner = customer_model.customer.objects.filter(
+                    Q(customer_id=c_owner)).first()
+                if not found_owner.is_verified:
+                    return JsonResponse({'isError': True, 'Message': 'Owner is not Verified'})
+
+                if found_owner is not None:
+                    if (c_companyDoc.size > 2000000):
+                        return JsonResponse({'isError': True, 'Message': 'you can not  upload more then 1mb'}, status=200)
+
+                    # register new compnay
+                    new_company = customer_model.company(
+                        company_name=c_name,
+                        email=c_email,
+                        address=c_address,
+                        federal_state=selected_satate,
+                        phone=c_phone,
+                        logo=c_logo,
+                        website=c_webiste,
+                        reg_no=c_rnum,
+                        document=c_companyDoc,
+                        description=c_desc,
+                        owner=found_owner,
+                        reg_user=request.user
+                    )
+                    new_company.save()
+
+                    username = request.user.username
+                    names = request.user.first_name + ' ' + request.user.last_name
+                    avatar = str(request.user.avatar)
+                    module = "Customer / Register"
+                    action = f'Registered A Company {c_name} at {datetime.now()}'
+                    path = request.path
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
+                    # return for post method
+                    return JsonResponse({'isError': False, 'Message': 'Company has been successfully Saved'}, status=200)
+                else:
+                    return JsonResponse({'isError': True, 'Message': 'Owner didnt extist'}, status=404)
+
+            context = {
+                'pageTitle': 'Register Company',
+                'states': states,
+                'customers': customers
+
             }
-            return JsonResponse(message, status=200)
-
-    context = {
-        'pageTitle': 'Register Company',
-        'states': states,
-        'customers': customers
-    }
-    return render(request, 'Company/register.html', context)
-
+            return render(request, 'Company/register.html', context)
+    except Exception as error:
+        save_error(request, error)
+    return render(request, 'Base/403.html')
 
 # search
+
+
 def search_engine(request, search):
     if request.method == 'GET':
         customers = customer_model.customer.objects.filter(
@@ -152,167 +159,164 @@ def search_engine(request, search):
 
 @login_required(login_url='Login')
 def view_company(request):
+    try:
+        if request.user.has_perm('Customers.view_company'):
 
-    CheckSearchQuery = 'SearchQuery' in request.GET
-    CheckDataNumber = 'DataNumber' in request.GET
-    CheckStatus = 'Status' in request.GET
+            CheckSearchQuery = 'SearchQuery' in request.GET
+            CheckDataNumber = 'DataNumber' in request.GET
+            CheckStatus = 'Status' in request.GET
 
-    Status = 'block'
-    SearchQuery = ''
-    DataNumber = 10
-    companies = []
-    context = {
-        'pageTitle': 'View Company'
-    }
-
-    if not request.user.is_superuser and request.user.federal_state is None:
-        return JsonResponse(
-            {
-                'isError': True,
-                'title': 'State Error',
-                'type': 'danger',
-                'Message':  'Update your state to view the company'
+            Status = 'block'
+            SearchQuery = ''
+            DataNumber = 10
+            companies = []
+            context = {
+                'pageTitle': 'company-views'
             }
-        )
 
-    if CheckDataNumber:
-        DataNumber = int(request.GET['DataNumber'])
+            if not request.user.is_superuser and request.user.federal_state is None:
+                return JsonResponse(
+                    {
+                        'isError': True,
+                        'title': 'State Error',
+                        'type': 'danger',
+                        'Message':  'Update your state to view the company'
+                    }
+                )
 
-    if CheckStatus:
-        Status = request.GET.get('Status')
+            if CheckDataNumber:
+                DataNumber = int(request.GET['DataNumber'])
 
-    if CheckSearchQuery:
-        SearchQuery = request.GET['SearchQuery']
-        # verified = True if Status == 'Verified'else False
+            if CheckStatus:
+                Status = request.GET.get('Status')
 
-        # for state user
-        if request.user.is_state or request.user.is_admin:
-            companies = customer_model.company.objects.filter(federal_state=request.user.federal_state
-                                                              ).filter(Q(firstname__icontains=SearchQuery)).order_by('-created_at')
-        # for admin users
-        else:
-            companies = customer_model.company.objects.filter(
-                Q(company_name__icontains=SearchQuery)).order_by('-created_at')
+            if CheckSearchQuery:
+                SearchQuery = request.GET['SearchQuery']
+                # verified = True if Status == 'Verified'else False
 
-    else:
+                # for state user
+                if request.user.is_state or request.user.is_admin:
+                    companies = customer_model.company.objects.filter(federal_state=request.user.federal_state
+                                                                      ).filter(Q(firstname__icontains=SearchQuery)).order_by('-created_at')
+                # for admin users
+                else:
+                    companies = customer_model.company.objects.filter(
+                        Q(company_name__icontains=SearchQuery)).order_by('-created_at')
 
-        if request.user.is_superuser:
-            companies = customer_model.company.objects.all().order_by('-created_at')
-        else:
-            companies = customer_model.company.objects.filter(
-                Q(federal_state=request.user.federal_state)).order_by('-created_at')
+            else:
 
-    # paginate data
-    paginator = Paginator(companies, DataNumber)
-    page_number = request.GET.get('page')
-    companies_obj = paginator.get_page(page_number)
+                if request.user.is_superuser:
+                    companies = customer_model.company.objects.all().order_by('-created_at')
+                else:
+                    companies = customer_model.company.objects.filter(
+                        Q(federal_state=request.user.federal_state)).order_by('-created_at')
 
-    # pass company and data number down to the context
-    context['total'] = len(companies)
-    context['DataNumber'] = DataNumber
-    context['companies'] = companies_obj
-    context['SearchQuery'] = SearchQuery
-    context['Status'] = Status
+                    # paginate data
+                paginator = Paginator(companies, DataNumber)
+                page_number = request.GET.get('page')
+                companies_obj = paginator.get_page(page_number)
+                # pass company and data number down to the context
+                context['total'] = len(companies)
+                context['DataNumber'] = DataNumber
+                context['companies'] = companies_obj
+                context['SearchQuery'] = SearchQuery
+                context['Status'] = Status
 
-    return render(request, 'Company/view_company.html', context)
+                save_log(request, 'Company / List ',
+                         f'waxa uu booqday company List')
+            return render(request, "Company/view_company", context)
+        return render(request, 'Base/403.html')
+
+    except Exception as error:
+        save_error(request, error)
 
 
 @login_required(login_url='Login')
 def block_company(request):
-    if request.method == 'POST':
-        try:
-            co_id = request.POST.get('co_id').strip()
-            co_desc = request.POST.get('co_desc')
-            c_doc = request.FILES['co_doc']
-            company = ""
-            if co_id is None or co_desc is None or c_doc is None:
-                return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
+    try:
+        if request.user.has_perm('Customer.block_company'):
+            if request.method == 'POST':
 
-            # find the company for admin
-            if request.user.is_superuser:
-                company = customer_model.company.objects.filter(
-                    Q(company_id=co_id)).first()
-            else:
-                # for regular users
-                company = customer_model.company.objects.filter(
-                    Q(company_id=co_id), federal_state=request.user.federal_state).first()
+                co_id = request.POST.get('co_id').strip()
+                co_desc = request.POST.get('co_desc')
+                c_doc = request.FILES['co_doc']
+                company = ""
+                if co_id is None or co_desc is None or c_doc is None:
+                    return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
 
-            if company is not None:
-                company.is_blocked = True
-                company.document = c_doc
-                company.description = co_desc
-                company.save()
-                # customer.update(is_verified=True,
-                #                 document=c_doc, description=c_desc)
-                username = request.user.username
-                names = request.user.first_name + ' ' + request.user.last_name
-                avatar = str(request.user.avatar)
-                module = "Customer / company_block"
-                action = f'Block  A Company {company.company_name}'
-                path = request.path
-                sendTrials(request, username, names,
-                           avatar, action, module, path)
+                # find the company for admin
+                if request.user.is_superuser:
+                    company = customer_model.company.objects.filter(
+                        Q(company_id=co_id)).first()
+                else:
+                    # for regular users
+                    company = customer_model.company.objects.filter(
+                        Q(company_id=co_id), federal_state=request.user.federal_state).first()
 
-                return JsonResponse({'isError': False, 'Message': 'Company blocked'}, status=200)
+                if company is not None:
+                    company.is_blocked = True
+                    company.document = c_doc
+                    company.description = co_desc
+                    company.save()
+                    # customer.update(is_verified=True,
+                    #                 document=c_doc, description=c_desc)
 
-            return JsonResponse({'isError': True, 'Message': 'Company not found'}, status=404)
+                    save_log(request, 'Cusomer / Active ',
+                             f'waxa uu active greyay {company.company_name}')
+                    username = request.user.username
+                    names = request.user.first_name + ' ' + request.user.last_name
+                    avatar = str(request.user.avatar)
+                    module = "Customer / company_block"
+                    action = f'Block  A Company {company.company_name}'
+                    path = request.path
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
 
-        except Exception as error:
-            username = request.user.username
-            name = request.user.first_name + ' ' + request.user.last_name
-            # register the error
-            sendException(
-                request, username, name, error)
-            message = {
-                'isError': True,
-                'Message': 'On Error Occurs . Please try again or contact system administrator'
-            }
-            return JsonResponse(message, status=200)
+                    return JsonResponse({'isError': False, 'Message': 'Company blocked'}, status=200)
+
+                return JsonResponse({'isError': True, 'Message': 'Company not found'}, status=404)
+
+            return render(request, 'Base/403.html')
+    except Exception as error:
+        save_error(request, error)
 
 
 # unblocked company
 
 @login_required(login_url='Login')
 def unblockcompany(request, id):
-    if request.method == 'GET':
-        try:
-            # find the company for admin
-            if request.user.is_superuser:
-                company = customer_model.company.objects.filter(
-                    Q(company_id=id)).first()
-            else:
-                # for regular users
-                company = customer_model.company.objects.filter(
-                    Q(company_id=id), federal_state=request.user.federal_state).first()
+    try:
+        if request.user.has_perm('Customers.unblockcompany'):
+            if request.method == 'GET':
 
-            if company is not None:
-                company.is_blocked = False
-                company.save()
+                # find the company for admin
+                if request.user.is_superuser:
+                    company = customer_model.company.objects.filter(
+                        Q(company_id=id)).first()
+                else:
+                    # for regular users
+                    company = customer_model.company.objects.filter(
+                        Q(company_id=id), federal_state=request.user.federal_state).first()
 
-                username = request.user.username
-                names = request.user.first_name + ' ' + request.user.last_name
-                avatar = str(request.user.avatar)
-                module = "Customer / company_unblock"
-                action = f'Un block A Company {company.company_name}'
-                path = request.path
-                sendTrials(request, username, names,
-                           avatar, action, module, path)
+                if company is not None:
+                    company.is_blocked = False
+                    company.save()
 
-                return JsonResponse({'isError': False, 'Message': 'Unblocked Succefully'}, status=200)
+                    username = request.user.username
+                    names = request.user.first_name + ' ' + request.user.last_name
+                    avatar = str(request.user.avatar)
+                    module = "Customer / company_unblock"
+                    action = f'Un block A Company {company.company_name}'
+                    path = request.path
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
 
-            return JsonResponse({'isError': True, 'Message': 'Company not found'}, status=404)
+                    return JsonResponse({'isError': False, 'Message': 'Unblocked Succefully'}, status=200)
 
-        except Exception as error:
-            username = request.user.username
-            name = request.user.first_name + ' ' + request.user.last_name
-            # register the error
-            sendException(
-                request, username, name, error)
-            message = {
-                'isError': True,
-                'Message': 'On Error Occurs . Please try again or contact system administrator'
-            }
-            return JsonResponse(message, status=200)
+                return JsonResponse({'isError': True, 'Message': 'Company not found'}, status=404)
+
+    except Exception as error:
+        save_error(request, error)
 
 # end unblock company
 
@@ -432,45 +436,48 @@ def find_company(request, id):
 @login_required(login_url="Login")
 def update_company(request):
     try:
-        company_id = request.POST.get('company_id', None)
-        c_name = request.POST.get('cname', None)
-        cphone = request.POST.get('cphone', None)
-        cemail = request.POST.get('cemail', None)
-        caddress = request.POST.get('caddress', None)
-        cwebsite = request.POST.get('cwebsite', None)
-        cregister = request.POST.get('cregister', None)
-        cstate = request.POST.get('cstate', None)
+        # check Permission
 
-        if company_id is not None:
-            company = customer_model.company.objects.filter(
-                company_id=company_id).first()
+        if request.user.has_perms("Customers.update_company"):
+            company_id = request.POST.get('company_id', None)
+            c_name = request.POST.get('cname', None)
+            cphone = request.POST.get('cphone', None)
+            cemail = request.POST.get('cemail', None)
+            caddress = request.POST.get('caddress', None)
+            cwebsite = request.POST.get('cwebsite', None)
+            cregister = request.POST.get('cregister', None)
+            cstate = request.POST.get('cstate', None)
 
-            if company is not None:
-                if c_name is None or cphone is None or cemail is None or caddress is None or cwebsite is None or cregister is None or cstate is None:
-                    return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
-                state = customer_model.federal_state.objects.filter(
-                    Q(state_id=cstate)).first()
+            if company_id is not None:
+                company = customer_model.company.objects.filter(
+                    company_id=company_id).first()
 
-                company.company_name = c_name
-                company.phone = cphone
-                company.email = cemail
-                company.website = cwebsite
-                company.address = caddress
-                company.reg_no = cregister
-                company.federal_state = state
-                company.save()
+                if company is not None:
+                    if c_name is None or cphone is None or cemail is None or caddress is None or cwebsite is None or cregister is None or cstate is None:
+                        return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
+                    state = customer_model.federal_state.objects.filter(
+                        Q(state_id=cstate)).first()
+
+                    company.company_name = c_name
+                    company.phone = cphone
+                    company.email = cemail
+                    company.website = cwebsite
+                    company.address = caddress
+                    company.reg_no = cregister
+                    company.federal_state = state
+                    company.save()
 
                 # for auditory
-                username = request.user.username
-                names = request.user.first_name + ' ' + request.user.last_name
-                avatar = str(request.user.avatar)
-                module = "Customer / update"
-                action = 'updated a company' + company.company_name
-                path = request.path
-                sendTrials(request, username, names,
-                           avatar, action, module, path)
-                return JsonResponse({'isError': False, 'Message': 'company has been updated'}, status=200)
-            return JsonResponse({'isErro': False, 'Message': 'company feild is required'}, status=400)
+                    username = request.user.username
+                    names = request.user.first_name + ' ' + request.user.last_name
+                    avatar = str(request.user.avatar)
+                    module = "Customer / update"
+                    action = 'updated a company' + company.company_name
+                    path = request.path
+                    sendTrials(request, username, names,
+                               avatar, action, module, path)
+                    return JsonResponse({'isError': False, 'Message': 'company has been updated'}, status=200)
+                return JsonResponse({'isErro': False, 'Message': 'company feild is required'}, status=400)
 
     except Exception as error:
         username = request.user.username
@@ -503,4 +510,3 @@ def Searchcustomer(request, search):
                 }
             )
         return JsonResponse({'Message': message}, status=200)
-
