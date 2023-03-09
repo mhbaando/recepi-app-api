@@ -82,7 +82,7 @@
                                                     <span class="badge bg-{{ company.show_status.verified_color }} text-white p-2">{{ company.show_status.verified_status }}</span>
                                                 </td>
                                                 <td>
-                                                    {% if perms.Customer.view_company %}
+                                                    {% if perms.Customers.view_company %}
                                                         <a href="{% url 'company_profile' company.company_id %}">
                                                             <button class="btn btn-outline-primary">View</button>
                                                         </a>
