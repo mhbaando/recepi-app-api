@@ -20,42 +20,36 @@ from Customers.autditory import save_error, save_log
 
 
 @login_required(login_url='Login')
+def vew_register_company(request):
+    try:
+        if request.user.has_perm('Customers.view_company'):
+            if request.method == 'GET':
+                states = []
+                if request.user.is_state or request.user.is_admin and request.user.federal_state is not None:
+                    states = customer_model.federal_state.objects.filter(
+                        Q(state_id=request.user.federal_state.state_id))
+                else:
+                    # admins can view all users
+                    states = customer_model.federal_state.objects.all()
+                context = {
+                    'pageTitle': 'Register Company',
+                    'states': states,
+                }
+                return render(request, 'Company/register.html', context)
+            return JsonResponse({
+                'isError': True,
+                'Message': 'Method Not Allowed'
+            })
+        return render(request, 'Base/403.html')
+    except Exception as error:
+        save_error(request, error)
+
+
+@login_required(login_url='Login')
 def register_company(request):
     try:
-        if request.user.has_perm('Customers.view_company') and request.user.has_perm('Customers.add_company'):
-
-            #  read all states for the users
-            states = []
-            customers = []
-
-            if request.user.is_state or request.user.is_admin and request.user.federal_state is not None:
-                states = customer_model.federal_state.objects.filter(
-                    Q(state_name=request.user.federal_state)).first()
-            else:
-                # admins can view all users
-                states = customer_model.federal_state.objects.all()
-
-            if not request.user.is_superuser and request.user.federal_state is None:
-                return JsonResponse({
-                    'isError': True,
-                    'title': 'Validate Error',
-                    'type': 'danger',
-                    'Message':  'Update your state to register a compnay'
-                })
-
-            if request.user.is_superuser:
-                customers = customer_model.customer.objects.all()
-
-            else:
-                customers = customer_model.company.objects.filter(
-                    Q(federal_state__state_name=request.user.federal_state))
-                save_log(request, 'Company / Register',
-                         'waxa uu boqday Company Registration')
-                return render(request, "Company/register.html", context)
-             # Check permissions
-
+        if request.user.has_perm('Customers.add_company'):
             if request.method == 'POST':
-
                 # get data from the request
                 c_name = request.POST.get('cname', None)
                 c_rnum = request.POST.get('rnumber', None)
@@ -68,6 +62,14 @@ def register_company(request):
                 c_logo = request.FILES['logo']
                 c_companyDoc = request.FILES['companyDoc']
                 c_desc = request.POST.get('desc')
+
+                states = []
+                if request.user.is_state or request.user.is_admin and request.user.federal_state is not None:
+                    states = customer_model.federal_state.objects.filter(
+                        Q(state_id=request.user.federal_state.state_id)).first()
+                else:
+                    # admins can view all users
+                    states = customer_model.federal_state.objects.all()
 
                 if c_name is None or c_rnum is None or c_webiste is None or c_owner is None or c_phone is None or c_email is None or c_address is None or c_state is None or c_desc is None:
                     return JsonResponse(
@@ -88,8 +90,6 @@ def register_company(request):
                 # find owner by splitn the name and personal id
                 found_owner = customer_model.customer.objects.filter(
                     Q(customer_id=c_owner)).first()
-                if not found_owner.is_verified:
-                    return JsonResponse({'isError': True, 'Message': 'Owner is not Verified'})
 
                 if found_owner is not None:
                     if (c_companyDoc.size > 2000000):
@@ -111,31 +111,18 @@ def register_company(request):
                         reg_user=request.user
                     )
                     new_company.save()
+                    save_log(request, 'Company / Register',
+                             f'Waxa uu diwangaliyay ${new_company.company_name}')
 
-                    username = request.user.username
-                    names = request.user.first_name + ' ' + request.user.last_name
-                    avatar = str(request.user.avatar)
-                    module = "Customer / Register"
-                    action = f'Registered A Company {c_name} at {datetime.now()}'
-                    path = request.path
-                    sendTrials(request, username, names,
-                               avatar, action, module, path)
-                    # return for post method
-                    return JsonResponse({'isError': False, 'Message': 'Company has been successfully Saved'}, status=200)
-                else:
-                    return JsonResponse({'isError': True, 'Message': 'Owner didnt extist'}, status=404)
-
-            context = {
-                'pageTitle': 'Register Company',
-                'states': states,
-                'customers': customers
-
-            }
-            return render(request, 'Company/register.html', context)
-    except Exception as error:
-        save_error(request, error)
-    return render(request, 'Base/403.html')
-
+                    return JsonResponse({'isError': False, 'Message': 'Company has been successfully Saved'})
+                return JsonResponse({'isError': True, 'Message': 'Owner didnt extist'})
+            return JsonResponse({
+                'isError': True,
+                'Message': 'Method Not allowed'
+            })
+        return render(request, 'Base/403.html')
+    except:
+        pass
 # search
 
 
@@ -159,76 +146,65 @@ def search_engine(request, search):
 
 @login_required(login_url='Login')
 def view_company(request):
-    try:
-        if request.user.has_perm('Customers.view_company'):
+    if request.user.has_perm('Customers.view_company'):
+        CheckSearchQuery = 'SearchQuery' in request.GET
+        CheckDataNumber = 'DataNumber' in request.GET
+        CheckStatus = 'Status' in request.GET
+        Status = 'block'
+        SearchQuery = ''
+        DataNumber = 10
+        companies = []
+        context = {
+            'pageTitle': 'View Company'
+        }
 
-            CheckSearchQuery = 'SearchQuery' in request.GET
-            CheckDataNumber = 'DataNumber' in request.GET
-            CheckStatus = 'Status' in request.GET
+        if not request.user.is_superuser and request.user.federal_state is None:
+            return JsonResponse(
+                {
+                    'isError': True,
+                    'title': 'State Error',
+                    'type': 'danger',
+                    'Message':  'Update your state to view the company'
+                }
+            )
 
-            Status = 'block'
-            SearchQuery = ''
-            DataNumber = 10
-            companies = []
-            context = {
-                'pageTitle': 'company-views'
-            }
+        if CheckDataNumber:
+            DataNumber = int(request.GET['DataNumber'])
 
-            if not request.user.is_superuser and request.user.federal_state is None:
-                return JsonResponse(
-                    {
-                        'isError': True,
-                        'title': 'State Error',
-                        'type': 'danger',
-                        'Message':  'Update your state to view the company'
-                    }
-                )
+        if CheckStatus:
+            Status = request.GET.get('Status')
 
-            if CheckDataNumber:
-                DataNumber = int(request.GET['DataNumber'])
-
-            if CheckStatus:
-                Status = request.GET.get('Status')
-
-            if CheckSearchQuery:
-                SearchQuery = request.GET['SearchQuery']
-                # verified = True if Status == 'Verified'else False
-
-                # for state user
-                if request.user.is_state or request.user.is_admin:
-                    companies = customer_model.company.objects.filter(federal_state=request.user.federal_state
-                                                                      ).filter(Q(firstname__icontains=SearchQuery)).order_by('-created_at')
-                # for admin users
-                else:
-                    companies = customer_model.company.objects.filter(
-                        Q(company_name__icontains=SearchQuery)).order_by('-created_at')
-
+        if CheckSearchQuery:
+            SearchQuery = request.GET['SearchQuery']
+            # for state user
+            if request.user.is_state or request.user.is_admin:
+                companies = customer_model.company.objects.filter(federal_state=request.user.federal_state).filter(
+                    Q(firstname__icontains=SearchQuery)).order_by('-created_at')
+            # for admin users
             else:
+                companies = customer_model.company.objects.filter(
+                    Q(company_name__icontains=SearchQuery)).order_by('-created_at')
 
-                if request.user.is_superuser:
-                    companies = customer_model.company.objects.all().order_by('-created_at')
-                else:
-                    companies = customer_model.company.objects.filter(
-                        Q(federal_state=request.user.federal_state)).order_by('-created_at')
+        if request.user.is_superuser:
+            companies = customer_model.company.objects.all().order_by('-created_at')
+        else:
+            companies = customer_model.company.objects.filter(
+                Q(federal_state=request.user.federal_state)).order_by('-created_at')
+            # paginate data
+        paginator = Paginator(companies, DataNumber)
+        page_number = request.GET.get('page')
+        companies_obj = paginator.get_page(page_number)
+        # pass company and data number down to the context
+        context['total'] = len(companies)
+        context['DataNumber'] = DataNumber
+        context['companies'] = companies_obj
+        context['SearchQuery'] = SearchQuery
+        context['Status'] = Status
+        save_log(request, 'Company / List ',
+                 f'waxa uu booqday company List')
+        return render(request, "Company/view_company.html", context)
 
-                    # paginate data
-                paginator = Paginator(companies, DataNumber)
-                page_number = request.GET.get('page')
-                companies_obj = paginator.get_page(page_number)
-                # pass company and data number down to the context
-                context['total'] = len(companies)
-                context['DataNumber'] = DataNumber
-                context['companies'] = companies_obj
-                context['SearchQuery'] = SearchQuery
-                context['Status'] = Status
-
-                save_log(request, 'Company / List ',
-                         f'waxa uu booqday company List')
-            return render(request, "Company/view_company", context)
-        return render(request, 'Base/403.html')
-
-    except Exception as error:
-        save_error(request, error)
+    return render(request, 'Base/403.html')
 
 
 @login_required(login_url='Login')
@@ -437,8 +413,7 @@ def find_company(request, id):
 def update_company(request):
     try:
         # check Permission
-
-        if request.user.has_perms("Customers.update_company"):
+        if request.user.has_perm("Customers.change_company"):
             company_id = request.POST.get('company_id', None)
             c_name = request.POST.get('cname', None)
             cphone = request.POST.get('cphone', None)
@@ -467,7 +442,7 @@ def update_company(request):
                     company.federal_state = state
                     company.save()
 
-                # for auditory
+                    # for auditory
                     username = request.user.username
                     names = request.user.first_name + ' ' + request.user.last_name
                     avatar = str(request.user.avatar)
@@ -477,7 +452,12 @@ def update_company(request):
                     sendTrials(request, username, names,
                                avatar, action, module, path)
                     return JsonResponse({'isError': False, 'Message': 'company has been updated'}, status=200)
-                return JsonResponse({'isErro': False, 'Message': 'company feild is required'}, status=400)
+                return JsonResponse({'isErro': True, 'Message': 'Company Not found'})
+            return JsonResponse({'isErro': True, 'Message': 'Provide company id'}, status=400)
+        return JsonResponse({
+            'isError': True,
+            'Message': 'you dont have permission to update this compnay'
+        })
 
     except Exception as error:
         username = request.user.username
