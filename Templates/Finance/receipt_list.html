@@ -62,8 +62,11 @@
                                             <th scope="col">Recieved From</th>
                                             <th scope="col">Reason</th>
                                             <th scope="col">Amount</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
+                                            <th scope="col">createat</th>
+                                            {% if perms.Finance.change_receipt_voucher %}
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        {% endif %}
                                     </thead>
                                     <tbody>
                                         {% if page_obj %}
@@ -75,11 +78,13 @@
                                                     <td>$ {{ item.rv_amount }}</td>
                                                     <td>$ {{ item.created_at }}</td>
                                                     <td>
-                                                        <button class="btn btn-outline-primary "
-                                                                id="edit"
-                                                                data-rvid="{{ item.rv_id }}">
-                                                            <i class='bx bx-edit-alt'></i>
-                                                        </button>
+                                                        {% if perms.Finance.change_receipt_voucher %}
+                                                            <button class="btn btn-outline-primary "
+                                                                    id="edit"
+                                                                    data-rvid="{{ item.rv_id }}">
+                                                                <i class='bx bx-edit-alt'></i>
+                                                            </button>
+                                                        {% endif %}
                                                     </td>
                                                 </tr>
                                             {% endfor %}
