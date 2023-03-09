@@ -52,11 +52,13 @@
                         <p class="fw-semibold">Status:</p>
                         <span>{{ company.owner.show_verify.verified_status }}</span>
                     </div>
-                    <button class="btn btn-primary btn-large w-100 edit mt-3 edit"
-                            data-company="{{ company.company_id }}">
-                        <i class="bx bxs-edit-alt me-3"></i>
-                        Edit
-                    </button>
+                    {% if perms.Customer.view_company %}
+                        <button class="btn btn-primary btn-large w-100 edit mt-3 edit"
+                                data-company="{{ company.company_id }}">
+                            <i class="bx bxs-edit-alt me-3"></i>
+                            Edit
+                        </button>
+                    {% endif %}
                 </div>
                 <div class="col-sm-12 col-lg-9 rounded gap-3">
                     <div class="col-12 bg-white p-2 mb-3 rounded">
