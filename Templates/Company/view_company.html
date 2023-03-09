@@ -8,7 +8,7 @@
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">Home / Company /</span> {{ pageTitle }}
         </h4>
-        <a href="{% url 'register_company' %}">
+        <a href="{% url 'view_register_company' %}">
             <button type="button" class="btn btn-primary btn-lg mb-3">Add New</button>
         </a>
         <div class="row">
@@ -68,8 +68,10 @@
                                             <th class="wd-15p border-bottom-0">Phone</th>
                                             <th class="wd-15p border-bottom-0">Status</th>
                                             <th class="wd-15p border-bottom-0">Action</th>
-                                            <th class="wd-15p border-bottom-0">Block Company</th>
-                                        </tr>
+                                            {% if perms.Customer.block_company %}
+                                                <th class="wd-15p border-bottom-0">Block Company</th>
+                                            </tr>
+                                        {% endif %}
                                     </thead>
                                     <tbody>
                                         {% for company in companies %}
@@ -82,21 +84,25 @@
                                                     <span class="badge bg-{{ company.show_status.verified_color }} text-white p-2">{{ company.show_status.verified_status }}</span>
                                                 </td>
                                                 <td>
-                                                    <a href="{% url 'company_profile' company.company_id %}">
-                                                        <button class="btn btn-outline-primary">View</button>
-                                                    </a>
-                                                </td>
-                                                <td/>
-                                                {% if company.show_status.show_btn %}
-                                                    <button class="btn btn-outline-primary"
-                                                            data-companyid="{{ company.company_id }}"
-                                                            id="block-btn">Block</button>
-                                                {% else %}
-                                                    <button class="btn btn-outline-primary"
-                                                            id="unblockbtn"
-                                                            data-coid="{{ company.company_id }}">Un Block</button>
+                                                    {% if perms.Customers.view_company %}
+                                                        <a href="{% url 'company_profile' company.company_id %}">
+                                                            <button class="btn btn-outline-primary">View</button>
+                                                        </a>
+                                                    </td>
                                                 {% endif %}
-                                            </td>
+                                                <td/>
+                                                {% if perms.Customer.block_company %}
+                                                    {% if company.show_status.show_btn %}
+                                                        <button class="btn btn-outline-primary"
+                                                                data-companyid="{{ company.company_id }}"
+                                                                id="block-btn">Block</button>
+                                                    {% else %}
+                                                        <button class="btn btn-outline-primary"
+                                                                id="unblockbtn"
+                                                                data-coid="{{ company.company_id }}">Un Block</button>
+                                                    {% endif %}
+                                                </td>
+                                            {% endif %}
                                         </tr>
                                     {% endfor %}
                                 </tbody>

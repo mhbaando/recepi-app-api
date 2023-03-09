@@ -46,27 +46,33 @@
             </li>
         {% endif %}
         <!-- company -->
-        <li class="menu-item {% if pageTitle == 'Register Company' or pageTitle == 'View Company' or pageTitle == 'detail company' or pageTitle == 'block company'  or  pageTitle == 'Company / Profile' %}active open{% endif %}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-building"></i>
-                <div data-i18n="Dashboards">Company</div>
-            </a>
-            <ul class="menu-sub ">
-                <li class="menu-item {% if pageTitle == 'Register Company' %}active{% endif %}">
-                    <a href="{% url 'register_company' %}"class="menu-link">
-                        <div data-i18n="Analytics">Register</div>
-                    </a>
-                </li>
+        {% if perms.Customers.add_company or perms.Customers.view_company or perms.Customers.change_customer %}
+            <li class="menu-item {% if pageTitle == 'Register Company' or pageTitle == 'View Company' or pageTitle == 'detail company' or pageTitle == 'block company'  or  pageTitle == 'Company / Profile' %}active open{% endif %}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-building"></i>
+                    <div data-i18n="Dashboards">Company</div>
+                </a>
+            {% endif %}
+            {% if perms.Customers.add_company %}
+                <ul class="menu-sub ">
+                    <li class="menu-item {% if pageTitle == 'Register Company' %}active{% endif %}">
+                        <a href="{% url 'view_register_company' %}"class="menu-link">
+                            <div data-i18n="Analytics">Register</div>
+                        </a>
+                    </li>
+                {% endif %}
                 {% comment %} <li class="menu-item {% if pageTitle == 'block company' %}active{% endif %}">
           <a href="{% url 'comapny_block' %}" class="menu-link">
             <div data-i18n="Analytics">Block Company</div>
           </a>
                 </li> {% endcomment %}
-                <li class="menu-item {% if pageTitle == 'View Company' or pageTitle == 'Profile' or pageTitle == 'Company / Profile' %} active{% endif %}">
-                    <a href="{% url 'view_company' %}" class="menu-link">
-                        <div data-i18n="CRM">View Company</div>
-                    </a>
-                </li>
+                {% if perms.Customers.view_company or perms.Customers.change_company %}
+                    <li class="menu-item {% if pageTitle == 'View Company' or pageTitle == 'Profile' or pageTitle == 'Company / Profile' %} active{% endif %}">
+                        <a href="{% url 'view_company' %}" class="menu-link">
+                            <div data-i18n="CRM">View Company</div>
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </li>
         <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' or  pageTitle == 'Vehicle Profile' %}active open{% endif %}">
