@@ -3,7 +3,8 @@ from . import views, license, customer
 
 urlpatterns = [
     # company urls
-    path('company/', views.register_company, name='register_company'),
+    path('company/', views.vew_register_company, name='view_register_company'),
+    path('company/resgiter', views.register_company, name='register_company'),
     path('company-views/', views.view_company, name='view_company'),
     path('company_block', views.block_company, name='comapny_block'),
     path('company_unblock/<int:id>', views.unblockcompany, name='comapny_unblock'),
