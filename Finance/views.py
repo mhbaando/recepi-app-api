@@ -10,6 +10,8 @@ from datetime import datetime
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from Customers import models as customer_model
+from Customers.autditory import save_error, save_log
+
 # current_date = date.today()
 # currentDatetime = datetime.now()
 # years_to_add = current_date.year + 4
@@ -17,77 +19,84 @@ from Customers import models as customer_model
 
 
 def AccountsPage(request):
+    try:
+        if request.user.has_perm('Finance.view_account'):
 
-    accounts = account.objects.all()
-    account_type = models.account_types.objects.all().order_by('created_at')
-    CheckSearchQuery = 'SearchQuery' in request.GET
-    CheckStatus = 'Status' in request.GET
-    Status = 'search'
-    CheckDataNumber = 'DataNumber' in request.GET
-    DataNumber = 10
-    SearchQuery = ''
-    payments = []
+            accounts = account.objects.all().order_by('-created_at')
+            account_type = models.account_types.objects.all()
+            CheckSearchQuery = 'SearchQuery' in request.GET
+            CheckStatus = 'Status' in request.GET
+            Status = 'search'
+            CheckDataNumber = 'DataNumber' in request.GET
+            DataNumber = 10
+            SearchQuery = ''
 
-    if CheckDataNumber:
-        DataNumber = int(request.GET['DataNumber'])
+        if CheckDataNumber:
+            DataNumber = int(request.GET['DataNumber'])
 
-    if CheckDataNumber:
-        DataNumber = int(request.GET['DataNumber'])
+        if CheckDataNumber:
+            DataNumber = int(request.GET['DataNumber'])
 
-    if CheckStatus:
+        if CheckStatus:
 
-        Status = request.GET.get('Status')
+            Status = request.GET.get('Status')
 
-    if CheckSearchQuery:
-        SearchQuery = request.GET['SearchQuery']
+        if CheckSearchQuery:
+            SearchQuery = request.GET['SearchQuery']
 
-    paginator = Paginator(accounts, DataNumber)
+        paginator = Paginator(accounts, DataNumber)
 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {'pageTitle': 'Accounts',
-               'page_obj': page_obj,
-               'SearchQuery': SearchQuery,
-               'DataNumber': DataNumber,
-               "accounts": accounts,
-               'acc_types': account_type
-               }
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {'pageTitle': 'Accounts',
+                   'page_obj': page_obj,
+                   'SearchQuery': SearchQuery,
+                   'DataNumber': DataNumber,
+                   "accounts": accounts,
+                   'acc_types': account_type
+                   }
 
-    return render(request, 'Finance/account_list.html', context)
+        return render(request, 'Finance/account_list.html', context)
+    except Exception as error:
+        save_error(request, error)
 
 
 def AddAccount(request):
+    try:
+        if request.user.has_perm('Finance.add_account'):
 
-    if request.method == "POST":
-        acc_number = request.POST.get('account_number', None)
-        acc_name = request.POST.get('account_name', None)
-        acc_type = request.POST.get('account_type', None)
-        acc_amount = request.POST.get('account_amount', None)
+            if request.method == "POST":
+                acc_number = request.POST.get('account_number', None)
+                acc_name = request.POST.get('account_name', None)
+                acc_type = request.POST.get('account_type', None)
+                acc_amount = request.POST.get('account_amount', None)
 
-        if acc_number is None or acc_name is None or acc_type is None or acc_amount is None:
-            return JsonResponse(
-                {
-                    'isError': True,
-                    'title': 'validate error',
-                    'type': 'danger',
-                    'Message': 'Fill All Required Fields'
-                }
-            )
+                if acc_number is None or acc_name is None or acc_type is None or acc_amount is None:
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': 'validate error',
+                            'type': 'danger',
+                            'Message': 'Fill All Required Fields'
+                        }
+                    )
 
-        new_account = models.account(
-            account_number=acc_number,
-            account_name=acc_name,
-            account_type=acc_type,
-            account_amount=acc_amount
-        )
-        new_account.save()
-        return JsonResponse({'isError': False, 'Message': 'created successfully'})
+                new_account = models.account(
+                    account_number=acc_number,
+                    account_name=acc_name,
+                    account_type=acc_type,
+                    account_amount=acc_amount
+                )
+                new_account.save()
+                return JsonResponse({'isError': False, 'Message': 'created successfully'})
 
-    context = {
-        'pageTitle': 'Create Account',
-        'account_types': models.account_types.objects.all()
-    }
-    return render(request, 'Finance/add_account.html', context)
+            context = {
+                'pageTitle': 'Create Account',
+                'account_types': models.account_types.objects.all()
+            }
+            return render(request, 'Finance/add_account.html', context)
+    except Exception as error:
+        save_error(request, error)
 
 
 def ManageAccounts(request, action):
@@ -123,37 +132,42 @@ def ManageAccounts(request, action):
 
     # If there is not action matching
     return render(request, 'Base/403.html')
+
     # Return 404 error
 
 
 # This will display the receipts list
 def ReceiptPage(request):
-    receipt_vouchers = receipt_voucher.objects.all().order_by('created_at')
-    CheckSearchQuery = 'SearchQuery' in request.GET
-    CheckDataNumber = 'DataNumber' in request.GET
-    DataNumber = 10
-    SearchQuery = ''
+    try:
+        if request.user.has_perm('Finance.view_receipt_voucher'):
+            receipt_vouchers = receipt_voucher.objects.all().order_by('created_at')
+            CheckSearchQuery = 'SearchQuery' in request.GET
+            CheckDataNumber = 'DataNumber' in request.GET
+            DataNumber = 10
+            SearchQuery = ''
 
-    if CheckDataNumber:
-        DataNumber = int(request.GET['DataNumber'])
+            if CheckDataNumber:
+                DataNumber = int(request.GET['DataNumber'])
 
-    if CheckSearchQuery:
-        SearchQuery = request.GET['SearchQuery']
-    else:
-        pass
+            if CheckSearchQuery:
+                SearchQuery = request.GET['SearchQuery']
+            else:
+                pass
 
-    paginator = Paginator(receipt_vouchers, DataNumber)
+            paginator = Paginator(receipt_vouchers, DataNumber)
 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {
-        "receipt_vouchers": receipt_vouchers,
-        'pageTitle': 'Receipts',
-        'page_obj': page_obj,
-        'SearchQuery': SearchQuery,
-        'DataNumber': DataNumber,
-    }
-    return render(request, 'Finance/receipt_list.html', context)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context = {
+                "receipt_vouchers": receipt_vouchers,
+                'pageTitle': 'Receipts',
+                'page_obj': page_obj,
+                'SearchQuery': SearchQuery,
+                'DataNumber': DataNumber,
+            }
+        return render(request, 'Finance/receipt_list.html', context)
+    except Exception as error:
+        save_error(request, error)
 
 # This will display the html for creating a new receipt
 
@@ -462,49 +476,53 @@ def find_reciept(request, id):
 @login_required(login_url="Login")
 def update_reviept(request, id):
     try:
-        rvnumber = request.POST.get('rvnumber', None)
-        # rcfrom = request.POST.get('rcfrom', None)
-        reason = request.POST.get('reason', None)
-        amaount = request.POST.get('amount', None)
+        if request.user.has_perm('Finance.change_receipt_voucher'):
+            try:
+                rvnumber = request.POST.get('rvnumber', None)
+                # rcfrom = request.POST.get('rcfrom', None)
+                reason = request.POST.get('reason', None)
+                amaount = request.POST.get('amount', None)
 
-        if id is not None:
-            rv = models.receipt_voucher.objects.filter(
-                rv_id=id).first()
+                if id is not None:
+                    rv = models.receipt_voucher.objects.filter(
+                        rv_id=id).first()
 
-            if rv is not None:
-                if rvnumber is None or reason is None or amaount is None:
-                    return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
+                    if rv is not None:
+                        if rvnumber is None or reason is None or amaount is None:
+                            return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
 
-                rv.rv_number = rvnumber
-                rv.reason = reason
-                rv.rv_amount = amaount
+                        rv.rv_number = rvnumber
+                        rv.reason = reason
+                        rv.rv_amount = amaount
 
-                rv.save()
+                        rv.save()
 
-                # for auditory
+                        # for auditory
+                        username = request.user.username
+                        names = request.user.first_name + ' ' + request.user.last_name
+                        avatar = str(request.user.avatar)
+                        module = "finance / update"
+                        action = f"updated a reciept {rv.rv_id}"
+                        path = request.path
+                        sendTrials(request, username, names,
+                                   avatar, action, module, path)
+                        return JsonResponse({'isError': False, 'Message': 'reciept has been updated'}, status=200)
+                    return JsonResponse({'isErro': False, 'Message': 'reciept feild is required'}, status=400)
+
+            except Exception as error:
                 username = request.user.username
-                names = request.user.first_name + ' ' + request.user.last_name
-                avatar = str(request.user.avatar)
-                module = "finance / update"
-                action = f"updated a reciept {rv.rv_id}"
-                path = request.path
-                sendTrials(request, username, names,
-                           avatar, action, module, path)
-                return JsonResponse({'isError': False, 'Message': 'reciept has been updated'}, status=200)
-            return JsonResponse({'isErro': False, 'Message': 'reciept feild is required'}, status=400)
+                name = request.user.first_name + '' + request.user.last_name
+                sendException(
+                    request, username, name, error
+                )
+                message = {
+                    'isError': True,
+                    'Message': 'on Error occurs . please try again or contact system adminstrator'
 
+                }
+            return JsonResponse(message, status=200)
     except Exception as error:
-        username = request.user.username
-        name = request.user.first_name + '' + request.user.last_name
-        sendException(
-            request, username, name, error
-        )
-        message = {
-            'isError': True,
-            'Message': 'on Error occurs . please try again or contact system adminstrator'
-
-        }
-        return JsonResponse(message, status=200)
+        save_error(request, error)
 
 
 # update an account
@@ -513,51 +531,56 @@ def update_reviept(request, id):
 @ login_required(login_url="Login")
 def update_account(request):
     try:
-        account_id = request.POST.get('account_id', None)
-        accnumber = request.POST.get('accnumber', None)
-        accountype = request.POST.get('acctype', None)
-        accname = request.POST.get('accname', None)
-        amount = request.POST.get('accamount', None)
+        if request.user.has_perm('Finance.change_account'):
 
-        if account_id is not None:
-            account = models.account.objects.filter(
-                account_id=account_id).first()
+            try:
+                account_id = request.POST.get('account_id', None)
+                accnumber = request.POST.get('accnumber', None)
+                accountype = request.POST.get('acctype', None)
+                accname = request.POST.get('accname', None)
+                amount = request.POST.get('accamount', None)
 
-            if account is not None:
-                if accname is None or accnumber is None or accountype is None or amount is None:
-                    return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
+                if account_id is not None:
+                    account = models.account.objects.filter(
+                        account_id=account_id).first()
 
-                account_type = models.account_types.objects.filter(
-                    type_id=accountype).first()
+                    if account is not None:
+                        if accname is None or accnumber is None or accountype is None or amount is None:
+                            return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
 
-                account.account_number = accnumber
-                account.account_type = account_type
-                account.account_name = accname
-                account. amount = amount
+                        account_type = models.account_types.objects.filter(
+                            type_id=accountype).first()
 
-                account.save()
+                        account.account_number = accnumber
+                        account.account_type = account_type
+                        account.account_name = accname
+                        account. amount = amount
 
-                # for auditory
+                        account.save()
+
+                        # for auditory
+                        username = request.user.username
+                        names = request.user.first_name + ' ' + request.user.last_name
+                        avatar = str(request.user.avatar)
+                        module = "Finance / update"
+                        action = 'updated a accont' + account.account_name
+                        path = request.path
+                        sendTrials(request, username, names,
+                                   avatar, action, module, path)
+                        return JsonResponse({'isError': False, 'Message': 'account has been updated'}, status=200)
+                    return JsonResponse({'isErro': False, 'Message': 'company feild is required'}, status=400)
+
+            except Exception as error:
                 username = request.user.username
-                names = request.user.first_name + ' ' + request.user.last_name
-                avatar = str(request.user.avatar)
-                module = "Finance / update"
-                action = 'updated a accont' + account.account_name
-                path = request.path
-                sendTrials(request, username, names,
-                           avatar, action, module, path)
-                return JsonResponse({'isError': False, 'Message': 'account has been updated'}, status=200)
-            return JsonResponse({'isErro': False, 'Message': 'company feild is required'}, status=400)
+                name = request.user.first_name + '' + request.user.last_name
+                sendException(
+                    request, username, name, error
+                )
+                message = {
+                    'isError': True,
+                    'Message': 'on Error occurs . please try again or contact system adminstrator'
 
-    except Exception as error:
-        username = request.user.username
-        name = request.user.first_name + '' + request.user.last_name
-        sendException(
-            request, username, name, error
-        )
-        message = {
-            'isError': True,
-            'Message': 'on Error occurs . please try again or contact system adminstrator'
-
-        }
+                }
         return JsonResponse(message, status=200)
+    except Exception as error:
+        save_error(request, error)
