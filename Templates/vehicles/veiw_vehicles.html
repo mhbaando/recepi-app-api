@@ -74,7 +74,7 @@
                                     <thead>
                                         <tr>
                                             <th class="wd-15p border-bottom-0">vehicle_model</th>
-                                            <th class="wd-15p border-bottom-0">year</th>
+                                            <th class="wd-15p border-bottom-0">owner</th>
                                             <th class="wd-15p border-bottom-0">vin</th>
                                             <th class="wd-15p border-bottom-0">Passenger</th>
                                             <th class="wd-15p border-bottom-0">Rv number</th>
@@ -89,7 +89,7 @@
                                             {% for veh in vehicles %}
                                                 <tr>
                                                     <td>{{ veh.model }}</td>
-                                                    <td>{{ veh.year }}</td>
+                                                    <td>{{ veh.owner }}</td>
                                                     <td>{{ veh.vin }}</td>
                                                     <td>{{ veh.passenger }}</td>
                                                     <td>{{ veh.rv_no }}</td>
@@ -101,23 +101,26 @@
                                                         {% endif %}
                                                     </td>
                                                     <td>
-                                                        <a href="{% url 'vehicle-profile' veh.vehicle_id %}">
-                                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAY1JREFUSEu1lY0xQ1EQhU8qQAWoABWgA6kgdEAF6IAKUAEqkFRAKggd0IH5Mrtm3bvvJzPv3ZlMXm5u9ts9e+5mopHXZOT4KgE3ku4kfQ8FjgCCX0v6kHQ6FCQCtiXNJR0MCSklKiFTSceSziTtSTo06agSGR8lvbZVmzU5Qvq2AnnvM1AGINPnkC2QK0kvkj6NyJkTe81CVVXvMoneTY6l/dB7giznliWwWwMiG1KlvSsBNBnNWfsWzBtfynVkZmA/ysp5KlmvCCC7hxDF7cpWBiGIN9shfN6VdGFV/QOgL1+iN7BYchMEJ+2EpDxJYqFACoCOxuWdyCA/Jo8zHPBlfUwlgo6+MWCTXE9WrUu0MmAqkQekyVnArr03s/bC7Fs1uWwUAcmEitrk4hwLu2Jt7sffsOxzk70f+H7LqgOMCfC/ryp42eToc3x9adM17rc9p1O46w8HEIMOd/BM1iyyRTqvjvdeN7lvtuW5xlHfVcEmwAhhzFNV9Ze5ScDsLBBctA4+BqCCDilRWv0vleJuGYI2aeIAAAAASUVORK5CYII="/>
-                                                        </a>
+                                                        {% if perms.Vehicles.view_vehicle %}
+                                                            <a href="{% url 'vehicle-profile' veh.vehicle_id %}">
+                                                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAY1JREFUSEu1lY0xQ1EQhU8qQAWoABWgA6kgdEAF6IAKUAEqkFRAKggd0IH5Mrtm3bvvJzPv3ZlMXm5u9ts9e+5mopHXZOT4KgE3ku4kfQ8FjgCCX0v6kHQ6FCQCtiXNJR0MCSklKiFTSceSziTtSTo06agSGR8lvbZVmzU5Qvq2AnnvM1AGINPnkC2QK0kvkj6NyJkTe81CVVXvMoneTY6l/dB7giznliWwWwMiG1KlvSsBNBnNWfsWzBtfynVkZmA/ysp5KlmvCCC7hxDF7cpWBiGIN9shfN6VdGFV/QOgL1+iN7BYchMEJ+2EpDxJYqFACoCOxuWdyCA/Jo8zHPBlfUwlgo6+MWCTXE9WrUu0MmAqkQekyVnArr03s/bC7Fs1uWwUAcmEitrk4hwLu2Jt7sffsOxzk70f+H7LqgOMCfC/ryp42eToc3x9adM17rc9p1O46w8HEIMOd/BM1iyyRTqvjvdeN7lvtuW5xlHfVcEmwAhhzFNV9Ze5ScDsLBBctA4+BqCCDilRWv0vleJuGYI2aeIAAAAASUVORK5CYII="/>
+                                                            </a>
+                                                        {% endif %}
                                                     </td>
                                                     <td>
-                                                        {% comment %} {% if perms.Vehicles.add_plate %}  {% endcomment %}
+                                                     {% if perms.Vehicles.add_plate %} 
                                                             {%if veh.plate_no is None %}
-                                                            <button type="button"
-                                                                    class="btn btn-success text-white"
-                                                                    id="assign_btn"
-                                                                    data-assignvehicleid="{{ veh.vehicle_id }}">
-                                                                Assign plate
-                                                               
-                                                            </button>
-                                                        {% else %}
+                                                                <button type="button"
+                                                                        class="btn btn-success text-white"
+                                                                        id="assign_btn"
+                                                                        data-assignvehicleid="{{ veh.vehicle_id }}">
+                                                                    Assign plate
+                                                                
+                                                                </button>
+                                                            {% else %}
                                                             <p>Already Assigned</p>
-                                                        {% endif %}
+                                                            {% endif %}
+                                                    {% endif %}
                                                     </td>
                                                 
                                                     <td>
