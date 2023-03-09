@@ -232,28 +232,52 @@ def manage_license(request, id):
 
                         rv_id = request.POST.get('rv_id')
                         is_voucher_exist = customer_model.license.objects.filter(
-                            receipt_voucher=rv_id).exists()
+                            receipt_voucher=rv_id).first()
 
-                        if is_voucher_exist:
-                            get_voucher = customer_model.license.objects.get(
-                                receipt_voucher=rv_id)
-                            message = {
-                                'isError': True,
-                                'title': "Duplicate Error!!",
-                                'type': "warning",
-                                'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
-                            }
-                            return JsonResponse(message, status=200)
+                        if is_voucher_exist is not None:
+                            return JsonResponse(
+                                {
+                                    'isError': True,
+                                    'title': "Duplicate Error!!",
+                                    'type': "warning",
+                                    'Message': f'This receipt voucher already used by {is_voucher_exist.owner.full_name}'
+                                }
+                            )
 
-                        isvoucer_in_vehicle = vehicle_model.vehicle.objects.filter(
+                        found_r = finance_model.receipt_voucher.objects.filter(
                             Q(rv_number=rv_id)).first()
+
+                        isvoucer_in_vehicle = ''
+                        if found_r is not None:
+                            isvoucer_in_vehicle = vehicle_model.vehicle.objects.filter(
+                                rv_number=found_r).first()
+
                         if isvoucer_in_vehicle:
                             return JsonResponse(
                                 {
                                     'isError': True,
                                     'title': "Duplicate Error!!",
-                                             'type': "warning",
-                                             'Message': f'this voucher is already used in Vehicle'
+                                    'type': "warning",
+                                    'Message': f'this voucher is already used in Vehicle'
+                                }
+                            )
+
+                         # checking if the rv is being used in transfare vehicles
+                        r_v = finance_model.receipt_voucher.objects.filter(
+                            Q(rv_number=rv_id)).first()
+
+                        isvoucer_in_transfare = ''
+                        if r_v is not None:
+                            isvoucer_in_transfare = vehicle_model.transfare_vehicles.objects.filter(
+                                rv_number=r_v).first()
+
+                        if isvoucer_in_transfare:
+                            return JsonResponse(
+                                {
+                                    'isError': True,
+                                    'title': "Duplicate Error!!",
+                                    'type': "warning",
+                                    'Message': f'this voucher is already used in Transfare Vehicle'
                                 }
                             )
                         else:
@@ -529,7 +553,7 @@ def edit_manage(request, id):
 def renew_license(request, id):
 
     # TODO: check permission
-    if request.user.has_perm('Customers.change_license'):
+    if request.user.has_perm('Customers.add_license'):
         if request.method == 'POST':
             if id is not None:
                 license_to_renew = customer_model.license.objects.filter(
