@@ -1,10 +1,10 @@
-$(document).ready(function() {
+$(document).ready(function () {
   // get user image and uppload doc
   let logoImage = ""
   let companyDoc = ""
   let owner_id = ""
 
-  $('#upload').change(function() {
+  $('#upload').change(function () {
     const file = this.files[0];
     if (file) {
       logoImage = file
@@ -13,7 +13,7 @@ $(document).ready(function() {
     }
   })
 
-  $("#doc").on('change', function() {
+  $("#doc").on('change', function () {
     const file = this.files[0]
     if (file) {
 
@@ -38,7 +38,7 @@ $(document).ready(function() {
 
 
 
-  $("#re_form").on('submit', function(e) {
+  $("#re_form").on('submit', function (e) {
     e.preventDefault();
 
     const desc = $("#desc").val()
@@ -78,13 +78,13 @@ $(document).ready(function() {
 
     $.ajax({
       method: "POST",
-      url: "/customer/company/",
+      url: "/customer/company/resgiter",
       headers: { "X-CSRFToken": csrftoken },
       processData: false,
       contentType: false,
       data: formData,
       async: true,
-      success: function(response) {
+      success: function (response) {
         if (!response.isError) {
           Swal.fire({
             title: "Success",
@@ -93,7 +93,7 @@ $(document).ready(function() {
             confirmButtonText: "Ok",
             confirmButtonClass: "btn btn-success mt-2",
             buttonsStyling: !1,
-          }).then(function(e) {
+          }).then(function (e) {
             if (e.value) {
               Swal.DismissReason.cancel;
               location.replace('/customer/company-views/')
@@ -107,7 +107,7 @@ $(document).ready(function() {
           Swal.fire("Error", response.Message, "error");
         }
       },
-      error: function(error) {
+      error: function (error) {
         // handle error 
         console.log(error)
 
@@ -128,7 +128,7 @@ $(document).ready(function() {
       url: "/customer/searchcustomer/" + name,
       async: false,
       headers: { "X-CSRFToken": csrftoken },
-      success: function(data) {
+      success: function (data) {
         if (!data.isError) {
           owner = data.Message
 
@@ -137,19 +137,19 @@ $(document).ready(function() {
           Swal.fire(data.title, data.Message, data.type);
         }
       },
-      error: function(error) {
+      error: function (error) {
         error;
       },
     });
     return owner
   }
 
-  $("#search").on("input", function() {
+  $("#search").on("input", function () {
     if ($(this).val().trim().length > 4) {
       const owner = findOwner($(this).val())
       $("#search").autocomplete({
         source: owner,
-        select: function(event, ui) {
+        select: function (event, ui) {
           const item = ui.item.full_name;
           const value = ui.item.value;
           if (value != "") {
@@ -158,7 +158,7 @@ $(document).ready(function() {
             console.log(ui.item.owner_pk)
           }
         },
-        response: function(event, ui) {
+        response: function (event, ui) {
           if (!ui.content.length) {
             var noResult = { value: "", label: "No result found" };
             ui.content.push(noResult);
@@ -178,7 +178,7 @@ $(document).ready(function() {
       url: "/customer/customer_info/" + name,
       async: false,
       headers: { "X-CSRFToken": csrftoken },
-      success: function(data) {
+      success: function (data) {
         if (!data.isError) {
           $("#ownar_name").val(data.Message.ownar_name);
 
@@ -187,7 +187,7 @@ $(document).ready(function() {
           Swal.fire(data.title, data.Message, data.type);
         }
       },
-      error: function(error) {
+      error: function (error) {
         error;
       },
     });
