@@ -41,23 +41,6 @@ def AccountsPage(request):
     if CheckSearchQuery:
         SearchQuery = request.GET['SearchQuery']
 
-        if request.user.is_state or request.user.is_admin:
-
-            payments = models.account.objects.filter(federal_state=request.user.federal_state
-                                                     ).filter(Q(account_name__icontains=SearchQuery)).order_by('-created_at')
-
-        else:
-            payments = models.account.objects.filter(
-                Q(account_number__icontains=SearchQuery)).order_by('-created_at')
-
-    else:
-
-        if request.user.is_superuser:
-            payments = models.account.objects.all().order_by('-created_at')
-        else:
-            payments = models.account.objects.filter(
-                Q(federal_state=request.user.federal_state)).order_by('-created_at')
-
     paginator = Paginator(accounts, DataNumber)
 
     page_number = request.GET.get('page')
