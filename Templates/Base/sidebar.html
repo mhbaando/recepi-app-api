@@ -14,7 +14,7 @@
         {% if perms.Customers.view_customer and perms.Customers.view_license and perms.Customers.view_licensetype and perms.Customers.view_company and perms.Vehicles.view_vehicle %}
             <li class="menu-item {% if pageTitle == 'Dashboard' %}active{% endif %}">
                 <a href="{% url 'Dashboard' %} " class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-envelope"></i>
+                    <i class="menu-icon tf-icons bx bx-home"></i>
                     <div data-i18n="Dashboard">Dashboard</div>
                 </a>
             </li>

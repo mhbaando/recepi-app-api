@@ -127,21 +127,26 @@ def register_company(request):
 
 
 def search_engine(request, search):
-    if request.method == 'GET':
-        customers = customer_model.customer.objects.filter(
-            Q(full_name__icontains=search))
-        owner = []
+    try:
+        if request.user.has_perm('Customers.view_company'):
+            
+            if request.method == 'GET':
+                customers = customer_model.customer.objects.filter(
+                    Q(full_name__icontains=search))
+                owner = []
 
-        for customer in customers:
-            owner.append([{
-                'owner_name': customer.full_name,
-                'owner_id': customer.personal_id,
-                'owner_pk': customer.customer_id
-            }])
+                for customer in customers:
+                    owner.append([{
+                        'owner_name': customer.full_name,
+                        'owner_id': customer.personal_id,
+                        'owner_pk': customer.customer_id
+                    }])
 
-        return JsonResponse({'owner': owner}, status=200)
-    else:
-        return JsonResponse()
+                return JsonResponse({'owner': owner}, status=200)
+            else:
+                return JsonResponse()
+    except Exception as error:
+        save_error(request, error)
 
 
 @login_required(login_url='Login')
@@ -262,7 +267,7 @@ def block_company(request):
 @login_required(login_url='Login')
 def unblockcompany(request, id):
     try:
-        if request.user.has_perm('Customers.unblockcompany'):
+        if request.user.has_perm('Customers.unblock_company'):
             if request.method == 'GET':
 
                 # find the company for admin

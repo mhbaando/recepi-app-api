@@ -2,6 +2,7 @@ $(document).ready(() => {
     const overlay = $(".overlay")
     const modal = $(".model-contaier")
     let rvID;
+    let rv_from;
     // show model on click
     const editbtns = document.querySelectorAll("#edit")
 
@@ -69,7 +70,9 @@ $(document).ready(() => {
 
         $.ajax({
             method: "POST",
-            url: `/finance/updatereciept/${rvID}`,
+            url: `/finance/updatereciept/${rvID,rv_from}`,
+            
+
             headers: { "X-CSRFToken": csrftoken },
             processData: false,
             contentType: false,
