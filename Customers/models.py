@@ -160,6 +160,9 @@ class company(models.Model):
 
     class Meta:
         db_table = 'company'
+        permissions = [
+            ("unblock_company", "Can unblock company"),
+        ]
 
     def show_status(self):
         return {

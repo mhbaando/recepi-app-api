@@ -127,21 +127,26 @@ def register_company(request):
 
 
 def search_engine(request, search):
-    if request.method == 'GET':
-        customers = customer_model.customer.objects.filter(
-            Q(full_name__icontains=search))
-        owner = []
+    try:
+        if request.user.has_perm('Customers.view_company'):
+            
+            if request.method == 'GET':
+                customers = customer_model.customer.objects.filter(
+                    Q(full_name__icontains=search))
+                owner = []
 
-        for customer in customers:
-            owner.append([{
-                'owner_name': customer.full_name,
-                'owner_id': customer.personal_id,
-                'owner_pk': customer.customer_id
-            }])
+                for customer in customers:
+                    owner.append([{
+                        'owner_name': customer.full_name,
+                        'owner_id': customer.personal_id,
+                        'owner_pk': customer.customer_id
+                    }])
 
-        return JsonResponse({'owner': owner}, status=200)
-    else:
-        return JsonResponse()
+                return JsonResponse({'owner': owner}, status=200)
+            else:
+                return JsonResponse()
+    except Exception as error:
+        save_error(request, error)
 
 
 @login_required(login_url='Login')
@@ -262,7 +267,7 @@ def block_company(request):
 @login_required(login_url='Login')
 def unblockcompany(request, id):
     try:
-        if request.user.has_perm('Customers.unblockcompany'):
+        if request.user.has_perm('Customers.unblock_company'):
             if request.method == 'GET':
 
                 # find the company for admin
@@ -299,113 +304,121 @@ def unblockcompany(request, id):
 
 @login_required(login_url="Login")
 def company_profile(request, id):
-    if request.method == 'GET':
-        if id is not None:
-            company = ''
-            all_vehicles = []
-            transfares = []
-            payments = []
-            states = []
+    try:
+        if request.user.has_perm('Customers.view_company'):
 
-            if request.user.is_superuser:
-                # for admin user
-                company = customer_model.company.objects.filter(
-                    Q(company_id=id)).first()
-                vehicles = vehilce_model.vehicle.objects.filter(
-                    Q(owner=company.owner)).all()
-                transfares = vehilce_model.transfare_vehicles.objects.filter(
-                    Q(old_owner=company.owner) | Q(new_owner=company.owner)).all()
-                payments = financemodel.receipt_voucher.objects.filter(
-                    Q(rv_from=company.owner))
-                states = customer_model.federal_state.objects.all()
+            if request.method == 'GET':
+                if id is not None:
+                    company = ''
+                    all_vehicles = []
+                    transfares = []
+                    payments = []
+                    states = []
 
-                for vh in vehicles:
-                    plate = vehilce_model.plate.objects.filter(
-                        Q(vehicle=vh)).first()
-                    if plate is not None:
-                        all_vehicles.append({
-                            'vehicle_model': vh.vehicle_model,
-                            'year': vh.year,
-                            'vin': vh.vin,
-                            'created_at': vh.created_at,
-                            'plate': f"{plate.state}-{plate.plate_code}-{plate.plate_no}"
-                        })
-                    all_vehicles.append({
-                        'vehicle_model': vh.vehicle_model,
-                        'year': vh.year,
-                        'vin': vh.vin,
-                        'created_at': vh.created_at,
-                        'plate': "No Plate Assigned"
-                    })
-            else:
-                # for state user
-                company = customer_model.company.objects.filter(
-                    Q(company_id=id), federal_state=request.user.federal_state).first()
-                vehicles = vehilce_model.vehicle.objects.filter(
-                    Q(owner=company.owner)).all()
+                    if request.user.is_superuser:
+                        # for admin user
+                        company = customer_model.company.objects.filter(
+                            Q(company_id=id)).first()
+                        vehicles = vehilce_model.vehicle.objects.filter(
+                            Q(owner=company.owner)).all()
+                        transfares = vehilce_model.transfare_vehicles.objects.filter(
+                            Q(old_owner=company.owner) | Q(new_owner=company.owner)).all()
+                        payments = financemodel.receipt_voucher.objects.filter(
+                            Q(rv_from=company.owner))
+                        states = customer_model.federal_state.objects.all()
 
-                transfares = vehilce_model.transfare_vehicles.objects.filter(
-                    Q(old_owner=company.owner) | Q(new_owner=company.owner)).all()
+                        for vh in vehicles:
+                            plate = vehilce_model.plate.objects.filter(
+                                Q(vehicle=vh)).first()
+                            if plate is not None:
+                                all_vehicles.append({
+                                    'vehicle_model': vh.vehicle_model,
+                                    'year': vh.year,
+                                    'vin': vh.vin,
+                                    'created_at': vh.created_at,
+                                    'plate': f"{plate.state}-{plate.plate_code}-{plate.plate_no}"
+                                })
+                            all_vehicles.append({
+                                'vehicle_model': vh.vehicle_model,
+                                'year': vh.year,
+                                'vin': vh.vin,
+                                'created_at': vh.created_at,
+                                'plate': "No Plate Assigned"
+                            })
+                    else:
+                        # for state user
+                        company = customer_model.company.objects.filter(
+                            Q(company_id=id), federal_state=request.user.federal_state).first()
+                        vehicles = vehilce_model.vehicle.objects.filter(
+                            Q(owner=company.owner)).all()
 
-                payments = financemodel.receipt_voucher.objects.filter(
-                    Q(rv_from=company.owner))
-                states = customer_model.federal_state.objects.filter(
-                    Q(state_id=request.user.federal_state.state_id))
+                        transfares = vehilce_model.transfare_vehicles.objects.filter(
+                            Q(old_owner=company.owner) | Q(new_owner=company.owner)).all()
 
-                for vh in vehicles:
-                    plate = vehilce_model.plate.objects.filter(
-                        Q(vehicle=vh)).first()
-                    if plate is not None:
-                        all_vehicles.append({
-                            'vehicle_model': vh.vehicle_model,
-                            'year': vh.year,
-                            'vin': vh.vin,
-                            'created_at': vh.created_at,
-                            'plate': f"{plate.state}-{plate.plate_code}-{plate.plate_no}"
-                        })
-                    all_vehicles.append({
-                        'vehicle_model': vh.vehicle_model,
-                        'year': vh.year,
-                        'vin': vh.vin,
-                        'created_at': vh.created_at,
-                        'plate': "No Plate Assigned"
-                    })
+                        payments = financemodel.receipt_voucher.objects.filter(
+                            Q(rv_from=company.owner))
+                        states = customer_model.federal_state.objects.filter(
+                            Q(state_id=request.user.federal_state.state_id))
 
-            context = {
-                'company': company,
-                'vehicles': all_vehicles,
-                'transfares': transfares,
-                'payments': payments,
-                'states': states,
-                'pageTitle': 'Company / Profile'
-            }
+                        for vh in vehicles:
+                            plate = vehilce_model.plate.objects.filter(
+                                Q(vehicle=vh)).first()
+                            if plate is not None:
+                                all_vehicles.append({
+                                    'vehicle_model': vh.vehicle_model,
+                                    'year': vh.year,
+                                    'vin': vh.vin,
+                                    'created_at': vh.created_at,
+                                    'plate': f"{plate.state}-{plate.plate_code}-{plate.plate_no}"
+                                })
+                            all_vehicles.append({
+                                'vehicle_model': vh.vehicle_model,
+                                'year': vh.year,
+                                'vin': vh.vin,
+                                'created_at': vh.created_at,
+                                'plate': "No Plate Assigned"
+                            })
+
+                    context = {
+                        'company': company,
+                        'vehicles': all_vehicles,
+                        'transfares': transfares,
+                        'payments': payments,
+                        'states': states,
+                        'pageTitle': 'Company / Profile'
+                    }
 
             return render(request, 'Company/comp_profile.html', context)
         else:
             return JsonResponse({'isError': True, 'Message': 'Provide a customer ID'}, status=400)
+    except Exception as error:
+        save_error(request, error)
 
 
 @ login_required(login_url="Login")
 def find_company(request, id):
+    try:
+        if request.user.has_perm('Customers.view_company'):
 
-    if request.method == 'GET':
-        if id is not None:
-            company = ''
-            if request.user.is_superuser:
-                # for admin user
-                company = customer_model.company.objects.filter(
-                    Q(company_id=id)).values()
+            if request.method == 'GET':
+                if id is not None:
+                    company = ''
+                    if request.user.is_superuser:
+                        # for admin user
+                        company = customer_model.company.objects.filter(
+                            Q(company_id=id)).values()
+                    else:
+                        # for state user
+                        company = customer_model.company.objects.filter(
+                            Q(company_id=id), federal_state=request.user.federal_state).values()
+
+                    return JsonResponse({'isErro': False, 'Message': list(company)}, status=200)
+                else:
+                    return JsonResponse({'isErro': False, 'Message': 'Company Not Found'}, status=404)
             else:
-                # for state user
-                company = customer_model.company.objects.filter(
-                    Q(company_id=id), federal_state=request.user.federal_state).values()
-
-            return JsonResponse({'isErro': False, 'Message': list(company)}, status=200)
-        else:
-            return JsonResponse({'isErro': False, 'Message': 'Company Not Found'}, status=404)
-    else:
-        return JsonResponse({'isErro': False, 'Message': 'Method Not Allowed'}, status=404)
-
+                return JsonResponse({'isErro': False, 'Message': 'Method Not Allowed'}, status=404)
+    except Exception as error:
+        save_error(request, error)
     #  update company
 
 
@@ -475,18 +488,22 @@ def update_company(request):
 
 @login_required(login_url='Login')
 def Searchcustomer(request, search):
-    if request.method == 'GET':
-        searchQuery = customer_model.customer.objects.filter(
-            Q(full_name__icontains=search))
-        message = []
-        for xSearch in range(0, len(searchQuery)):
-            message.append(
-                {
-                    'label': f"{searchQuery[xSearch].full_name}",
-                    'value': f"{searchQuery[xSearch].full_name}",
-                    'full_name': searchQuery[xSearch].full_name,
-                    'owner_pk': searchQuery[xSearch].customer_id,
+    try:
+        if request.user.has_perm('Customers.view_company'):
+            if request.method == 'GET':
+                searchQuery = customer_model.customer.objects.filter(
+                    Q(full_name__icontains=search))
+                message = []
+                for xSearch in range(0, len(searchQuery)):
+                    message.append(
+                        {
+                            'label': f"{searchQuery[xSearch].full_name}",
+                            'value': f"{searchQuery[xSearch].full_name}",
+                            'full_name': searchQuery[xSearch].full_name,
+                            'owner_pk': searchQuery[xSearch].customer_id,
 
-                }
-            )
-        return JsonResponse({'Message': message}, status=200)
+                        }
+                    )
+                return JsonResponse({'Message': message}, status=200)
+    except Exception as error:
+        save_error(request, error)

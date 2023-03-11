@@ -62,8 +62,10 @@
                                             <th scope="col">Account Type</th>
                                             <th scope="col">Account  Name</th>
                                             <th scope="col">Amount</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
+                                            {% if perms.Finance.change_account %}
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        {% endif %}
                                     </thead>
                                     <tbody>
                                         {% if page_obj %}
@@ -75,11 +77,13 @@
                                                     <td>$ {{ item.amount }}</td>
                                                     <td>{{ item.created_at }}</td>
                                                     <td>
-                                                        <button class="btn btn-outline-primary"
-                                                                id="edit"
-                                                                data-accountid="{{ item.account_id }}">
-                                                            <i class='bx bx-edit-alt'></i>
-                                                        </button>
+                                                        {% if perms.Finance.change_account %}
+                                                            <button class="btn btn-outline-primary"
+                                                                    id="edit"
+                                                                    data-accountid="{{ item.account_id }}">
+                                                                <i class='bx bx-edit-alt'></i>
+                                                            </button>
+                                                        {% endif %}
                                                     </td>
                                                 </tr>
                                             {% endfor %}
