@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, license, customer
+from . import views, license, customer, reports
 
 urlpatterns = [
     # company urls
@@ -42,5 +42,7 @@ urlpatterns = [
     path('updatecustomer/', customer.update_customer),
     path('profile/<int:id>', customer.customer_profile, name="customer_profile"),
     path('findcustomer/<int:id>', customer.find_customer),
-    # TODO: search here
+
+    # Reports
+    path('reports', reports.report_home, name='Reports')
 ]
