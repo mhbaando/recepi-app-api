@@ -45,3 +45,19 @@ h4 {
 .hidden {
     display: none;
 }
+
+#customer-report-data {
+    overflow-y: auto
+}
+
+.report-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+hr {
+    width: 100%;
+    height: 0;
+    border-top: 1px solid #000;
+}
