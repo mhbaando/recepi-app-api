@@ -10,6 +10,7 @@ urlpatterns = [
     path('find_reciept/<int:id>', views.find_reciept),
     path('update_account/', views.update_account),
     path('updatereciept/<int:id>', views.update_reviept),
+    path('updaterecievedfrom/<str:name', views.updaterecievedfrom),
 
 
 
