@@ -100,38 +100,43 @@ def AddAccount(request):
 
 
 def ManageAccounts(request, action):
-    # creating new account
-    if action == 'AddNewAccount':
-        if request.method == 'POST':
-            # Get all data from the request
-            account_name = request.POST.get('account_name', None)
-            account_type = request.POST.get('account_type', None)
-            account_number = request.POST.get('account_number', None)
-            amount = request.POST.get('account_amount', None)
+    try:
+        if request.user.has_perm('Customer.view_account'):
 
-            if account_name is None or account_type is None or account_number is None or amount is None:
-                return JsonResponse({
-                    'isError': True,
-                    'Message': 'Bad Request All Filds are required'
-                }, status=400)
+            # creating new account
+            if action == 'AddNewAccount':
+                if request.method == 'POST':
+                    # Get all data from the request
+                    account_name = request.POST.get('account_name', None)
+                    account_type = request.POST.get('account_type', None)
+                    account_number = request.POST.get('account_number', None)
+                    amount = request.POST.get('account_amount', None)
 
-            else:
-                acc_type = models.account_types.objects.filter(
-                    Q(name=account_type)).first()
+                    if account_name is None or account_type is None or account_number is None or amount is None:
+                        return JsonResponse({
+                            'isError': True,
+                            'Message': 'Bad Request All Filds are required'
+                        }, status=400)
 
-                new_account = models.account(
-                    account_number=account_number,
-                    account_name=account_name,
-                    account_type=acc_type,
-                    amount=amount,
-                    reg_user=request.user
-                )
-                # Save data to database
-                new_account.save()
-                return JsonResponse({'isError': False, 'Message': 'created successfully'})
+                    else:
+                        acc_type = models.account_types.objects.filter(
+                            Q(name=account_type)).first()
 
-    # If there is not action matching
-    return render(request, 'Base/403.html')
+                        new_account = models.account(
+                            account_number=account_number,
+                            account_name=account_name,
+                            account_type=acc_type,
+                            amount=amount,
+                            reg_user=request.user
+                        )
+                        # Save data to database
+                        new_account.save()
+                        return JsonResponse({'isError': False, 'Message': 'created successfully'})
+
+            # If there is not action matching
+            return render(request, 'Base/403.html')
+    except Exception as error:
+        save_error(request, error)
 
     # Return 404 error
 
@@ -185,42 +190,53 @@ def AddReceipt(request):
 
 @login_required(login_url='Login')
 def Searchrvaccount(request, id):
-    if request.method == 'GET':
-        searchQuery = models.receipt_voucher.finance.objects.filter(
-            Q(account_number__icontains=id))
-        message = []
-        for xSearch in range(0, len(searchQuery)):
-            message.append(
-                {
-                    'label': f"{searchQuery[xSearch].account_number}",
-                    'value': f"{searchQuery[xSearch].account_number}",
-                    'account_number': searchQuery[xSearch].account_number,
-                    'account_pk': searchQuery[xSearch].account_id,
+    try:
 
-                }
-            )
-        return JsonResponse({'Message': message}, status=200)
+        if request.user.has_perm('Finance.view_account'):
 
+            if request.method == 'GET':
+                searchQuery = models.receipt_voucher.finance.objects.filter(
+                    Q(account_number__icontains=id))
+                message = []
+                for xSearch in range(0, len(searchQuery)):
+                    message.append(
+                        {
+                            'label': f"{searchQuery[xSearch].account_number}",
+                            'value': f"{searchQuery[xSearch].account_number}",
+                            'account_number': searchQuery[xSearch].account_number,
+                            'account_pk': searchQuery[xSearch].account_id,
 
+                        }
+                    )
+                return JsonResponse({'Message': message}, status=200)
+
+    except Exception as error:
+        save_error(request, error)
 # receipt vouch
+
 
 @login_required(login_url='Login')
 # Search Query
 def SearchReceiptVoucher(request, search):
-    if request.method == 'GET':
-        searchQuery = models.finance.receipt_voucher.objects.filter(
-            Q(rv_number__icontains=search))
-        message = []
-        for xSearch in range(0, len(searchQuery)):
-            message.append(
-                {
-                    'label': f"{searchQuery[xSearch].rv_number}",
-                    'value': f"{searchQuery[xSearch].rv_number}",
-                    'rv_id': searchQuery[xSearch].rv_id,
+    try:
+        if request.user.has_perm('Finance.view_receipt_voucher'):
 
-                }
-            )
-        return JsonResponse({'Message': message}, status=200)
+            if request.method == 'GET':
+                searchQuery = models.finance.receipt_voucher.objects.filter(
+                    Q(rv_number__icontains=search))
+                message = []
+                for xSearch in range(0, len(searchQuery)):
+                    message.append(
+                        {
+                            'label': f"{searchQuery[xSearch].rv_number}",
+                            'value': f"{searchQuery[xSearch].rv_number}",
+                            'rv_id': searchQuery[xSearch].rv_id,
+
+                        }
+                    )
+                return JsonResponse({'Message': message}, status=200)
+    except Exception as error:
+        save_error(request, error)
 
 # search rcfrom
 
@@ -228,286 +244,351 @@ def SearchReceiptVoucher(request, search):
 @login_required(login_url='Login')
 def receipt(request, id):
     try:
+        if request.user.has_perm('Finance.view_receipt_voucher'):
 
-        if id == 0:
-            # Post new  Weapon model and check if the user is allowed to create
-            if request.method == 'POST':
-                Type = request.POST.get('Type')
-                if Type == "new_reciet":
-                    # owner = request.POST.get('owner')
-                    federal_state = request.POST.get('federal_state')
+            try:
 
-                    rv_id = request.POST.get('rv_id')
-                    is_voucher_exist = models.finance.objects.filter(
-                        receipt_voucher=rv_id).exists()
+                if id == 0:
+                    # Post new  Weapon model and check if the user is allowed to create
+                    if request.method == 'POST':
+                        Type = request.POST.get('Type')
+                        if Type == "new_reciet":
+                            # owner = request.POST.get('owner')
+                            federal_state = request.POST.get('federal_state')
 
-                    if is_voucher_exist:
-                        get_voucher = models.finance.objects.get(
-                            receipt_voucher=rv_id)
-                        message = {
-                            'isError': True,
-                            'title': "Duplicate Error!!",
-                            'type': "warning",
-                            'Message': f'This receipt voucher already used by {get_voucher.owner.account_name}'
-                        }
-                        return JsonResponse(message, status=200)
-                    else:
+                            rv_id = request.POST.get('rv_id')
+                            is_voucher_exist = models.finance.objects.filter(
+                                receipt_voucher=rv_id).exists()
 
-                        # get instance of receipt voucher
-                        get_rv_number = models.finance.receipt_voucher.objects.get(
-                            rv_id=rv_id)
+                            if is_voucher_exist:
+                                get_voucher = models.finance.objects.get(
+                                    receipt_voucher=rv_id)
+                                message = {
+                                    'isError': True,
+                                    'title': "Duplicate Error!!",
+                                    'type': "warning",
+                                    'Message': f'This receipt voucher already used by {get_voucher.owner.account_name}'
+                                }
+                                return JsonResponse(message, status=200)
+                            else:
 
-                        # get instance of owner
-                        get_owner = models.finance.objects.get(
-                            customer_id=get_rv_number.rv_from.customer_id)
+                                # get instance of receipt voucher
+                                get_rv_number = models.finance.receipt_voucher.objects.get(
+                                    rv_id=rv_id)
 
-                        # get instance of federal state
-                        get_federal_state = models.finance.federal_state.objects.get(
-                            state_id=federal_state)
-                        save_reciet = models.finance(
-                            federal_state=get_federal_state,
-                            owner=get_owner,
+                                # get instance of owner
+                                get_owner = models.finance.objects.get(
+                                    customer_id=get_rv_number.rv_from.customer_id)
 
-                            reg_user=request.user,
-                            receipt_voucher=get_rv_number,
+                                # get instance of federal state
+                                get_federal_state = models.finance.federal_state.objects.get(
+                                    state_id=federal_state)
+                                save_reciet = models.finance(
+                                    federal_state=get_federal_state,
+                                    owner=get_owner,
 
-                        )
-                        save_reciet.save()
-                        # TODO: Add to Trial
-                        message = {
-                            'isError': False,
-                            'title': "Successfully!!!",
-                            'type': "success",
-                            'Message': 'New reciet has been successfully created'
-                        }
+                                    reg_user=request.user,
+                                    receipt_voucher=get_rv_number,
 
-                        return JsonResponse(message, status=200)
-                elif Type == "renew_license":
-                    # owner = request.POST.get('owner')
-                    federal_state = request.POST.get('federal_state')
+                                )
+                                save_reciet.save()
+                                # TODO: Add to Trial
+                                message = {
+                                    'isError': False,
+                                    'title': "Successfully!!!",
+                                    'type': "success",
+                                    'Message': 'New reciet has been successfully created'
+                                }
 
-                    license_type = request.POST.get('license_type')
+                                return JsonResponse(message, status=200)
+                        elif Type == "renew_license":
+                            # owner = request.POST.get('owner')
+                            federal_state = request.POST.get('federal_state')
 
-                    rv_id = request.POST.get('rv_id')
-                    is_voucher_exist = models.finance.objects.filter(
-                        receipt_voucher=rv_id).exists()
+                            license_type = request.POST.get('license_type')
 
-                    if is_voucher_exist:
-                        get_voucher = models.finance.license.objects.get(
-                            receipt_voucher=rv_id)
-                        message = {
-                            'isError': True,
-                            'title': "Duplicate Error!!",
-                            'type': "warning",
-                            'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
-                        }
-                        return JsonResponse(message, status=200)
-                    else:
+                            rv_id = request.POST.get('rv_id')
+                            is_voucher_exist = models.finance.objects.filter(
+                                receipt_voucher=rv_id).exists()
 
-                        # get instance of receipt voucher
-                        get_rv_number = models.finance.receipt_voucher.objects.get(
-                            rv_id=rv_id)
+                            if is_voucher_exist:
+                                get_voucher = models.finance.license.objects.get(
+                                    receipt_voucher=rv_id)
+                                message = {
+                                    'isError': True,
+                                    'title': "Duplicate Error!!",
+                                    'type': "warning",
+                                    'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
+                                }
+                                return JsonResponse(message, status=200)
+                            else:
 
-                        # get instance of owner
-                        get_owner = models.finance.objects.get(
-                            customer_id=get_rv_number.rv_from.customer_id)
+                                # get instance of receipt voucher
+                                get_rv_number = models.finance.receipt_voucher.objects.get(
+                                    rv_id=rv_id)
 
-                        # get instance of federal state
-                        get_federal_state = models.federal_state.objects.get(
-                            state_id=federal_state)
-                        get_lasted_license = models.finance.objects.filter(
-                            owner=get_owner.customer_id).order_by('-license_id')[0]
-                        save_license = models.finance(
-                            federal_state=get_federal_state,
-                            owner=get_owner,
+                                # get instance of owner
+                                get_owner = models.finance.objects.get(
+                                    customer_id=get_rv_number.rv_from.customer_id)
 
-                            reg_user=request.user,
-                            receipt_voucher=get_rv_number,
-                            reg_no=get_lasted_license.reg_no
-                        )
-                        save_license.save()
-                        # TODO: Add to Trial
-                        message = {
-                            'isError': False,
-                            'title': "Successfully!!!",
-                            'type': "success",
-                            'Message': 'New license has been successfully created'
-                        }
+                                # get instance of federal state
+                                get_federal_state = models.federal_state.objects.get(
+                                    state_id=federal_state)
+                                get_lasted_license = models.finance.objects.filter(
+                                    owner=get_owner.customer_id).order_by('-license_id')[0]
+                                save_license = models.finance(
+                                    federal_state=get_federal_state,
+                                    owner=get_owner,
 
-                        return JsonResponse(message, status=200)
-                else:
-                    message = {
-                        'isError': True,
-                        'title': "Duplicate Error!!",
-                        'type': "warning",
-                        'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
-                    }
-                    return JsonResponse(message, status=200)
+                                    reg_user=request.user,
+                                    receipt_voucher=get_rv_number,
+                                    reg_no=get_lasted_license.reg_no
+                                )
+                                save_license.save()
+                                # TODO: Add to Trial
+                                message = {
+                                    'isError': False,
+                                    'title': "Successfully!!!",
+                                    'type': "success",
+                                    'Message': 'New license has been successfully created'
+                                }
+
+                                return JsonResponse(message, status=200)
+                        else:
+                            message = {
+                                'isError': True,
+                                'title': "Duplicate Error!!",
+                                'type': "warning",
+                                'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
+                            }
+                            return JsonResponse(message, status=200)
+            except Exception as error:
+                username = request.user.username
+                name = request.user.first_name + ' ' + request.user.last_name
+
+                message = {
+                    'isError': True,
+                    'title': "Server Error",
+                    'type': "error",
+                    'Message': 'On Error Occurs . Please try again or contact system administrator'
+                }
+                return JsonResponse(message, status=200)
     except Exception as error:
-        username = request.user.username
-        name = request.user.first_name + ' ' + request.user.last_name
-
-        message = {
-            'isError': True,
-            'title': "Server Error",
-            'type': "error",
-            'Message': 'On Error Occurs . Please try again or contact system administrator'
-        }
-        return JsonResponse(message, status=200)
+        save_error(request, error)
 
 
 @login_required(login_url='Login')
 def find_account(request, id):
-    if request.method == 'GET':
-        # if name is not None:
-        rv_account = models.account.objects.filter(
-            Q(account_name__icontains=id))
-        message = []
-        if rv_account is not None:
-            for xSearch in range(0, len(rv_account)):
-                message.append(
-                    {
-                        'label': f"{rv_account[xSearch].account_name}",
-                        'value': f"{rv_account[xSearch].account_name}",
-                        'amount': rv_account[xSearch].amount,
-                    }
-                )
-            return JsonResponse({'Message': message}, status=200)
-        return JsonResponse({'isError': True, 'Message': 'Not found'})
+    try:
+        if request.user.has_perm('Finance.view_account'):
+
+            if request.method == 'GET':
+                # if name is not None:
+                rv_account = models.account.objects.filter(
+                    Q(account_name__icontains=id))
+                message = []
+                if rv_account is not None:
+                    for xSearch in range(0, len(rv_account)):
+                        message.append(
+                            {
+                                'label': f"{rv_account[xSearch].account_name}",
+                                'value': f"{rv_account[xSearch].account_name}",
+                                'amount': rv_account[xSearch].amount,
+                            }
+                        )
+                    return JsonResponse({'Message': message}, status=200)
+                return JsonResponse({'isError': True, 'Message': 'Not found'})
+    except Exception as error:
+        save_error(request, error)
 
 
 @login_required(login_url='Login')
 def find_rcfrom(request, name):
-    if request.method == 'GET':
-        # if name is not None:
-        rc_from = models.customer_model.customer.objects.filter(
-            Q(full_name__icontains=name))
-        message = []
-        if rc_from is not None:
-            for xSearch in range(0, len(rc_from)):
-                message.append(
-                    {
-                        'label': f"{ rc_from[xSearch].full_name}",
-                        'value': f"{ rc_from[xSearch].full_name}",
-                        'per_id': f"{ rc_from[xSearch].personal_id}",
-                        'mot_name': f"{ rc_from[xSearch].mother_name}",
+    try:
+        if request.user.has_perm('Finance.view_receipt_voucher'):
 
-                    }
-                )
+            if request.method == 'GET':
+                # if name is not None:
+                rc_from = models.customer_model.customer.objects.filter(
+                    Q(full_name__icontains=name))
+                message = []
+                if rc_from is not None:
+                    for xSearch in range(0, len(rc_from)):
+                        message.append(
+                            {
+                                'label': f"{ rc_from[xSearch].full_name}",
+                                'value': f"{ rc_from[xSearch].full_name}",
+                                'per_id': f"{ rc_from[xSearch].personal_id}",
+                                'mot_name': f"{ rc_from[xSearch].mother_name}",
 
-            return JsonResponse({'Message': message}, status=200)
-        return JsonResponse({'isError': True, 'Message': 'Not found'})
+                            }
+                        )
+
+                    return JsonResponse({'Message': message}, status=200)
+                return JsonResponse({'isError': True, 'Message': 'Not found'})
+    except Exception as error:
+        save_error(request, error)
+
+# search received from  on update  receipt payment
+
+
+@login_required(login_url='Login')
+def updaterecievedfrom(request, name):
+    recived_from = models.customer_model.customer.objects.filter(
+        Q(full_name__icontains=name))
+    messages = []
+    if recived_from is not None:
+        for xsearch in range(0, len(recived_from)):
+            messages.append({
+                'label': f"{recived_from[xsearch].full_name}",
+                'value': f"{recived_from[xsearch].full_name}",
+                'per_id': f"{[xsearch].personal_id}",
+                'rcfrom': f"{[xsearch].rv_from}",
+
+
+
+
+
+            })
 
 
 @login_required(login_url='Login')
 def savereciept(request, action):
-    # creating new account
-    if action == 'reciet_form':
-        if request.method == 'POST':
-            # Get all data from the request
-            amount = request.POST.get('rvamount')
-            rv_number = request.POST.get('rv_number')
-            personal_id = request.POST.get('personal_id')
-            reason = request.POST.get('reason')
+    try:
+        if request.user.has_perm('Finance.view_receipt_voucher'):
 
-            customer = customer_model.customer.objects.filter(
-                Q(personal_id=personal_id)).first()
+            # creating new account
+            if action == 'reciet_form':
+                if request.method == 'POST':
+                    # Get all data from the request
+                    amount = request.POST.get('rvamount')
+                    rv_number = request.POST.get('rv_number')
+                    personal_id = request.POST.get('personal_id')
+                    reason = request.POST.get('reason')
+                    rv_from = request.POST.get('rcfrom')
 
-            new_reciet = models.receipt_voucher(
-                rv_number=rv_number,
-                rv_from=customer,
-                rv_amount=amount,
-                reason=reason,
-                reg_user=request.user
-            )
-            # Save data to database
-            new_reciet.save()
-            return JsonResponse({'isError': False, 'Message': 'created successfully'})
+                    if rv_number is None or reason is None or rv_from is None or rv_from is None:
+                        return JsonResponse({
+                            'isError': True,
+                            'Message': 'Bad Request All Filds are required'
+                        }, status=400)
 
-    # If there is not action matching
-    return render(request, 'receipt_list.html')
+                    customer = customer_model.customer.objects.filter(
+                        Q(personal_id=personal_id)).first()
 
+                    new_reciet = models.receipt_voucher(
+                        rv_number=rv_number,
+                        rv_from=customer,
+                        rv_amount=amount,
+                        reason=reason,
+                        reg_user=request.user
+                    )
+                    # Save data to database
+                    new_reciet.save()
+                    return JsonResponse({'isError': False, 'Message': 'created successfully'})
+
+            # If there is not action matching
+            return render(request, 'receipt_list.html')
+    except Exception as error:
+        save_error(request, error)
 
 # updated accout
+
+
 @login_required(login_url="Login")
 def findupdatedaccount(request, name):
-    if id is not None:
-        found_account = account.objects.filter(account_id=name).first()
-        if found_account is not None:
-            return JsonResponse({
-                'isError': False,
-                'account_number': found_account.account_number,
-                'account_type': {
-                    'id': found_account.account_type.type_id
-                },
-                'account_name': found_account.account_name,
-                'amount': found_account.amount
-            })
-        return JsonResponse({
-            'isError': True,
-            'Message': 'Account Not Found'
-        })
+    try:
+        if request.user.has_perm('Finance.view_account'):
+
+            if id is not None:
+                found_account = account.objects.filter(account_id=name).first()
+                if found_account is not None:
+                    return JsonResponse({
+                        'isError': False,
+                        'account_number': found_account.account_number,
+                        'account_type': {
+                            'id': found_account.account_type.type_id
+                        },
+                        'account_name': found_account.account_name,
+                        'amount': found_account.amount
+                    })
+                return JsonResponse({
+                    'isError': True,
+                    'Message': 'Account Not Found'
+                })
+    except Exception as error:
+        save_error(request, error)
 
 
 @login_required(login_url="Login")
 def find_reciept(request, id):
-    if id is not None:
-        found_receipt = receipt_voucher.objects.filter(rv_id=id).first()
-        if found_receipt is not None:
+    try:
+        if request.user.has_perm('Finance.view_receipt_voucher'):
+
+            if id is not None:
+                found_receipt = receipt_voucher.objects.filter(
+                    rv_id=id).first()
+                if found_receipt is not None:
+                    return JsonResponse({
+                        'isError': False,
+                        'rv_number': found_receipt.rv_number,
+                        'rv_from': f"{found_receipt.rv_from.full_name} - {found_receipt.rv_from.personal_id}",
+                        'rv_amount': found_receipt.rv_amount,
+                        'reason': found_receipt.reason
+                    })
+                return JsonResponse({
+                    'isError': True,
+                    'Message': 'receipt Not Found'
+                })
+
             return JsonResponse({
-                'isError': False,
-                'rv_number': found_receipt.rv_number,
-                'rv_from': f"{found_receipt.rv_from.full_name} - {found_receipt.rv_from.personal_id}",
-                'rv_amount': found_receipt.rv_amount,
-                'reason': found_receipt.reason
+                'isError': True,
+                'Message': 'Provide an ID'
             })
-        return JsonResponse({
-            'isError': True,
-            'Message': 'receipt Not Found'
-        })
-
-    return JsonResponse({
-        'isError': True,
-        'Message': 'Provide an ID'
-    })
-
+    except Exception as error:
+        save_error(request, error)
 
 # update reciept
+
+
 @login_required(login_url="Login")
 def update_reviept(request, id):
     try:
         if request.user.has_perm('Finance.change_receipt_voucher'):
+
             try:
-                rvnumber = request.POST.get('rvnumber', None)
-                # rcfrom = request.POST.get('rcfrom', None)
-                reason = request.POST.get('reason', None)
-                amaount = request.POST.get('amount', None)
+                if request.user.has_perm('Finance.change_receipt_voucher'):
 
-                if id is not None:
-                    rv = models.receipt_voucher.objects.filter(
-                        rv_id=id).first()
+                    rvnumber = request.POST.get('rvnumber', None)
+                    # rcfrom = request.POST.get('rcfrom', None)
+                    reason = request.POST.get('reason', None)
+                    amaount = request.POST.get('amount', None)
 
-                    if rv is not None:
-                        if rvnumber is None or reason is None or amaount is None:
-                            return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
+                    if id is not None:
+                        rv = models.receipt_voucher.objects.filter(
+                            rv_id=id).first()
 
-                        rv.rv_number = rvnumber
-                        rv.reason = reason
-                        rv.rv_amount = amaount
+                        if rv is not None:
+                            if rvnumber is None or reason is None or amaount is None:
+                                return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
 
-                        rv.save()
+                            rv.rv_number = rvnumber
+                            rv.reason = reason
+                            rv.rv_amount = amaount
 
-                        # for auditory
-                        username = request.user.username
-                        names = request.user.first_name + ' ' + request.user.last_name
-                        avatar = str(request.user.avatar)
-                        module = "finance / update"
-                        action = f"updated a reciept {rv.rv_id}"
-                        path = request.path
-                        sendTrials(request, username, names,
-                                   avatar, action, module, path)
-                        return JsonResponse({'isError': False, 'Message': 'reciept has been updated'}, status=200)
-                    return JsonResponse({'isErro': False, 'Message': 'reciept feild is required'}, status=400)
+                            rv.save()
+
+                            # for auditory
+                            username = request.user.username
+                            names = request.user.first_name + ' ' + request.user.last_name
+                            avatar = str(request.user.avatar)
+                            module = "finance / update"
+                            action = f"updated a reciept {rv.rv_id}"
+                            path = request.path
+                            sendTrials(request, username, names,
+                                       avatar, action, module, path)
+                            return JsonResponse({'isError': False, 'Message': 'reciept has been updated'}, status=200)
+                        return JsonResponse({'isErro': False, 'Message': 'reciept feild is required'}, status=400)
 
             except Exception as error:
                 username = request.user.username
