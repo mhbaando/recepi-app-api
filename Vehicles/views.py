@@ -249,22 +249,59 @@ def vehicle_plate_info(request, id):
         # look up the rv
         # find_rv = finance_model.receipt_voucher.objects.filter(
         #     Q(rv_number__icontains=id)).first()
+
         find_selected_owner = vehicle_model.vehicle.objects.filter(
             Q(vehicle_id=id)).first()
 
         find_latest_plate = vehicle_model.plate.objects.order_by(
             '-created_at').first()
 
+        find_code = vehicle_model.code_plate.objects.order_by(
+            '-created_at').first()
+
         plate_no = None
         if find_latest_plate is not None:
             plate_no = find_latest_plate.plate_no
-        print(plate_no)
+        # print(plate_no)
+
         if find_selected_owner is not None:
             return JsonResponse({
                 'isError': False,
                 "vehicle_model": find_selected_owner.vehicle_model.brand_name,
+                "code_plate": find_code.code_name,
                 "owner": find_selected_owner.owner.full_name,
-                "number": plate_no
+
+            })
+
+        return JsonResponse({
+            'isError': True,
+            'message': 'owner name Not Found'
+        })
+    return JsonResponse({
+        'isError': True,
+        'message': 'Method not allowd'
+    }, status=400)
+
+
+@ login_required(login_url="Login")
+def vehice_plate_code(request, id):
+    if request.method == 'GET':
+
+        find_selected_code = vehicle_model.code_plate.objects.filter(
+            Q(code_id=id)).first()
+
+        find_code = vehicle_model.plate.objects.filter(plate_code=id).first()
+
+        plate_cod = None
+        if find_code is not None:
+            plate_cod = find_code.plate_no
+            print(plate_cod)
+
+        if find_selected_code is not None:
+            return JsonResponse({
+                'isError': True,
+                "plate_code": find_selected_code.code_id,
+                "number": plate_cod
             })
 
         return JsonResponse({
