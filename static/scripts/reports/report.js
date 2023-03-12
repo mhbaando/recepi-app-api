@@ -9,6 +9,7 @@ $(document).ready(() => {
         $("#customer_search").removeClass('hidden')
         $("#vehicle-search").addClass("hidden")
         $("#company-search").addClass("hidden")
+
     })
 
     $("#vehicle").on('click', function () {
