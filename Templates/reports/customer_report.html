@@ -1,5 +1,5 @@
 {% load static %}
-<div class="row mt-3 bg-white rounded pt-3 ps-3 pe-3 pb-3"
+<div class="row mt-3 bg-white rounded pt-3 ps-3 pe-3 pb-3 hidden"
      id="customer-report-data">
     <div class="row report-header">
         <div class="col">
@@ -33,62 +33,291 @@
     <hr>
     {% comment %} customer info {% endcomment %}
     <div class="row mt-3">
-        <h5>PERSONAL INFO (VERIFIED)</h5>
+        <h5>
+            PERSONAL INFO <span id="status" class="text-uppercase"></span>
+        </h5>
         <div class="row">
             <div class="row col d-flex">
                 <p class="fw-bold mb-1">NAME:</p>
-                <p>Caziiza Rage Axmed</p>
+                <p id="fname"></p>
             </div>
             <div class="row col">
                 <p class="mb-1 fw-bold">MOTHER’S NAME:</p>
-                <p>Caasho Cabdi Salax</p>
+                <p id="mname"></p>
             </div>
             <div class="row col">
                 <p class="mb-1 fw-bold">PERSONALID:</p>
-                <p>1324158789895450</p>
+                <p id="pid"></p>
             </div>
         </div>
         <div class="row mt-2">
             <div class="row col">
                 <p class="mb-1 fw-bold">GENDER:</p>
-                <p>Female</p>
+                <p id="gender"></p>
             </div>
             <div class="row col ">
                 <p class="mb-1 fw-bold">BLOOD GROUP:</p>
-                <p>O+</p>
+                <p id="bgroup"></p>
             </div>
             <div class="row col">
                 <p class="mb-1 fw-bold">NATIONALITY:</p>
-                <p>Somali</p>
+                <p id="nation"></p>
             </div>
         </div>
         <div class="row">
             <div class="row col">
                 <p class="mb-1 fw-bold">EMAIL:</p>
-                <p>caziiza@gmail.com</p>
+                <p id="email"></p>
             </div>
             <div class="row col">
                 <p class="mb-1 fw-bold">PHONE:</p>
-                <p>+252 617 123 132</p>
+                <p id="phone"></p>
             </div>
             <div class="row col">
                 <p class="mb-1 fw-bold">DOB:</p>
-                <p>Jun / 19 / 2000</p>
+                <p id="dob"></p>
             </div>
         </div>
         <div class="row">
             <div class="row col">
                 <p class="mb-1 fw-bold">ADDRESS:</p>
-                <p >Jamhura Kaaraan</p>
+                <p id="address"></p>
             </div>
             <div class="row col">
                 <p class="mb-1 fw-bold">STATE:</p>
-                <p >Banaadir</p>
+                <p id="state"></p>
             </div>
             <div class="row col">
                 <p class="mb-1 fw-bold">REG USER:</p>
-                <p >mo@nisa.com</p>
+                <p id="reguser"></p>
             </div>
         </div>
     </div>
+    <div class="row mt-5">
+        <h5>
+            LICENSE INFO <span class="text-uppercase" id="lstatus">
+        </span>
+    </h5>
+    <div class="hidden" id="linfo">
+        <div class="row">
+            <div class="row col d-flex">
+                <p class="fw-bold mb-1">
+                    LICENSE #:
+                </p>
+                <p id="lino">
+                </p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">
+                    STATE:
+                </p>
+                <p id="listate">
+                </p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">
+                    ISSUED DATE:
+                </p>
+                <p id="idate">
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="row col d-flex">
+                <p class="fw-bold mb-1">
+                    TYPE:
+                </p>
+                <p id="ltype">
+                </p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">
+                    PLACE OF ISSUE:
+                </p>
+                <p id="lplace">
+                </p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">
+                    EXPIRED DATE:
+                </p>
+                <p id="lexp">
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="hidden" id="lnfound">
+        <p class="fw-5">
+            No License Found
+        </p>
+    </div>
+</div>
+<div class="row mt-5">
+    <h5>
+        COMPANY (S) INFO
+    </h5>
+    <div class="hidden" id="coinfo">
+        <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
+               id="cotable">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="wd-15p border-bottom-0">
+                        REG #
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        Name
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        PHONE
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        EMAIL
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        ADDRESS
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        STATE
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        STATUS
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        REG DATE
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="hidden" id="confnd">
+        <p class="fw-5">
+            No Company Found
+        </p>
+    </div>
+</div>
+<div class="row mt-5">
+    <h5>
+        VEHICLE(S) INFO
+    </h5>
+    <div class="hidden" id="vhinfo">
+        <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
+               id="vhtable">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="wd-15p border-bottom-0">
+                        Vehicle ID
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        MODEL - YEAR
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        VIN
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        ENGINE #
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        COLOR
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        HP
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        PLATE #
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="hidden" id="vhnfound">
+        <p class="fw-5">
+            No Vehicle Found
+        </p>
+    </div>
+</div>
+<div class="row mt-5">
+    <h5>
+        TRANSFER(S) HISTORY <span id="times"></span>
+    </h5>
+    <div class="hidden" id="trinfo">
+        <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
+               id="trtable">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="wd-15p border-bottom-0">
+                        RV #
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        MODEL - YEAR
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        OLD OWNER
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        NEW OWNER
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        PLATE #
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        REASON
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        DATE
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="hidden" id="trnfound">
+        <p class="fw-5">
+            Not Transfer Found
+        </p>
+    </div>
+</div>
+<div class="row mt-5">
+    <h5>
+        PAYMENT(S) INFO
+    </h5>
+    <div class="hidden" id="pyinfo">
+        <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
+               id="pytable">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="wd-15p border-bottom-0">
+                        RV #
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        RECEIVED FROM
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        PERSONAL ID
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        AMOUNT
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        REASON
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        DATE
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="hidden" id="pynofound">
+        <p>
+            No Payment Found
+        </p>
+    </div>
+</div>
 </div>
