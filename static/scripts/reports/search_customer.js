@@ -204,6 +204,7 @@ $(document).ready(() => {
     })
 
     // prevent refresh
+
     $("#searchCustomerForm").on('submit', (e) => {
         e.preventDefault()
     })
