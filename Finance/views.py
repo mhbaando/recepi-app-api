@@ -145,7 +145,7 @@ def ManageAccounts(request, action):
 def ReceiptPage(request):
     try:
         if request.user.has_perm('Finance.view_receipt_voucher'):
-            receipt_vouchers = receipt_voucher.objects.all().order_by('created_at')
+            receipt_vouchers = receipt_voucher.objects.all().order_by('-created_at')
             CheckSearchQuery = 'SearchQuery' in request.GET
             CheckDataNumber = 'DataNumber' in request.GET
             DataNumber = 10
@@ -447,10 +447,7 @@ def find_rcfroms(request, name):
                         message.append(
                             {
                                 'label': f"{ rc_from[xSearch].full_name}",
-                                'value': f"{ rc_from[xSearch].full_name}",
-
-
-
+                                'value': f"{ rc_from[xSearch].full_name}"
                             }
                         )
 
@@ -688,28 +685,5 @@ def update_account(request):
 
                 }
         return JsonResponse(message, status=200)
-    except Exception as error:
-        save_error(request, error)
-
-
-@login_required(login_url='Login')
-def Searchcustomerrcfrom(request, search):
-    try:
-        if request.user.has_perm('Customers.view_company'):
-            if request.method == 'GET':
-                searchQuery = customer_model.customer.objects.filter(
-                    Q(full_name__icontains=search))
-                message = []
-                for xSearch in range(0, len(searchQuery)):
-                    message.append(
-                        {
-                            'label': f"{searchQuery[xSearch].full_name}",
-                            'value': f"{searchQuery[xSearch].full_name}",
-                            'full_name': searchQuery[xSearch].full_name,
-                            'owner_pk': searchQuery[xSearch].customer_id,
-
-                        }
-                    )
-                return JsonResponse({'Message': message}, status=200)
     except Exception as error:
         save_error(request, error)
