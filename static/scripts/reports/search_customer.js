@@ -151,63 +151,61 @@ $(document).ready(() => {
                         $('<td>').text(item.reason).appendTo(row);
                         $('<td>').text(item.date).appendTo(row);
                         $("#times").text(`(${item.count} Times)`)
-                    })
-    }
+                    }
 
-    // remove hidden report
-    $("#customer-report-data").removeClass("hidden")
-}
+                    // remove hidden report
+                    $("#customer-report-data").removeClass("hidden")
+                }
                 else {
-        Swal.fire('Error', res.Message, 'error')
-    }
-            },
-    error: function (err) {
-        Swal.fire('Error', err.Message, 'error')
-    }
-        })
-    }
-
-$("#searchCustomer").on('input', function () {
-    const val = $(this).val()
-    if (val.trim().length >= 3) {
-        // send request to the backend
-        $.ajax({
-            method: 'GET',
-            url: '/customer/reports/search_customer/' + val,
-            headers: { "X-CSRFToken": csrftoken },
-            async: true,
-            success: function (res) {
-                $("#searchCustomer").autocomplete({
-                    source: res.Message,
-                    select: function (event, ui) {
-                        const item = ui.item.value;
-                        const value = ui.item.value;
-                        if (value != "") {
-                            $("#searchCustomer").attr("value", item);
-                            // call customer report functio after user selectes a customer
-                            search_customer(ui.item.customer_id)
-                        }
-                    },
-                    response: function (event, ui) {
-                        if (!ui.content.length) {
-                            var noResult = { value: "", label: "No result found" };
-                            ui.content.push(noResult);
-                        }
-                    },
-                    minLength: 2,
-                });
+                    Swal.fire('Error', res.Message, 'error')
+                }
             },
             error: function (err) {
-                // deal error here
+                Swal.fire('Error', err.Message, 'error')
             }
         })
     }
-})
 
-// prevent refresh
+    $("#searchCustomer").on('input', function () {
+        const val = $(this).val()
+        if (val.trim().length >= 3) {
+            // send request to the backend
+            $.ajax({
+                method: 'GET',
+                url: '/customer/reports/search_customer/' + val,
+                headers: { "X-CSRFToken": csrftoken },
+                async: true,
+                success: function (res) {
+                    $("#searchCustomer").autocomplete({
+                        source: res.Message,
+                        select: function (event, ui) {
+                            const item = ui.item.value;
+                            const value = ui.item.value;
+                            if (value != "") {
+                                $("#searchCustomer").attr("value", item);
+                                // call customer report functio after user selectes a customer
+                                search_customer(ui.item.customer_id)
+                            }
+                        },
+                        response: function (event, ui) {
+                            if (!ui.content.length) {
+                                var noResult = { value: "", label: "No result found" };
+                                ui.content.push(noResult);
+                            }
+                        },
+                        minLength: 2,
+                    });
+                },
+                error: function (err) {
+                    // deal error here
+                }
+            })
+        }
+    })
 
-$("#searchCustomerForm").on('submit', (e) => {
-    e.preventDefault()
-})
+    // prevent refresh
+    $("#searchCustomerForm").on('submit', (e) => {
+        e.preventDefault()
+    })
 
 })
