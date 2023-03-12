@@ -19,8 +19,10 @@ urlpatterns = [
 
     path("vehicle_info/<int:id>/",
          views.vehicle_plate_info),
-     path("vehicle_plate/<int:id>/",
+    path("vehicle_plate/<int:id>/",
          views.vehice_plate_code),
+    path("vehicle_plate_states/<int:id>/",
+         views.vehicle_plate_state),
 
 
 

@@ -61,3 +61,12 @@ hr {
     height: 0;
     border-top: 1px solid #000;
 }
+
+
+.license_status_active {
+    color: green;
+}
+.license_status_other {
+    color: red;
+}
+

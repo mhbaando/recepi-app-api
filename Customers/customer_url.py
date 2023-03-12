@@ -44,5 +44,7 @@ urlpatterns = [
     path('findcustomer/<int:id>', customer.find_customer),
 
     # Reports
-    path('reports', reports.report_home, name='Reports')
+    path('reports', reports.report_home, name='Reports'),
+    path('reports/search_customer/<str:search>', reports.Searchcustomer),
+    path('reports/customer_report/<int:id>', reports.customer_report),
 ]
