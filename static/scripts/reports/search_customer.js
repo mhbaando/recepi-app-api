@@ -142,15 +142,17 @@ $(document).ready(() => {
                         $("#pyinfo").removeClass("hidden")
                         $("#pynofound").addClass("hidden")
 
-                        const row = $('<tr>').appendTo("#pytable tbody");
-                        $('<td>').text(item.rv_no).appendTo(row);
-                        $('<td>').text(item.model_year).appendTo(row);
-                        $('<td>').text(item.old_owner).appendTo(row);
-                        $('<td>').text(item.new_owner).appendTo(row);
-                        $('<td>').text(item.plate_no).appendTo(row);
-                        $('<td>').text(item.reason).appendTo(row);
-                        $('<td>').text(item.date).appendTo(row);
-                        $("#times").text(`(${item.count} Times)`)
+                        $.each(py, function (index, item) {
+                            const row = $('<tr>').appendTo("#pytable tbody");
+                            $('<td>').text(item.rv_no).appendTo(row);
+                            $('<td>').text(item.model_year).appendTo(row);
+                            $('<td>').text(item.old_owner).appendTo(row);
+                            $('<td>').text(item.new_owner).appendTo(row);
+                            $('<td>').text(item.plate_no).appendTo(row);
+                            $('<td>').text(item.reason).appendTo(row);
+                            $('<td>').text(item.date).appendTo(row);
+                            $("#times").text(`(${item.count} Times)`)
+                        })
                     }
 
                     // remove hidden report
