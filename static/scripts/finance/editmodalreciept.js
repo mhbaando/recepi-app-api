@@ -1,8 +1,9 @@
 $(document).ready(() => {
+  
+
     const overlay = $(".overlay")
     const modal = $(".model-contaier")
     let rvID;
-    let rv_from;
     // show model on click
     const editbtns = document.querySelectorAll("#edit")
 
@@ -37,21 +38,64 @@ $(document).ready(() => {
         })
 
     })
+ // Performing autocomplete function of recieved from
+ $("#rcfrom").on("input",function(){
+
+  let rfromname = [];
+
+  if($(this).val() != "" && $(this).val().length > 3){
+    rfromname = rcfrom($(this).val());
+    $("#rcfrom").autocomplete({
+      source:rfromname,
+      select:function(event,ui){
+        const item = ui.item.value;
+        const value = ui.item.value;
+        if (value != "") {
+          $("#rcfrom").attr("rcfrom", item)
+        
+          
+        }
+      },
+      response: function (event, ui) {
+        if (!ui.content.length) {
+          var noResult = { value: "", label: "No result found" };
+          ui.content.push(noResult);
+        }
+      },
+      minLength: 2,
+    });
+  }
+});
+
+    // updated receipt search
+
+    function rcfrom(name) {
+      let list = [];
+      $.ajax({
+        method: "GET",
+        url: "/finance/findrfroms/" + name,
+        async: false,
+        headers: { "X-CSRFToken": csrftoken },
+        success: function (data) {
+          data.Message?.forEach((rfromname ) => {
+            list.push(rfromname );
+          });
+        },
+        
+      });
+      return list;
+    }
+  
 
 
-    // hide modal on click
-    overlay.on('click', function () {
-        overlay.attr('class', 'hidden')
-        modal.attr('class', 'hidden')
-    })
 
-    // // for state
-    // let state = ""
-    // $("#state").on("change", () => {
-    //     state = $("#state option:selected").val()
-    // })
+    
 
-    // submit
+    
+
+  
+
+
     $("#updaterecitfrom").on('submit', function (e) {
         e.preventDefault()
         //  check if no change in state, nation, blooad group 
@@ -66,13 +110,13 @@ $(document).ready(() => {
         formData.append("rvnumber", rvnumber);
         formData.append("reason", rreason);
         formData.append("amount", rvamount);
+        formData.append("recievedfrom", recievedfrom);
+
 
 
         $.ajax({
             method: "POST",
-            url: `/finance/updatereciept/${rvID,rv_from}`,
-            
-
+            url: `/finance/updatereciept/${rvID}`,
             headers: { "X-CSRFToken": csrftoken },
             processData: false,
             contentType: false,
@@ -104,3 +148,5 @@ $(document).ready(() => {
         })
     })
 })
+
+
