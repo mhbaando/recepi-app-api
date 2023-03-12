@@ -10,7 +10,7 @@ urlpatterns = [
     path('find_reciept/<int:id>', views.find_reciept),
     path('update_account/', views.update_account),
     path('updatereciept/<int:id>', views.update_reviept),
-    path('updaterecievedfrom/<str:name', views.updaterecievedfrom),
+ 
 
 
 
@@ -25,6 +25,9 @@ urlpatterns = [
     path('save_reciept/<str:action>', views.savereciept, name='savereciept'),
     path('updatereciept/', views.update_reviept),
     path('findupdatedaccount/<int:name>', views.findupdatedaccount),
+    path('findrfroms/<str:name>', views.find_rcfroms), 
+    
+    
 
 
 
