@@ -315,6 +315,41 @@ def vehice_plate_code(request, id):
 
 
 @ login_required(login_url="Login")
+def vehicle_plate_state(request, id):
+    if request.method == 'GET':
+
+        # find_selected_owner = vehicle_model.vehicle.objects.filter(plate_id=id).first()
+
+        find_latest_plate = vehicle_model.plate.objects.order_by(
+            '-created_at').first()
+
+        find_code = vehicle_model.code_plate.objects.order_by(
+            '-created_at').first()
+
+        plate_noo = None
+        if find_latest_plate is not None:
+            plate_noo = find_latest_plate.state.state_name
+        # print(plate_no)
+
+        if find_latest_plate is not None:
+            return JsonResponse({
+                'isError': False,
+                'number': plate_noo
+
+
+            })
+
+        return JsonResponse({
+            'isError': True,
+            'message': 'owner name Not Found'
+        })
+    return JsonResponse({
+        'isError': True,
+        'message': 'Method not allowd'
+    }, status=400)
+
+
+@ login_required(login_url="Login")
 def seach_transferrr(request, search):
 
     if request.method == 'GET':
@@ -518,7 +553,7 @@ def view_vehicle(request):
                 'passenger': vh.pessenger_seat,
                 'rv_no': vh.rv_number,
                 "owner": vh.owner,
-                'plate_no': f'{stateap}-{vh.plate_no}-{vh.plate_no.plate_no}' if vh.plate_no is not None else None
+                'plate_no': f'{stateap}-{vh.plate_no.plate_code}-{vh.plate_no.plate_no}' if vh.plate_no is not None else None
             })
 
     for i in range(1960, datetime.now().year):
@@ -754,22 +789,18 @@ def asign_plate(request):
 
                 selected_vehicle = vehicle_model.vehicle.objects.filter(
                     Q(vehicle_id=vehicleiddd)).first()
-
-                is_plate_exist = vehicle_model.plate.objects.filter(
-                    Q(plate_no=number)).first()
-
                 selected_code = vehicle_model.code_plate.objects.filter(
                     Q(code_id=code)).first()
-
-                if is_plate_exist is not None:
+                if code is None or state is None or types is None or year is None or number is None or year is None:
                     return JsonResponse(
                         {
                             'isError': True,
-                            'title': "Duplicate Error!!",
-                            'type': "warning",
-                            'Message': f'this plate number is already taken by some one '
+                            'title': 'Validate Error',
+                            'type': 'danger',
+                            'Message':  'Fill All Required Fields'
                         }
                     )
+
                 if request.user.is_superuser == False and request.user.federal_state is None:
                     return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
                 else:

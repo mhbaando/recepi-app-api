@@ -81,9 +81,6 @@ $(document).ready(()=>{
   
           plateNo = (Number(data.number) + 1 ).toString().padStart(4, '0')
           number.attr('value',`${(Number(data.number) + 1 ).toString().padStart(4, '0')}`)
-        
-        
-         
   
         }).catch(err=>{
           // handler error
@@ -91,14 +88,40 @@ $(document).ready(()=>{
             
           
   })
+  let state_plate = ""
+  $("#state").on("change",()=>{
+    state_plate = $("#state option:selected").val()
+    fetch('/vehicles/vehicle_plate_states/' + state_plate,{
+      method: 'GET',
+      headers: { "X-CSRFToken": csrftoken },
+    }).then(res=> res.json()).then(data=>{
+     
+      // if (data.number === null) {
+      //   plateNo = (1).toString().padStart(4, '0')
+      //   number.attr('value',`${(1).toString().padStart(4, '0')}`)
+      
+      // }
+
+      // plateNo = (Number(data.number) + 1 ).toString().padStart(4, '0')
+      // number.attr('value',`${(Number(data.number) + 1 ).toString().padStart(4, '0')}`)
+    
+    
+     
+
+    }).catch(err=>{
+      // handler error
+    })
+        
+      
+})
 
 
       
     
       
-   const ownar_name = $("#owner_info")
-   const hidden= $("#veh_hid_id")
-let number=$("#number")
+    const ownar_name = $("#owner_info")
+    const hidden= $("#veh_hid_id")
+    let number=$("#number")
     const assign_btn = document.querySelectorAll("#assign_btn")
     assign_btn.forEach(btn=>{
     btn.addEventListener("click",function(){

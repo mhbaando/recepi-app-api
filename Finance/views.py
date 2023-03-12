@@ -433,7 +433,32 @@ def find_rcfrom(request, name):
 
 
 @login_required(login_url='Login')
-def updaterecievedfrom(request, name):
+def find_rcfroms(request, name):
+    try:
+        if request.user.has_perm('Finance.view_receipt_voucher'):
+
+            if request.method == 'GET':
+                # if name is not None:
+                rc_from = models.customer_model.customer.objects.filter(
+                    Q(full_name__icontains=name))
+                message = []
+                if rc_from is not None:
+                    for xSearch in range(0, len(rc_from)):
+                        message.append(
+                            {
+                                'label': f"{ rc_from[xSearch].full_name}",
+                                'value': f"{ rc_from[xSearch].full_name}",
+
+
+
+                            }
+                        )
+
+                    return JsonResponse({'Message': message}, status=200)
+                return JsonResponse({'isError': True, 'Message': 'Not found'})
+    except Exception as error:
+        save_error(request, error)
+
     recived_from = models.customer_model.customer.objects.filter(
         Q(full_name__icontains=name))
     messages = []
@@ -467,11 +492,11 @@ def savereciept(request, action):
                     reason = request.POST.get('reason')
                     rv_from = request.POST.get('rcfrom')
 
-                    if rv_number is None or reason is None or rv_from is None or rv_from is None:
-                        return JsonResponse({
-                            'isError': True,
-                            'Message': 'Bad Request All Filds are required'
-                        }, status=400)
+                    # if rv_number is None or reason is None or rv_from is None or rv_from is None:
+                    #     return JsonResponse({
+                    #         'isError': True,
+                    #         'Message': 'Bad Request All Filds are required'
+                    #     }, status=400)
 
                     customer = customer_model.customer.objects.filter(
                         Q(personal_id=personal_id)).first()
@@ -663,5 +688,28 @@ def update_account(request):
 
                 }
         return JsonResponse(message, status=200)
+    except Exception as error:
+        save_error(request, error)
+
+
+@login_required(login_url='Login')
+def Searchcustomerrcfrom(request, search):
+    try:
+        if request.user.has_perm('Customers.view_company'):
+            if request.method == 'GET':
+                searchQuery = customer_model.customer.objects.filter(
+                    Q(full_name__icontains=search))
+                message = []
+                for xSearch in range(0, len(searchQuery)):
+                    message.append(
+                        {
+                            'label': f"{searchQuery[xSearch].full_name}",
+                            'value': f"{searchQuery[xSearch].full_name}",
+                            'full_name': searchQuery[xSearch].full_name,
+                            'owner_pk': searchQuery[xSearch].customer_id,
+
+                        }
+                    )
+                return JsonResponse({'Message': message}, status=200)
     except Exception as error:
         save_error(request, error)
