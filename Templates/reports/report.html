@@ -1,0 +1,35 @@
+{% extends "Base/index.html" %}
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/reports/report.css" %}"/>
+    <link rel="stylesheet"
+          href="{% static "assets/css/customer/register-customer.css" %}"/>
+{% endblock cssData %}
+{% block content %}
+    {% csrf_token %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4">
+            <span class="text-muted fw-light">Reports /</span> {{ pageTitle }}
+        </h4>
+        <div class="row gap-3">
+            <div class="col-sm-12 col-lg rounded choices" id="customer">
+                <i class='bx bxs-user bx-custom'></i>
+                <h4>Customer</h4>
+            </div>
+            <div class="col-sm-12 col-lg rounded choices" id="vehicle">
+                <i class='bx bx-bus bx-custom'></i>
+                <h4>Vehicle</h4>
+            </div>
+            <div class="col-sm-12 col-lg rounded choices" id="company">
+                <i class='bx bxs-business bx-custom'></i>
+                <h4>Compnay</h4>
+            </div>
+        </div>
+        {% include "./search_customer.html" %}
+        {% include "./search_vehicle.html" %}
+        {% include "./search_company.html" %}
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    <script src="{% static "scripts/reports/report.js" %}"></script>
+{% endblock scriptData %}

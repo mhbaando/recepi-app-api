@@ -60,11 +60,40 @@ $(document).ready(()=>{
       let codeplate = "" // for user to display code
      
      
-     
-      let year = ""
+    let year = ""
       $("#year").on("change",()=>{
           year = $("#year option:selected").val()
       })
+
+    let code_plates = ""
+      $("#code").on("change",()=>{
+        code_plates = $("#code option:selected").val()
+        fetch('/vehicles/vehicle_plate/' +code_plates,{
+          method: 'GET',
+          headers: { "X-CSRFToken": csrftoken },
+        }).then(res=> res.json()).then(data=>{
+         
+          if (data.number === null) {
+            plateNo = (1).toString().padStart(4, '0')
+            number.attr('value',`${(1).toString().padStart(4, '0')}`)
+          
+          }
+  
+          plateNo = (Number(data.number) + 1 ).toString().padStart(4, '0')
+          number.attr('value',`${(Number(data.number) + 1 ).toString().padStart(4, '0')}`)
+        
+        
+         
+  
+        }).catch(err=>{
+          // handler error
+        })
+            
+          
+  })
+
+
+      
     
       
    const ownar_name = $("#owner_info")
@@ -85,14 +114,15 @@ let number=$("#number")
             // succes
             ownar_name.attr('value', `${data.vehicle_model} - ${data.owner}`)
     
-            if (data.number === null) {
-              plateNo = (1).toString().padStart(4, '0')
-              number.attr('value',`${(1).toString().padStart(4, '0')}`)
+            // if (data.number === null) {
+            //   plateNo = (1).toString().padStart(4, '0')
+            //   number.attr('value',`${(1).toString().padStart(4, '0')}`)
             
-            }
+            // }
     
-            plateNo = (Number(data.number) + 1 ).toString().padStart(4, '0')
-            number.attr('value',`${(Number(data.number) + 1 ).toString().padStart(4, '0')}`)
+            // plateNo = (Number(data.number) + 1 ).toString().padStart(4, '0')
+            // number.attr('value',`${(Number(data.number) + 1 ).toString().padStart(4, '0')}`)
+          
            
     
           }).catch(err=>{
@@ -135,6 +165,7 @@ let number=$("#number")
           formData.append("number",plateNo);
           formData.append("vehicleIdd",vehicleIdd);
           formData.append("year",year);
+       
 
         if(!type || type === "Select a Type"){
             return Swal.fire("Error", "Select A Type", "error");
@@ -191,9 +222,11 @@ let number=$("#number")
       })
       
       
-        })
+})
 
  
-     
+
 
 })
+
+
