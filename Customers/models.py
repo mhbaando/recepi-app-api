@@ -32,22 +32,6 @@ class personal_id_type(models.Model):
         return self.personal_name
 
 
-class placeissue(models.Model):
-    place_id = models.AutoField(primary_key=True)
-    place_name = models.CharField(max_length=100, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    modified_at = models.DateTimeField(auto_now=True, null=True, blank=True)
-
-    reg_user = models.ForeignKey(
-        Users, on_delete=models.RESTRICT, null=True, blank=True)
-
-    class Meta:
-        db_table = 'place_issue'
-
-    def __str__(self):
-        return self.place_name
-
-
 class countries(models.Model):
     country_id = models.AutoField(primary_key=True)
     country_name = models.CharField(max_length=100)
@@ -72,6 +56,24 @@ class federal_state(models.Model):
 
     def __str__(self):
         return self.state_name
+
+
+class placeissue(models.Model):
+    place_id = models.AutoField(primary_key=True)
+    place_name = models.CharField(max_length=100, null=True, blank=True)
+    state = models.ForeignKey(
+        federal_state, on_delete=models.RESTRICT, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    modified_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+
+    reg_user = models.ForeignKey(
+        Users, on_delete=models.RESTRICT, null=True, blank=True)
+
+    class Meta:
+        db_table = 'place_issue'
+
+    def __str__(self):
+        return self.place_name
 
 
 class customer(models.Model):
