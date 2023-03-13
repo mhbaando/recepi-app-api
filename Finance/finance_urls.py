@@ -10,14 +10,14 @@ urlpatterns = [
     path('find_reciept/<int:id>', views.find_reciept),
     path('update_account/', views.update_account),
     path('updatereciept/<int:id>', views.update_reviept),
- 
+
 
 
 
     # Receipt End Points
     path('receipt', views.ReceiptPage, name='ReceiptsPage'),
     path('add_receipt', views.AddReceipt, name='AddReceipt'),
-    path('receipt/<int:id>', views.receipt, name='receipt'),
+    # path('receipt/<int:id>', views.receipt, name='receipt'),
     path('SearchReceiptVoucher/<str:search>',
          views.SearchReceiptVoucher, name='SearchReceiptVoucher'),
     path('findaccount/<str:id>', views.find_account),
@@ -25,9 +25,9 @@ urlpatterns = [
     path('save_reciept/<str:action>', views.savereciept, name='savereciept'),
     path('updatereciept/', views.update_reviept),
     path('findupdatedaccount/<int:name>', views.findupdatedaccount),
-    path('findrfroms/<str:name>', views.find_rcfroms), 
-    
-    
+    path('findrfroms/<str:name>', views.find_rcfroms),
+
+
 
 
 

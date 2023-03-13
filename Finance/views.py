@@ -21,7 +21,6 @@ from Customers.autditory import save_error, save_log
 def AccountsPage(request):
     try:
         if request.user.has_perm('Finance.view_account'):
-
             accounts = account.objects.all().order_by('-created_at')
             account_type = models.account_types.objects.all()
             CheckSearchQuery = 'SearchQuery' in request.GET
@@ -31,32 +30,33 @@ def AccountsPage(request):
             DataNumber = 10
             SearchQuery = ''
 
-        if CheckDataNumber:
-            DataNumber = int(request.GET['DataNumber'])
+            if CheckDataNumber:
+                DataNumber = int(request.GET['DataNumber'])
 
-        if CheckDataNumber:
-            DataNumber = int(request.GET['DataNumber'])
+            if CheckDataNumber:
+                DataNumber = int(request.GET['DataNumber'])
 
-        if CheckStatus:
+            if CheckStatus:
 
-            Status = request.GET.get('Status')
+                Status = request.GET.get('Status')
 
-        if CheckSearchQuery:
-            SearchQuery = request.GET['SearchQuery']
+            if CheckSearchQuery:
+                SearchQuery = request.GET['SearchQuery']
 
-        paginator = Paginator(accounts, DataNumber)
+            paginator = Paginator(accounts, DataNumber)
 
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context = {'pageTitle': 'Accounts',
-                   'page_obj': page_obj,
-                   'SearchQuery': SearchQuery,
-                   'DataNumber': DataNumber,
-                   "accounts": accounts,
-                   'acc_types': account_type
-                   }
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context = {'pageTitle': 'Accounts',
+                       'page_obj': page_obj,
+                       'SearchQuery': SearchQuery,
+                       'DataNumber': DataNumber,
+                       "accounts": accounts,
+                       'acc_types': account_type
+                       }
 
-        return render(request, 'Finance/account_list.html', context)
+            return render(request, 'Finance/account_list.html', context)
+        return redirect('un_authorized')
     except Exception as error:
         save_error(request, error)
 
@@ -95,6 +95,7 @@ def AddAccount(request):
                 'account_types': models.account_types.objects.all()
             }
             return render(request, 'Finance/add_account.html', context)
+        return redirect('un_authorized')
     except Exception as error:
         save_error(request, error)
 
@@ -137,8 +138,6 @@ def ManageAccounts(request, action):
             return render(request, 'Base/403.html')
     except Exception as error:
         save_error(request, error)
-
-    # Return 404 error
 
 
 # This will display the receipts list
@@ -241,140 +240,140 @@ def SearchReceiptVoucher(request, search):
 # search rcfrom
 
 
-@login_required(login_url='Login')
-def receipt(request, id):
-    try:
-        if request.user.has_perm('Finance.view_receipt_voucher'):
+# @login_required(login_url='Login')
+# def receipt(request, id):
+#     try:
+#         if request.user.has_perm('Finance.view_receipt_voucher'):
 
-            try:
+#             try:
 
-                if id == 0:
-                    # Post new  Weapon model and check if the user is allowed to create
-                    if request.method == 'POST':
-                        Type = request.POST.get('Type')
-                        if Type == "new_reciet":
-                            # owner = request.POST.get('owner')
-                            federal_state = request.POST.get('federal_state')
+#                 if id == 0:
+#                     if request.method == 'POST':
+#                         Type = request.POST.get('Type')
+#                         if Type == "new_reciet":
+#                             # owner = request.POST.get('owner')
+#                             federal_state = request.POST.get('federal_state')
 
-                            rv_id = request.POST.get('rv_id')
-                            is_voucher_exist = models.finance.objects.filter(
-                                receipt_voucher=rv_id).exists()
+#                             rv_id = request.POST.get('rv_id')
+#                             is_voucher_exist = models.finance.objects.filter(
+#                                 receipt_voucher=rv_id).exists()
 
-                            if is_voucher_exist:
-                                get_voucher = models.finance.objects.get(
-                                    receipt_voucher=rv_id)
-                                message = {
-                                    'isError': True,
-                                    'title': "Duplicate Error!!",
-                                    'type': "warning",
-                                    'Message': f'This receipt voucher already used by {get_voucher.owner.account_name}'
-                                }
-                                return JsonResponse(message, status=200)
-                            else:
+#                             if is_voucher_exist:
+#                                 get_voucher = models.finance.objects.get(
+#                                     receipt_voucher=rv_id)
+#                                 message = {
+#                                     'isError': True,
+#                                     'title': "Duplicate Error!!",
+#                                     'type': "warning",
+#                                     'Message': f'This receipt voucher already used by {get_voucher.owner.account_name}'
+#                                 }
+#                                 return JsonResponse(message, status=200)
+#                             else:
 
-                                # get instance of receipt voucher
-                                get_rv_number = models.finance.receipt_voucher.objects.get(
-                                    rv_id=rv_id)
+#                                 # get instance of receipt voucher
+#                                 get_rv_number = models.finance.receipt_voucher.objects.get(
+#                                     rv_id=rv_id)
 
-                                # get instance of owner
-                                get_owner = models.finance.objects.get(
-                                    customer_id=get_rv_number.rv_from.customer_id)
+#                                 # get instance of owner
+#                                 get_owner = models.finance.objects.get(
+#                                     customer_id=get_rv_number.rv_from.customer_id)
 
-                                # get instance of federal state
-                                get_federal_state = models.finance.federal_state.objects.get(
-                                    state_id=federal_state)
-                                save_reciet = models.finance(
-                                    federal_state=get_federal_state,
-                                    owner=get_owner,
+#                                 # get instance of federal state
+#                                 get_federal_state = models.finance.federal_state.objects.get(
+#                                     state_id=federal_state)
+#                                 save_reciet = models.finance(
+#                                     federal_state=get_federal_state,
+#                                     owner=get_owner,
 
-                                    reg_user=request.user,
-                                    receipt_voucher=get_rv_number,
+#                                     reg_user=request.user,
+#                                     receipt_voucher=get_rv_number,
 
-                                )
-                                save_reciet.save()
-                                # TODO: Add to Trial
-                                message = {
-                                    'isError': False,
-                                    'title': "Successfully!!!",
-                                    'type': "success",
-                                    'Message': 'New reciet has been successfully created'
-                                }
+#                                 )
+#                                 save_reciet.save()
+#                                 # TODO: Add to Trial
+#                                 message = {
+#                                     'isError': False,
+#                                     'title': "Successfully!!!",
+#                                     'type': "success",
+#                                     'Message': 'New reciet has been successfully created'
+#                                 }
+#                                 save_log(request,'Reciept / Add','waxa uu save greyay recript')
+#                                 return JsonResponse(message, status=200)
+#                         elif Type == "renew_license":
+#                             # owner = request.POST.get('owner')
+#                             federal_state = request.POST.get('federal_state')
 
-                                return JsonResponse(message, status=200)
-                        elif Type == "renew_license":
-                            # owner = request.POST.get('owner')
-                            federal_state = request.POST.get('federal_state')
+#                             license_type = request.POST.get('license_type')
 
-                            license_type = request.POST.get('license_type')
+#                             rv_id = request.POST.get('rv_id')
+#                             is_voucher_exist = models.finance.objects.filter(
+#                                 receipt_voucher=rv_id).exists()
 
-                            rv_id = request.POST.get('rv_id')
-                            is_voucher_exist = models.finance.objects.filter(
-                                receipt_voucher=rv_id).exists()
+#                             if is_voucher_exist:
+#                                 get_voucher = models.finance.license.objects.get(
+#                                     receipt_voucher=rv_id)
+#                                 message = {
+#                                     'isError': True,
+#                                     'title': "Duplicate Error!!",
+#                                     'type': "warning",
+#                                     'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
+#                                 }
+#                                 return JsonResponse(message, status=200)
+#                             else:
 
-                            if is_voucher_exist:
-                                get_voucher = models.finance.license.objects.get(
-                                    receipt_voucher=rv_id)
-                                message = {
-                                    'isError': True,
-                                    'title': "Duplicate Error!!",
-                                    'type': "warning",
-                                    'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
-                                }
-                                return JsonResponse(message, status=200)
-                            else:
+#                                 # get instance of receipt voucher
+#                                 get_rv_number = models.finance.receipt_voucher.objects.get(
+#                                     rv_id=rv_id)
 
-                                # get instance of receipt voucher
-                                get_rv_number = models.finance.receipt_voucher.objects.get(
-                                    rv_id=rv_id)
+#                                 # get instance of owner
+#                                 get_owner = models.finance.objects.get(
+#                                     customer_id=get_rv_number.rv_from.customer_id)
 
-                                # get instance of owner
-                                get_owner = models.finance.objects.get(
-                                    customer_id=get_rv_number.rv_from.customer_id)
+#                                 # get instance of federal state
+#                                 get_federal_state = models.federal_state.objects.get(
+#                                     state_id=federal_state)
+#                                 get_lasted_license = models.finance.objects.filter(
+#                                     owner=get_owner.customer_id).order_by('-license_id')[0]
+#                                 save_license = models.finance(
+#                                     federal_state=get_federal_state,
+#                                     owner=get_owner,
 
-                                # get instance of federal state
-                                get_federal_state = models.federal_state.objects.get(
-                                    state_id=federal_state)
-                                get_lasted_license = models.finance.objects.filter(
-                                    owner=get_owner.customer_id).order_by('-license_id')[0]
-                                save_license = models.finance(
-                                    federal_state=get_federal_state,
-                                    owner=get_owner,
+#                                     reg_user=request.user,
+#                                     receipt_voucher=get_rv_number,
+#                                     reg_no=get_lasted_license.reg_no
+#                                 )
+#                                 save_license.save()
+#                                 # TODO: Add to Trial
+#                                 message = {
+#                                     'isError': False,
+#                                     'title': "Successfully!!!",
+#                                     'type': "success",
+#                                     'Message': 'New license has been successfully created'
+#                                 }
 
-                                    reg_user=request.user,
-                                    receipt_voucher=get_rv_number,
-                                    reg_no=get_lasted_license.reg_no
-                                )
-                                save_license.save()
-                                # TODO: Add to Trial
-                                message = {
-                                    'isError': False,
-                                    'title': "Successfully!!!",
-                                    'type': "success",
-                                    'Message': 'New license has been successfully created'
-                                }
+#                                 return JsonResponse(message, status=200)
+#                         else:
+#                             message = {
+#                                 'isError': True,
+#                                 'title': "Duplicate Error!!",
+#                                 'type': "warning",
+#                                 'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
+#                             }
+#                             return JsonResponse(message, status=200)
+#             except Exception as error:
+#                 username = request.user.username
+#                 name = request.user.first_name + ' ' + request.user.last_name
 
-                                return JsonResponse(message, status=200)
-                        else:
-                            message = {
-                                'isError': True,
-                                'title': "Duplicate Error!!",
-                                'type': "warning",
-                                'Message': f'This receipt voucher already used by {get_voucher.owner.full_name}'
-                            }
-                            return JsonResponse(message, status=200)
-            except Exception as error:
-                username = request.user.username
-                name = request.user.first_name + ' ' + request.user.last_name
-
-                message = {
-                    'isError': True,
-                    'title': "Server Error",
-                    'type': "error",
-                    'Message': 'On Error Occurs . Please try again or contact system administrator'
-                }
-                return JsonResponse(message, status=200)
-    except Exception as error:
-        save_error(request, error)
+#                 message = {
+#                     'isError': True,
+#                     'title': "Server Error",
+#                     'type': "error",
+#                     'Message': 'On Error Occurs . Please try again or contact system administrator'
+#                 }
+#                 return JsonResponse(message, status=200)
+#         return redirect('un_authorized')
+#     except Exception as error:
+#         save_error(request, error)
 
 
 @login_required(login_url='Login')
@@ -466,11 +465,6 @@ def find_rcfroms(request, name):
                 'value': f"{recived_from[xsearch].full_name}",
                 'per_id': f"{[xsearch].personal_id}",
                 'rcfrom': f"{[xsearch].rv_from}",
-
-
-
-
-
             })
 
 
@@ -497,6 +491,12 @@ def savereciept(request, action):
 
                     customer = customer_model.customer.objects.filter(
                         Q(personal_id=personal_id)).first()
+                    if not customer.is_verified:
+                        return JsonResponse({
+                            'isError': True,
+                            'Message': 'customer is not verified',
+
+                        })
 
                     new_reciet = models.receipt_voucher(
                         rv_number=rv_number,
@@ -505,6 +505,7 @@ def savereciept(request, action):
                         reason=reason,
                         reg_user=request.user
                     )
+
                     # Save data to database
                     new_reciet.save()
                     return JsonResponse({'isError': False, 'Message': 'created successfully'})
