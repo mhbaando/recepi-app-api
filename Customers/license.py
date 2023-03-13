@@ -424,11 +424,6 @@ def GenerateLicenseNumber():
     return f"{year}{serial}"
 
 
-def update_liscence(request):
-
-    pass
-
-
 @login_required(login_url="Login")
 def find_liscence(request, id):
     if request.method == 'GET':
@@ -443,12 +438,22 @@ def find_liscence(request, id):
                 liscence = customer_model.license.objects.filter(
                     Q(license_id=id), federal_state=request.user.federal_state).values()
 
-            return JsonResponse({'isErro': False, 'Message': list(liscence)}, status=200)
+            found_rv = finance_model.receipt_voucher.objects.filter(
+                Q(rv_id=liscence[0]['receipt_voucher_id'])).values('rv_number')
+
+            found_owner = customer_model.customer.objects.filter(
+                Q(customer_id=liscence[0]['owner_id'])).values('full_name')
+
+            return JsonResponse({'isErro': False, 'Message': {
+                'li_info': list(liscence),
+                'rv_info': list(found_rv),
+                'owner_info': list(found_owner)
+            }}, status=200)
         else:
             return JsonResponse({'isErro': False, 'Message': 'Liscence Not Found'}, status=404)
 
 
-@login_required(login_url="Login")
+@ login_required(login_url="Login")
 def find_status(request, id):
     if request.method == 'GET':
 
@@ -468,24 +473,18 @@ def find_status(request, id):
             return JsonResponse({'isErro': False, 'Message': 'Liscence Not Found'}, status=404)
 
 
-@login_required(login_url="Login")
-@permission_required('Customers.change_license', raise_exception=True)
+@ login_required(login_url="Login")
+@ permission_required('Customers.change_license', raise_exception=True)
 def edit_liscence(request, id):
     try:
         if request.user.has_perm('Customers.change_license'):
             if request.method == 'POST':
-                lisence_iD = request.POST.get('license_ID', None)
-                reg = request.POST.get('reg_number', None)
-                lr_number = request.POST.get('r_number', None)
-                lreg_date = request.POST.get('reg_date', None)
-                lexp_date = request.POST.get('exp_date', None)
-                lowner_lis = request.POST.get('owner_lis', None)
                 ltype = request.POST.get('type', None)
                 lstate = request.POST.get('state', None)
                 lplace = request.POST.get('place', None)
 
                 liscence = customer_model.license.objects.filter(
-                    Q(license_id=lisence_iD)).first()
+                    Q(license_id=id)).first()
 
                 lis_state = customer_model.federal_state.objects.filter(
                     state_id=lstate).first()
@@ -496,20 +495,9 @@ def edit_liscence(request, id):
                 lis_type = customer_model.licensetype.objects.filter(
                     type_id=ltype).first()
 
-                lis_rec = finance_model.receipt_voucher.objects.filter(
-                    rv_id=lr_number)
-
-                lis_owne = customer_model.customer.objects.filter(
-                    customer_id=lowner_lis)
-
                 liscence.place_of_issue = lis_place
                 liscence.federal_state = lis_state
                 liscence.type = lis_type
-                liscence.reg_no = reg
-                liscence.receipt_voucher.rv_id = lis_rec
-                liscence.expired_date = lexp_date
-                liscence.created_at = lreg_date
-                liscence.owner.customer_id = lis_owne
 
                 liscence.save()
                 message = {
@@ -534,23 +522,42 @@ def edit_liscence(request, id):
     return render(request, 'License/edit_model.html')
 
 
-@login_required(login_url="Login")
+@ login_required(login_url="Login")
 def edit_manage(request, id):
     manage_id = request.POST.get('manage_id', None)
-    status = request.POST.get('gender', None)
+    status = request.POST.get('status_r', None)
+
+    if manage_id is None or status is None:
+        return JsonResponse({
+            'isError': True,
+            'Message': 'Bad Request No Data is not provided'
+        })
 
     liscence = customer_model.license.objects.filter(
         Q(license_id=manage_id)).first()
 
-    liscence.status = status
+    if license is not None:
+        # check if the status is epxired and the time is les then now
+        if status == 'Expired' and liscence.expired_date > current_date:
+            return JsonResponse({
+                'isError': True,
+                'Message': 'This Licesnse is not Expired',
+            })
 
-    liscence.save()
+        liscence.status = status
+        liscence.save()
+        return JsonResponse({
+            'isError': False,
+            'Message': 'License Status Updated Succefully'
+        })
+    return JsonResponse({
+        'isError': True,
+        'Message': 'Liecense not found'
+    })
 
-    return render(request, 'License/edit_model.html')
 
-
-@login_required(login_url='Login')
-@permission_required('Customers.add_license', raise_exception=True)
+@ login_required(login_url='Login')
+@ permission_required('Customers.add_license', raise_exception=True)
 def renew_license(request, id):
 
     # TODO: check permission
