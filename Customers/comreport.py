@@ -61,18 +61,21 @@ def company_report(request, id):
 
         if request.user.is_superuser:
             company = customer_model.company.objects.filter(
-                customer_id=id).first()
-            vehicle = vehicle.vehicle_model.objects.filter(
-                Q(owner=company)).first()
+                company_id=id).first()
+
+            vehicle = vehicle_model.vehicle.objects.filter(
+                Q(owner=company.owner)).first()
         else:
             company = customer_model.company.objects.filter(
                 Q(federal_state=request.user.federal_state), company_id=id
             ).first()
+            vehicle = vehicle_model.vehicle.objects.filter(
+                Q(owner=company.owner)).first()
 
         if company is not None:
             save_log(
                 request,
-                "Report / Customer",
+                "Report / Company",
                 f"waxa uu raadiayay company leh {id} gaan",
             )
 
@@ -80,21 +83,20 @@ def company_report(request, id):
                 'company_name': company.company_name,
                 'email': company.email,
                 'address': company.address,
-                'phone': company.phone,
-                'status': company.show_verify()['verified_status'],
+                'phone': company. phone,
+                'status': company.show_status()['verified_status'],
                 'website': company.website,
                 'regno': company.reg_no,
-                'owner': company.owner,
+                'owner': company.owner.full_name,
                 'regdate': company.modified_at,
-                'regno': company.reg_user,
                 'state': company.federal_state.state_name,
                 'reg_user': company.reg_user.email,
-                'status_class': company.show_verify()['verified_color']
+                'status_class': company.show_status()['verified_color']
             }
 
             found_vehicles = []
             vehicles = vehicle_model.vehicle.objects.filter(
-                Q(owner=company)).all()
+                Q(owner=company.owner)).all()
 
             if vehicles is not None:
                 for vehicle in vehicles:
