@@ -5,13 +5,13 @@
         <div class="card-body pt-2 ">
             <form autocomplete='off' id="searchcompanyform">
                 <div class="input-group mr-0">
-                    <input id="SearchQuery"
+                    <input id="searchcompany"
                            type="text"
                            placeholder="Search Company..."
                            class="form-control"
                            aria-label="Company name"
                            aria-describedby="button-addon2"/>
-                    <button class="btn btn-primary" type="button" id="button-addon2">
+                    <button class="btn btn-primary" type="button"  id="button-addon2" disabled>
                         <i class="bx bx-search"></i>
                     </button>
                 </div>
@@ -19,3 +19,5 @@
         </div>
     </div>
 </div>
+
+{% include "./company_report.html" %}
