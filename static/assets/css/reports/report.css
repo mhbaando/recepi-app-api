@@ -49,6 +49,9 @@ h4 {
 #customer-report-data {
     overflow-y: auto
 }
+#vehicle_report {
+    overflow-y: auto
+}
 
 .report-header {
     display: flex;

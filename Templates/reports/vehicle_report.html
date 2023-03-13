@@ -1,0 +1,151 @@
+{% load static %}
+<div class="row mt-3 bg-white rounded pt-3 ps-3 pe-3 pb-3 hidden"
+     id="vehicle_report">
+    <div class="row report-header">
+        <div class="col">
+            <p class=" fw-semibold text-center">
+                Jamhuriyada Federalka Somalia
+                <br>
+                Wasaarada gaadiidka &
+                <br>
+                duulista hawada
+            </p>
+        </div>
+        <div class="col text-center">
+            <img src="{% static "assets/img/wlogo.png" %}"
+                 alt="Logo"
+                 width="150"
+                 heigh="auto"/>
+        </div>
+        <div class="col">
+            <p class="fw-semibold text-center">
+                جمهورية الصومال الفيدرالية
+                <br>
+                وزارة النقل
+                <br>
+                والطيران المدني
+            </p>
+        </div>
+    </div>
+    <div class="d-flex alig-items-center justify-content-center">
+        <p class="fw-semibold mb-1 mt-2">Vehicle Report</p>
+    </div>
+    <hr>
+    {% comment %} customer info {% endcomment %}
+    <div class="row mt-3">
+        <h5>
+            Vehicle INFO <span id="status" class="text-uppercase"></span>
+        </h5>
+        <div class="row">
+            <div class="row col d-flex">
+                <p class="fw-bold mb-1">Owner:</p>
+                <p id="vehicle_owner"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">Model Brand :</p>
+                <p id="vehicle_brand"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">Vin Number:</p>
+                <p id="vin"></p>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="row col">
+                <p class="mb-1 fw-bold">COLOR:</p>
+                <p id="color"></p>
+            </div>
+            <div class="row col ">
+                <p class="mb-1 fw-bold">Weight:</p>
+                <p id="weight"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">House Power(HP):</p>
+                <p id="hp"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="row col">
+                <p class="mb-1 fw-bold">Passenger Seats:</p>
+                <p id="passenger_seats"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">Engine Number:</p>
+                <p id="engine_number"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">Year:</p>
+                <p id="year"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="row col">
+                <p class="mb-1 fw-bold">Rv Number:</p>
+                <p id="rv_num_R"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">Origin:</p>
+                <p id="origin"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">Cylinder:</p>
+                <p id="cylinder"></p>
+            </div>
+            
+        </div>
+        <div class="row">
+         
+            
+            <div class="row col">
+                <p class="mb-1 fw-bold">REG USER:</p>
+                <p id="reg_user"></p>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <h5>
+            TRANSFER(S) HISTORY <span id="transfare_times"></span>
+        </h5>
+         <div class="hidden" id="tr_hist">
+            <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
+                   id="transfer_table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="wd-15p border-bottom-0">
+                            RV #
+                        </th>
+                        <th class="wd-15p border-bottom-0">
+                            MODEL - YEAR
+                        </th>
+                        <th class="wd-15p border-bottom-0">
+                            OLD OWNER
+                        </th>
+                        <th class="wd-15p border-bottom-0">
+                            NEW OWNER
+                        </th>
+                        <th class="wd-15p border-bottom-0">
+                            PLATE #
+                        </th>
+                        <th class="wd-15p border-bottom-0">
+                            REASON
+                        </th>
+                        <th class="wd-15p border-bottom-0">
+                            DATE
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="hidden" id="trfound"> 
+            <p class="fw-5">
+                Not Transfer Found
+            </p> 
+        </div>
+    </div>
+   
+</div>  
+{% block scriptData %}
+    <script src="{% static "scripts/reports/search_vehicle.js" %}"></script>
+{% endblock scriptData %}  

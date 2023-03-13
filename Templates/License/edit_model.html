@@ -21,33 +21,31 @@
                             <div class="col-md-6 mb-0">
                                 <div class="mb-3">
                                     <label class="form-label">liscence Number</label>
-                                    <input type="text" class="form-control" id="reg_number"/>
+                                    <input type="text" class="form-control" id="reg_number" disabled/>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-0">
                                 <div class="mb-3">
                                     <label class="form-label">Rv Number</label>
-                                    <input type="text" class="form-control" id="r_number" />
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-0">
-                                <div class="mb-3">
-                                    <label class="form-label">Expired Date</label>
-                                    <input type="text" class="form-control" id="exp_date" />
+                                    <input type="text" class="form-control" id="r_number" disabled/>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-0">
                                 <div class="mb-3">
                                     <label class="form-label">Registered Date</label>
-                                    <input type="text" class="form-control" id="reg_date" />
+                                    <input type="text" class="form-control" id="reg_date" disabled/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Expired Date</label>
+                                    <input type="text" class="form-control" id="exp_date" disabled/>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-0">
                                 <div class="mb-3">
                                     <label>State</label>
-                                    <select class="form-select"
-                                            id="state"
-                                            aria-label="Default select example"/>
+                                    <select class="form-select" id="state" aria-label="Default select example"/>
                                     {% if states %}
                                         <option selected>
                                             Select State
@@ -95,10 +93,9 @@
                 <div class="col-md-6 mb-0">
                     <div class="mb-3">
                         <label class="form-label">Owner</label>
-                        <input type="text" class="form-control" id="owner_lis"/>
+                        <input type="text" class="form-control" id="owner_lis" disabled/>
                     </div>
                 </div>
-               
                 <div class="action-btn">
                     <button type="button" class="btn btn-outline-danger me-4 Close-btn">Close</button>
                     <button type="submit" class="btn btn-primary">Update</button>
