@@ -173,11 +173,12 @@ $(document).ready(() => {
         source: owner,
         select: function (event, ui) {
           const item = ui.item.full_name;
+          const items = ui.item.personal_id;
+
           const value = ui.item.value;
           if (value != "") {
-            $("#rcfrom").attr("rv_id", item);
+            $("#rcfrom").attr("value", item,items);
             owner_id = ui.item.owner_pk
-            console.log(ui.item.owner_pk)
           }
         },
         response: function (event, ui) {
@@ -186,7 +187,7 @@ $(document).ready(() => {
             ui.content.push(noResult);
           }
         },
-        minLength: 1,
+        minLength: 4,
       });
     }
   })
