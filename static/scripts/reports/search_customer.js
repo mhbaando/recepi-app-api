@@ -155,7 +155,7 @@ $(document).ready(() => {
                         })
                     }
 
-                    // remove hidden report
+                    // // remove hidden report
                     $("#customer-report-data").removeClass("hidden")
                 }
                 else {

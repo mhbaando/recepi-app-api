@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import reports
 urlpatterns = [
     path("", views.register_vehicle, name="register-vehicle"),
     path("viewvehicle/", views.view_vehicle, name="veiw-vehicle"),
@@ -33,5 +34,6 @@ urlpatterns = [
 
     path('searchcustomer/<str:search>',
          views. Searchcustomer, name=' Searchcustomer'),
-
+    path('reports/search_vehicle/<str:search>', reports.Searchvehicle),
+    path('reports/vehicle-report/<str:id>', reports.vehicle_report),
 ]
