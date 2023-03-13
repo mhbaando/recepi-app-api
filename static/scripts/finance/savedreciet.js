@@ -1,8 +1,8 @@
 $(document).ready(function () {
   $('#addnewreciet').on("click", function () {
-     // if (!rv_number || rv_from.trim().length <= 0 || !reason ) {
-      //   Swal.fire("Error", "All filds are required", "error");
-      //   return false
+    // if (!rv_number || rv_from.trim().length <= 0 || !reason ) {
+    //   Swal.fire("Error", "All filds are required", "error");
+    //   return false
 
     // Prepare posting data
     $("#reciet_form").on('submit', function (e) {
@@ -14,7 +14,7 @@ $(document).ready(function () {
       let personal_id = $("#personal_id").val();
       let rvamount = Number($("#rv_amount").val().split("$")[1]);
 
-     
+
 
 
 
@@ -49,7 +49,7 @@ $(document).ready(function () {
             });
           } else {
             Swal.fire({
-              title: "Something Wrong!!",
+              title: "Error",
               text: response.Message,
               icon: "error",
               confirmButtonClass: "btn btn-primary w-xs mt-2",

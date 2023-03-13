@@ -145,13 +145,12 @@ $(document).ready(() => {
                         $.each(py, function (index, item) {
                             const row = $('<tr>').appendTo("#pytable tbody");
                             $('<td>').text(item.rv_no).appendTo(row);
-                            $('<td>').text(item.model_year).appendTo(row);
-                            $('<td>').text(item.old_owner).appendTo(row);
-                            $('<td>').text(item.new_owner).appendTo(row);
-                            $('<td>').text(item.plate_no).appendTo(row);
+                            $('<td>').text(item.rv_from).appendTo(row);
+                            $('<td>').text(item.personal_id).appendTo(row);
+                            $('<td>').text(item.amount).appendTo(row);
                             $('<td>').text(item.reason).appendTo(row);
                             $('<td>').text(item.date).appendTo(row);
-                            $("#times").text(`(${item.count} Times)`)
+
                         })
                     }
 
