@@ -160,60 +160,54 @@ def register_customer(request):
 @login_required(login_url="Login")
 def activate_customer(request):
     try:
-        if request.request.has_perm('activate_customer'):
-            if request.method == "POST":
-                c_personalID = request.POST.get("perosonalID").strip()
-                c_desc = request.POST.get("desc")
-                c_doc = request.FILES["customerDoc"]
-
-                if c_doc.size > 2000000:
-                    return JsonResponse(
-                        {
-                            "isError": True,
-                            "Message": "File Uppload exceeded Maximum size of 2MB",
-                        }
-                    )
-
-                customer = ""
-                if c_personalID is None or c_desc is None or c_doc is None:
-                    return JsonResponse(
-                        {"isError": True, "Message": "Bad Request"}, status=400
-                    )
-
-                # find the customer for admin
-                if request.user.is_superuser:
-                    customer = customer_model.customer.objects.filter(
-                        Q(personal_id=c_personalID)
-                    ).first()
-                else:
-                    # for regular users
-                    customer = customer_model.customer.objects.filter(
-                        Q(personal_id=c_personalID),
-                        federal_state=request.user.federal_state,
-                    ).first()
-
-                if customer is not None:
-                    customer.is_verified = True
-                    customer.document = c_doc
-                    customer.description = c_desc
-                    customer.save()
-
-                    save_log(request, 'Cusomer / Active ',
-                             f'waxa uu active greyay {customer.full_name}')
-
-                    return JsonResponse(
-                        {"isError": False, "Message": "Customer Verified"}, status=200
-                    )
-
+        if request.user.has_perm('Customers.activate_customer'):
+            c_personalID = request.POST.get("perosonalID").strip()
+            c_desc = request.POST.get("desc")
+            c_doc = request.FILES["customerDoc"]
+            if c_doc.size > 2000000:
                 return JsonResponse(
-                    {"isError": True, "Message": "Custmer not found"}, status=404
-                )
-        return render(request, 'Base/403.html')
+                    {
+                        "isError": True,
+                        "Message": "File Uppload exceeded Maximum size of 2MB",
+                    })
+
+            customer = ""
+            if c_personalID is None or c_desc is None or c_doc is None:
+                return JsonResponse(
+                    {"isError": True, "Message": "Bad Request"})
+
+            # find the customer for admin
+            if request.user.is_superuser:
+                customer = customer_model.customer.objects.filter(
+                    Q(personal_id=c_personalID)
+                ).first()
+            else:
+                # for regular users
+                customer = customer_model.customer.objects.filter(
+                    Q(personal_id=c_personalID),
+                    federal_state=request.user.federal_state,
+                ).first()
+            if customer is not None:
+                customer.is_verified = True
+                customer.document = c_doc
+                customer.description = c_desc
+                customer.save()
+
+                save_log(request, 'Cusomer / Active ',
+                         f'waxa uu active greyay {customer.full_name}')
+                return JsonResponse(
+                    {"isError": False, "Message": "Customer Verified"})
+
+            return JsonResponse(
+                {"isError": True, "Message": "Custmer not found"}
+            )
+        else:
+            return redirect('un_authorized')
     except Exception as error:
         save_error(request, error)
 
 
-@login_required(login_url="Login")
+@ login_required(login_url="Login")
 def customer_list(request):
     try:
         if request.user.has_perm('Customers.view_customer'):
@@ -289,7 +283,7 @@ def customer_list(request):
         save_error(request, error)
 
 
-@login_required(login_url="Login")
+@ login_required(login_url="Login")
 def customer_profile(request, id):
     try:
         if request.user.has_perm('Customers.view_customer'):
@@ -401,7 +395,7 @@ def customer_profile(request, id):
         save_error(request, error)
 
 
-@login_required(login_url="Login")
+@ login_required(login_url="Login")
 def find_customer(request, id):
     try:
         if request.user.has_perm('Customers.view_customer'):
@@ -437,7 +431,7 @@ def find_customer(request, id):
         save_error(request, error)
 
 
-@login_required(login_url="Login")
+@ login_required(login_url="Login")
 def update_customer(request):
     try:
         if request.user.has_perm('Customers.change_customer'):
