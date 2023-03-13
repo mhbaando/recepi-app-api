@@ -123,48 +123,65 @@ def register_vehicle(request):
                             'Message': f'this voucher is already used in Transfare Vehicle'
                         }
                     )
-                else:
 
-                    owner = customer_model.customer.objects.filter(
-                        Q(customer_id=owner_id)).first()
-                    brand = vehicle_model.model_brand.objects.filter(
-                        Q(brand_id=model_brand)).first()
-                    car_color = vehicle_model.color.objects.filter(
-                        Q(color_id=color)).first()
+                owner = customer_model.customer.objects.filter(
+                    Q(customer_id=owner_id)).first()
+                brand = vehicle_model.model_brand.objects.filter(
+                    Q(brand_id=model_brand)).first()
+                car_color = vehicle_model.color.objects.filter(
+                    Q(color_id=color)).first()
 
-                    car_cylinder = vehicle_model.cylinder.objects.filter(
-                        Q(cylinder_id=cylinder)).first()
+                car_cylinder = vehicle_model.cylinder.objects.filter(
+                    Q(cylinder_id=cylinder)).first()
 
-                    car_origin = customer_model.countries.objects.filter(
-                        Q(country_id=origin)).first()
+                car_origin = customer_model.countries.objects.filter(
+                    Q(country_id=origin)).first()
 
-                    if owner is None or brand is None or car_color is None or car_origin is None:
-                        return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
+                if owner is None or brand is None or car_color is None or car_origin is None:
+                    return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
 
-                    if request.user.is_superuser == False and request.user.federal_state is None:
-                        return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
+                if request.user.is_superuser == False and request.user.federal_state is None:
+                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
 
-                    new_vehicle = vehicle_model.vehicle(
-                        vehicle_model=brand,
-                        color=car_color,
-                        cylinder=car_cylinder,
-                        year=year,
-                        origin=car_origin,
-                        hp=hp,
-                        weight=weight,
-                        vin=registration_number,
-                        enginer_no=engine_number,
-                        pessenger_seat=passenger_seats,
-                        owner=owner,
-                        reg_user_id=request.user.id,
-                        rv_number=rv_num)
+                # check if the vin number or engine number already registered
+                vin_exist = vehicle_model.vehicle.objects.filter(
+                    Q(vin=registration_number)).exists()
+                engine_no_exits = vehicle_model.vehicle.objects.filter(
+                    Q(enginer_no=engine_number)).exists()
 
-                    new_vehicle.save()
+                if vin_exist:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'Vin Number Already Registered to other vehicle'
+                    })
+                if engine_no_exits:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'EngineSS Number Already Registered to other vehicle'
+                    })
 
-                    save_log(request, 'Vehicles / Register',
-                             f'Waxa uu gaari udiiwangaliyay {new_vehicle.owner}')
-                    # return for post method
-                    return JsonResponse({'isError': False, 'Message': 'Vehicle has been successfully Saved'}, status=200)
+                # Save Vehicle
+                new_vehicle = vehicle_model.vehicle(
+                    vehicle_model=brand,
+                    color=car_color,
+                    cylinder=car_cylinder,
+                    year=year,
+                    origin=car_origin,
+                    hp=hp,
+                    weight=weight,
+                    vin=registration_number,
+                    enginer_no=engine_number,
+                    pessenger_seat=passenger_seats,
+                    owner=owner,
+                    reg_user_id=request.user.id,
+                    rv_number=rv_num)
+
+                new_vehicle.save()
+
+                save_log(request, 'Vehicles / Register',
+                         f'Waxa uu gaari udiiwangaliyay {new_vehicle.owner}')
+                # return for post method
+                return JsonResponse({'isError': False, 'Message': 'Vehicle has been successfully Saved'}, status=200)
         else:
 
             return redirect('un_authorized')
