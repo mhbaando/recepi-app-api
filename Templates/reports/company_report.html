@@ -1,0 +1,133 @@
+{% load static %}
+<div class="row mt-3 bg-white rounded pt-3 ps-3 pe-3 pb-3 hidden"
+     id="customer-report-data">
+    <div class="row report-header">
+        <div class="col">
+            <p class=" fw-semibold text-center">
+                Jamhuriyada Federalka Somalia
+                <br>
+                Wasaarada gaadiidka &
+                <br>
+                duulista hawada
+            </p>
+        </div>
+        <div class="col text-center">
+            <img src="{% static "assets/img/wlogo.png" %}"
+                 alt="Logo"
+                 width="150"
+                 heigh="auto"/>
+        </div>
+        <div class="col">
+            <p class="fw-semibold text-center">
+                جمهورية الصومال الفيدرالية
+                <br>
+                وزارة النقل
+                <br>
+                والطيران المدني
+            </p>
+        </div>
+    </div>
+    <div class="d-flex alig-items-center justify-content-center">
+        <p class="fw-semibold mb-1 mt-2">Company Report</p>
+    </div>
+    <hr>
+    {% comment %} customer info {% endcomment %}
+    <div class="row mt-3">
+        <h5>
+            Company INFO <span id="status" class="text-uppercase"></span>
+        </h5>
+        <div class="row">
+            <div class="row col d-flex">
+                <p class="fw-bold mb-1">NAME:</p>
+                <p id="name"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">EMAIL:</p>
+                <p id="email"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">PHONE:</p>
+                <p id="phone"></p>
+            </div>
+        </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">ADDRESS:</p>
+                <p id="address"></p>
+            </div>
+        </div>
+        </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">STATUS:</p>
+                <p id="status"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">WEBSITE:</p>
+                <p id="website"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">REG NO:</p>
+                <p id="regno"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">OWNER:</p>
+                <p id="owner"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">REG DATE:</p>
+                <p id="regdate"></p>
+            </div>
+            <div class="row col">
+                <p class="mb-1 fw-bold">REG USER:</p>
+                <p id="reguser"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-5">
+    <h5>
+        VEHICLE(S) INFO
+    </h5>
+    <div class="hidden" id="vhinfo">
+        <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
+               id="vhtable">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="wd-15p border-bottom-0">
+                        Vehicle ID
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        MODEL - YEAR
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        VIN
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        ENGINE #
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        COLOR
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        HP
+                    </th>
+                    <th class="wd-15p border-bottom-0">
+                        PLATE #
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="hidden" id="vhnfound">
+        <p class="fw-5">
+            No Vehicle Found
+        </p>
+    </div>
+</div>
+
+        </table>
+    </div>
+    
+</div>
+</div>
