@@ -10,9 +10,10 @@ $(document).ready(() => {
                 if (!res.isError) {
                     const data = res.company
                     // populate data company info
-                    $('#name').text(data.company_name)
-                    $('#email').text(data.email)
-                    $('#address').text(data.address)
+                    $('#name').text(data.company_name),
+                    $('#email').text(data.email),
+                   
+                    $('#address').text(data.address),
                     $('#phone').text(data.phone)
                     $('#status').text(`$({data.status})`)
                     $('#website').text(data.website)
