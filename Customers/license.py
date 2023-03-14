@@ -51,13 +51,16 @@ def NewLicense(request):
 @login_required(login_url='Login')
 @permission_required('Customers.add_license', raise_exception=True)
 def ReNewLicense(request):
-    place_issue = customer_model.placeissue.objects.all()
+    place_issue = []
+    FederalState = []
     if request.user.is_admin or request.user.is_superuser:
         FederalState = customer_model.federal_state.objects.all()
-
+        place_issue = customer_model.placeissue.objects.all()
     else:
         FederalState = customer_model.federal_state.objects.filter(
             Q(state_id=request.user.federal_state.state_id))
+        place_issue = customer_model.placeissue.objects.filter(
+            Q(state=request.user.federal_state)).all()
 
     licensetype = customer_model.licensetype.objects.all()
     context = {
@@ -82,9 +85,18 @@ def LicenseLists(request):
     Status = "Active"
     SearchQuery = ''
     Licenselists = []
-    states = customer_model.federal_state.objects.all().order_by('created_at')
-    place_issues = customer_model.placeissue.objects.all().order_by('created_at')
+    states = []
+    place_issues = []
     licensetype = customer_model.licensetype.objects.all().order_by('created_at')
+
+    if request.user.is_superuser:
+        states = customer_model.federal_state.objects.all().order_by('created_at')
+        place_issues = customer_model.placeissue.objects.all().order_by('created_at')
+    else:
+        states = customer_model.federal_state.objects.filter(
+            Q(state_id=request.user.federal_state.state_id)).all().order_by('created_at')
+        place_issues = customer_model.placeissue.objects.filter(
+            Q(state=request.user.federal_state)).all()
 
     if CheckDataNumber:
         DataNumber = int(request.GET['DataNumber'])
@@ -115,7 +127,6 @@ def LicenseLists(request):
                                                                  ).order_by('-created_at')
         else:
             Licenselists = customer_model.license.objects.filter(status=Status, federal_state=request.user.federal_state
-
                                                                  ).order_by('-created_at')
     get_active_license = customer_model.license.objects.filter(
         status="Active", expired_date__lte=current_date).order_by('-created_at')
