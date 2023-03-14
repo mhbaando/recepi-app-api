@@ -58,6 +58,9 @@ $(document).ready(() => {
         // clean seach inputs
         $("#SearchVehicle").val('')
         $('#searchCustomer').val('')
+
+
+        console.log('hhh')
     })
 
 
