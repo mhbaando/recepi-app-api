@@ -94,13 +94,22 @@
             
         </div>
         <div class="row">
-         
-            
+            <div class="row col">
+                <p class="mb-1 fw-bold">Plate Number:</p>
+                <p id="plat_nu"></p>
+            </div>
             <div class="row col">
                 <p class="mb-1 fw-bold">REG USER:</p>
                 <p id="reg_user"></p>
             </div>
+             <div class="row col">
+                <p class="hidden">hgfh</p>
+                <p id=""></p>
+            </div>
+         
         </div>
+    
+
     </div>
     <div class="row mt-5">
         <h5>
@@ -145,7 +154,7 @@
         </div>
     </div>
    
-</div>  
+
 {% block scriptData %}
     <script src="{% static "scripts/reports/search_vehicle.js" %}"></script>
 {% endblock scriptData %}  

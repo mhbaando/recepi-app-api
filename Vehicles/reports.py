@@ -1,17 +1,12 @@
-import json
-
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
-from django.core.paginator import Paginator
 from django.db.models import Q
 from django.db.models.fields.json import json
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.core.serializers.json import DjangoJSONEncoder
 
 from Customers.autditory import save_error, save_log
 from Vehicles import models as vehicle_model, plate_converter
-from Finance import models as finance_model
 
 
 @login_required(login_url="Login")
@@ -28,17 +23,18 @@ def Searchvehicle(request, search):
             if request.method == "GET":
                 searchQuery = vehicle_model.vehicle.objects.filter(
                     Q(enginer_no__icontains=search) | Q(
-                        vehicle_id__icontains=search) | Q(vin__icontains=search)
+                        owner__full_name__icontains=search) | Q(vin__icontains=search)
                 )
 
                 message = []
                 for xSearch in range(0, len(searchQuery)):
                     message.append(
                         {
-                            "label": f"{searchQuery[xSearch].owner} - {searchQuery[xSearch].vin}",
-                            "value": f"{searchQuery[xSearch].owner} - {searchQuery[xSearch].vin}",
-
+                            "label": f"{searchQuery[xSearch].owner.full_name} - {searchQuery[xSearch].vin} - {searchQuery[xSearch].enginer_no}",
+                            "value": f"{searchQuery[xSearch].owner.full_name} - {searchQuery[xSearch].vin} -{searchQuery[xSearch].enginer_no}",
                             "vehicle_id": searchQuery[xSearch].vehicle_id,
+
+
                         }
                     )
                 return JsonResponse({"Message": message}, status=200)
@@ -56,14 +52,9 @@ def vehicle_report(request, id):
             vehicle = vehicle_model.vehicle.objects.filter(
                 vehicle_id=id).first()
 
-            # transfers = vehicle_model.transfare_vehicles.objects.filter(
-            #     Q(vehicle=id)).first()
-
         else:
             vehicle = vehicle_model.vehicle.objects.filter(
                 vehicle_id=id).first()
-            # transfers = vehicle_model.transfare_vehicles.objects.filter(
-            #     Q(vehicle__vehicle_id=id)).first()
 
         if vehicle is not None:
             save_log(
@@ -86,7 +77,7 @@ def vehicle_report(request, id):
                 'rv_number': vehicle.rv_number,
                 'vin': vehicle.vin,
                 'reg_user': vehicle.reg_user.email,
-                "plate_no": vehicle.plate_no.plate_no,
+                "plate_no": plate_converter.shorten(vehicle.plate_no.state.state_name, vehicle.plate_no.plate_code.code_name, vehicle.plate_no.plate_no) if vehicle.plate_no else 'No Plate Assigned',
 
 
             }
