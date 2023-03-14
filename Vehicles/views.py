@@ -11,6 +11,7 @@ from Users.views import sendException, sendTrials
 from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import login_required, permission_required
 from Customers.autditory import save_error, save_log
+from .plate_converter import shorten
 
 
 @login_required(login_url="Login")
@@ -301,69 +302,54 @@ def vehicle_plate_info(request, id):
 
 
 @ login_required(login_url="Login")
-def vehice_plate_code(request, id):
-    if request.method == 'GET':
+def vehicle_plate_gen(request):
+    if request.method == 'POST':
+        plate_code = request.POST.get('plate_code')
+        plate_state = request.POST.get('plate_state')
 
-        find_selected_code = vehicle_model.code_plate.objects.filter(
-            Q(code_id=id)).first()
-
-        find_code = vehicle_model.plate.objects.filter(plate_code=id).first()
-
-        plate_cod = None
-        if find_code is not None:
-            plate_cod = find_code.plate_no
-            print(plate_cod)
-
-        if find_selected_code is not None:
+        if plate_code is None or plate_state is None:
             return JsonResponse({
                 'isError': True,
-                "plate_code": find_selected_code.code_id,
-                "number": plate_cod
+                'Message': 'Bad Request'
             })
+        find_selected_state = customer_model.federal_state.objects.filter(
+            Q(state_id=plate_state)).first()
+        find_selected_code = vehicle_model.code_plate.objects.filter(
+            Q(code_id=plate_code)).first()
 
-        return JsonResponse({
-            'isError': True,
-            'message': 'owner name Not Found'
-        })
-    return JsonResponse({
-        'isError': True,
-        'message': 'Method not allowd'
-    }, status=400)
-
-
-@ login_required(login_url="Login")
-def vehicle_plate_state(request, id):
-    if request.method == 'GET':
-
-        # find_selected_owner = vehicle_model.vehicle.objects.filter(plate_id=id).first()
-
-        find_latest_plate = vehicle_model.plate.objects.order_by(
-            '-created_at').first()
-
-        find_code = vehicle_model.code_plate.objects.order_by(
-            '-created_at').first()
-
-        plate_noo = None
-        if find_latest_plate is not None:
-            plate_noo = find_latest_plate.state.state_name
-        # print(plate_no)
-
-        if find_latest_plate is not None:
+        if find_selected_code is None:
             return JsonResponse({
-                'isError': False,
-                'number': plate_noo
-
-
+                'isError': True,
+                'Message': 'Select Code is invalid'
+            })
+        if find_selected_state is None:
+            return JsonResponse({
+                'isError': True,
+                'Message': 'Selected State is Invalid'
             })
 
+        find_plate_no = vehicle_model.plate.objects.filter(
+            Q(state=find_selected_state)).filter(Q(plate_code=find_selected_code)).first()
+
+        # check if the plate is full
+        if find_plate_no is not None and int(find_plate_no.plate_no) == 9999:
+            return JsonResponse({
+                'isError': True,
+                'Message': f'Plate number is full select another platce code'
+            })
+
+        plate_no = 1 if find_plate_no is None else int(
+            find_plate_no.plate_no) + 1
+
         return JsonResponse({
-            'isError': True,
-            'message': 'owner name Not Found'
+            'gen_plate': shorten(find_selected_state.state_name, find_selected_code.code_name, plate_no),
+            'plate_no': plate_no
         })
+
     return JsonResponse({
         'isError': True,
         'message': 'Method not allowd'
-    }, status=400)
+    })
 
 
 @ login_required(login_url="Login")
@@ -435,7 +421,7 @@ def tranfercreate(request):
                             'Message': f"you can't transfer a Vehicle to the same person "
                         }
                     )
-                if document.size > 2000000:
+                if document.size > 2097152:
                     return JsonResponse(
                         {
                             "isError": True,
@@ -444,40 +430,52 @@ def tranfercreate(request):
                     )
                 if request.user.is_superuser == False and request.user.federal_state is None:
                     return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
-                else:
 
-                    vehicle_old_id = vehicle_model.vehicle.objects.filter(
-                        Q(owner=old_owner_id)).first()
+                vehcile_to_transfer = vehicle_model.vehicle.objects.filter(
+                    Q(owner=old_owner_id)).first()
 
-                    old_customer = customer_model.customer.objects.filter(
-                        Q(customer_id=old_owner_id)).first()
+                old_customer = customer_model.customer.objects.filter(
+                    Q(customer_id=old_owner_id)).first()
 
-                    car_to_update = vehicle_model.vehicle.objects.filter(
-                        vehicle_id=vehicle_id).first()
-                    new_owner = customer_model.customer.objects.filter(
-                        customer_id=new_owner_id).first()
-                    car_to_update.owner = new_owner
-                    car_to_update.save()
+                if vehcile_to_transfer is None:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': f'{old_customer.full_name} does\'t have this car'
+                    })
 
-                    new_transfering = vehicle_model.transfare_vehicles(
-                        old_owner_id=old_customer.customer_id,
-                        new_owner_id=new_owner_id,
-                        vehicle_id=vehicle_old_id.vehicle_id,
-                        description=description,
-                        document=document,
-                        rv_number=receipt_number,
-                        transfare_reason=reason,
-                        reg_user_id=request.user.id,
-                    )
+                car_to_update = vehicle_model.vehicle.objects.filter(
+                    vehicle_id=vehicle_id).first()
+                new_owner = customer_model.customer.objects.filter(
+                    customer_id=new_owner_id).first()
 
-                    new_transfering.save()
-                    save_log(request, 'Vehicles / Register',
-                             f'Waxa uu gaari kawarejiyay {new_transfering.old_owner} kuna wareejiyay {new_transfering.new_owner}')
-                    # return for post method
-                    return JsonResponse({'isError': False, 'Message': 'A New Transfer has been Succesfully Saved'}, status=200)
-        else:
+                if not new_owner.is_verified:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'New Owner is not verified'
+                    })
 
-            return redirect('un_authorized')
+                new_transfering = vehicle_model.transfare_vehicles(
+                    old_owner_id=old_customer.customer_id,
+                    new_owner_id=new_owner_id,
+                    vehicle_id=vehcile_to_transfer.vehicle_id,
+                    description=description,
+                    document=document,
+                    rv_number=receipt_number,
+                    transfare_reason=reason,
+                    reg_user_id=request.user.id,
+                )
+
+                new_transfering.save()
+
+                car_to_update.owner = new_owner
+                car_to_update.save()
+
+                save_log(request, 'Vehicles / Register',
+                         f'Waxa uu gaari kawarejiyay {new_transfering.old_owner} kuna wareejiyay {new_transfering.new_owner}')
+                # return for post method
+                return JsonResponse({'isError': False, 'Message': 'A New Transfer has been Succesfully Saved'}, status=200)
+
+        return redirect('un_authorized')
 
     except Exception as error:
         username = request.user.username
@@ -505,49 +503,11 @@ def view_vehicle(request):
         # admins can view all users
         states = customer_model.federal_state.objects.all()
 
-    stateappre = [{
-        'name': 'Banaadir',
-        'appreviation': 'BN'
-    },
-        {
-        'name': 'Hirshabeelle',
-        'appreviation': 'HR'
-    },
-        {
-        'name': 'Galmudug',
-        'appreviation': 'GM'
-    },
-        {
-        'name': 'Puntland',
-        'appreviation': 'PN'
-    },
-        {
-        'name': 'Koonfur Galbeed',
-        'appreviation': 'KG'
-    },
-        {
-        'name': 'Jubba land',
-        'appreviation': 'JL'
-    },
-        {
-        'name': 'Somali land',
-        'appreviation': 'SL'
-    }
-    ]
     plate_type = vehicle_model.code_plate.objects.all().order_by(
         '-created_at')
     plates = vehicle_model.plate.objects.all()
-    type_count = {}
-    for ptype in plate_type:
-        type_count[ptype.code_name] = 0
 
-    for plate in plates:
-        type_count[plate.plate_code.code_name] += 1
-
-    stateappr = ""
     types = vehicle_model.type.objects.all().order_by(
-        '-created_at')
-    plate_number = vehicle_model.plate.objects.all().order_by(
         '-created_at')
 
     all_vehicles = vehicle_model.vehicle.objects.all().order_by(
@@ -555,11 +515,6 @@ def view_vehicle(request):
 
     if all_vehicles is not None:
         for vh in all_vehicles:
-            stateap = ""
-            for stateapp in stateappre:
-                if vh.plate_no is not None:
-                    if vh.plate_no.state.state_name == stateapp['name']:
-                        stateap = stateapp['appreviation']
 
             vehicles.append({
                 'vehicle_id': vh.vehicle_id,
@@ -570,7 +525,7 @@ def view_vehicle(request):
                 'passenger': vh.pessenger_seat,
                 'rv_no': vh.rv_number,
                 "owner": vh.owner,
-                'plate_no': f'{stateap}-{vh.plate_no.plate_code}-{vh.plate_no.plate_no}' if vh.plate_no is not None else None
+                'plate_no': shorten(vh.plate_no.state.state_name, vh.plate_no.plate_code, vh.plate_no.plate_no) if vh.plate_no is not None else None
             })
 
     for i in range(1960, datetime.now().year):
@@ -593,28 +548,27 @@ def view_vehicle(request):
         SearchQuery = request.GET['SearchQuery']
 
         vehicles = vehicle_model.vehicle.objects.filter(
-            Q(owner__full_name__icontains=SearchQuery) | Q(
-                pessenger_seat__icontains=SearchQuery) |
+            Q(owner__full_name__icontains=SearchQuery) |
             Q(vin__icontains=SearchQuery)
         ).order_by('-created_at')
+
     paginator = Paginator(vehicles, DataNumber)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    print(page_obj)
 
     context = {'pageTitle': 'View Vehicles',
                'page_obj': page_obj,
                'SearchQuery': SearchQuery,
                'DataNumber': DataNumber,
-               "vehicles": vehicles,
+               "vehicles": page_obj,
                "states": states,
                "plate_c": plate_type,
                "types": types,
                "currentYear": datetime.now().year,
-               "plate_number": plate_number,
                "noplates": noplates,
                "total": len(vehicle_lists)
-
                }
     return render(request, 'vehicles/veiw_vehicles.html', context)
 
@@ -826,7 +780,7 @@ def asign_plate(request):
                     new_plate = vehicle_model.plate(
                         plate_code=selected_code,
                         state=selected_state,
-                        plate_no=number,
+                        plate_no='{:0>4}'.format(number),
                         year=year,
                         type=selected_type,
                         reg_user_id=request.user.id,
@@ -839,6 +793,7 @@ def asign_plate(request):
                     if vehicle_to_assign_plate is not None:
                         vehicle_to_assign_plate.plate_no = new_plate
                         vehicle_to_assign_plate.save()
+
                     username = request.user.username
                     names = request.user.first_name + ' ' + request.user.last_name
                     avatar = str(request.user.avatar)
@@ -877,20 +832,28 @@ def asign_plate(request):
 def Searchcustomer(request, search):
     if request.method == 'GET':
         searchQuery = customer_model.customer.objects.filter(
-            Q(full_name__icontains=search))
-        message = []
-        for xSearch in range(0, len(searchQuery)):
-            message.append(
-                {
-                    'label': f"{searchQuery[xSearch].full_name}",
-                    'value': f"{searchQuery[xSearch].full_name}",
-                    'full_name': searchQuery[xSearch].full_name,
-                    'personal_id': searchQuery[xSearch].personal_id,
-                    'newowner_mother_name': searchQuery[xSearch].mother_name,
-                    'new_hid_id': searchQuery[xSearch].customer_id,
-                }
-            )
-        return JsonResponse({'Message': message}, status=200)
+            Q(full_name__icontains=search) | Q(personal_id__icontains=search))
+
+        print(searchQuery)
+        if searchQuery is not None:
+            message = []
+            print(searchQuery)
+            for xSearch in range(0, len(searchQuery)):
+                message.append(
+                    {
+                        'label': f"{searchQuery[xSearch].full_name}",
+                        'value': f"{searchQuery[xSearch].full_name}",
+                        'full_name': searchQuery[xSearch].full_name,
+                        'personal_id': searchQuery[xSearch].personal_id,
+                        'newowner_mother_name': searchQuery[xSearch].mother_name,
+                        'new_hid_id': searchQuery[xSearch].customer_id,
+                    }
+                )
+            return JsonResponse({'Message': message}, status=200)
+        return JsonResponse({
+            'isError': True,
+            'Message': 'Customer Not Found'
+        })
 
 
 @ login_required(login_url='Login')

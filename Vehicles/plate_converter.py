@@ -11,10 +11,11 @@ stateappreviations = [
 
 def shorten(state, code, number):
     plate_no = ''
+    formatted_no = '{:0>4}'.format(number)
     for stateapprevaition in stateappreviations:
         if state.lower() in stateapprevaition['name'].lower():
             plate_no = "{}-{}-{}".format(
-                stateapprevaition['appreviation'], code, number)
+                stateapprevaition['appreviation'], code, formatted_no)
     return plate_no
 
 

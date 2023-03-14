@@ -39,7 +39,7 @@ $(document).ready(() => {
                 async: true,
                 success: function (response) {
                     if (!response.isError) {
-                        console.log(response.Message)
+
                         response.Message.li_info.forEach(liscences => {
                             const registerDate = new Date(liscences.created_at)
                             const options = {
@@ -106,6 +106,16 @@ $(document).ready(() => {
                 state = $("#state option:selected").val()
                 place = $("#place option:selected").val()
                 type = $("#type option:selected").val()
+            }
+
+
+            if (state === 'Select State') {
+                Swal.fire('Error', 'Select State', 'error')
+                return false
+            }
+            if (place === 'Select A place') {
+                Swal.fire('Error', 'Select A place', 'error')
+                return false
             }
 
             let formData = new FormData(this);

@@ -51,7 +51,21 @@
                                                     <i class="bx bx-search"></i>
                                                 </button>
                                             </div>
-                                        </form>
+                                            <form autocomplete="off">
+                                                <div class="input-group mr-0">
+                                                    <input id="SearchQuery"
+                                                           type="text"
+                                                           placeholder="Search..."
+                                                           value="{{ SearchQuery }}"
+                                                           class="form-control"
+                                                           aria-label="Recipient's"
+                                                           aria-describedby="button-addon2"/>
+                                                    <button class="btn btn-primary" type="button" id="button-addon2">
+                                                        <i class="bx bx-search"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -104,21 +118,45 @@
                                                                 
                                                                 </button>
                                                             {% else %}
-                                                            <p>Already Assigned</p>
+                                                                <p>Assign Plate First</p>
                                                             {% endif %}
-                                                    {% endif %}
-                                                    </td>
-                                                
-                                                    <td>
-                                                        {% if perms.Vehicles.add_transfare_vehicles %}
-                                                        <button type="button"
-                                                                class="btn btn-primary text-white"
-                                                                id="transferbtn"
-                                                                data-vehicleid="{{ veh.vehicle_id }}">
-                                                            Transfer
-                                                        </button>
-                                                        {% endif %}
-                                                    </td>
+                                                        </td>
+                                                        <td>
+                                                            {% if perms.Vehicles.add_plate %}
+                                                                {% if veh.plate_no is None %}
+                                                                    <button type="button"
+                                                                            class="btn btn-success text-white"
+                                                                            id="assign_btn"
+                                                                            data-assignvehicleid="{{ veh.vehicle_id }}">
+                                                                        Assign plate
+                                                                    </button>
+                                                                {% else %}
+                                                                    <p>Already Assigned</p>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        </td>
+                                                        <td class="d-flex align-items-center justify-content-center fs-4">
+                                                            {% if perms.Vehicles.view_vehicle %}
+                                                                <a href="{% url 'vehicle-profile' veh.vehicle_id %}">
+                                                                    <i class='menu-icon bx bx-low-vision'></i>
+                                                                </a>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            {% if perms.Vehicles.add_transfare_vehicles %}
+                                                                <button type="button"
+                                                                        class="btn btn-primary text-white"
+                                                                        id="transferbtn"
+                                                                        data-vehicleid="{{ veh.vehicle_id }}">
+                                                                    Transfer
+                                                                </button>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% else %}
+                                                <tr>
+                                                    <td colspan="8" class="text-center">No Car Found</td>
                                                 </tr>
                                             {% endfor %}
                                     </tbody>

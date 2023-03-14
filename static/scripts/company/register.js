@@ -17,7 +17,7 @@ $(document).ready(function () {
     const file = this.files[0]
     if (file) {
 
-      if (file.size > 2000000) {
+      if (file.size > 2097152) {
         Swal.fire('Error', 'Upploaded file exceeded maximum size')
         return false
       }
