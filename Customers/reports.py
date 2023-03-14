@@ -139,7 +139,7 @@ def customer_report(request, id):
                         'plate_no': plate_converter.shorten(vehicle.plate_no.state.state_name, vehicle.plate_no.plate_code.code_name, vehicle.plate_no.plate_no) if vehicle.plate_no else 'No Plate Assigned'
                     })
 
-            found_transfer = ""
+            found_transfer = []
             transfers = vehicle_model.transfare_vehicles.objects.filter(
                 Q(old_owner=customer) | Q(new_owner=customer)).all()
 
@@ -147,8 +147,8 @@ def customer_report(request, id):
                 for transfer in transfers:
                     found_transfer.append({
                         'model_year': f"{transfer.vehicle.vehicle_model}-{transfer.vehicle.year}",
-                        'old_owner': transfer.old_owner,
-                        'new_owner': transfer.new_owner,
+                        'old_owner': transfer.old_owner.full_name,
+                        'new_owner': transfer.new_owner.full_name,
                         'rv_no': transfer.rv_number,
                         'reason': transfer.transfare_reason,
                         'plate_no': plate_converter.shorten(transfer.vehicle.plate_no.state.state_name, transfer.vehicle.plate_no.plate_code.code_name, transfer.vehicle.plate_no.plate_no) if vehicle.plate_no else 'No Plate Assigned',
