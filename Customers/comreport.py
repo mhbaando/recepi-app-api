@@ -80,18 +80,19 @@ def company_report(request, id):
             )
 
             found_company = {
+
+
                 'company_name': company.company_name,
+                'phone': company.phone,
                 'email': company.email,
-                'address': company.address,
-                'phone': company. phone,
-                'status': company.show_status()['verified_status'],
                 'website': company.website,
-                'regno': company.reg_no,
-                'owner': company.owner.full_name,
-                'regdate': company.modified_at,
+                'address': company.address,
                 'state': company.federal_state.state_name,
+                'reg_no': company.reg_no,
                 'reg_user': company.reg_user.email,
-                'status_class': company.show_status()['verified_color']
+                'owner': company.owner.full_name,
+                'status': company.show_status()['verified_status'],
+                'reg_date': company.created_at.strftime('%d / %B /%Y')
             }
 
             found_vehicles = []
