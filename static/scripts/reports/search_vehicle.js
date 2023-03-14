@@ -20,6 +20,7 @@ $(document).ready(() => {
                     $("#rv_num_R").text(data.rv_number)
                     $("#year").text(data.year)
                     $("#origin").text(data.origin)
+                    $("#plat_nu").text(data.plate_no)
                     $("#cylinder").text(data.cylinder)
                     $("#reg_user").text(data.reg_user)
                 
@@ -105,6 +106,27 @@ $(document).ready(() => {
     // prevent page refreshing
     $("#search_vehicle_form").on('submit', (e) => {
         e.preventDefault()
+    })
+    // hide when other customers clicked
+    $("#customer").on('click', function () {
+      
+        $("#vehicle_report").addClass('hidden')
+        
+
+    })
+    $("#company").on('click', function () {
+      
+        $("#vehicle_report").addClass('hidden')
+        
+
+    })
+   
+    // stay when when others clicked 
+    $("#vehicle").on('click', function () {
+      
+        $("#vehicle_report").removeClass('hidden')
+        
+
     })
 })
 

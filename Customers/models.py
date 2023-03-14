@@ -214,6 +214,9 @@ class license(models.Model):
     # TODO: resoipt herer
     class Meta:
         db_table = 'license'
+        permissions = [
+            ("change_status", "Can change license status"),
+        ]
 
     def __str__(self) -> str:
         return f"{self.license_id} {self.owner.full_name} {self.receipt_voucher.rv_number}"

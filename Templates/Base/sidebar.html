@@ -158,13 +158,6 @@
                 {% endif %}
             </ul>
         </li>
-        {% comment %} reports {% endcomment %}
-        <li class="menu-item {% if pageTitle == 'Reports' %}active{% endif %}">
-            <a href="{% url 'Reports' %} " class="menu-link">
-                <i class="menu-icon tf-icons bx bxs-report"></i>
-                <div data-i18n="Reports">Reports</div>
-            </a>
-        </li>
         {% if perms.Users.add_users or perms.Users.view_users %}
             <li class="menu-item {% if pageTitle == 'Users List' or pageTitle == 'Add New User' or pageTitle == 'User Profile' %}active open{% endif %}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -192,7 +185,7 @@
         {% if perms.Users.role_report or perms.auth.view_permission and perms.auth.add_permission or perms.auth.view_group or perms.Users.assign_user_to_group %}
             <li class="menu-item {% if pageTitle == 'Search Role' or pageTitle == 'Assign Role To User' or pageTitle == 'Create Groups' or pageTitle == 'Assign User To A Group Role' or pageTitle == 'Roles Report' or pageTitle == 'User Roles Report' %}active open{% endif %}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                    <i class="menu-icon tf-icons bx bx-group"></i>
                     <div data-i18n="Dashboards">Roles</div>
                 </a>
                 <ul class="menu-sub">
@@ -232,7 +225,7 @@
         {% if perms.Users.view_audittrials or perms.Users.view_errorlogs %}
             <li class="menu-item {% if pageTitle == 'Audit Trials' or pageTitle == 'Error Logs' %}open active{% endif %}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                    <i class="menu-icon tf-icons bx bxs-detail"></i>
                     <div data-i18n="Dashboards">
                         Logs
                     </div>
@@ -252,5 +245,14 @@
                 </ul>
             </li>
         {% endif %}
+        {% comment %} reports {% endcomment %}
+        <li class="menu-item {% if pageTitle == 'Reports' %}active{% endif %}">
+            <a href="{% url 'Reports' %} " class="menu-link">
+                <i class="menu-icon tf-icons bx bxs-report"></i>
+                <div data-i18n="Reports">
+                    Reports
+                </div>
+            </a>
+        </li>
     </ul>
 </aside>

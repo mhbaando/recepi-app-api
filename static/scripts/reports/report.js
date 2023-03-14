@@ -9,10 +9,14 @@ $(document).ready(() => {
         $("#customer_search").removeClass('hidden')
         $("#vehicle-search").addClass("hidden")
         $("#company-search").addClass("hidden")
-         // hidre reports
 
+        // report document
         $("#company-report-data").addClass('hidden')
+        $("#vehicle_report").addClass('hidden')
 
+        // clean seach inputs
+        $("#SearchVehicle").val('')
+        $('#searchcompany').val('')
 
     })
 
@@ -28,8 +32,13 @@ $(document).ready(() => {
         $("#vehicle-search").removeClass("hidden")
         $("#company-search").addClass("hidden")
 
-        // hidre reports
+        // report document
+        $("#customer-report-data").addClass('hidden')
         $("#company-report-data").addClass('hidden')
+
+        // clean seach inputs
+        $('#searchcompany').val('')
+        $('#searchCustomer').val('')
     })
 
     $("#company").on('click', function () {
@@ -42,8 +51,13 @@ $(document).ready(() => {
         $("#vehicle-search").addClass("hidden")
         $("#company-search").removeClass("hidden")
 
+        // report document
+        $("#customer-report-data").addClass('hidden')
+        $("#vehicle_report").addClass('hidden')
 
-        // hide reports
+        // clean seach inputs
+        $("#SearchVehicle").val('')
+        $('#searchCustomer').val('')
     })
 
 

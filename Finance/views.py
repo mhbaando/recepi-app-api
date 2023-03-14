@@ -279,8 +279,8 @@ def find_rcfrom(request, name):
                     for xSearch in range(0, len(rc_from)):
                         message.append(
                             {
-                                'label': f"{ rc_from[xSearch].full_name}",
-                                'value': f"{ rc_from[xSearch].full_name}",
+                                'label': f"{ rc_from[xSearch].full_name} - {rc_from[xSearch].personal_id}",
+                                'value': f"{ rc_from[xSearch].full_name} - {rc_from[xSearch].personal_id}",
                                 'per_id': f"{ rc_from[xSearch].personal_id}",
                                 'mot_name': f"{ rc_from[xSearch].mother_name}",
 
@@ -446,22 +446,28 @@ def update_reviept(request, id):
             try:
                 if request.user.has_perm('Finance.change_receipt_voucher'):
 
-                    rvnumber = request.POST.get('rvnumber', None)
-                    # rcfrom = request.POST.get('rcfrom', None)
+                    rcfrom = request.POST.get('recievedfrom', None)
                     reason = request.POST.get('reason', None)
-                    amaount = request.POST.get('amount', None)
 
                     if id is not None:
                         rv = models.receipt_voucher.objects.filter(
                             rv_id=id).first()
 
                         if rv is not None:
-                            if rvnumber is None or reason is None or amaount is None:
+                            if rcfrom is None or reason is None:
                                 return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
 
-                            rv.rv_number = rvnumber
+                            rv_from = customer_model.customer.objects.filter(
+                                Q(personal_id=rcfrom)).first()
+
+                            if rv_from is None:
+                                return JsonResponse({
+                                    'isError': True,
+                                    'Message': 'Customer Not found'
+                                })
+
+                            rv.rv_from = rv_from
                             rv.reason = reason
-                            rv.rv_amount = amaount
 
                             rv.save()
 

@@ -164,7 +164,7 @@ def activate_customer(request):
             c_personalID = request.POST.get("perosonalID").strip()
             c_desc = request.POST.get("desc")
             c_doc = request.FILES["customerDoc"]
-            if c_doc.size > 2000000:
+            if c_doc.size > 2097152:
                 return JsonResponse(
                     {
                         "isError": True,
@@ -336,6 +336,7 @@ def customer_profile(request, id):
                         customer = customer_model.customer.objects.filter(
                             Q(customer_id=id), federal_state=request.user.federal_state
                         ).first()
+
                     vehicles = []
                     vehicle = vehicle_model.vehicle.objects.filter(
                         Q(owner=customer))
