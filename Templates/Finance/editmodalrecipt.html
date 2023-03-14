@@ -2,7 +2,6 @@
 {% block cssData %}
     <link rel="stylesheet" href="{% static "assets/css/customer/modal.css" %}"/>
     <link rel="stylesheet" href={% static "assets/css/jquery-ui/ui.css" %}>
-    
 {% endblock cssData %}
 {% block content %}
     <div class="overlay hidden"></div>
@@ -18,13 +17,13 @@
                     <div class="col">
                         <label class="form-label">Search customer</label>
                         <div class="input-group input-group-merge">
-                          <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                          <input id="rcfrom"
-                                 type="text"
-                                 class="form-control"
-                                 placeholder="Search..."
-                                 aria-label="Search..."
-                                 aria-describedby="basic-addon-search31"/>
+                            <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                            <input id="rcfrom"
+                                   type="text"
+                                   class="form-control"
+                                   placeholder="Search..."
+                                   aria-label="Search..."
+                                   aria-describedby="basic-addon-search31"/>
                         </div>
                     </div>
                     <div class="col row gap-2 me-2">
@@ -34,7 +33,8 @@
                                    class="form-control"
                                    placeholder="rvnumber"
                                    required="required"
-                                   id="rvnumber"/>
+                                   id="rvnumber"
+                                   disabled/>
                         </div>
                         <div class="col me-2">
                             <label for="company">Amount</label>
@@ -42,7 +42,8 @@
                                    class="form-control"
                                    placeholder="amount"
                                    required="required"
-                                   id="rvamount"/>
+                                   id="rvamount"
+                                   disabled/>
                         </div>
                     </div>
                     <div class="row mb-4 gap-2 pt-3 me-2">
