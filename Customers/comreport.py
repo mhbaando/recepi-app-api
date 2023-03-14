@@ -69,7 +69,7 @@ def company_report(request, id):
             company = customer_model.company.objects.filter(
                 Q(federal_state=request.user.federal_state), company_id=id
             ).first()
-            vehicle = vehicle_model.vehicle.objects.filter(
+            vehicle = vehicle_model.vehicle.objects.filter(  
                 Q(owner=company.owner)).first()
 
         if company is not None:

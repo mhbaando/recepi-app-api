@@ -9,8 +9,14 @@ $(document).ready(() => {
         $("#customer_search").removeClass('hidden')
         $("#vehicle-search").addClass("hidden")
         $("#company-search").addClass("hidden")
+         // hidre reports
+
+        $("#company-report-data").addClass('hidden')
+
 
     })
+
+
 
     $("#vehicle").on('click', function () {
         $(this).addClass('active-choice');
@@ -21,17 +27,23 @@ $(document).ready(() => {
         $("#customer_search").addClass('hidden')
         $("#vehicle-search").removeClass("hidden")
         $("#company-search").addClass("hidden")
+
+        // hidre reports
+        $("#company-report-data").addClass('hidden')
     })
 
     $("#company").on('click', function () {
         $(this).addClass('active-choice');
         $("#vehicle").removeClass("active-choice")
         $("#customer").removeClass("active-choice")
-
-        // seach form
+      
+         // seach form
         $("#customer_search").addClass('hidden')
         $("#vehicle-search").addClass("hidden")
         $("#company-search").removeClass("hidden")
+
+
+        // hide reports
     })
 
 

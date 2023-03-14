@@ -48,7 +48,7 @@ urlpatterns = [
     path('reports/search_customer/<str:search>', reports.Searchcustomer),
     path('reports/customer_report/<int:id>', reports.customer_report),
 
-    #company report
+    # company report
     path('comreport/search_company/<str:search>', comreport.searchcompany),
     path('comreport/company_report/<int:id>', comreport.company_report),
 

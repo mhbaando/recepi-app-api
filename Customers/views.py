@@ -35,7 +35,7 @@ def vew_register_company(request):
                     'pageTitle': 'Register Company',
                     'states': states,
                 }
-                return render(request, 'Company/register.html', context)
+                return render(request, 'Company/view_company.html', context)
             return JsonResponse({
                 'isError': True,
                 'Message': 'Method Not Allowed'
@@ -43,6 +43,9 @@ def vew_register_company(request):
         return render(request, 'Base/403.html')
     except Exception as error:
         save_error(request, error)
+
+
+#
 
 
 @login_required(login_url='Login')
@@ -129,7 +132,7 @@ def register_company(request):
 def search_engine(request, search):
     try:
         if request.user.has_perm('Customers.view_company'):
-            
+
             if request.method == 'GET':
                 customers = customer_model.customer.objects.filter(
                     Q(full_name__icontains=search))
