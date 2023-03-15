@@ -117,15 +117,14 @@
                 <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
                 <div data-i18n="Dashboards">Payments</div>
             </a>
-               {% if perms.Finance.add_account or perms.Finance.change_account or perms.Finance.view_account %}
+               
                 <ul class="menu-sub">
                     <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' %}active{% endif %}">
                         <a href={% url 'AccountsPage' %} class="menu-link">
                             <div data-i18n="Analytics">Accounts</div>
                         </a>
                     </li>
-                {% endif %}
-              {% if perms.Finance.add_receipt_voucher or perms.Finance.change_receipt_voucher or perms.Finance.view_receipt_voucher %}
+             
                     <li class="menu-item {% if pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active{% endif %}">
                         <a href={% url 'ReceiptsPage' %} class="menu-link">
                             <div data-i18n="Analytics">Receipts</div>
@@ -133,7 +132,7 @@
                     </li>
                 </ul>
             </li>
-        {% endif %}
+      
         <li class="menu-item {% if pageTitle == 'Register License' or pageTitle == 'Renew License' or  pageTitle == 'License Lists' %}active open{% endif %}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon bx bx-id-card'></i>
