@@ -496,7 +496,7 @@ def view_vehicle(request):
     year = []
     vehicles = []
     noplates = []
-    customers = []
+    # customers = []
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
             Q(state_name=request.user.federal_state))
@@ -517,16 +517,16 @@ def view_vehicle(request):
     if all_vehicles is not None:
         for vh in all_vehicles:
 
-            customers.append({
+            vehicles.append({
                 'vehicle_id': vh.vehicle_id,
-                'model': vh.vehicle_model,
+                'model_bra': vh.vehicle_model.brand_name,
                 'vin': vh.vin,
                 'year': vh.year,
                 'hp': vh.hp,
                 'passenger': vh.pessenger_seat,
                 'rv_no': vh.rv_number,
                 "owner": vh.owner,
-                'plate_no': plate_converter.shorten(vh.plate_no.state.state_name, vh.plate_no.plate_code.code_name, vh.plate_no.plate_no) if vh.plate_no else None
+                'plate_no': shorten(vh.plate_no.state.state_name, vh.plate_no.plate_code, vh.plate_no.plate_no) if vh.plate_no else None
 
             })
 
@@ -538,10 +538,9 @@ def view_vehicle(request):
     CheckDataNumber = "DataNumber" in request.GET
     CheckStatus = "Status" in request.GET
 
-    Status = "Verified"
+    Status = "Active"
     SearchQuery = ""
     DataNumber = 10
-    vehicle_lists = []
 
     if CheckDataNumber:
         DataNumber = int(request.GET["DataNumber"])
@@ -552,32 +551,26 @@ def view_vehicle(request):
     if CheckSearchQuery:
         SearchQuery = request.GET["SearchQuery"]
 
-    customers = (
-        vehicle_model.vehicle.objects
-        .filter(Q(owner__full_name__icontains=SearchQuery))
-        .order_by("-created_at")
-    )
+        vehicles = (
+            vehicle_model.vehicle.objects
+            .filter(Q(owner__full_name__icontains=SearchQuery) | (Q(vin__icontains=SearchQuery)) | (Q(vehicle_id__icontains=SearchQuery)))
+            .order_by("-created_at")
+        )
 
-    paginator = Paginator(customers, DataNumber)
+    paginator = Paginator(vehicles, DataNumber)
     page_number = request.GET.get("page")
-    customers_obj = paginator.get_page(page_number)
-    # context["total"] = len(customers)
-    # context["DataNumber"] = DataNumber
-    # context["customers"] = customers_obj
-    # context["SearchQuery"] = SearchQuery
+    vehicle_obj = paginator.get_page(page_number)
 
     context = {'pageTitle': 'View Vehicles',
-               #    'page_obj': page_obj,
                'SearchQuery': SearchQuery,
                'DataNumber': DataNumber,
-               "vehicles": customers_obj,
-
+               "vehicles": vehicle_obj,
                "states": states,
                "plate_c": plate_type,
                "types": types,
                "currentYear": datetime.now().year,
                "noplates": noplates,
-               "total": len(customers),
+               "total": len(vehicles),
 
 
                }

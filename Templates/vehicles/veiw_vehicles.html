@@ -68,11 +68,9 @@
                                 <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered">
                                     <thead>
                                         <tr>
-                                            {% comment %} <th class="wd-15p border-bottom-0">vehicle_model</th> {% endcomment %}
+                                            <th class="wd-15p border-bottom-0">Vehicle ID</th>
                                             <th class="wd-15p border-bottom-0">owner</th>
                                             <th class="wd-15p border-bottom-0">vin</th>
-                                            {% comment %} <th class="wd-15p border-bottom-0">Passenger</th> {% endcomment %}
-                                            {% comment %} <th class="wd-15p border-bottom-0">Rv number</th> {% endcomment %}
                                             <th class="wd-15p border-bottom-0">Plate Number</th>
                                             <th class="wd-15p border-bottom-0">Assign A plate</th>
                                             <th class="wd-15p border-bottom-0">Action</th>
@@ -80,21 +78,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       
+                                        
                                             {% for veh in vehicles %}
                                                 <tr>
-                                                    {% comment %} <td>{{ veh.model }}</td> {% endcomment %}
+                                                    <td>{{ veh.vehicle_id }}</td>
                                                     <td>{{ veh.owner }}</td>
                                                     <td>{{ veh.vin }}</td>
-                                                    {% comment %} <td>{{ veh.passenger }}</td> {% endcomment %}
-                                                    {% comment %} <td> {{ veh.rv_no }}</td>  {% endcomment %}
-                                                    <td>
+                                                     <td>
                                                         {% if veh.plate_no %}
                                                             {{ veh.plate_no }}
                                                         {% else %}
                                                             <p>Assign Plate First</p>
                                                         {% endif %}
-                                                    </td>
+                                                    </td> 
                                                     <td>
                                                         {% if perms.Vehicles.add_plate %}
                                                             {% if veh.plate_no is None %}
@@ -131,36 +127,36 @@
                                         {% comment %} {% else %}
                                             <tr>
                                                 <td colspan="8" class="text-center">No Car Found</td>
-                                            </tr> {% endcomment %}
-                                        {% comment %} {% endif %} {% endcomment %}
+                                            </tr> 
+                                       {% endif %} {% endcomment %}
                                     </tbody>
                                 </table>
                             </div>
                             <div class="mb-3 col-md-12 d-flex justify-content-between align-items-center">
-                                <div activePage = {{ customers.number }} class="col-md-6 activePage">
-                                    Showing {{ customers.number }} to {{ customers.paginator.num_pages }} of {{ total }}.
+                                <div activePage = {{ vehicles.number }} class="col-md-6 activePage">
+                                    Showing {{ vehicles.number }} to {{ vehicles.paginator.num_pages }} of {{ total }}.
                                 </div>
                                 <div class="col-md-6 d-flex justify-content-end align-items-center">
                                     <nav aria-label="Page navigation">
                                         <ul class="pagination">
-                                            <li class="page-item first {% if not customers.has_previous %}disabled{% endif %}"
+                                            <li class="page-item first {% if not vehicles.has_previous %}disabled{% endif %}"
                                                 page="1">
                                                 <a class="page-link" href="javascript:void(0);">
                                                     <i class="tf-icon bx bx-chevrons-left"></i>
                                                 </a>
                                             </li>
-                                            <li class="page-item prev {% if not customers.has_previous %}disabled{% endif %}"
-                                                page="{% if customers.has_previous %}{{ customers.previous_page_number }}{% else %}No Page{% endif %}">
+                                            <li class="page-item prev {% if not vrhicles.has_previous %}disabled{% endif %}"
+                                                page="{% if vehicles.has_previous %}{{ vehicles.previous_page_number }}{% else %}No Page{% endif %}">
                                                 <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i
                                                 ></a>
                                             </li>
-                                            <li class="page-item next {% if not customers.has_next %}disabled{% endif %}"
-                                                page="{% if customers.has_next %}{{ customers.next_page_number }}{% else %}No Page{% endif %}">
+                                            <li class="page-item next {% if not vehicles.has_next %}disabled{% endif %}"
+                                                page="{% if vehciles.has_next %}{{ vehicles.next_page_number }}{% else %}No Page{% endif %}">
                                                 <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i
                                                 ></a>
                                             </li>
-                                            <li class="page-item last {% if not customers.has_next %}disabled{% endif %}"
-                                                page="{{ customers.paginator.num_pages }}">
+                                            <li class="page-item last {% if not vehicles.has_next %}disabled{% endif %}"
+                                                page="{{ vehicles.paginator.num_pages }}">
                                                 <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i
                                                 ></a>
                                             </li>
