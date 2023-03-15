@@ -498,7 +498,7 @@ def view_vehicle(request):
 
             })
 
-    for i in range(1960, datetime.now().year):
+    for i in range(1960, datetime.now().year + 1):
         year.append(i)
     year.reverse()
 
@@ -562,7 +562,7 @@ def vehicle_profile(request, pk):
     # cylinders = vehicle_model.cylinder.objects.all()
     year = []
 
-    for i in range(1960, datetime.now().year):
+    for i in range(1960, datetime.now().year + 1):
         year.append(i)
 
     year.reverse()
