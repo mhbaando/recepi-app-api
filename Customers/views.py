@@ -35,7 +35,7 @@ def vew_register_company(request):
                     'pageTitle': 'Register Company',
                     'states': states,
                 }
-                return render(request, 'Company/view_company.html', context)
+                return render(request, 'Company/register.html', context)
             return JsonResponse({
                 'isError': True,
                 'Message': 'Method Not Allowed'
