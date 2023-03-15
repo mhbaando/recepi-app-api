@@ -158,7 +158,7 @@ def register_vehicle(request):
                 if engine_no_exits:
                     return JsonResponse({
                         'isError': True,
-                        'Message': 'EngineSS Number Already Registered to other vehicle'
+                        'Message': 'Engine Number Already Registered to other vehicle'
                     })
 
                 # Save Vehicle
@@ -200,35 +200,6 @@ def register_vehicle(request):
         return JsonResponse(message, status=200)
 
 
-# searching receipt for their owner
-
-
-# @login_required(login_url="Login")
-# def seach_owner(request, search):
-#     if request.method == 'GET':
-#         # look up the rv
-#         find_rv = finance_model.receipt_voucher.objects.filter(
-#             Q(rv_number__icontains=search)).first()
-
-#         if find_rv is not None:
-#             return JsonResponse({
-#                 'isError': False,
-#                 "owner_id": find_rv.rv_from.customer_id,
-#                 'owner_name': f"{ find_rv.rv_from.firstname} {find_rv.rv_from.middle_name} {find_rv.rv_from.lastname} ",
-#                 'mother_name': find_rv.rv_from.mother_name,
-#                 'personal_id': find_rv.rv_from.personal_id
-#             })
-
-#         return JsonResponse({
-#             'isError': True,
-#             'message': 'RV Not Found'
-#         })
-#     return JsonResponse({
-#         'isError': True,
-#         'message': 'Method not allowd'
-#     })
-
-
 @ login_required(login_url="Login")
 def seach_transfer(request, search):
     if request.method == 'GET':
@@ -264,9 +235,6 @@ def seach_transfer(request, search):
 @ login_required(login_url="Login")
 def vehicle_plate_info(request, id):
     if request.method == 'GET':
-        # look up the rv
-        # find_rv = finance_model.receipt_voucher.objects.filter(
-        #     Q(rv_number__icontains=id)).first()
 
         find_selected_owner = vehicle_model.vehicle.objects.filter(
             Q(vehicle_id=id)).first()
@@ -280,7 +248,6 @@ def vehicle_plate_info(request, id):
         plate_no = None
         if find_latest_plate is not None:
             plate_no = find_latest_plate.plate_no
-        # print(plate_no)
 
         if find_selected_owner is not None:
             return JsonResponse({
@@ -496,6 +463,7 @@ def view_vehicle(request):
     year = []
     vehicles = []
     noplates = []
+    plate_search = []
     # customers = []
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
@@ -553,7 +521,7 @@ def view_vehicle(request):
 
         vehicles = (
             vehicle_model.vehicle.objects
-            .filter(Q(owner__full_name__icontains=SearchQuery) | (Q(vin__icontains=SearchQuery)) | (Q(vehicle_id__icontains=SearchQuery)))
+            .filter(Q(owner__full_name__icontains=SearchQuery) | (Q(vin__icontains=SearchQuery)) | (Q(vehicle_id__icontains=SearchQuery)) | (Q(plate_no__plate_no__icontains=SearchQuery)))
             .order_by("-created_at")
         )
 
@@ -574,6 +542,8 @@ def view_vehicle(request):
 
 
                }
+    save_log(request, 'Vehicle / Register',
+             'waxa uu boqday View Vehicle')
     return render(request, 'vehicles/veiw_vehicles.html', context)
 
 
@@ -705,15 +675,8 @@ def update_vehicle(request):
                 vehicle.vehicle_model = c_brand
 
                 vehicle.save()
-
-                username = request.user.username
-                names = request.user.first_name + ' ' + request.user.last_name
-                avatar = str(request.user.avatar)
-                module = "Vehicle / Register"
-                action = f'Updated A Vehicle {vbrand} at {datetime.now()}'
-                path = request.path
-                sendTrials(request, username, names,
-                           avatar, action, module, path)
+                save_log(request, 'Vehicles / Update Car',
+                         f'Waxa uu gaari udiiwangaliyay {vehicle.owner}')
                 # return for post method
                 return JsonResponse({'isError': False, 'Message': 'Vehicle has been updated succesfully'}, status=200)
         else:
@@ -798,14 +761,8 @@ def asign_plate(request):
                         vehicle_to_assign_plate.plate_no = new_plate
                         vehicle_to_assign_plate.save()
 
-                    username = request.user.username
-                    names = request.user.first_name + ' ' + request.user.last_name
-                    avatar = str(request.user.avatar)
-                    module = "Vehicle / View Vehicle"
-                    action = f'Registered A plate {code} at {datetime.now()}'
-                    path = request.path
-                    sendTrials(request, username, names,
-                               avatar, action, module, path)
+                    save_log(request, 'Vehicles / Plate',
+                             f'Waxa uu register gareeyay plate number ka gaarigaan leh {new_plate.plate_no}')
                     # return for post method
                     return JsonResponse({'isError': False, 'Message': 'A New Plate has been registered '}, status=200)
 
@@ -897,14 +854,8 @@ def code_plate_name(request):
 
                 )
                 new_code.save()
-                username = request.user.username
-                names = request.user.first_name + ' ' + request.user.last_name
-                avatar = str(request.user.avatar)
-                module = "Vehicle / Register"
-                action = f'Registered A New Code Plate {codeplate} at {datetime.now()}'
-                path = request.path
-                sendTrials(request, username, names,
-                           avatar, action, module, path)
+                save_log(request, 'Vehicles / Vehicles / Add Code Plate',
+                         f'Waxa uu gaari udiiwangaliyay {new_code.code_name} kaan le')
                 # return for post method
                 return JsonResponse({'isError': False, 'Message': 'A New Code Plate has been Registered'}, status=200)
         else:
