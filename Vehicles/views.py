@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from datetime import datetime
-from Vehicles import models as vehicle_model
+from Vehicles import models as vehicle_model, plate_converter
 from Customers import models as customer_model
 from Finance import models as finance_model
 from django.db.models import Q
@@ -496,6 +496,7 @@ def view_vehicle(request):
     year = []
     vehicles = []
     noplates = []
+    customers = []
     if request.user.is_state and request.user.federal_state is not None:
         states = customer_model.federal_state.objects.filter(
             Q(state_name=request.user.federal_state))
@@ -516,7 +517,7 @@ def view_vehicle(request):
     if all_vehicles is not None:
         for vh in all_vehicles:
 
-            vehicles.append({
+            customers.append({
                 'vehicle_id': vh.vehicle_id,
                 'model': vh.vehicle_model,
                 'vin': vh.vin,
@@ -525,50 +526,60 @@ def view_vehicle(request):
                 'passenger': vh.pessenger_seat,
                 'rv_no': vh.rv_number,
                 "owner": vh.owner,
-                'plate_no': shorten(vh.plate_no.state.state_name, vh.plate_no.plate_code, vh.plate_no.plate_no) if vh.plate_no is not None else None
+                'plate_no': plate_converter.shorten(vh.plate_no.state.state_name, vh.plate_no.plate_code.code_name, vh.plate_no.plate_no) if vh.plate_no else None
+
             })
 
     for i in range(1960, datetime.now().year):
         year.append(i)
     year.reverse()
 
-    CheckSearchQuery = 'SearchQuery' in request.GET
-    CheckDataNumber = 'DataNumber' in request.GET
-    CheckStatus = 'Status' in request.GET
+    CheckSearchQuery = "SearchQuery" in request.GET
+    CheckDataNumber = "DataNumber" in request.GET
+    CheckStatus = "Status" in request.GET
+
+    Status = "Verified"
+    SearchQuery = ""
     DataNumber = 10
-    Status = "Active"
-    SearchQuery = ''
     vehicle_lists = []
 
     if CheckDataNumber:
-        DataNumber = int(request.GET['DataNumber'])
+        DataNumber = int(request.GET["DataNumber"])
+
     if CheckStatus:
-        Status = request.GET.get('Status')
+        Status = request.GET.get("Status")
+
     if CheckSearchQuery:
-        SearchQuery = request.GET['SearchQuery']
+        SearchQuery = request.GET["SearchQuery"]
 
-        vehicles = vehicle_model.vehicle.objects.filter(
-            Q(owner__full_name__icontains=SearchQuery) |
-            Q(vin__icontains=SearchQuery)
-        ).order_by('-created_at')
+    customers = (
+        vehicle_model.vehicle.objects
+        .filter(Q(owner__full_name__icontains=SearchQuery))
+        .order_by("-created_at")
+    )
 
-    paginator = Paginator(vehicles, DataNumber)
-
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    print(page_obj)
+    paginator = Paginator(customers, DataNumber)
+    page_number = request.GET.get("page")
+    customers_obj = paginator.get_page(page_number)
+    # context["total"] = len(customers)
+    # context["DataNumber"] = DataNumber
+    # context["customers"] = customers_obj
+    # context["SearchQuery"] = SearchQuery
 
     context = {'pageTitle': 'View Vehicles',
-               'page_obj': page_obj,
+               #    'page_obj': page_obj,
                'SearchQuery': SearchQuery,
                'DataNumber': DataNumber,
-               "vehicles": page_obj,
+               "vehicles": customers_obj,
+
                "states": states,
                "plate_c": plate_type,
                "types": types,
                "currentYear": datetime.now().year,
                "noplates": noplates,
-               "total": len(vehicle_lists)
+               "total": len(customers),
+
+
                }
     return render(request, 'vehicles/veiw_vehicles.html', context)
 
