@@ -45,6 +45,9 @@ def vew_register_company(request):
         save_error(request, error)
 
 
+#
+
+
 @login_required(login_url='Login')
 def register_company(request):
     try:

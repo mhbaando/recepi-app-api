@@ -20,6 +20,8 @@ $(document).ready(() => {
 
     })
 
+
+
     $("#vehicle").on('click', function () {
         $(this).addClass('active-choice');
         $("#company").removeClass("active-choice")
@@ -43,8 +45,8 @@ $(document).ready(() => {
         $(this).addClass('active-choice');
         $("#vehicle").removeClass("active-choice")
         $("#customer").removeClass("active-choice")
-
-        // seach form
+      
+         // seach form
         $("#customer_search").addClass('hidden')
         $("#vehicle-search").addClass("hidden")
         $("#company-search").removeClass("hidden")
@@ -56,6 +58,9 @@ $(document).ready(() => {
         // clean seach inputs
         $("#SearchVehicle").val('')
         $('#searchCustomer').val('')
+
+
+        console.log('hhh')
     })
 
 

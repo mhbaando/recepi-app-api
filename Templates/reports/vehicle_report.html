@@ -91,31 +91,36 @@
                 <p class="mb-1 fw-bold">Cylinder:</p>
                 <p id="cylinder"></p>
             </div>
-            
         </div>
         <div class="row">
             <div class="row col">
-                <p class="mb-1 fw-bold">Plate Number:</p>
-                <p id="plat_nu"></p>
+                <p class="mb-1 fw-bold">
+                    Plate Number:
+                </p>
+                <p id="plat_nu">
+                </p>
             </div>
             <div class="row col">
-                <p class="mb-1 fw-bold">REG USER:</p>
-                <p id="reg_user"></p>
+                <p class="mb-1 fw-bold">
+                    REG USER:
+                </p>
+                <p id="reg_user">
+                </p>
             </div>
-             <div class="row col">
-                <p class="hidden">hgfh</p>
-                <p id=""></p>
+            <div class="row col">
+                <p class="hidden">
+                    hgfh
+                </p>
+                <p id="">
+                </p>
             </div>
-         
         </div>
-    
-
     </div>
     <div class="row mt-5">
         <h5>
             TRANSFER(S) HISTORY <span id="transfare_times"></span>
         </h5>
-         <div class="hidden" id="tr_hist">
+        <div class="hidden" id="tr_hist">
             <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
                    id="transfer_table">
                 <thead class="thead-dark">
@@ -147,14 +152,13 @@
                 </tbody>
             </table>
         </div>
-        <div class="hidden" id="trfound"> 
+        <div class="hidden" id="trfound">
             <p class="fw-5">
                 Not Transfer Found
-            </p> 
+            </p>
         </div>
     </div>
-   
-
+</div>
 {% block scriptData %}
     <script src="{% static "scripts/reports/search_vehicle.js" %}"></script>
-{% endblock scriptData %}  
+{% endblock scriptData %}

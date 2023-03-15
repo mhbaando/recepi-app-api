@@ -10,16 +10,21 @@ $(document).ready(() => {
                 if (!res.isError) {
                     const data = res.company
                     // populate data company info
-                    $('#name').text(data.company_name)
-                    $('#email').text(data.email)
-                    $('#address').text(data.address)
-                    $('#phone').text(data.phone)
-                    $('#status').text(`$({data.status})`)
-                    $('#website').text(data.website)
-                    $('#regno').text(data.reg_no)
-                    $('#owner').text(data.owner)
-                    $('#regdate').text(data.modified_at)
-                    $('#reguser').text(data.reg_user)
+                    $('#coname').text(data.company_name),
+                    $('#coemail').text(data.email),
+                   
+                  $('#coaddress').text(data.address),
+                    $('#cophone').text(data.phone)
+                  
+                    $('#costatus').text(data.status)
+
+                    $('#cowebsite').text(data.website)
+                    $('#coregno').text(data.reg_no)
+                    $('#coowner').text(data.owner)
+                    $('#coregdate').text(data.reg_date)
+                    $('#coreguser').text(data.reg_user)
+                    
+                    console.log(data)
 
 
                     // $("#status").addclass(`text-${data.status_class}`)
