@@ -187,6 +187,7 @@ def activate_customer(request):
                     Q(personal_id=c_personalID),
                     federal_state=request.user.federal_state,
                 ).first()
+
             if customer is not None:
                 customer.is_verified = True
                 customer.document = c_doc
