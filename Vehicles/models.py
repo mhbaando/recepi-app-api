@@ -178,7 +178,6 @@ class test_category(models.Model):
 class test_elements(models.Model):
     el_id = models.AutoField(primary_key=True)
     el_name = models.TextField()
-    result = models.BooleanField(default=False)
     test_cat = models.ForeignKey(
         test_category, on_delete=models.RESTRICT, default=1)
     created_at = models.DateField(auto_now_add=True)
@@ -196,6 +195,9 @@ class test(models.Model):
     issue_date = models.DateField(auto_now=True)
     created_at = models.DateField(auto_now_add=True)
     tested_vehicle = models.ForeignKey(vehicle, on_delete=models.RESTRICT)
+    tested_el = models.ForeignKey(
+        test_elements, on_delete=models.RESTRICT, default=1)
+    result = models.BooleanField(default=False)
     test_cat = models.ForeignKey(test_category, on_delete=models.RESTRICT)
     reg_user = models.ForeignKey(Users, on_delete=models.RESTRICT)
 

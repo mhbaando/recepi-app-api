@@ -61,6 +61,7 @@ $(document).ready(() => {
                 async: true,
                 success: function (res) {
                     if (!res.isError) {
+                        eldisplayer.empty();
                         $.map(res.test_el, function (el) {
                             eldisplayer.append(`
                             <div class="col-4 mt-3 d-flex align-items-center justify-content-start gap-2">
@@ -81,30 +82,27 @@ $(document).ready(() => {
         }
     });
 
-    // find all selected checkbox that is checked
-    const check_box = document.querySelectorAll('.testEl')
-
-    $.each(check_box, function (index, chk) {
-        chk.addEventListener('click', function () {
-            console.log('here')
-        })
-    })
 
     // save MOT
     $("#reg_mot").on('submit', function (e) {
         e.preventDefault()
-        const vin = $("#search").val()?.split('-')[1]?.trim() // get personal iD
+        const vin = $("#search").val()?.split('-')[1]?.trim() // get vin
         const testno = $("#testno").val()
         const testread = $("#testread").val()
         const expdate = $("expdate").val()
 
 
+        // required="required"
+        // if (!vin || !testno || !testread || expdate?.trim() || !category) {
+        //     return Swal.fire('Error', 'All Feilds are Required', 'error')
+        // }
 
-        if (!vin || !testno || !testread || expdate?.trim() || !category) {
-            return Swal.fire('Error', 'All Feilds are Required', 'error')
-        }
-
-
+        slectedTests = []
+        $('input[type="checkbox"]:checked').each(function () {
+            var checkboxValue = $(this).val();
+            slectedTests.push(checkboxValue)
+        });
+        console.log(slectedTests)
 
 
     })
