@@ -23,8 +23,8 @@ $(document).ready(() => {
                     $('#coowner').text(data.owner)
                     $('#coregdate').text(data.reg_date)
                     $('#coreguser').text(data.reg_user)
-
-                    console.log(data)
+                    
+                  
 
 
                     // $("#status").addclass(`text-${data.status_class}`)
@@ -117,10 +117,7 @@ $(document).ready(() => {
 
 
 
-    // prevent refresh
 
-    $("#searchCustomerForm").on('submit', (e) => {
-        e.preventDefault()
-    })
+
 
 })
