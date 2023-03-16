@@ -1,4 +1,7 @@
 {% load static %}
+{% block cssData %}
+<link rel="stylesheet" media="print_css.css" href="{% static "assets/css/reports/print_css.css" %}"/>
+{% endblock cssData %}
 <div class="row mt-3 bg-white rounded pt-3 ps-3 pe-3 pb-3 hidden"
      id="customer-report-data">
     <div class="row report-header">
@@ -317,12 +320,12 @@
             <div class="hstack gap-2">
                 <button type="submit"
                         class="btn btn-primary text-right"
-                        id="print" value="Print this page">
+                        id="prints" value="Print this page" media="print_css.css">
                         
                     Print
                 </button>
             </div>
-        </div> 
+        </div>  
     </div>
     <div class="hidden" id="pynofound">
         <p>

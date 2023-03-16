@@ -52,12 +52,12 @@ $(document).ready(() => {
         $("#company-search").removeClass("hidden")
 
         // report document
-        $("#customer-report-data").addClass('hidden')
-        $("#vehicle_report").addClass('hidden')
+        // $("#customer-report-data").addClass('hidden')
+        // $("#vehicle_report").addClass('hidden')
 
         // clean seach inputs
-        $("#SearchVehicle").val('')
-        $('#searchCustomer').val('')
+        // $("#SearchVehicle").val('')
+        // $('#searchCustomer').val('')
 
 
     })

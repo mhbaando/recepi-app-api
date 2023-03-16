@@ -1,0 +1,35 @@
+@media print {
+    #vehicle_report{
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: 0;
+            table-layout: 0;
+
+    }
+  
+    .print-area, .print-area * {
+        display: hidden;
+      }
+      #print{
+        display: none;
+      }
+      #vehicle{
+        display: hidden;
+
+      }
+      #layout-navbar{
+        display: none;
+      }
+      #border{
+        display: none;
+      }
+      #layout-menu{
+        display: none;
+      }
+      #search_vehicle_form{
+        display: none;
+      }
+
+
+    }

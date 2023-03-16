@@ -1,4 +1,7 @@
 {% load static %}
+{% block cssData %}
+<link rel="stylesheet" href="{% static "assets/css/reports/vehile_print.css" %}"/>
+{% endblock cssData %}
 <div class="row mt-3 bg-white rounded pt-3 ps-3 pe-3 pb-3 hidden"
      id="vehicle_report">
     <div class="row report-header">
@@ -155,16 +158,15 @@
                 </tbody>
               
             </table>
-         <div class="mt-4 d-flex align-items-end justify-content-end col">
+            <div class="mt-4 d-flex align-items-end justify-content-end col">
                 <div class="hstack gap-2">
                     <button type="submit"
                             class="btn btn-primary text-right"
-                            id="print" value="Print this page">
+                          id="print" value="Print this page" >
                             
                         Print
                     </button>
                 </div>
-            </div> 
         <div class="hidden" id="trfound">
             <p class="fw-5">
                 Not Transfer Found
@@ -173,6 +175,5 @@
     </div>
 </div>
 {% block scriptData %}
-    <script src="{% static "scripts/reports/search_vehicle.js" %}"></script>
     <script src="{% static "scripts/reports/vehicle_print.js" %}"></script>
 {% endblock scriptData %}

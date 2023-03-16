@@ -72,80 +72,15 @@ hr {
 .license_status_other {
     color: red;
 }
-@media print {
-    /* body * :not(#vehicle_report) :not(#vehicle_report *){
-       visibility: hidden;
-      
-    } */
-    #vehicle_report{
-            position: absolute;
-            top: 0;
-            left: 0;
-            border: 0;
-            table-layout: 0;
-
-    }
-  
-    .print-area, .print-area * {
-        display: hidden;
-      }
-      #print{
-        display: none;
-      }
-      #vehicle{
-        display: hidden;
-
-      }
-      #layout-navbar{
-        display: none;
-      }
-      #border{
-        display: none;
-      }
-      #layout-menu{
-        display: none;
-      }
-      #search_vehicle_form{
-        display: none;
-      }
 
 
-    }
-
-@media print {
-        #customer-report-data{
-                position: absolute;
-                top: 0;
-                left: 0;
-                border: 0;
-                table-layout: 0;
     
-        }
-      
-        .print-area, .print-area * {
-            display: hidden;
-          }
-          #print{
-            display: none;
-          }
-          #vehicle{
-            display: hidden;
+
     
-          }
-          #layout-navbar{
-            display: none;
-          }
-          #border{
-            display: none;
-          }
-          #layout-menu{
-            display: none;
-          }
-          #searchCustomerForm{
-            display: none;
-          }
-    
-    
-        }    
+@page {
+      size: A4 landscape;
+      size: 287mm 210mm;
+}
+
 
 
