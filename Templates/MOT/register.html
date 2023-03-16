@@ -1,0 +1,136 @@
+{% extends "../Base/index.html" %}
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet"
+          href="{% static "assets/css/customer/register-customer.css" %}"/>
+    <link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
+    <style>.ui-autocomplete { z-index:2147483647; }</style>
+{% endblock cssData %}
+{% block content %}
+    {% csrf_token %}
+    <div class="container-xxl flex-grow-1 mb-4">
+        <div>
+            <h4 class="fw-bold py-3 mb-4">
+                <span class="text-muted fw-light">Home / MOT /</span> {{ pageTitle }}
+            </h4>
+        </div>
+        <div>
+            <form id="reg_mot" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card mb-4 pb-4">
+                    <h5 class="card-header">Basic Info</h5>
+                    <p class="card-subheading">Search Vehicle by plate No or VIN To register a new test</p>
+                    <div class="card-body row">
+                        <div class="col-sm-12 col-lg">
+                            <label class="form-label">Plate # | VIN</label>
+                            <div class="input-group input-group-merge">
+                                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                                <input id="search"
+                                       type="text"
+                                       class="form-control"
+                                       placeholder="Search..."
+                                       aria-label="Search..."
+                                       aria-describedby="basic-addon-search31"
+                                       required="required"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg">
+                            <label class="form-label">Personal ID</label>
+                            <input id="pid"
+                                   type="text"
+                                   class="form-control"
+                                   placeholder="personal ID"
+                                   aria-describedby="basic-addon-search31"
+                                   disabled/>
+                        </div>
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-sm-12 col-lg">
+                            <label class="form-label">Model - Year</label>
+                            <input id="mdbrand"
+                                   type="text"
+                                   class="form-control"
+                                   placeholder="brand"
+                                   aria-label="brand"
+                                   aria-describedby="basic-addon-search31"
+                                   disabled/>
+                        </div>
+                        <div class="col-sm-12 col-lg">
+                            <label class="form-label">Owner's Phone</label>
+                            <input id="ophone"
+                                   type="text"
+                                   class="form-control"
+                                   placeholder="Owners Phone"
+                                   aria-describedby="basic-addon-search31"
+                                   disabled/>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4 ">
+                    <h5 class="card-header">Test Info</h5>
+                    <p class="card-subheading">Fill all info related to the test</p>
+                    <div class="card-body row">
+                        <div class="col-sm-12 col-lg-6 mb-4">
+                            <label for="defaultFormControlInput" class="form-label">Test #</label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="testno"
+                                   placeholder="Telephone number"
+                                   aria-describedby="phone"
+                                   required="required"/>
+                        </div>
+                        <div class="col-sm-12 col-lg-6 mb-4">
+                            <label for="defaultFormControlInput" class="form-label">Auto Meter Read</label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="testread"
+                                   placeholder="Auto Meter Read"
+                                   aria-describedby="defaultFormControlHelp"
+                                   required="required"/>
+                        </div>
+                        <div class="col-sm-12 col-lg-6 mb-4">
+                            <label for="defaultFormControlInput" class="form-label">Exp Date</label>
+                            <input type="date"
+                                   class="form-control"
+                                   id="expdate"
+                                   max="{{ date.today|date:'Y-m-d' }}"
+                                   placeholder="cinwaanka"
+                                   aria-describedby="defaultFormControlHelp"
+                                   required="required"/>
+                        </div>
+                        <div class="col-sm-12 col-lg-6 mb-4">
+                            <label for="cat" class="form-label">Test Category</label>
+                            <select class="form-select" id="testcat" aria-label="cat">
+                                <option selected>
+                                    Select Category
+                                </option>
+                                {% for cat in categories %}
+                                    <option value="{{ cat.cat_id }}">
+                                        {{ cat.cat_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4 hidden" id="testelholder">
+                    <h5 class="card-header">Test Element</h5>
+                    <p class="card-subheading">Check all feilds that passes test only</p>
+                    <div class="card-body row mb-4" id="eldispaly"></div>
+                </div>
+                <div class="mt-4 d-flex align-items-end justify-content-end col">
+                    <div class="hstack gap-2">
+                        <a href={% url 'Dashboard' %} class="btn btn-danger">Go Back</a>
+                        <button type="submit"
+                                class="btn btn-primary text-right"
+                                id="add_new_customer">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    <script src={% static 'assets/js/jquery-ui/ui.js' %}></script>
+    <script src="{% static "scripts/MOT/register.js" %}"></script>
+{% endblock scriptData %}
