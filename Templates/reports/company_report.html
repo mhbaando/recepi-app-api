@@ -122,6 +122,15 @@
                 <tbody>
                 </tbody>
             </table>
+            <div class="mt-4 d-flex align-items-end justify-content-end col">
+                <div class="hstack gap-2">
+                    <button type="submit"
+                            class="btn btn-primary text-right"
+                            id="print" value="Print this page">
+                        Print
+                    </button>
+                </div>
+            </div> 
         </div>
         <div class="hidden" id="vhnfound">
             <p class="fw-5">
@@ -134,5 +143,10 @@
 
 
 </div>
+
+{% block scriptData %}
+    <script src="{% static "scripts/reports/search_company.js" %}"></script>
+    {% comment %} <script src="{% static "scripts/reports/vehicle_print.js" %}"></script> {% endcomment %}
+{% endblock scriptData %}
 
 
