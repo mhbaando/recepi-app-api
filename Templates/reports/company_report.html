@@ -34,7 +34,7 @@
     {% comment %} customer info {% endcomment %}
     <div class="row mt-3">
         <h5>
-         COMPANY INFO <span id="status" class="text-uppercase"></span>
+            COMPANY INFO <span id="status" class="text-uppercase"></span>
         </h5>
         <div class="row">
             <div class="col">
@@ -84,55 +84,49 @@
                 <p id="coreguser"></p>
             </div>
         </div>
-
-        
-<table>
-    <div class="row mt-5">
-        <h5>
-            VEHICLE(S) INFO
-        </h5>
-        <div class="hidden" id="vhinfo">
-            <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
-                   id="vhtable">
-                <thead class="thead-dark">
-                    <tr>
-                        <th class="wd-15p border-bottom-0">
-                            Vehicle ID
-                        </th>
-                        <th class="wd-15p border-bottom-0">
-                            MODEL - YEAR
-                        </th>
-                        <th class="wd-15p border-bottom-0">
-                            VIN
-                        </th>
-                        <th class="wd-15p border-bottom-0">
-                            ENGINE #
-                        </th>
-                        <th class="wd-15p border-bottom-0">
-                            COLOR
-                        </th>
-                        <th class="wd-15p border-bottom-0">
-                            HP
-                        </th>
-                        <th class="wd-15p border-bottom-0">
-                            PLATE #
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        <div class="hidden" id="vhnfound">
-            <p class="fw-5">
-                No Vehicle Found
-            </p>
-        </div>
+        <table>
+            <div class="row mt-5">
+                <h5>VEHICLE(S) INFO</h5>
+                <div class="hidden" id="vhinfo">
+                    <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
+                           id="vhtable">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="wd-15p border-bottom-0">Vehicle ID</th>
+                                <th class="wd-15p border-bottom-0">MODEL - YEAR</th>
+                                <th class="wd-15p border-bottom-0">VIN</th>
+                                <th class="wd-15p border-bottom-0">
+                                    ENGINE #
+                                </th>
+                                <th class="wd-15p border-bottom-0">
+                                    COLOR
+                                </th>
+                                <th class="wd-15p border-bottom-0">
+                                    HP
+                                </th>
+                                <th class="wd-15p border-bottom-0">
+                                    PLATE #
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="hidden" id="vhnfound">
+                    <p class="fw-5">
+                        No Vehicle Found
+                    </p>
+                </div>
+                <div class="d-flex justify-content-end align-items-end mb-4 mt-4">
+                    <button type="submit"
+                            class="btn btn-primary btn-lg active"
+                            onclick="printDiv('printableArea')"
+                            value="Print Report">
+                        Print
+                    </button>
+                </div>
+            </div>
+        </table>
     </div>
-</table>
-    </div>
-
-
 </div>
-
-
