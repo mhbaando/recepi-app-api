@@ -161,3 +161,45 @@ class transfare_vehicles(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     # Todo: user relation
     reg_user = models.ForeignKey(Users, on_delete=models.RESTRICT)
+
+
+# MOT Models
+class test_category(models.Model):
+    cat_id = models.AutoField(primary_key=True)
+    cat_name = models.TextField()
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+    reg_user = models.ForeignKey(Users, on_delete=models.RESTRICT)
+
+    def __str__(self):
+        return str(self.cat_name)
+
+
+class test_elements(models.Model):
+    el_id = models.AutoField(primary_key=True)
+    el_name = models.TextField()
+    test_cat = models.ForeignKey(
+        test_category, on_delete=models.RESTRICT, default=1)
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+    reg_user = models.ForeignKey(Users, on_delete=models.RESTRICT)
+
+    def __str__(self):
+        return str(self.el_name)
+
+
+class test(models.Model):
+    test_id = models.AutoField(primary_key=True)
+    test_meter = models.BigIntegerField()
+    expired_date = models.DateField()
+    issue_date = models.DateField(auto_now=True)
+    created_at = models.DateField(auto_now_add=True)
+    tested_vehicle = models.ForeignKey(vehicle, on_delete=models.RESTRICT)
+    tested_el = models.ForeignKey(
+        test_elements, on_delete=models.RESTRICT, default=1)
+    result = models.BooleanField(default=False)
+    test_cat = models.ForeignKey(test_category, on_delete=models.RESTRICT)
+    reg_user = models.ForeignKey(Users, on_delete=models.RESTRICT)
+
+    def __str__(self):
+        return str(self.test_id)

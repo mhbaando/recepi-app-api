@@ -80,7 +80,7 @@
                 {% endif %}
            </ul>
         </li>
-        <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' or  pageTitle == 'Vehicle Profile' %}active open{% endif %}">
+        <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' or  pageTitle == 'Vehicle Profile' or pageTitle == 'Register MOT' %}active open{% endif %}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-car"></i>
                 <div data-i18n="Dashboards">Vehicles</div>
@@ -93,16 +93,6 @@
                         </a>
                     </li>
                 {% endif %}
-                {% comment %} <li class="menu-item {% if pageTitle == 'Assign Aplate' %}active{% endif %}">
-          <a href="{% url 'asign-plate' %}" class="menu-link">
-            <div data-i18n="CRM">Assign Plate</div>
-          </a>
-                </li> {% endcomment %}
-                {% comment %} <li class="menu-item {% if pageTitle == 'Transfer Vehicle' %}active{% endif %}">
-          <a href="{% url 'transfer' %}" class="menu-link">
-            <div data-i18n="CRM">Transfer Vehicles</div>
-          </a>
-                </li> {% endcomment %}
                 {% if perms.Vehicles.view_vehicle %}
                     <li class="menu-item {% if pageTitle == 'View Vehicles' or pageTitle == 'ProFile' %} active{% endif %}">
                         <a href="{% url 'veiw-vehicle' %}" class="menu-link">
@@ -110,6 +100,11 @@
                         </a>
                     </li>
                 {% endif %}
+                <li class="menu-item {% if pageTitle == 'Register MOT' %} active{% endif %}">
+                    <a href="{% url 'register_mot' %}" class="menu-link">
+                        <div data-i18n="CRM">MOT</div>
+                    </a>
+                </li>
             </ul>
         </li>
         <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' or pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active open{% endif %}">
