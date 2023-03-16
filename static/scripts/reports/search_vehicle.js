@@ -124,7 +124,9 @@ $(document).ready(() => {
     // stay when when others clicked 
     $("#vehicle").on('click', function () {
       
-        $("#vehicle_report").removeClass('hidden')
+        $("#vehicle_report").addClass('hidden')
+        $("#vehicle_report")[0].reset()
+
         
 
     })

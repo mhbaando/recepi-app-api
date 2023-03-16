@@ -23,21 +23,24 @@ def Searchvehicle(request, search):
             if request.method == "GET":
                 searchQuery = vehicle_model.vehicle.objects.filter(
                     Q(enginer_no__icontains=search) | Q(
-                        owner__full_name__icontains=search) | Q(vin__icontains=search)
+                        owner__full_name__icontains=search) | Q(vin__icontains=search) | Q(plate_no__plate_no__icontains=search)
                 )
 
                 message = []
                 for xSearch in range(0, len(searchQuery)):
                     message.append(
                         {
-                            "label": f"{searchQuery[xSearch].owner.full_name} - {searchQuery[xSearch].vin} - {searchQuery[xSearch].enginer_no}",
-                            "value": f"{searchQuery[xSearch].owner.full_name} - {searchQuery[xSearch].vin} -{searchQuery[xSearch].enginer_no}",
+                            "label": f"{searchQuery[xSearch].owner.full_name} - {searchQuery[xSearch].vin} - {searchQuery[xSearch].enginer_no}- {searchQuery[xSearch].plate_no.plate_no}",
+                            "value": f"{searchQuery[xSearch].owner.full_name} - {searchQuery[xSearch].vin} -{searchQuery[xSearch].enginer_no} - {searchQuery[xSearch].plate_no.plate_no}",
                             "vehicle_id": searchQuery[xSearch].vehicle_id,
-
-
                         }
                     )
-                return JsonResponse({"Message": message}, status=200)
+                return JsonResponse({"Message": message})
+            return JsonResponse({
+                'isError': True,
+                'Message': 'Method Not Allowed'
+            })
+        return render(request, 'Base/403.html')
     except Exception as error:
         save_error(request, error)
 

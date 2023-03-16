@@ -45,8 +45,8 @@ $(document).ready(() => {
         $(this).addClass('active-choice');
         $("#vehicle").removeClass("active-choice")
         $("#customer").removeClass("active-choice")
-      
-         // seach form
+
+        // seach form
         $("#customer_search").addClass('hidden')
         $("#vehicle-search").addClass("hidden")
         $("#company-search").removeClass("hidden")
@@ -60,7 +60,6 @@ $(document).ready(() => {
         $('#searchCustomer').val('')
 
 
-        console.log('hhh')
     })
 
 

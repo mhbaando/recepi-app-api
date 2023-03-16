@@ -46,36 +46,41 @@
             </li>
         {% endif %}
         <!-- company -->
-        {% if perms.Customers.add_company or perms.Customers.view_company or perms.Customers.change_customer %}
+        {% if perms.Customers.add_company or perms.Customers.view_company or perms.Customers.change_company %}
             <li class="menu-item {% if pageTitle == 'Register Company' or pageTitle == 'View Company' or pageTitle == 'detail company' or pageTitle == 'block company'  or  pageTitle == 'Company / Profile' %}active open{% endif %}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-building"></i>
                     <div data-i18n="Dashboards">Company</div>
                 </a>
+                
+           
             {% endif %}
-            {% if perms.Customers.add_company %}
-                <ul class="menu-sub ">
+          
+            
+            <ul class="menu-sub ">
+                    {% if perms.Customers.add_company %}
                     <li class="menu-item {% if pageTitle == 'Register Company' %}active{% endif %}">
                         <a href="{% url 'view_register_company' %}"class="menu-link">
                             <div data-i18n="Analytics">Register</div>
                         </a>
-                    </li>
-                {% endif %}
-                {% comment %} <li class="menu-item {% if pageTitle == 'block company' %}active{% endif %}">
-          <a href="{% url 'comapny_block' %}" class="menu-link">
-            <div data-i18n="Analytics">Block Company</div>
-          </a>
-                </li> {% endcomment %}
-                {% if perms.Customers.view_company or perms.Customers.change_company %}
+                        
+                     
+                     {% endif %}
+                                {% comment %} <li class="menu-item {% if pageTitle == 'block company' %}active{% endif %}">
+                        <a href="{% url 'comapny_block' %}" class="menu-link">
+                            <div data-i18n="Analytics">Block Company</div>
+                        </a>
+                                </li> {% endcomment %}
+                    {% if perms.Customers.view_company or perms.Customers.change_company %}
                     <li class="menu-item {% if pageTitle == 'View Company' or pageTitle == 'Profile' or pageTitle == 'Company / Profile' %} active{% endif %}">
                         <a href="{% url 'view_company' %}" class="menu-link">
                             <div data-i18n="CRM">View Company</div>
                         </a>
-                    </li>
+                   
                 {% endif %}
-            </ul>
+           </ul>
         </li>
-        <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' or  pageTitle == 'Vehicle Profile' %}active open{% endif %}">
+        <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' or  pageTitle == 'Vehicle Profile' or pageTitle == 'Register MOT' %}active open{% endif %}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-car"></i>
                 <div data-i18n="Dashboards">Vehicles</div>
@@ -88,16 +93,6 @@
                         </a>
                     </li>
                 {% endif %}
-                {% comment %} <li class="menu-item {% if pageTitle == 'Assign Aplate' %}active{% endif %}">
-          <a href="{% url 'asign-plate' %}" class="menu-link">
-            <div data-i18n="CRM">Assign Plate</div>
-          </a>
-                </li> {% endcomment %}
-                {% comment %} <li class="menu-item {% if pageTitle == 'Transfer Vehicle' %}active{% endif %}">
-          <a href="{% url 'transfer' %}" class="menu-link">
-            <div data-i18n="CRM">Transfer Vehicles</div>
-          </a>
-                </li> {% endcomment %}
                 {% if perms.Vehicles.view_vehicle %}
                     <li class="menu-item {% if pageTitle == 'View Vehicles' or pageTitle == 'ProFile' %} active{% endif %}">
                         <a href="{% url 'veiw-vehicle' %}" class="menu-link">
@@ -105,6 +100,11 @@
                         </a>
                     </li>
                 {% endif %}
+                <li class="menu-item {% if pageTitle == 'Register MOT' %} active{% endif %}">
+                    <a href="{% url 'register_mot' %}" class="menu-link">
+                        <div data-i18n="CRM">MOT</div>
+                    </a>
+                </li>
             </ul>
         </li>
         <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' or pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active open{% endif %}">
@@ -112,15 +112,14 @@
                 <i class="menu-icon tf-icons bx bx-dollar-circle"></i>
                 <div data-i18n="Dashboards">Payments</div>
             </a>
-            {% if perms.Finance.add_account or perms.Finance.change_account or perms.Finance.view_account %}
+               
                 <ul class="menu-sub">
                     <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' %}active{% endif %}">
                         <a href={% url 'AccountsPage' %} class="menu-link">
                             <div data-i18n="Analytics">Accounts</div>
                         </a>
                     </li>
-                {% endif %}
-                {% if perms.Finance.add_receipt_voucher or perms.Finance.change_receipt_voucher or perms.Finance.view_receipt_voucher %}
+             
                     <li class="menu-item {% if pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active{% endif %}">
                         <a href={% url 'ReceiptsPage' %} class="menu-link">
                             <div data-i18n="Analytics">Receipts</div>
@@ -128,7 +127,7 @@
                     </li>
                 </ul>
             </li>
-        {% endif %}
+      
         <li class="menu-item {% if pageTitle == 'Register License' or pageTitle == 'Renew License' or  pageTitle == 'License Lists' %}active open{% endif %}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon bx bx-id-card'></i>

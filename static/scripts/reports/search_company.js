@@ -11,11 +11,11 @@ $(document).ready(() => {
                     const data = res.company
                     // populate data company info
                     $('#coname').text(data.company_name),
-                    $('#coemail').text(data.email),
-                   
-                  $('#coaddress').text(data.address),
-                    $('#cophone').text(data.phone)
-                  
+                        $('#coemail').text(data.email),
+
+                        $('#coaddress').text(data.address),
+                        $('#cophone').text(data.phone)
+
                     $('#costatus').text(data.status)
 
                     $('#cowebsite').text(data.website)
@@ -87,8 +87,7 @@ $(document).ready(() => {
                             if (value != "") {
                                 $("#searchcompany").attr("value", item);
                                 search_company(ui.item.company_id)
-
-
+                                console.log('here')
                             }
 
                         },

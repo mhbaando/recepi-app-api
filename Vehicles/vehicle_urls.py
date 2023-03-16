@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from . import reports
+from .mot import *
+
 urlpatterns = [
     path("", views.register_vehicle, name="register-vehicle"),
     path("viewvehicle/", views.view_vehicle, name="veiw-vehicle"),
@@ -34,4 +36,9 @@ urlpatterns = [
          views. Searchcustomer, name=' Searchcustomer'),
     path('reports/search_vehicle/<str:search>', reports.Searchvehicle),
     path('reports/vehicle-report/<str:id>', reports.vehicle_report),
+
+    # Mot URLs
+    path('regsiter_mot', register_mot, name="register_mot"),
+    path('find_test_el/<int:id>', find_test_el),
+    path('find_car/<str:search>', Searchvehicle)
 ]
