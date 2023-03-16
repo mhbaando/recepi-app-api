@@ -30,8 +30,8 @@ def Searchvehicle(request, search):
                 for xSearch in range(0, len(searchQuery)):
                     message.append(
                         {
-                            "label": f"{searchQuery[xSearch].owner.full_name} - {searchQuery[xSearch].vin} - {searchQuery[xSearch].enginer_no}",
-                            "value": f"{searchQuery[xSearch].owner.full_name} - {searchQuery[xSearch].vin} -{searchQuery[xSearch].enginer_no}",
+                            "label": f"{searchQuery[xSearch].owner.full_name} - {searchQuery[xSearch].vin} - {searchQuery[xSearch].enginer_no}- {searchQuery[xSearch].plate_no.plate_no}",
+                            "value": f"{searchQuery[xSearch].owner.full_name} - {searchQuery[xSearch].vin} -{searchQuery[xSearch].enginer_no} - {searchQuery[xSearch].plate_no.plate_no}",
                             "vehicle_id": searchQuery[xSearch].vehicle_id,
                         }
                     )
