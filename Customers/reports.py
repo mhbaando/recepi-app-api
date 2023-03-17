@@ -56,7 +56,7 @@ def customer_report(request, id):
         customer = ""
         license = ""
         # check requtes user state
-        if not request.user.is_superuser and request.user.federal_state is not None:
+        if (request.user.is_admin or request.user.is_state) and request.user.federal_state is None:
             return JsonResponse({"isError": True, "Message": "Update your state"})
 
         if request.user.is_superuser:
@@ -141,7 +141,7 @@ def customer_report(request, id):
 
             found_transfer = []
             transfers = vehicle_model.transfare_vehicles.objects.filter(
-                Q(old_owner=customer) | Q(new_owner=customer)).all()
+                Q(old_owner=customer) | Q(new_owner=customer))
 
             if transfers is not None:
                 for transfer in transfers:
@@ -151,13 +151,14 @@ def customer_report(request, id):
                         'new_owner': transfer.new_owner.full_name,
                         'rv_no': transfer.rv_number,
                         'reason': transfer.transfare_reason,
-                        'plate_no': plate_converter.shorten(transfer.vehicle.plate_no.state.state_name, transfer.vehicle.plate_no.plate_code.code_name, transfer.vehicle.plate_no.plate_no) if vehicle.plate_no else 'No Plate Assigned',
+                        'plate_no': plate_converter.shorten(transfer.vehicle.plate_no.state.state_name, transfer.vehicle.plate_no.plate_code.code_name, transfer.vehicle.plate_no.plate_no) if transfer.vehicle.plate_no else 'No Plate Assigned',
                         'date': transfer.created_at.strftime('%d / %B / %Y'),
-                        'count': len(found_transfer)
+                        'count': len(transfers)
                     })
             found_payments = []
             payments = finance_model.receipt_voucher.objects.filter(
                 Q(rv_from=customer)).all()
+
             if payments is not None:
                 for payment in payments:
                     found_payments.append({
@@ -166,7 +167,7 @@ def customer_report(request, id):
                         'personal_id': payment.rv_from.personal_id,
                         'amount': payment.rv_amount,
                         'reason': payment.reason,
-                        'date': payment.created_at.strftime('%d / %B / %d')
+                        'date': payment.created_at.strftime('%d / %B / %Y')
                     })
 
             return JsonResponse({
