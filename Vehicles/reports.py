@@ -98,7 +98,7 @@ def vehicle_report(request, id):
                         'reason_tran': transfer.transfare_reason,
                         'plate_number': plate_converter.shorten(transfer.vehicle.plate_no.state.state_name, transfer.vehicle.plate_no.plate_code.code_name, transfer.vehicle.plate_no.plate_no) if vehicle.plate_no else 'No Plate Assigned',
                         'date_time': transfer.created_at.strftime('%d / %B / %Y'),
-                        'count_tran': len(found_transfer)
+                        'count_tran': len(transfare)
                     })
 
             return JsonResponse({
