@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
+
+from Vehicles.plate_converter import shorten
 from . import models
 from django.contrib.auth.models import Permission
 from django.utils.itercompat import is_iterable
@@ -314,6 +316,7 @@ def company_profile(request, id):
                 if id is not None:
                     company = ''
                     all_vehicles = []
+                    vehicles = []
                     transfares = []
                     payments = []
                     states = []
@@ -322,70 +325,51 @@ def company_profile(request, id):
                         # for admin user
                         company = customer_model.company.objects.filter(
                             Q(company_id=id)).first()
-                        vehicles = vehilce_model.vehicle.objects.filter(
-                            Q(owner=company.owner)).all()
-                        transfares = vehilce_model.transfare_vehicles.objects.filter(
-                            Q(old_owner=company.owner) | Q(new_owner=company.owner)).all()
-                        payments = financemodel.receipt_voucher.objects.filter(
-                            Q(rv_from=company.owner))
                         states = customer_model.federal_state.objects.all()
 
-                        for vh in vehicles:
-                            plate = vehilce_model.plate.objects.filter(
-                                Q(vehicle=vh)).first()
-                            if plate is not None:
-                                all_vehicles.append({
-                                    'vehicle_model': vh.vehicle_model,
-                                    'year': vh.year,
-                                    'vin': vh.vin,
-                                    'created_at': vh.created_at,
-                                    'plate': f"{plate.state}-{plate.plate_code}-{plate.plate_no}"
-                                })
-                            all_vehicles.append({
-                                'vehicle_model': vh.vehicle_model,
-                                'year': vh.year,
-                                'vin': vh.vin,
-                                'created_at': vh.created_at,
-                                'plate': "No Plate Assigned"
-                            })
                     else:
                         # for state user
                         company = customer_model.company.objects.filter(
                             Q(company_id=id), federal_state=request.user.federal_state).first()
-                        vehicles = vehilce_model.vehicle.objects.filter(
-                            Q(owner=company.owner)).all()
-
-                        transfares = vehilce_model.transfare_vehicles.objects.filter(
-                            Q(old_owner=company.owner) | Q(new_owner=company.owner)).all()
-
-                        payments = financemodel.receipt_voucher.objects.filter(
-                            Q(rv_from=company.owner))
                         states = customer_model.federal_state.objects.filter(
                             Q(state_id=request.user.federal_state.state_id))
 
-                        for vh in vehicles:
-                            plate = vehilce_model.plate.objects.filter(
-                                Q(vehicle=vh)).first()
-                            if plate is not None:
-                                all_vehicles.append({
-                                    'vehicle_model': vh.vehicle_model,
-                                    'year': vh.year,
-                                    'vin': vh.vin,
-                                    'created_at': vh.created_at,
-                                    'plate': f"{plate.state}-{plate.plate_code}-{plate.plate_no}"
-                                })
-                            all_vehicles.append({
-                                'vehicle_model': vh.vehicle_model,
-                                'year': vh.year,
+                    # doesn't deppend on state
+                    all_vehicles = vehilce_model.vehicle.objects.filter(
+                        Q(owner=company.owner)).all()
+
+                    transfare = []
+                    transfares = vehilce_model.transfare_vehicles.objects.filter(
+                        Q(old_owner=company.owner) | Q(new_owner=company.owner)
+                    )
+
+                    for tr in transfares:
+                        transfare.append({
+                            'vehicle': tr.vehicle,
+                            'new_owner': tr.new_owner,
+                            'old_owner': tr.old_owner,
+                            'plate': shorten(tr.vehicle.plate_no.state.state_name, tr.vehicle.plate_no.plate_code, tr.vehicle.plate_no.plate_no),
+                            'created_at': tr.created_at.strftime('%d - %B - %Y')
+                        })
+
+                    payments = financemodel.receipt_voucher.objects.filter(
+                        Q(rv_from=company.owner))
+
+                    if all_vehicles is not None:
+                        for vh in all_vehicles:
+
+                            vehicles.append({
+                                'vehicle_model': vh.vehicle_model.brand_name,
                                 'vin': vh.vin,
-                                'created_at': vh.created_at,
-                                'plate': "No Plate Assigned"
+                                'year': vh.year,
+                                'plate': shorten(vh.plate_no.state.state_name, vh.plate_no.plate_code, vh.plate_no.plate_no) if vh.plate_no else None,
+                                'created_at': vh.created_at.strftime('%d - %B - %Y'),
                             })
 
                     context = {
                         'company': company,
-                        'vehicles': all_vehicles,
-                        'transfares': transfares,
+                        'vehicles': vehicles,
+                        'transfares': transfare,
                         'payments': payments,
                         'states': states,
                         'pageTitle': 'Company / Profile'
