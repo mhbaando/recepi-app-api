@@ -109,7 +109,8 @@ $(document).ready(() => {
                     }
 
                     // populate tranfer
-                    const tr = data.transfer
+                    const tr = res.transfer
+
                     if (!tr || tr.length <= 0) {
                         // show not trafere
                         $("#trinfo").addClass("hidden")
@@ -145,12 +146,9 @@ $(document).ready(() => {
                         $.each(py, function (index, item) {
                             const row = $('<tr>').appendTo("#pytable tbody");
                             $('<td>').text(item.rv_no).appendTo(row);
-                            $('<td>').text(item.rv_from).appendTo(row);
-                            $('<td>').text(item.personal_id).appendTo(row);
-                            $('<td>').text(item.amount).appendTo(row);
+                            $('<td>').text(`$ ${item.amount}`).appendTo(row);
                             $('<td>').text(item.reason).appendTo(row);
                             $('<td>').text(item.date).appendTo(row);
-
                         })
                     }
 
