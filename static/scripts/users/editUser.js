@@ -1,11 +1,11 @@
-$(document).ready(function() {
+$(document).ready(function () {
   const overlay = $(".overlay")
   const modal = $(".model-contaier")
   let userID = ''
   // show modal on click
   const editbtns = document.querySelectorAll("#edit")
   editbtns.forEach(editbtn => {
-    editbtn.addEventListener('click', function() {
+    editbtn.addEventListener('click', function () {
       overlay.attr('class', 'overlay')
       modal.attr('class', 'model-contaier')
       userID = $(this).data('userid')
@@ -15,7 +15,7 @@ $(document).ready(function() {
         url: `/find_user/${userID}`,
         headers: { "X-CSRFToken": csrftoken },
         async: true,
-        success: function(response) {
+        success: function (response) {
           if (!response.isError) {
             $("#fname").attr('value', response.fname)
             $("#lname").attr('value', response.lname)
@@ -40,7 +40,7 @@ $(document).ready(function() {
             Swal.fire("Error", response.Message, "error");
           }
         },
-        error: function(error) {
+        error: function (error) {
           Swal.fire("Error", error.responseText, "error");
         }
       })
@@ -49,11 +49,11 @@ $(document).ready(function() {
 
   // customer image
   userImg = undefined
-  $('#upload').change(function() {
+  $('#upload').change(function () {
     const file = this.files[0];
     if (file) {
       let reader = new FileReader();
-      reader.onload = function(event) {
+      reader.onload = function (event) {
         $('#uploadedAvatar').attr('src', event.target.result);
         userImg = file
       }
@@ -62,18 +62,19 @@ $(document).ready(function() {
   });
 
   // hide modal on click
-  $("#cancelbtn").on('click', function() {
+  $("#cancelbtn").on('click', function () {
     overlay.attr('class', 'hidden')
     modal.attr('class', 'hidden')
   })
+
   let state = ""
-  $("#state").on('click', function() {
+  $("#state").on('change', function () {
     state = $(this).val()
   })
 
 
   // submit
-  $("#edit_user").on('submit', function(e) {
+  $("#edit_user").on('submit', function (e) {
     e.preventDefault()
 
     let formData = new FormData(this);
@@ -83,15 +84,15 @@ $(document).ready(function() {
     const email = $("#email").val()
     const phone = $("#phone").val()
 
-
-
     //  check if no change happens
     if (state.trim().length <= 0) {
       state = $("#state option:selected").val()
       gender = $("#gender input[type='radio']:checked").val()
-
     }
 
+    if (state == 'Select State') {
+      return Swal.fire('Error', 'State is Required', 'error')
+    }
 
     formData.append("fname", fname);
     formData.append("lname", lname);
@@ -109,7 +110,7 @@ $(document).ready(function() {
       contentType: false,
       data: formData,
       async: true,
-      success: function(response) {
+      success: function (response) {
         if (!response.isError) {
           Swal.fire({
             title: "Success",
@@ -118,7 +119,7 @@ $(document).ready(function() {
             confirmButtonText: "Ok",
             confirmButtonClass: "btn btn-success mt-2",
             buttonsStyling: !1,
-          }).then(function(e) {
+          }).then(function (e) {
             if (e.value) {
               Swal.DismissReason.cancel;
               location.reload()
@@ -129,7 +130,7 @@ $(document).ready(function() {
           Swal.fire("Error", response.Message, "error");
         }
       },
-      error: function(error) {
+      error: function (error) {
         Swal.fire("Error", error.responseText, "error");
       }
     })
