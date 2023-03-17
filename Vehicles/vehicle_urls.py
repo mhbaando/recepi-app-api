@@ -17,7 +17,6 @@ urlpatterns = [
     path('receipt_voucher/<str:search>',
          views.SearchReceiptVoucher, name='SearchReceiptVoucher'),
 
-
     path('updatevehicle/', views.update_vehicle),
 
     path("vehicle_info/<int:id>/",
