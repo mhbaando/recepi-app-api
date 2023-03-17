@@ -10,29 +10,21 @@ $(document).ready(() => {
                 if (!res.isError) {
                     const data = res.company
                     // populate data company info
-                    $('#coname').text(data.company_name),
-                        $('#coemail').text(data.email),
+                    $('#coname').text(data.company_name);
+                    $('#coemail').text(data.email);
 
-                        $('#coaddress').text(data.address),
-                        $('#cophone').text(data.phone)
-
+                    $('#coaddress').text(data.address);
+                    $('#cophone').text(data.phone)
                     $('#costatus').text(data.status)
-
                     $('#cowebsite').text(data.website)
                     $('#coregno').text(data.reg_no)
                     $('#coowner').text(data.owner)
                     $('#coregdate').text(data.reg_date)
                     $('#coreguser').text(data.reg_user)
-                    
-                  
-
-
-                    // $("#status").addclass(`text-${data.status_class}`)
-
-
 
                     // populate vehicles
                     const vh = res.vehicles
+                    console.log(vh)
                     if (!vh || vh.length <= 0) {
                         $("#vhinfo").addClass("hidden")
                         $("#vhnfound").removeClass("hidden")
@@ -87,7 +79,6 @@ $(document).ready(() => {
                             if (value != "") {
                                 $("#searchcompany").attr("value", item);
                                 search_company(ui.item.company_id)
-                                console.log('here')
                             }
 
                         },
