@@ -8,6 +8,7 @@ from django.shortcuts import redirect, render
 from Customers import models as customer_model
 from Finance import models as financemodel
 from Vehicles import models as vehicle_model
+from Vehicles.plate_converter import shorten
 
 from . import models as customer_model
 from Customers.autditory import save_error, save_log
@@ -122,6 +123,16 @@ def register_customer(request):
                             "Message": "Not allowed to register with out state",
                         }
                     )
+
+                # check if personal id is existed
+                personalID_exists = customer_model.customer.objects.filter(
+                    Q(personal_id=personalID)).exists()
+
+                if personalID_exists:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'Duplicate Personal ID Not Allowed'
+                    })
 
                 new_customer = customer_model.customer(
                     firstname=fName,
@@ -344,9 +355,18 @@ def customer_profile(request, id):
                     license = customer_model.license.objects.filter(
                         Q(owner=customer)).first()
 
-                    transfare = vehicle_model.transfare_vehicles.objects.filter(
+                    transfare = []
+                    transfares = vehicle_model.transfare_vehicles.objects.filter(
                         Q(old_owner=customer) | Q(new_owner=customer)
                     )
+                    for tr in transfares:
+                        transfare.append({
+                            'vehicle': tr.vehicle,
+                            'new_owner': tr.new_owner,
+                            'old_owner': tr.old_owner,
+                            'plate': shorten(tr.vehicle.plate_no.state.state_name, tr.vehicle.plate_no.plate_code, tr.vehicle.plate_no.plate_no),
+                            'created_at': tr.created_at.strftime('%d - %B - %Y')
+                        })
 
                     payments = financemodel.receipt_voucher.objects.filter(
                         Q(rv_from=customer))
