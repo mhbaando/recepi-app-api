@@ -23,80 +23,88 @@ $(document).ready(function () {
       Swal.fire("Warning!!", "Please enter receipt voucher", "warning");
     }
 
-    else if (place_issue == "") {
+    if (place_issue == "") {
       Swal.fire(
         "Warning!!",
         "Please select place issued",
         "warning"
       );
     }
-    else if (state_name == "") {
+    if (state_name == "") {
       Swal.fire(
         "Warning!!",
         "Please select state",
         "warning"
       );
     }
-    else if (license_type == "") {
+    if (license_type == "") {
       Swal.fire(
         "Warning!!",
         "Please select type",
         "warning"
       );
     }
-    else {
-      formData.append("rv_id", rv_id);
-      formData.append("rv_number", rv_number);
-      formData.append("federal_state", state_name);
-      formData.append("place_issue", place_issue);
-      formData.append("license_type", license_type);
-      formData.append("Type", "new_license");
 
-      Swal.fire({
-        title: "Are you sure",
-        text: "to register this license ?",
-        icon: "warning",
-        showCancelButton: !0,
-        confirmButtonColor: "#2ab57d",
-        cancelButtonColor: "#fd625e",
-        confirmButtonText: "Yes, register it!",
-      }).then(function (e) {
-        if (e.value) {
-          $.ajax({
-            method: "POST",
-            url: "/customer/manage_license/" + 0,
-            headers: { "X-CSRFToken": csrftoken },
-            processData: false,
-            contentType: false,
-            data: formData,
-            async: true,
-            success: function (data) {
-              if (!data.isError) {
-                Swal.fire({
-                  title: data.title,
-                  text: data.Message,
-                  icon: data.type,
-                  confirmButtonColor: "#2ab57d",
-                  cancelButtonColor: "#fd625e",
-                  confirmButtonText: "Ok it!",
-                }).then(function (e) {
-                  if (e.value) {
-                    window.location.reload();
-                    location.replace('/customer/license_lists')
-                  }
-                });
-              } else {
-                Swal.fire("Error", data.Message, "error");
-              }
-            },
-            error: function (error) {
 
-            },
-          });
-        }
-      });
-
+    if ($('#licence_no') === 'no Lecenses') {
+      Swal.fire('Error', 'This customer has no licanse create license before you renew', 'error')
     }
+
+    formData.append("rv_id", rv_id);
+    formData.append("rv_number", rv_number);
+    formData.append("federal_state", state_name);
+    formData.append("place_issue", place_issue);
+    formData.append("license_type", license_type);
+    formData.append("Type", "new_license");
+
+    Swal.fire({
+      title: "Are you sure",
+      text: "to register this license ?",
+      icon: "warning",
+      showCancelButton: !0,
+      confirmButtonColor: "#2ab57d",
+      cancelButtonColor: "#fd625e",
+      confirmButtonText: "Yes, register it!",
+    }).then(function (e) {
+      if (e.value) {
+        $.ajax({
+          method: "POST",
+          url: "/customer/manage_license/" + 0,
+          headers: { "X-CSRFToken": csrftoken },
+          processData: false,
+          contentType: false,
+          data: formData,
+          async: true,
+          success: function (data) {
+            if (!data.isError) {
+              Swal.fire({
+                title: data.title,
+                text: data.Message,
+                icon: data.type,
+                confirmButtonColor: "#2ab57d",
+                cancelButtonColor: "#fd625e",
+                confirmButtonText: "Ok it!",
+              }).then(function (e) {
+                if (e.value) {
+                  window.location.reload();
+                  location.replace('/customer/license_lists')
+                }
+              });
+            } else {
+
+              Swal.fire("Error", 'No License', "error");
+            }
+          },
+          error: function (error) {
+
+            Swal.fire("Error", 'no license', "error");
+
+          },
+        });
+      }
+    });
+
+
   });
 
   // Performing autocomplete function
