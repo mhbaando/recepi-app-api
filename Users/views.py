@@ -25,10 +25,32 @@ def Dashboard(request):
     try:
         if request.user.has_perm('Vehicles.view_vehicle') and request.user.has_perm('Customers.view_customer') and request.user.has_perm('Customers.view_license') and request.user.has_perm('Customers.view_company') and request.user.has_perm('Customers.view_licensetype'):
 
-            vehicle_count = vehicle_model.vehicle.objects.all().count()
-            license_count = customer_model.license.objects.all().count()
-            customer_count = customer_model.customer.objects.all().count()
-            company_count = customer_model.company.objects.all().count()
+            vehicle_count = 0
+            license_count = 0
+            customer_count = 0
+            company_count = 0
+
+            if request.user.is_superuser:
+                vehicle_count = vehicle_model.vehicle.objects.all().count()
+                license_count = customer_model.license.objects.all().count()
+                customer_count = customer_model.customer.objects.all().count()
+                company_count = customer_model.company.objects.all().count()
+            else:
+                if request.user.federal_state is None:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'Update your State'
+                    })
+
+                vehicle_count = vehicle_model.vehicle.objects.filter(
+                    Q(owner__federal_state=request.user.federal_state)).count()
+                license_count = customer_model.license.objects.filter(
+                    Q(federal_state=request.user.federal_state)).count()
+                customer_count = customer_model.customer.objects.filter(
+                    Q(federal_state=request.user.federal_state)
+                ).count()
+                company_count = customer_model.company.objects.filter(
+                    Q(federal_state=request.user.federal_state)).count()
 
             licenses = customer_model.license.objects.all()
             license_type = customer_model.licensetype.objects.all()
@@ -86,13 +108,29 @@ def Dashboard(request):
 @login_required(login_url="Login")
 def get_chart_data(request):
     if request.user.has_perm('Vehicles.view_vehicle'):
-        vehicles = (
-            vehicle_model.vehicle.objects.annotate(
-                month=ExtractMonth("created_at"))
-            .values("month")
-            .annotate(count=Count("vehicle_id"))
-            .values("month", "count")
-        )
+        vehicles = ''
+        if request.user.is_superuser:
+            vehicles = (
+                vehicle_model.vehicle.objects.annotate(
+                    month=ExtractMonth("created_at"))
+                .values("month")
+                .annotate(count=Count("vehicle_id"))
+                .values("month", "count")
+            )
+        else:
+            if request.user.federal_state is None:
+                return JsonResponse({
+                    'isError': True,
+                    'Message': 'Update your State'
+                })
+
+            vehicles = (
+                vehicle_model.vehicle.objects.filter(Q(owner__federal_state=request.user.federal_state)).annotate(
+                    month=ExtractMonth("created_at"))
+                .values("month")
+                .annotate(count=Count("vehicle_id"))
+                .values("month", "count")
+            )
 
         context = {"vehicles": list(vehicles)}
         return JsonResponse(context)
@@ -2174,12 +2212,11 @@ def updateUser(request):
         lname = request.POST.get("lname", None)
         phone = request.POST.get("phone", None)
         email = request.POST.get("email", None)
+        state = request.POST.get("state", None)
         image = ""
 
         if "img" in request.FILES:
             image = request.FILES["img"]
-
-        state = request.POST.get("state", None)
 
         if (
             userID is None
@@ -2188,13 +2225,15 @@ def updateUser(request):
             or lname is None
             or phone is None
             or email is None
+            or state is None
         ):
             return JsonResponse({"isError": True, "Message": "All Feilds are required"})
 
         user = models.Users.objects.filter(Q(id=userID)).first()
 
-        if not request.user.is_superuser:
-            if state is None or state == "Select State":
+        if user.is_state or user.is_admin:
+
+            if "Select State" in state:
                 return JsonResponse({"isError": True, "Message": "State is Required"})
 
             user_state = customer_model.federal_state.objects.filter(
