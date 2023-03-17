@@ -29,7 +29,7 @@ $(document).ready(function () {
 
     $.ajax({
       method: "POST",
-      url: "/finance/manage_accounts/AddNewAccount",
+      url: "/finance/add_account",
       headers: { "X-CSRFToken": csrftoken },
       processData: false,
       contentType: false,
