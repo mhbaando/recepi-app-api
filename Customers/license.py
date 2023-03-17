@@ -591,6 +591,7 @@ def renew_license(request, id):
                                 'isError': True,
                                 'Message': 'Recipt Already Used'
                             })
+
                         else:
                             if license_to_renew.expired_date <= current_date:
                                 license_to_renew.expired_date = new_expired_year
