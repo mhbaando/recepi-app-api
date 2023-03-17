@@ -36,7 +36,6 @@ $(document).ready(() => {
                 Swal.fire("Error", error.responseText, "error");
             }
         })
-        console.log(companyID)
     })
 
     // hide modal on click

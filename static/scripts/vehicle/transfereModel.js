@@ -160,7 +160,6 @@ $(document).ready(() => {
       const newOwnerMother = $("#newownermother_name")
       const personal_id = $("#personalid")
 
-      console.log($(this).val());
       $("#search").autocomplete({
         source: owner,
         select: function (event, ui) {
@@ -255,7 +254,6 @@ $(document).ready(() => {
       },
       error: function (error) {
         // handle error 
-        console.log(error)
 
       }
     })

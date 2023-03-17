@@ -102,7 +102,6 @@ $(document).ready(() => {
             var checkboxValue = $(this).val();
             slectedTests.push(checkboxValue)
         });
-        console.log(slectedTests)
 
 
     })

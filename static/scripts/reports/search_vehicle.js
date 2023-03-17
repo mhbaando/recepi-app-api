@@ -7,7 +7,6 @@ $(document).ready(() => {
             success: function (res) {
                 if (!res.isError) {
                     const data = res.vehicle
-                    console.log(res.vehicle);
                     // populate data basic info
                     $("#vehicle_owner").text(data.vehicle_owner)
                     $("#vehicle_brand").text(data.vehicle_brand)
@@ -23,11 +22,10 @@ $(document).ready(() => {
                     $("#plat_nu").text(data.plate_no)
                     $("#cylinder").text(data.cylinder)
                     $("#reg_user").text(data.reg_user)
-                
-                  
+
+
 
                     const trr = res.transfare_r
-                    console.log(res.transfare_r);
                     if (!trr || trr.length <= 0) {
                         // show not trafere
                         $("#tr_hist").addClass("hidden")
@@ -49,11 +47,11 @@ $(document).ready(() => {
                             $('<td>').text(item.date_time).appendTo(row);
                             $("#transfare_times").text(`(${item.count_tran} Times)`)
                         })
-                    
-                }
-                      // // remove hidden report
-                   $("#vehicle_report").removeClass("hidden")
-                  
+
+                    }
+                    // // remove hidden report
+                    $("#vehicle_report").removeClass("hidden")
+
                 }
                 else {
                     Swal.fire('Error', res.Message, 'error')
@@ -65,71 +63,71 @@ $(document).ready(() => {
             }
         })
     }
-        
+
     $("#SearchVehicle").on('input', function () {
-    const val = $(this).val()
-    if (val.trim().length >= 3) {
-        // send request to the backend
-        $.ajax({
-            method: 'GET',
-            url: '/vehicles/reports/search_vehicle/' + val,
-            headers: { "X-CSRFToken": csrftoken },
-            async: true,
-            success: function (res) {
-                $("#SearchVehicle").autocomplete({
-                    source: res.Message,
-                    select: function (event, ui) {
-                        const item = ui.item.value;
-                        const value = ui.item.value;
-                        if (value != "") {
-                            $("#search_vehicle").attr("value", item);
-                            // call vehicle report function after user selectes a Vehicle
-                            search_vehicle(ui.item.vehicle_id)
+        const val = $(this).val()
+        if (val.trim().length >= 3) {
+            // send request to the backend
+            $.ajax({
+                method: 'GET',
+                url: '/vehicles/reports/search_vehicle/' + val,
+                headers: { "X-CSRFToken": csrftoken },
+                async: true,
+                success: function (res) {
+                    $("#SearchVehicle").autocomplete({
+                        source: res.Message,
+                        select: function (event, ui) {
+                            const item = ui.item.value;
+                            const value = ui.item.value;
+                            if (value != "") {
+                                $("#search_vehicle").attr("value", item);
+                                // call vehicle report function after user selectes a Vehicle
+                                search_vehicle(ui.item.vehicle_id)
 
-                           
-                        }
-                    },
-                    response: function (event, ui) {
-                        if (!ui.content.length) {
-                            var noResult = { value: "", label: "No result found" };
-                            ui.content.push(noResult);
-                        }
-                    },
-                    minLength: 2,
-                });
-            },
-            error: function (err) {
-                // deal error here
-            }
+
+                            }
+                        },
+                        response: function (event, ui) {
+                            if (!ui.content.length) {
+                                var noResult = { value: "", label: "No result found" };
+                                ui.content.push(noResult);
+                            }
+                        },
+                        minLength: 2,
+                    });
+                },
+                error: function (err) {
+                    // deal error here
+                }
+            })
+        }
+        // prevent page refreshing
+        $("#search_vehicle_form").on('submit', (e) => {
+            e.preventDefault()
         })
-    }
-    // prevent page refreshing
-    $("#search_vehicle_form").on('submit', (e) => {
-        e.preventDefault()
-    })
-    // hide when other customers clicked
-    $("#customer").on('click', function () {
-      
-        $("#vehicle_report").addClass('hidden')
-        
+        // hide when other customers clicked
+        $("#customer").on('click', function () {
 
-    })
-    $("#company").on('click', function () {
-      
-        $("#vehicle_report").addClass('hidden')
-        
+            $("#vehicle_report").addClass('hidden')
 
-    })
-   
-    // stay when when others clicked 
-    $("#vehicle").on('click', function () {
-      
-        $("#vehicle_report").addClass('hidden')
-        $("#vehicle_report")[0].reset()
 
-        
+        })
+        $("#company").on('click', function () {
 
+            $("#vehicle_report").addClass('hidden')
+
+
+        })
+
+        // stay when when others clicked 
+        $("#vehicle").on('click', function () {
+
+            $("#vehicle_report").addClass('hidden')
+            $("#vehicle_report")[0].reset()
+
+
+
+        })
     })
-})
 
 })

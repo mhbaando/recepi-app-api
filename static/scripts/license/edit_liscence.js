@@ -29,7 +29,6 @@ $(document).ready(() => {
             license_ID = $(this).data('liscence')
             overlay.attr('class', 'overlay')
             modal.attr('class', 'model-contaier')
-            console.log();
 
 
             $.ajax({

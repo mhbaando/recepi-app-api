@@ -181,7 +181,6 @@ $(document).ready(() => {
       return Swal.fire("Error", "Select A State", "error");
     }
     if (!plateNo) {
-      console.log(plateNo)
       return Swal.fire("Error", "Provide a plate Number", "error");
 
     }
@@ -226,7 +225,6 @@ $(document).ready(() => {
       },
       error: function (error) {
         // handle error 
-        console.log(error)
 
       }
     })

@@ -109,7 +109,6 @@ $(document).ready(function () {
       },
       error: function (error) {
         // handle error 
-        console.log(error)
 
       }
     })
@@ -155,7 +154,6 @@ $(document).ready(function () {
           if (value != "") {
             $("#search").attr("rv_id", item);
             owner_id = ui.item.owner_pk
-            console.log(ui.item.owner_pk)
           }
         },
         response: function (event, ui) {
@@ -182,8 +180,6 @@ $(document).ready(function () {
         if (!data.isError) {
           $("#ownar_name").val(data.Message.ownar_name);
 
-          console.log(data)
-        } else {
           Swal.fire(data.title, data.Message, data.type);
         }
       },

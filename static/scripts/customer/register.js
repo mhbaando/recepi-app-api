@@ -1,7 +1,7 @@
-$(document).ready(function() {
+$(document).ready(function () {
   // get user image and uppload doc
   let customerImage = ""
-  $('#upload').change(function() {
+  $('#upload').change(function () {
     const file = this.files[0];
 
     if (file) {
@@ -24,7 +24,7 @@ $(document).ready(function() {
 
   // get gender data
   let gender = ""
-  $(".gender input[type='radio']").on('click', function() {
+  $(".gender input[type='radio']").on('click', function () {
     gender = $(this).val();
   })
 
@@ -53,7 +53,7 @@ $(document).ready(function() {
   $("#doctype").on("change", () => {
     docType = $("#doctype option:selected").val()
   })
-  $("#reg_form").on('submit', function(e) {
+  $("#reg_form").on('submit', function (e) {
     e.preventDefault();
     let formData = new FormData(this);
 
@@ -118,7 +118,7 @@ $(document).ready(function() {
       contentType: false,
       data: formData,
       async: true,
-      success: function(response) {
+      success: function (response) {
         if (!response.isError) {
           Swal.fire({
             title: "Success",
@@ -127,7 +127,7 @@ $(document).ready(function() {
             confirmButtonText: "Ok",
             confirmButtonClass: "btn btn-success mt-2",
             buttonsStyling: !1,
-          }).then(function(e) {
+          }).then(function (e) {
             if (e.value) {
               Swal.DismissReason.cancel;
               location.replace('/customer/list')
@@ -141,11 +141,9 @@ $(document).ready(function() {
           Swal.fire("Error", response.Message, "error");
         }
       },
-      error: function(error) {
+      error: function (error) {
         // handle error 
-        console.log(error)
         Swal.fire("Error", error.responseText, "error");
-
       }
     })
 
