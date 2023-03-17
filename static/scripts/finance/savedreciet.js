@@ -12,11 +12,12 @@ $(document).ready(function () {
       let rv_from = $("#rcfrom").val();
       let reason = $("#reason").val();
       let personal_id = $("#personal_id").val();
-      let rvamount = Number($("#rv_amount").val().split("$")[1]);
+      let rvamount = Number($("#rv_amount").val()?.split("$")[1]);
 
-
-
-
+      // check validations 
+      if (!rv_number || rv_number.trim().length <= 0 || rv_from.trim().length <= 0 || reason.trim().length <= 0 || personal_id.trim().length <= 0 || !rvamount) {
+        Swal.fire('Error', 'All Feilds are required', 'error')
+      }
 
       // Append all these to form-data
       formData.append("rv_number", rv_number);
