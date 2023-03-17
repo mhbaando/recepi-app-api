@@ -68,7 +68,7 @@
                                             <th class="wd-15p border-bottom-0">Phone</th>
                                             <th class="wd-15p border-bottom-0">Status</th>
                                             <th class="wd-15p border-bottom-0">Action</th>
-                                            {% if perms.Customer.block_company %}
+                                            {% if perms.Customers.unblock_company %}
                                                 <th class="wd-15p border-bottom-0">Block Company</th>
                                             </tr>
                                         {% endif %}
@@ -91,7 +91,7 @@
                                                     </td>
                                                 {% endif %}
                                                 <td/>
-                                                {% if perms.Customer.block_company %}
+                                                {% if perms.Customers.unblock_company %}
                                                     {% if company.show_status.show_btn %}
                                                         <button class="btn btn-outline-primary"
                                                                 data-companyid="{{ company.company_id }}"
