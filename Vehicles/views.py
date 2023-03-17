@@ -479,8 +479,19 @@ def view_vehicle(request):
     types = vehicle_model.type.objects.all().order_by(
         '-created_at')
 
-    all_vehicles = vehicle_model.vehicle.objects.all().order_by(
-        '-created_at')
+    all_vehicles = []
+    if request.user.is_superuser:
+        all_vehicles = vehicle_model.vehicle.objects.all().order_by(
+            '-created_at')
+    else:
+        if request.user.federal_state is None:
+            return JsonResponse({
+                'isError': True,
+                'Message': 'Update Your State to veiw viheclse'
+            })
+
+        all_vehicles = vehicle_model.vehicle.objects.filter(Q(owner__federal_state=request.user.federal_state)).order_by(
+            '-created_at')
 
     if all_vehicles is not None:
         for vh in all_vehicles:
@@ -575,8 +586,17 @@ def vehicle_profile(request, pk):
                     Q(vehicle_id=pk)).first()
             else:
                 # for state user
+                if request.user.federal_state is None:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'Update your state'
+                    })
+
                 vehicle = vehicle_model.vehicle.objects.filter(
-                    Q(vehicle_id=pk)).first()
+                    Q(vehicle_id=pk)).filter(Q(owner__federal_state=request.user.federal_state)).first()
+
+            if vehicle is None:
+                return redirect('un_authorized')
 
             transfares = vehicle_model.transfare_vehicles.objects.filter(
                 Q(vehicle=vehicle)).all()
