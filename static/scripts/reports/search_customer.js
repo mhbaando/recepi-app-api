@@ -164,7 +164,7 @@ $(document).ready(() => {
             }
         })
     }
-
+    let userID = ''
     $("#searchCustomer").on('input', function () {
         const val = $(this).val()
         if (val.trim().length >= 3) {
@@ -184,6 +184,7 @@ $(document).ready(() => {
                                 $("#searchCustomer").attr("value", item);
                                 // call customer report functio after user selectes a customer
                                 search_customer(ui.item.customer_id)
+                                userID = ui.item.customer_id
                             }
                         },
                         response: function (event, ui) {
@@ -208,4 +209,10 @@ $(document).ready(() => {
         e.preventDefault()
     })
 
+
+    // print customer 
+    $("#customer_print").on('click', () => {
+        console.log('here')
+        window.location.href = `/print/customer/${userID}`
+    })
 })
