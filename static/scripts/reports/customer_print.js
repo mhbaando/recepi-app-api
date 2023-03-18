@@ -1,10 +1,12 @@
 $(document).ready(() => {
-    const print_btn= document.getElementById('print')
-    print_btn.addEventListener('click', function(){
-        print();
+    $("#print-customer").on('click', function () {
+        $.ajax({
+            method: 'GET',
+            url: '/customer/print_customer',
+            async: true,
+            success: function (res) {
+                console.log(res)
+            }
+        })
     })
-
-
-
-
 })
