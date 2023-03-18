@@ -30,7 +30,7 @@ $(document).ready(() => {
                         // show not trafere
                         $("#tr_hist").addClass("hidden")
                         $("#trfound").removeClass("hidden")
-                        $("#transfare_times").text('(0 Times)')
+                        // $("#transfare_times").text('(0 Times)')
                     } else {
                         $("#trfound").addClass("hidden")
                         $("#tr_hist").removeClass("hidden")
@@ -45,7 +45,7 @@ $(document).ready(() => {
                             $('<td>').text(item.plate_number).appendTo(row);
                             $('<td>').text(item.reason_tran).appendTo(row);
                             $('<td>').text(item.date_time).appendTo(row);
-                            $("#transfare_times").text(`(${item.count_tran} Times)`)
+                            $("#transfare_times").text(`(${item.counts} Times)`)
                         })
 
                     }

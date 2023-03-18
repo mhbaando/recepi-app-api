@@ -100,6 +100,7 @@ def vehicle_report(request, id):
                         'date_time': transfer.created_at.strftime('%d / %B / %Y'),
                         'count_tran': len(transfare)
                     })
+                    print()
 
             return JsonResponse({
                 'isError': False,
