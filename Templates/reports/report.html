@@ -1,7 +1,7 @@
 {% extends "Base/index.html" %}
 {% load static %}
 {% block cssData %}
-    <link rel="stylesheet" href={% static "assets/css/jquery-ui/ui.css" %}>
+    <link rel="stylesheet" href={% static "assets/css/jquery-ui/ui.css" %}/>
     <link rel="stylesheet" href="{% static "assets/css/reports/report.css" %}"/>
     <link rel="stylesheet"
           href="{% static "assets/css/customer/register-customer.css" %}"/>
@@ -38,5 +38,5 @@
     <script src="{% static "scripts/reports/search_company.js" %}"></script>
     <script src="{% static "scripts/reports/search_vehicle.js" %}"></script>
     <script src="{% static "scripts/reports/vehicle_print.js" %}"></script>
-    {% comment %} <script src="{% static "scripts/reports/customer_print.js" %}"></script> {% endcomment %}
+    <script src="{% static "scripts/reports/customer_print.js" %}"></script>
 {% endblock scriptData %}
