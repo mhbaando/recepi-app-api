@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "Finance",
     "Customers",
     "Vehicles",
+    "pdf_converter"
 ]
 
 
@@ -124,11 +125,10 @@ STATIC_URL = "static/"
 
 MEDIA_URL = "/media/"
 
-if DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
