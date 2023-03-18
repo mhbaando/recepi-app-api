@@ -80,7 +80,7 @@
                 {% endif %}
            </ul>
         </li>
-        <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' or  pageTitle == 'Vehicle Profile' or pageTitle == 'Register MOT' %}active open{% endif %}">
+        <li class="menu-item {% if pageTitle == 'Register vehicle' or pageTitle == 'Assign Aplate' or  pageTitle == 'Transfer Vehicle' or  pageTitle == 'View Vehicles' or  pageTitle == 'Vehicle Profile' or pageTitle == 'Register MOT' or pageTitle == 'MOT List' %}active open{% endif %}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-car"></i>
                 <div data-i18n="Dashboards">Vehicles</div>
@@ -105,6 +105,12 @@
                         <div data-i18n="CRM">MOT</div>
                     </a>
                 </li>
+                <li class="menu-item {% if pageTitle == 'MOT List' or pageTitle == 'ProFile' %} active{% endif %}">
+                    <a href="{% url 'view-mot' %}" class="menu-link">
+                        <div data-i18n="CRM">Mot List</div>
+                    </a>
+                </li>
+                
             </ul>
         </li>
         <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' or pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active open{% endif %}">

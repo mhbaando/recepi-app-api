@@ -203,3 +203,11 @@ class test(models.Model):
 
     def __str__(self):
         return str(self.test_id)
+
+    def show_result(self):
+        return {
+            'result_status': 'Fail' if not self.result else 'Pass',
+
+
+
+        }
