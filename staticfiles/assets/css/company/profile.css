@@ -1,0 +1,46 @@
+.row,p{
+    margin: 0 !important;
+}
+
+span {
+    color: black;
+}
+
+.profile__header{
+    
+    width: 100%;
+    height: 180px;
+    border-radius: 5px;
+   
+    background: url('../../img/co_bg.jpg');
+    background-position: center;
+    background-size: cover;
+    /* filter: brightness(0.4); */
+
+    position: relative;
+
+    margin-bottom: 100px;
+}
+
+.profile__img{
+    position: absolute;
+    bottom: -35%;
+    left: 5%;
+
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+
+    background-color: rgb(213, 213, 213);
+
+    overflow: hidden;
+
+}
+.profile__img img {
+    width: 100%;
+    height: 100%;
+
+   object-fit: cover;
+   object-position: top;
+
+}

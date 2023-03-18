@@ -1,0 +1,86 @@
+h4 {
+    margin-bottom: 0 !important;
+}
+.choices {
+    height: 100px;
+    cursor: pointer;
+    
+
+    display:  flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.choices:hover{
+    transform: scale(0.95);
+    background-color: #eee
+}
+
+.active-choice {
+    transform: scale(0.95);
+    background-color:   
+    rgba(105, 108, 255, 0.16);
+    color:#696cff;
+}
+.active-choice h4 {
+    color: #696cff;
+}
+
+.active-choice .bx-custom {
+    background-color: #696cff;
+    color: white;
+}
+.bx-custom {
+    background-color: #e3e3e3;
+    font-size: 28px;
+
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+#customer-report-data {
+    overflow-y: auto
+}
+#vehicle_report {
+    overflow-y: auto
+}
+
+.report-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+hr {
+    width: 100%;
+    height: 0;
+    border-top: 1px solid #000;
+}
+
+
+.license_status_active {
+    color: green;
+}
+.license_status_other {
+    color: red;
+}
+
+
+    
+
+    
+@page {
+      size: A4 landscape;
+      size: 287mm 210mm;
+}
+
+
+
