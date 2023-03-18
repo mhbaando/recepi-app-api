@@ -25,6 +25,7 @@ $(document).ready(() => {
                                     $("#mdbrand").val(ui.item.model_year)
                                     $("#ophone").val(ui.item.phone)
                                     vhID = ui.item.vehicle_id
+                                    console.log(vhID);
                                 }
                             },
                             response: function (event, ui) {
@@ -81,21 +82,31 @@ $(document).ready(() => {
             elhodler.addClass("hidden")
         }
     });
-
-
+    let formData = new FormData();
+   
     // save MOT
     $("#reg_mot").on('submit', function (e) {
         e.preventDefault()
+      
         const vin = $("#search").val()?.split('-')[1]?.trim() // get vin
         const testno = $("#testno").val()
         const testread = $("#testread").val()
         const expdate = $("expdate").val()
+       
+        
+        formData.append("expdate", expdate);
+        formData.append("vhID", vhID);
+        formData.append("testread", testread);
+        formData.append("eldisplayer", eldisplayer);
+        formData.append("elhodler", elhodler);
+        formData.append("testno", testno);
+        formData.append("vin", vin);
+        console.log(formData);
 
 
-        // required="required"
-        // if (!vin || !testno || !testread || expdate?.trim() || !category) {
-        //     return Swal.fire('Error', 'All Feilds are Required', 'error')
-        // }
+       
+
+
 
         slectedTests = []
         $('input[type="checkbox"]:checked').each(function () {
@@ -105,4 +116,43 @@ $(document).ready(() => {
 
 
     })
-}) // end of doc
+    $.ajax({
+        method: "POST",
+        url: "/vehicles/manage-mot/",
+        headers: { "X-CSRFToken": csrftoken },
+        processData: false,
+        contentType: false,
+        data: formData,
+        async: true,
+        success: function (response) {
+          if (!response.isError) {
+            Swal.fire({
+              title: "Success",
+              text: response.Message,
+              icon: "success",
+              confirmButtonText: "Ok",
+              confirmButtonClass: "btn btn-success mt-2",
+              buttonsStyling: !1,
+            }).then(function (e) {
+              if (e.value) {
+                Swal.DismissReason.cancel;
+                
+              }
+            });
+  
+            // resete the form 
+            $("#reg_mot")[0].reset()
+  
+          } else {
+            Swal.fire("Error", response.Message, "error");
+          }
+        },
+        error: function (error) {
+          // handle error 
+  
+        }
+      })
+  
+  
+    })
+    
