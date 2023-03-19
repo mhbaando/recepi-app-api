@@ -181,7 +181,10 @@ def find_edit_test(request, id):
 def view_mot(request):
 
     tests = vehicle_model.test.objects.all()
-    all_brands=vehicle_model.model_brand.objects.all()
+    all_brands = vehicle_model.model_brand.objects.all()
+    catigories = vehicle_model.test_category.objects.all()
+    tested_el = vehicle_model.test_elements.objects.all()
 
-    context = {'pageTitle': 'MOT List', 'tests': tests, "all_brands":all_brands}
+    context = {'pageTitle': 'MOT List', 'tests': tests,
+               "all_brands": all_brands, "catigories": catigories, "tested_el": tested_el}
     return render(request, 'MOT/view_mot.html', context)

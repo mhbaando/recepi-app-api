@@ -1,4 +1,5 @@
 $(document).ready(() => {
+    let VehicleID=""
     const search_vehicle = function (id) {
         $.ajax({
             method: 'GET',
@@ -7,6 +8,7 @@ $(document).ready(() => {
             success: function (res) {
                 if (!res.isError) {
                     const data = res.vehicle
+                    console.log(data);
                     // populate data basic info
                     $("#vehicle_owner").text(data.vehicle_owner)
                     $("#vehicle_brand").text(data.vehicle_brand)
@@ -26,6 +28,7 @@ $(document).ready(() => {
 
 
                     const trr = res.transfare_r
+                   
                     if (!trr || trr.length <= 0) {
                         // show not trafere
                         $("#tr_hist").addClass("hidden")
@@ -83,6 +86,8 @@ $(document).ready(() => {
                                 $("#search_vehicle").attr("value", item);
                                 // call vehicle report function after user selectes a Vehicle
                                 search_vehicle(ui.item.vehicle_id)
+                                VehicleID=(ui.item.vehicle_id)
+                                
 
 
                             }
@@ -105,6 +110,10 @@ $(document).ready(() => {
         $("#search_vehicle_form").on('submit', (e) => {
             e.preventDefault()
         })
+        // print customer 
+    $("#vehicle_print").on('click', () => {
+        window.location.href = `/vehicles/reports/vehicle-print/${VehicleID}`
+    })
         // hide when other customers clicked
         $("#customer").on('click', function () {
 
