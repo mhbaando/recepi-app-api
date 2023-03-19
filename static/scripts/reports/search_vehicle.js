@@ -48,7 +48,7 @@ $(document).ready(() => {
                             $('<td>').text(item.plate_number).appendTo(row);
                             $('<td>').text(item.reason_tran).appendTo(row);
                             $('<td>').text(item.date_time).appendTo(row);
-                            $("#transfare_times").text(`(${item.count_tran} Times)`)
+                            $("#transfare_times").text(`(${item.counts} Times)`)
                         })
 
                     }
