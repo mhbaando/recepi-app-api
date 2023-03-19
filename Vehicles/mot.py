@@ -146,7 +146,7 @@ def register_mot(request):
                 'Message': 'The Vehilce has Active un expired test'
             })
 
-        print(date.today(), get_test.expired_date)
+        # print(date.today(), get_test.expired_date)
         test_toregister = vehicle_model.test(
             test_meter=testread,
             test_num=testno,
