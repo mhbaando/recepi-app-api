@@ -39,7 +39,7 @@ $(document).ready(() => {
                         $("#lexp").text(li.expdate)
                         $("#lstatus").text(`(${li.status})`)
                         if (li.status === 'Active') {
-                            $("#lstatus").addClass("license_status_active ")
+                            $("#lstatus").addClass("license_status_active")
                             $("#lstatus").removeClass("license_status_other")
                         } else {
                             $("#lstatus").removeClass("license_status_active")
@@ -212,7 +212,6 @@ $(document).ready(() => {
 
     // print customer 
     $("#customer_print").on('click', () => {
-        console.log('here')
-        window.location.href = `/print/customer/${userID}`
+        window.location.href = `/customer/print_customer/${userID}`
     })
 })
