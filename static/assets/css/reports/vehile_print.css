@@ -5,9 +5,10 @@
         left: 0;
         border: 0;
         table-layout: 0;
+        
 
 }
-
+ 
 .print-area, .print-area * {
     display: hidden;
   }
@@ -30,8 +31,19 @@
   #search_vehicle_form{
     display: none;
   }
-
-  thead tr {
-    background-color: #379CE4;
+  #thead td {
+    background-color:rgb(62, 134, 65)
+    
+    
   }
+  * {
+    color: exact!important;  
+    -webkit-print-color-adjust: exact!important; 
+     print-color-adjust: exact!important;
+  }
+
 }
+
+
+ 
+
