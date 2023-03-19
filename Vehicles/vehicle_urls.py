@@ -37,7 +37,10 @@ urlpatterns = [
     path('reports/vehicle-report/<str:id>', reports.vehicle_report),
 
     # Mot URLs
-    path('regsiter_mot', register_mot, name="register_mot"),
+    path('regsiter_mots/', register_mot, name="register_mot"),
+    path('manage-mot/', manage_mot, name="manage_mot"),
     path('find_test_el/<int:id>', find_test_el),
-    path('find_car/<str:search>', Searchvehicle)
+    path('find_car/<str:search>', Searchvehicle),
+    path("mot-list/", view_mot, name="view-mot"),
+    path('find_test/<int:id>/', find_edit_test),
 ]

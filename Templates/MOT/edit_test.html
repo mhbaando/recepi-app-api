@@ -1,0 +1,100 @@
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/dahsboard.css" %}"/>
+    <link rel="stylesheet" href={% static 'assets/css/jquery-ui/ui.css' %}>
+    <link rel="stylesheet" href="{% static "assets/css/customer/modal.css" %}"/>
+    <style>.ui-autocomplete { z-index:2147483647; }</style>
+{% endblock cssData %}
+{% block content %}
+    <div class="overlay-code hidden"></div>
+    <div class="containerr_code hidden">
+        <div class="model-code">
+            <div class="model-content">
+                <div>
+                    <h4>Manage MOT</h4>
+                    <hr/>
+                </div>
+                <form id="testbtn">
+                    {% csrf_token %}
+                   <div class="row">
+                        <div class="col-md-6 mb-0">
+                             <div class="mb-3">
+                                <label class="form-label">Vehicle Brand</label>
+                                <input type="text"
+                                    class="form-control"
+                                    id="brand"
+                                    placeholder="Enter Code Name"
+                                    required="required">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-0">
+                            <div class="mb-3">
+                               <label class="form-label">Test Meter</label>
+                               <input type="text"
+                                   class="form-control"
+                                   id="meter"
+                                   placeholder="Enter Code Name"
+                                   required="required">
+                           </div>
+                       </div>
+                       <div class="col-md-6 mb-0">
+                        <div class="mb-3">
+                           <label class="form-label">Expired Date</label>
+                           <input type="text"
+                               class="form-control"
+                               id="code_name"
+                               placeholder="Enter Code Name"
+                               required="required">
+                       </div>
+                   </div>
+                   <div class="col-md-6 mb-0">
+                       <div class="mb-3">
+                          <label class="form-label">Issue Date</label>
+                          <input type="text"
+                              class="form-control"
+                              id="code_name"
+                              placeholder="Enter Code Name"
+                              required="required">
+                      </div>
+                  </div>
+                  <div class="col-md-6 mb-0">
+                    <div class="mb-3">
+                       <label class="form-label">Tested Element</label>
+                       <input type="text"
+                           class="form-control"
+                           id="code_name"
+                           placeholder="Enter Code Name"
+                           required="required">
+                   </div>
+               </div>
+               <div class="col-md-6 mb-0">
+                   <div class="mb-3">
+                      <label class="form-label">Test Cat</label>
+                      <input type="text"
+                          class="form-control"
+                          id="code_name"
+                          placeholder="Enter Code Name"
+                          required="required">
+                  </div>
+
+              </div>
+              </div>
+                 </div>    
+                 <div class="action-btn">
+                    <button type="button" class="btn btn-outline-danger me-4 Close-btn">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+               
+
+
+                </form>
+              
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scriptData %}
+    <script src={% static "scripts/MOT/edit_mot.js" %}></script>
+{% endblock scriptData %}
+
+

@@ -892,3 +892,6 @@ def code_plate_name(request):
             'Message': 'On Error Occurs . Please try again or contact system administrator'
         }
         return JsonResponse(message, status=200)
+
+
+

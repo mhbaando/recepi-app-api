@@ -119,7 +119,7 @@ $(document).ready(() => {
         formData.append("cylinder", cylinder);
         formData.append("origin", origin);
 
-        formData.append("model_brand", brand)
+        formData.append("model_brand", brand);
         formData.append("vehicleID", vehicleID);
 
 

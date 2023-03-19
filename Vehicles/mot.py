@@ -9,6 +9,7 @@ from django.http import JsonResponse
 
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from Customers.autditory import save_error, save_log
 
 
 @login_required(login_url='Login')
@@ -128,3 +129,56 @@ def find_test_el(request, id):
         'isError': True,
         'Message': 'Method Not allowed'
     })
+
+
+@login_required(login_url='Login')
+def manage_mot(request):
+
+    return JsonResponse({
+        'isError': False,
+        'save': 8
+    })
+
+
+@ login_required(login_url="Login")
+def find_edit_test(request, id):
+    try:
+        if request.user.has_perm('Vehicles.view_vehicle'):
+
+            if request.method == 'GET':
+                if id is not None:
+                    test = ''
+                    if request.user.is_superuser:
+                        # for admin user
+                        test = vehicle_model.test.objects.filter(
+                            Q(test_id=id)).values()
+                    else:
+                        # for state user
+                        test = vehicle_model.test.objects.filter(
+                            Q(test_id=id),
+                        ).values()
+
+                    save_log(request, 'Vehicle / Find',
+                             f'waxa uu raadiyay Vehicleka leh')
+                    return JsonResponse(
+                        {"isErro": False, "Message": list(test)}
+                    )
+                return JsonResponse({
+                    'isError': True,
+                    'Message': 'Provide an id'
+                })
+            return JsonResponse({
+                'isError': True,
+                'Message': 'Method Not Allowed'
+            })
+        return render(request, 'Base/403.html')
+    except Exception as error:
+        save_error(request, error)
+
+
+def view_mot(request):
+
+    tests = vehicle_model.test.objects.all()
+
+    context = {'pageTitle': 'MOT List', 'tests': tests}
+    return render(request, 'MOT/view_mot.html', context)
