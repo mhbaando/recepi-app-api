@@ -106,8 +106,6 @@ def vehicle_report(request, id):
                 'isError': False,
                 "vehicle": found_vehicle,
                 "transfare_r": found_transfer,
-
-
             })
 
         return JsonResponse({"isError": True, "Message": "Vehicle Not Found"})
