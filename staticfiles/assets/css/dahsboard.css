@@ -1,0 +1,92 @@
+.summary-card{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    height: 120px;
+    cursor: pointer;
+
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.summary-card:hover{
+    transform: scale(0.95);
+}
+
+.summary-cart_img{
+    width: 45px;
+    height: 45px;
+    
+    padding: 1rem;
+    border-radius: 5px;
+    background-color: #E6E5FE;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.summary-card-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.summary-card-info h3 {
+    font-size: 22px;
+}
+
+
+
+/* license */
+
+.license-card-holder{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows:auto ;
+    gap: 15px;
+
+    margin: 5px 0;
+}
+
+.license-card-holder:last-child{
+    column-span: all;
+    border: 1px solid reds;
+}
+
+.license-card {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+    height: 80px;
+    
+    border-radius: 5px;
+    background-color: #EBFAFA;
+    
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    margin: 5px 0;
+}
+
+.license-card:hover {
+    transform: scale(0.95);
+
+}
+
+.license-card__title  span {
+    font-weight: bold;
+    color: #0768D9;
+    font-size: 17px;
+
+}
+
+tr {
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+tr:hover{
+    background-color: #eee;
+}

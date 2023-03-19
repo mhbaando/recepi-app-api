@@ -39,7 +39,7 @@ $(document).ready(() => {
                         $("#lexp").text(li.expdate)
                         $("#lstatus").text(`(${li.status})`)
                         if (li.status === 'Active') {
-                            $("#lstatus").addClass("license_status_active ")
+                            $("#lstatus").addClass("license_status_active")
                             $("#lstatus").removeClass("license_status_other")
                         } else {
                             $("#lstatus").removeClass("license_status_active")
@@ -164,7 +164,7 @@ $(document).ready(() => {
             }
         })
     }
-
+    let userID = ''
     $("#searchCustomer").on('input', function () {
         const val = $(this).val()
         if (val.trim().length >= 3) {
@@ -184,6 +184,7 @@ $(document).ready(() => {
                                 $("#searchCustomer").attr("value", item);
                                 // call customer report functio after user selectes a customer
                                 search_customer(ui.item.customer_id)
+                                userID = ui.item.customer_id
                             }
                         },
                         response: function (event, ui) {
@@ -208,4 +209,9 @@ $(document).ready(() => {
         e.preventDefault()
     })
 
+
+    // print customer 
+    $("#customer_print").on('click', () => {
+        window.location.href = `/customer/print_customer/${userID}`
+    })
 })

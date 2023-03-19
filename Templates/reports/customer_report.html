@@ -1,7 +1,4 @@
 {% load static %}
-{% block cssData %}
-<link rel="stylesheet" media="print_css.css" href="{% static "assets/css/reports/print_css.css" %}"/>
-{% endblock cssData %}
 <div class="row mt-3 bg-white rounded pt-3 ps-3 pe-3 pb-3 hidden"
      id="customer-report-data">
     <div class="row report-header">
@@ -154,181 +151,168 @@
             No License Found
         </p>
     </div>
-</div>
-<div class="row mt-5">
-    <h5>
-        COMPANY (S) INFO
-    </h5>
-    <div class="hidden" id="coinfo">
-        <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
-               id="cotable">
-            <thead class="thead-dark">
-                <tr>
-                    <th class="wd-15p border-bottom-0">
-                        REG #
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        Name
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        PHONE
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        EMAIL
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        ADDRESS
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        STATE
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        STATUS
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        REG DATE
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+    <div class="row mt-5">
+        <h5>
+            COMPANY (S) INFO
+        </h5>
+        <div class="hidden" id="coinfo">
+            <table class="w-100 mb-0" id="cotable">
+                <thead class="thead-dark">
+                    <tr style="background-color:#379CE4">
+                        <th class="wd-15p text-white">
+                            REG #
+                        </th>
+                        <th class="wd-15p text-white">
+                            Name
+                        </th>
+                        <th class="wd-15p text-white">
+                            PHONE
+                        </th>
+                        <th class="wd-15p text-white">
+                            EMAIL
+                        </th>
+                        <th class="wd-15p text-white">
+                            ADDRESS
+                        </th>
+                        <th class="wd-15p text-white">
+                            STATE
+                        </th>
+                        <th class="wd-15p text-white">
+                            STATUS
+                        </th>
+                        <th class="wd-15p text-white">
+                            REG DATE
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="hidden" id="confnd">
+            <p class="fw-5">
+                No Company Found
+            </p>
+        </div>
     </div>
-    <div class="hidden" id="confnd">
-        <p class="fw-5">
-            No Company Found
-        </p>
+    <div class="row mt-5">
+        <h5>
+            VEHICLE(S) INFO
+        </h5>
+        <div class="hidden" id="vhinfo">
+            <table class="w-100 mb-0" id="vhtable">
+                <thead class="thead-dark">
+                    <tr style="background-color:#379CE4">
+                        <th class="wd-15p text-white">
+                            Vehicle ID
+                        </th>
+                        <th class="wd-15p text-white">
+                            MODEL - YEAR
+                        </th>
+                        <th class="wd-15p text-white">
+                            VIN
+                        </th>
+                        <th class="wd-15p text-white">
+                            ENGINE #
+                        </th>
+                        <th class="wd-15p text-white">
+                            COLOR
+                        </th>
+                        <th class="wd-15p text-white">
+                            HP
+                        </th>
+                        <th class="wd-15p text-white">
+                            PLATE #
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="hidden" id="vhnfound">
+            <p class="fw-5">
+                No Vehicle Found
+            </p>
+        </div>
     </div>
-</div>
-<div class="row mt-5">
-    <h5>
-        VEHICLE(S) INFO
-    </h5>
-    <div class="hidden" id="vhinfo">
-        <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
-               id="vhtable">
-            <thead class="thead-dark">
-                <tr>
-                    <th class="wd-15p border-bottom-0">
-                        Vehicle ID
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        MODEL - YEAR
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        VIN
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        ENGINE #
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        COLOR
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        HP
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        PLATE #
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+    <div class="row mt-5">
+        <h5>
+            TRANSFER(S) HISTORY <span id="times"></span>
+        </h5>
+        <div class="hidden" id="trinfo">
+            <table class="w-100 mb-0" id="trtable">
+                <thead class="thead-dark">
+                    <tr style="background-color:#379CE4">
+                        <th class="wd-15p text-white">
+                            RV #
+                        </th>
+                        <th class="wd-15p text-white">
+                            MODEL - YEAR
+                        </th>
+                        <th class="wd-15p text-white">
+                            OLD OWNER
+                        </th>
+                        <th class="wd-15p text-white">
+                            NEW OWNER
+                        </th>
+                        <th class="wd-15p text-white">
+                            PLATE #
+                        </th>
+                        <th class="wd-15p text-white">
+                            REASON
+                        </th>
+                        <th class="wd-15p text-white">
+                            DATE
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="hidden" id="trnfound">
+            <p class="fw-5">
+                Not Transfer Found
+            </p>
+        </div>
     </div>
-    <div class="hidden" id="vhnfound">
-        <p class="fw-5">
-            No Vehicle Found
-        </p>
+    <div class="row mt-5">
+        <h5>
+            PAYMENT(S) INFO
+        </h5>
+        <div class="hidden" id="pyinfo">
+            <table class="w-100 mb-0" id="pytable">
+                <thead class="thead-dark">
+                    <tr style="background-color:#379CE4">
+                        <th class="text-white">
+                            RV #
+                        </th>
+                        <th class="text-white">
+                            AMOUNT
+                        </th>
+                        <th class="text-white">
+                            REASON
+                        </th>
+                        <th class="text-white">
+                            DATE
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="hidden" id="pynofound">
+            <p>
+                No Payment Found
+            </p>
+        </div>
     </div>
-</div>
-<div class="row mt-5">
-    <h5>
-        TRANSFER(S) HISTORY <span id="times"></span>
-    </h5>
-    <div class="hidden" id="trinfo">
-        <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
-               id="trtable">
-            <thead class="thead-dark">
-                <tr>
-                    <th class="wd-15p border-bottom-0">
-                        RV #
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        MODEL - YEAR
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        OLD OWNER
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        NEW OWNER
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        PLATE #
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        REASON
-                    </th>
-                    <th class="wd-15p border-bottom-0">
-                        DATE
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-    <div class="hidden" id="trnfound">
-        <p class="fw-5">
-            Not Transfer Found
-        </p>
-    </div>
-</div>
-<div class="row mt-5">
-    <h5>
-        PAYMENT(S) INFO
-    </h5>
-    <div class="hidden" id="pyinfo">
-        <table class="table table-striped card-table table-vcenter text-nowrap mb-0 table-bordered"
-               id="pytable">
-            <thead class="thead-dark">
-                <tr>
-                    <th class="border-bottom-0">
-                        RV #
-                    </th>
-                    <th class="border-bottom-0">
-                        AMOUNT
-                    </th>
-                    <th class="border-bottom-0">
-                        REASON
-                    </th>
-                    <th class="border-bottom-0">
-                        DATE
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-        <div class="mt-4 d-flex align-items-end justify-content-end col">
-            <div class="hstack gap-2">
-                <button type="submit"
-                        class="btn btn-primary text-right"
-                        id="prints" value="Print this page" media="print_css.css">
-                        
-                    Print
-                </button>
-            </div>
-        </div>  
-    </div>
-    <div class="hidden" id="pynofound">
-        <p>
-            No Payment Found
-        </p>
+    <div class="d-flex align-items-end justify-content-end mt-5">
+        <button class="btn btn-primary" id="customer_print">
+            Print
+        </button>
     </div>
 </div>
 </div>
-{% block scriptData %}
-
-    <script src="{% static "scripts/reports/customer_print.js" %}"></script>
-{% endblock scriptData %}

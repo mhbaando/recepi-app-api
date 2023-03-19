@@ -1,0 +1,83 @@
+.card-header{
+    padding-bottom: 0 !important;
+}
+.card-subheading {
+    font-size: 16px;
+    margin: 0 1.5rem;
+    color: rgb(185, 185, 185);
+}
+
+.card-body {
+    padding-bottom: 0 !important;
+}
+
+.card-body-custom {
+    padding: 0 1.5rem !important;
+}
+
+.custom-input-file {
+    width: 100%;
+    height: 150px;
+
+    border-radius: 5px;
+    background-color: #F0F3F5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    
+}
+
+.custom-input-file img {
+    margin: 1.5rem 0;
+}
+
+.custom-input-file > label {
+    font-size: 16px;
+    text-align: center;
+    line-height: 70%;
+    width: 100% !important;
+
+ }
+
+ 
+.custom-input-file input {
+   visibility: hidden;
+}
+
+.user-photo img {
+    width: 180px;
+    height: 180px;
+
+    object-fit: cover;
+    object-position: center;
+
+    background-color: rgb(186, 186, 186);
+}
+
+
+
+#uploadedAvatar {
+    width: 180px  !important;
+    height: 180px !important;
+
+    border-radius: 10px;
+
+    object-fit: cover;
+    object-position: center;
+}
+
+
+textarea {
+    resize: none;
+  }
+/* disbale arrows form number input */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}

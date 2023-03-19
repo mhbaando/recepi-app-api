@@ -1,10 +1,17 @@
 {% extends "Base/index.html" %}
 {% load static %}
 {% block cssData %}
-    <link rel="stylesheet" href={% static "assets/css/jquery-ui/ui.css" %}>
+    <link rel="stylesheet" href={% static "assets/css/jquery-ui/ui.css" %}/>
     <link rel="stylesheet" href="{% static "assets/css/reports/report.css" %}"/>
     <link rel="stylesheet"
           href="{% static "assets/css/customer/register-customer.css" %}"/>
+    <style>
+    td {
+        padding: 10px 0;
+        text-align: left;
+        border-bottom: 1px solid rgba(0,0,0,0.3);
+        }
+    </style>
 {% endblock cssData %}
 {% block content %}
     {% csrf_token %}
@@ -38,5 +45,5 @@
     <script src="{% static "scripts/reports/search_company.js" %}"></script>
     <script src="{% static "scripts/reports/search_vehicle.js" %}"></script>
     <script src="{% static "scripts/reports/vehicle_print.js" %}"></script>
-    {% comment %} <script src="{% static "scripts/reports/customer_print.js" %}"></script> {% endcomment %}
+    <script src="{% static "scripts/reports/customer_print.js" %}"></script>
 {% endblock scriptData %}

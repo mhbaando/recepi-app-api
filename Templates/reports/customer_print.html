@@ -1,0 +1,506 @@
+{% extends "Base/print_base.html" %}
+{% load static %}
+{% block cssStyle %}
+    <style>
+    body{
+     -webkit-print-color-adjust: exact;
+     font-size:10px;
+     display:flex;
+     justify-content: start;
+     align-items: center;
+     flex-direction: column;
+     box-sizing: border-box;
+     min-width: 100%;    
+    }
+
+    table {
+     border-collapse: collapse;
+   }
+  td { 
+     padding: 4px;
+     text-align: center;
+     border-bottom: 1px solid rgba(0,0,0,0.3);
+   }
+   
+   th{
+     
+     color:white;
+     padding: 4px;
+     text-align: center;
+     
+   }
+
+   tr {
+     page-break-inside: avoid;
+   }
+
+    .page_design{         
+        width:95%;         
+        page-break-inside: avoid;
+    }
+
+    
+    @media print{
+     tr {
+       page-break-inside: avoid;
+     }
+     td {
+       page-break-inside: avoid;
+     }
+     th {
+       page-break-inside: avoid;
+     }
+   }
+
+   .report-heade{
+    display:flex;
+    align-items:center;
+    justify-content: space-between
+   }
+
+   .coimg {
+    object-fit:contain;
+    object-position:center;
+    heigh:200px !important;!
+    border-radius:15px !important;
+   }
+
+    </style>
+{% endblock %}
+{% block printData %}
+    <div class="container page_design">
+        <div class="row mt-3 bg-white rounded pt-3 ps-3 pe-3 pb-3 hidden"
+             id="customer-report-data">
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="col">
+                    <p class=" fw-semibold text-center">
+                        Jamhuriyada Federalka Somalia
+                        <br>
+                        Wasaarada gaadiidka &
+                        <br>
+                        duulista hawada
+                    </p>
+                </div>
+                <div class="col text-center">
+                    <img src="{% static "assets/img/wlogo.png" %}" alt="Logo" height="90px"/>
+                </div>
+                <div class="col">
+                    <p class="fw-semibold text-center">
+                        جمهورية الصومال الفيدرالية
+                        <br>
+                        وزارة النقل
+                        <br>
+                        والطيران المدني
+                    </p>
+                </div>
+            </div>
+            <div class="d-flex alig-items-center justify-content-center">
+                <p class="fw-semibold mb-1 mt-2">Customer Report</p>
+            </div>
+            <hr>
+            {% comment %} customer info {% endcomment %}
+            <div class="row mt-3">
+                <h6>
+                    PERSONAL INFO <span id="status" class="text-uppercase text-{{ customer.status_class }}">({{ customer.status }})</span>
+                </h6>
+                <div class="col-8">
+                    <div class="row">
+                        <div class="row col d-flex">
+                            <p class="fw-semibold mb-1">NAME:</p>
+                            <p id="fname" class="fw-light">{{ customer.full_name }}</p>
+                        </div>
+                        <div class="row col">
+                            <p class="mb-1 fw-semibold">MOTHER’S NAME:</p>
+                            <p id="mname" class="fw-light">{{ customer.mother_name }}</p>
+                        </div>
+                        <div class="row col">
+                            <p class="mb-1 fw-semibold">PERSONALID:</p>
+                            <p id="pid" class="fw-light">{{ customer.personal_id }}</p>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="row col">
+                            <p class="mb-1 fw-semibold">GENDER:</p>
+                            <p id="gender" class="fw-light">{{ customer.gender }}</p>
+                        </div>
+                        <div class="row col ">
+                            <p class="mb-1 fw-semibold">BLOOD GROUP:</p>
+                            <p id="bgroup" class="fw-light">{{ customer.bload_group }}</p>
+                        </div>
+                        <div class="row col">
+                            <p class="mb-1 fw-semibold">NATIONALITY:</p>
+                            <p id="nation" class="fw-light">{{ customer.nationality }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row col">
+                            <p class="mb-1 fw-semibold">EMAIL:</p>
+                            <p id="email" class="fw-light">{{ customer.email }}</p>
+                        </div>
+                        <div class="row col">
+                            <p class="mb-1 fw-semibold">PHONE:</p>
+                            <p id="phone" class="fw-light">{{ customer.phone }}</p>
+                        </div>
+                        <div class="row col">
+                            <p class="mb-1 fw-semibold">DOB:</p>
+                            <p id="dob" class="fw-light">{{ customer.dob }}</p>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="row col">
+                            <p class="mb-1 fw-semibold">ADDRESS:</p>
+                            <p id="address" class="fw-light">{{ customer.address }}</p>
+                        </div>
+                        <div class="row col">
+                            <p class="mb-1 fw-semibold">STATE:</p>
+                            <p id="state" class="fw-light">{{ customer.state }}</p>
+                        </div>
+                        <div class="row col">
+                            <p class="mb-1 fw-semibold">REG USER:</p>
+                            <p id="reguser" class="fw-light">{{ customer.reg_user }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="row d-flex align-items-center justify-content-center p-2"
+                         class="img-holder">
+                        <img src="{{ customer.photo }}"
+                             height="250"
+                             class="coimg"
+                             style="height:180px;
+                                    border-radius:15px;
+                                    width:250px">
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <h6>
+                    LICENSE INFO
+                    {% if found_license.status == 'Active' %}
+                        <span class="text-uppercase text-success">
+                            ({{ found_license.status }})
+                        </span>
+                    {% else %}
+                        <span class="text-uppercase text-danger">
+                            ({{ found_license.status }})
+                        </span>
+                    {% endif %}
+                </h6>
+                <div class="row">
+                    {% if found_license %}
+                        <div class="row">
+                            <div class="row col d-flex">
+                                <p class="fw-semibold mb-1">
+                                    LICENSE #:
+                                </p>
+                                <p id="lino">
+                                    {{ found_license.license_no }}
+                                </p>
+                            </div>
+                            <div class="row col">
+                                <p class="mb-1 fw-semibold">
+                                    STATE:
+                                </p>
+                                <p id="listate">
+                                    {{ found_license.state }}
+                                </p>
+                            </div>
+                            <div class="row col">
+                                <p class="mb-1 fw-semibold">
+                                    ISSUED DATE:
+                                </p>
+                                <p id="idate">
+                                    {{ found_license.issue_date }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row col d-flex">
+                                <p class="fw-semibold mb-1">
+                                    TYPE:
+                                </p>
+                                <p id="ltype">
+                                    {{ found_license.type }}
+                                </p>
+                            </div>
+                            <div class="row col">
+                                <p class="mb-1 fw-semibold">
+                                    PLACE OF ISSUE:
+                                </p>
+                                <p id="lplace">
+                                    {{ found_license.place_issue }}
+                                </p>
+                            </div>
+                            <div class="row col">
+                                <p class="mb-1 fw-semibold">
+                                    EXPIRED DATE:
+                                </p>
+                                <p id="lexp">
+                                    {{ found_license.expdate }}
+                                </p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>
+                            No Liecense Found
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row mt-5">
+                <h5>
+                    COMPANY (S) INFO
+                </h5>
+                <div id="coinfo">
+                    {% if companies %}
+                        <table class="w-100 mb-0" id="cotable">
+                            <thead class="thead-dark">
+                                <tr style="background-color:#379CE4">
+                                    <th class="wd-15p border-bottom-0">
+                                        REG #
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        Name
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        PHONE
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        ADDRESS
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        STATE
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        STATUS
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        REG DATE
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for company in companies %}
+                                    <tr>
+                                        <td>
+                                            {{ company.reg_no }}
+                                        </td>
+                                        <td>
+                                            {{ company.name }}
+                                        </td>
+                                        <td>
+                                            {{ company.phone }}
+                                        </td>
+                                        <td>
+                                            {{ company.address }}
+                                        </td>
+                                        <td>
+                                            {{ company.state }}
+                                        </td>
+                                        <td>
+                                            {{ company.status }}
+                                        </td>
+                                        <td>
+                                            {{ company.reg_date }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        No Companies Found
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row mt-5">
+                <h5>
+                    VEHICLE(S) INFO
+                </h5>
+                <div id="vhinfo">
+                    {% if vehicles %}
+                        <table class="w-100 mb-0" id="cotable">
+                            <thead class="thead-dark">
+                                <tr style="background-color:#379CE4">
+                                    <th class="wd-15p border-bottom-0">
+                                        Vehicle ID
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        MODEL - YEAR
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        VIN
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        ENGINE #
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        COLOR
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        HP
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        PLATE #
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for vh in vehicles %}
+                                    <tr>
+                                        <td>
+                                            {{ vh.vehicle_id }}
+                                        </td>
+                                        <td>
+                                            {{ vh.model_year }}
+                                        </td>
+                                        <td>
+                                            {{ vh.vin }}
+                                        </td>
+                                        <td>
+                                            {{ vh.engine_no }}
+                                        </td>
+                                        <td>
+                                            {{ vh.color }}
+                                        </td>
+                                        <td>
+                                            {{ vh.hp }}
+                                        </td>
+                                        <td>
+                                            {{ vh.plate_no }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        No Vehicle Found
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row mt-5">
+                <h5>
+                    TRANSFER(S) HISTORY
+                </h5>
+                <div >
+                    {% if transfer %}
+                        <table class="w-100 mb-0" id="cotable">
+                            <thead class="thead-dark">
+                                <tr style="background-color:#379CE4">
+                                    <th class="wd-15p border-bottom-0">
+                                        MODEL - YEAR
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        OLD OWNER
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        NEW OWNER
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        PLATE #
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        REASON
+                                    </th>
+                                    <th class="wd-15p border-bottom-0">
+                                        DATE
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tr in transfer %}
+                                    <tr>
+                                        <td>
+                                            {{ tr.model_year }}
+                                        </td>
+                                        <td>
+                                            {{ tr.old_owner }}
+                                        </td>
+                                        <td>
+                                            {{ tr.new_owner }}
+                                        </td>
+                                        <td>
+                                            {{ tr.plate_no }}
+                                        </td>
+                                        <td>
+                                            {{ tr.reason }}
+                                        </td>
+                                        <td>
+                                            {{ tr.date }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p>
+                            No transfere Found
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row mt-5">
+                <h5>
+                    PAYMENT(S) INFO
+                </h5>
+                {% if payments %}
+                    <div id="pyinfo">
+                        <table class="w-100 mb-0" id="cotable">
+                            <thead class="thead-dark">
+                                <tr style="background-color:#379CE4">
+                                    <th class="border-bottom-0">
+                                        RV #
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        AMOUNT
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        REASON
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        From
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        DATE
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for py in payments %}
+                                    <tr>
+                                        <td>
+                                            {{ py.rv_no }}
+                                        </td>
+                                        <td>
+                                            {{ py.amount }}
+                                        </td>
+                                        <td>
+                                            {{ py.reason }}
+                                        </td>
+                                        <td>
+                                            {{ py.rv_from }}
+                                        </td>
+                                        <td>
+                                            {{ py.date }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p>
+                        No Payment Found
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock printData %}
+{% block scriptsJS %}
+    <script>
+   window.print();
+    window.onafterprint = function () {
+        window.location.replace("/customer/reports");
+    } 
+    </script>
+{% endblock scriptsJS %}
