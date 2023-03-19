@@ -191,23 +191,29 @@ class test_elements(models.Model):
 class test(models.Model):
     test_id = models.AutoField(primary_key=True)
     test_meter = models.BigIntegerField()
+    test_num = models.BigIntegerField(default=0)
     expired_date = models.DateField()
     issue_date = models.DateField(auto_now=True)
     created_at = models.DateField(auto_now_add=True)
     tested_vehicle = models.ForeignKey(vehicle, on_delete=models.RESTRICT)
-    tested_el = models.ForeignKey(
-        test_elements, on_delete=models.RESTRICT, default=1)
-    result = models.BooleanField(default=False)
     test_cat = models.ForeignKey(test_category, on_delete=models.RESTRICT)
     reg_user = models.ForeignKey(Users, on_delete=models.RESTRICT)
 
     def __str__(self):
         return str(self.test_id)
 
+
+class test_result_holder(models.Model):
+    result_id = models.AutoField(primary_key=True)
+    test_id = models.ForeignKey(test, on_delete=models.RESTRICT)
+    test_el = models.ForeignKey(test_elements, on_delete=models.RESTRICT)
+    status = models.BooleanField(default=False)
+    created_at = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.test_id} {self.test_el.el_name} - {self.status}"
+
     def show_result(self):
         return {
-            'result_status': 'Fail' if not self.result else 'Pass',
-
-
-
+            'result_status': 'Fail' if not self.status else 'Pass',
         }

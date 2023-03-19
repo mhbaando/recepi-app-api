@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import vehicle, model_brand, color, cylinder, plate, transfare_vehicles, type, code_plate, test, test_category, test_elements
+from . models import vehicle, model_brand, color, cylinder, plate, transfare_vehicles, type, code_plate, test, test_category, test_elements, test_result_holder
 
 # Register your models here.
 admin.site.register(model_brand)
@@ -13,3 +13,4 @@ admin.site.register(code_plate)
 admin.site.register(test)
 admin.site.register(test_category)
 admin.site.register(test_elements)
+admin.site.register(test_result_holder)

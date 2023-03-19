@@ -2,6 +2,7 @@ $(document).ready(() => {
 
     const elhodler = $("#testelholder");
     const eldisplayer = $("#eldispaly");
+
     let vhID = ""
     // search vehicle
     $("#search").on('input', function () {
@@ -19,13 +20,12 @@ $(document).ready(() => {
                             select: function (event, ui) {
                                 const item = ui.item.value;
                                 const value = ui.item.value;
-                                if (value != "") {
+                                if (value) {
                                     $("#search").attr("vehicle", item);
                                     $("#pid").val(ui.item.personal_id)
                                     $("#mdbrand").val(ui.item.model_year)
                                     $("#ophone").val(ui.item.phone)
                                     vhID = ui.item.vehicle_id
-                                    console.log(vhID);
                                 }
                             },
                             response: function (event, ui) {
@@ -34,7 +34,7 @@ $(document).ready(() => {
                                     ui.content.push(noResult);
                                 }
                             },
-                            minLength: 4,
+                            minLength: 2,
                         });
                     }
                     else {
@@ -47,8 +47,6 @@ $(document).ready(() => {
             })
         }
     })
-
-
 
     // when selected category return elementes inside it
     let category = ""
@@ -82,31 +80,16 @@ $(document).ready(() => {
             elhodler.addClass("hidden")
         }
     });
-    let formData = new FormData();
-   
+
     // save MOT
     $("#reg_mot").on('submit', function (e) {
         e.preventDefault()
-      
+
         const vin = $("#search").val()?.split('-')[1]?.trim() // get vin
         const testno = $("#testno").val()
         const testread = $("#testread").val()
-        const expdate = $("expdate").val()
-       
-        
-        formData.append("expdate", expdate);
-        formData.append("vhID", vhID);
-        formData.append("testread", testread);
-        formData.append("eldisplayer", eldisplayer);
-        formData.append("elhodler", elhodler);
-        formData.append("testno", testno);
-        formData.append("vin", vin);
-        console.log(formData);
-
-
-       
-
-
+        const expdate = $("#expdate").val()
+        const testCat = $("#testcat option:selected").val()
 
         slectedTests = []
         $('input[type="checkbox"]:checked').each(function () {
@@ -114,45 +97,51 @@ $(document).ready(() => {
             slectedTests.push(checkboxValue)
         });
 
+        if (!vin || !testno || !testread || !testCat || testCat === 'Select Category' || !expdate) {
+            Swal.fire('Bad Request', 'Fill all the blank space', 'error')
+        }
+
+        let formData = new FormData();
+        formData.append("vin", vin);
+        formData.append("testno", testno);
+        formData.append("testread", testread);
+        formData.append("expdate", expdate);
+        formData.append("testCat", testCat);
+        formData.append('selectedTests', slectedTests)
+
+        $.ajax({
+            method: "POST",
+            url: "/vehicles/regsiter_mots/",
+            headers: { "X-CSRFToken": csrftoken },
+            processData: false,
+            contentType: false,
+            data: formData,
+            async: true,
+            success: function (res) {
+                if (!res.isError) {
+                    Swal.fire({
+                        title: "Success",
+                        text: res.Message,
+                        icon: "success",
+                        confirmButtonText: "Ok",
+                        confirmButtonClass: "btn btn-success mt-2",
+                        buttonsStyling: !1,
+                    }).then(function (e) {
+                        if (e.value) {
+                            Swal.DismissReason.cancel;
+                            location.replace('/vehicles/view_mots')
+                        }
+                    });
+                }
+                else {
+                    Swal.fire('Error', res.Message, 'error')
+                }
+            },
+            error: function (err) {
+                // deal with the error 
+            }
+        })
 
     })
-    $.ajax({
-        method: "POST",
-        url: "/vehicles/manage-mot/",
-        headers: { "X-CSRFToken": csrftoken },
-        processData: false,
-        contentType: false,
-        data: formData,
-        async: true,
-        success: function (response) {
-          if (!response.isError) {
-            Swal.fire({
-              title: "Success",
-              text: response.Message,
-              icon: "success",
-              confirmButtonText: "Ok",
-              confirmButtonClass: "btn btn-success mt-2",
-              buttonsStyling: !1,
-            }).then(function (e) {
-              if (e.value) {
-                Swal.DismissReason.cancel;
-                
-              }
-            });
-  
-            // resete the form 
-            $("#reg_mot")[0].reset()
-  
-          } else {
-            Swal.fire("Error", response.Message, "error");
-          }
-        },
-        error: function (error) {
-          // handle error 
-  
-        }
-      })
-  
-  
-    })
-    
+})
+
