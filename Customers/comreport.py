@@ -69,7 +69,7 @@ def company_report(request, id):
             company = customer_model.company.objects.filter(
                 Q(federal_state=request.user.federal_state), company_id=id
             ).first()
-            vehicle = vehicle_model.vehicle.objects.filter(  
+            vehicle = vehicle_model.vehicle.objects.filter(
                 Q(owner=company.owner)).first()
 
         if company is not None:
@@ -120,3 +120,76 @@ def company_report(request, id):
 
         return JsonResponse({"isError": True, "Message": "Company Not Found"})
     return JsonResponse({"isError": True, "Message": "Method Not Allowed"})
+
+
+# company report
+
+
+@login_required(login_url='Login')
+def printCompany(request, id):
+    company = ""
+    vehicle = ""
+    # check requtes user state
+    if not request.user.is_superuser and request.user.federal_state is not None:
+        return JsonResponse({"isError": True, "Message": "Update your state"})
+
+    if request.user.is_superuser:
+        company = customer_model.company.objects.filter(
+            company_id=id).first()
+
+        vehicle = vehicle_model.vehicle.objects.filter(
+            Q(owner=company.owner)).first()
+    else:
+        company = customer_model.company.objects.filter(
+            Q(federal_state=request.user.federal_state), company_id=id
+        ).first()
+        vehicle = vehicle_model.vehicle.objects.filter(
+            Q(owner=company.owner)).first()
+
+    if company is not None:
+        save_log(
+            request,
+            "Report / Company",
+            f"waxa uu raadiayay company leh {id} gaan",
+        )
+
+        found_company = {
+
+
+            'company_name': company.company_name,
+            'phone': company.phone,
+            'email': company.email,
+            'website': company.website,
+            'address': company.address,
+            'state': company.federal_state.state_name,
+            'reg_no': company.reg_no,
+            'reg_user': company.reg_user.email,
+            'owner': company.owner.full_name,
+            'status': company.show_status()['verified_status'],
+            'reg_date': company.created_at.strftime('%d / %B /%Y')
+        }
+
+    found_vehicles = []
+    vehicles = vehicle_model.vehicle.objects.filter(
+        Q(owner=company.owner)).all()
+
+    if vehicles is not None:
+        for vehicle in vehicles:
+
+            found_vehicles.append({
+                'vehicle_id': vehicle.vehicle_id,
+                'model_year': f'{vehicle.vehicle_model.brand_name} - {vehicle.year}',
+                'vin': vehicle.vin,
+                'engine_no': vehicle.enginer_no,
+                'color': vehicle.color.color_name,
+                'hp': vehicle.hp,
+                'plate_no': plate_converter.shorten(vehicle.plate_no.state.state_name, vehicle.plate_no.plate_code.code_name, vehicle.plate_no.plate_no) if vehicle.plate_no else 'No Plate Assigned'
+            })
+
+    context = {
+
+        'companies': found_company,
+        'vehicles': found_vehicles,
+        'pageTitle': 'company Report'
+    }
+    return render(request, 'reports/company_print.html', context)
