@@ -14,7 +14,7 @@ urlpatterns = [
     path('customer/',  include('Customers.customer_url')),
     path('vehicles/',  include('Vehicles.vehicle_urls')),
     path('anauthorized', unauthorized_view,  name="un_authorized"),
-    path('print/', include('pdf_converter.urls'))
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
