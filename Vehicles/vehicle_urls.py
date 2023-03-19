@@ -30,11 +30,13 @@ urlpatterns = [
     path('codeplate/', views.code_plate_name),
 
 
-
+    # report
     path('searchcustomer/<str:search>',
          views. Searchcustomer, name=' Searchcustomer'),
     path('reports/search_vehicle/<str:search>', reports.Searchvehicle),
     path('reports/vehicle-report/<str:id>', reports.vehicle_report),
+    path('reports/vehicle-print/<str:id>', reports.vehicle_print),
+
 
     # Mot URLs
     path('regsiter_mots/', register_mot, name="register_mot"),
@@ -43,4 +45,5 @@ urlpatterns = [
     path('find_car/<str:search>', Searchvehicle),
     path("mot-list/", view_mot, name="view-mot"),
     path('find_test/<int:id>/', find_edit_test),
+
 ]
