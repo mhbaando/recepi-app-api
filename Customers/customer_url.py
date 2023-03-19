@@ -52,6 +52,10 @@ urlpatterns = [
     # company report
     path('comreport/search_company/<str:search>', comreport.searchcompany),
     path('comreport/company_report/<int:id>', comreport.company_report),
+    path('printCompany/<int:id>', comreport.printCompany, name="printCompany"),
+
+
+
 
 
 ]
