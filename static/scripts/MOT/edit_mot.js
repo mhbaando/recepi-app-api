@@ -19,29 +19,39 @@ $(document).ready(()=>{
     cancle.on('click',function(){
         overlay.attr('class', 'hidden')
         modal.attr('class','hidden')
+        $.ajax({
+            method: "GET",
+            url: `/vehicles/find_test/${testID}`,
+            headers: { "X-CSRFToken": csrftoken },
+            async: true,
+            success: function (response) {
+                if (!response.isError) {
+                    response.Message.forEach(test => {
+                        // 2. fill data to the html ellemets
+                        $("#meter").attr('value', test.test_meter)
+                        $("#exp_date").attr('value', test.expired_date)
+                        $("#reg_dat").attr('value', test.created_at)
+                        // $("#test_element").attr('value', test.tested_el)
+                        // $("#test_cat").attr('value', test.test_cat)
+                        // $.each(response.Message.find_ele, function (index, el) {
+                        //     $("#test_cat").attr('value', el.tested_el)
+                        // })
+                        
+                        
+                        
+    
+                    });
+                } else {
+                    Swal.fire("Error", response.Message, "error");
+                }
+            },
+            error: function (error) {
+                Swal.fire("Error", error.responseText, "error");
+            }
+        })
     })
   
-    $.ajax({
-        method: "GET",
-        url: `/vehicles/find_test/${testID}`,
-        headers: { "X-CSRFToken": csrftoken },
-        async: true,
-        success: function (response) {
-            if (!response.isError) {
-                response.Message.forEach(test => {
-                    // 2. fill data to the html ellemets
-                    $("#meter").attr('value', test.meter)
-                    console.log(test.meter);
-
-                });
-            } else {
-                Swal.fire("Error", response.Message, "error");
-            }
-        },
-        error: function (error) {
-            Swal.fire("Error", error.responseText, "error");
-        }
-    })
+   
  
 
 

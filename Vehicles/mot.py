@@ -157,6 +157,8 @@ def find_edit_test(request, id):
                         test = vehicle_model.test.objects.filter(
                             Q(test_id=id),
                         ).values()
+                    # find_ele = vehicle_model.test.objects.filter(
+                    #     Q(test_id=test[0]['tested_el'])).values('el_name')
 
                     save_log(request, 'Vehicle / Find',
                              f'waxa uu raadiyay Vehicleka leh')
@@ -179,6 +181,7 @@ def find_edit_test(request, id):
 def view_mot(request):
 
     tests = vehicle_model.test.objects.all()
+    all_brands=vehicle_model.model_brand.objects.all()
 
-    context = {'pageTitle': 'MOT List', 'tests': tests}
+    context = {'pageTitle': 'MOT List', 'tests': tests, "all_brands":all_brands}
     return render(request, 'MOT/view_mot.html', context)
