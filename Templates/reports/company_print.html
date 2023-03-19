@@ -1,0 +1,222 @@
+{% extends "Base/print_base.html" %}
+{% load static %}
+{% block cssStyle %}
+    <style>
+    body{
+     -webkit-print-color-adjust: exact;
+     font-size:10px;
+     display:flex;
+     justify-content: start;
+     align-items: center;
+     flex-direction: column;
+     box-sizing: border-box;
+     min-width: 100%;    
+    }
+
+    table {
+     border-collapse: collapse;
+   }
+  td { 
+     padding: 4px;
+     text-align: center;
+     border-bottom: 1px solid rgba(0,0,0,0.3);
+   }
+   
+   th{
+     
+     color:white;
+     padding: 4px;
+     text-align: center;
+     
+   }
+
+   tr {
+     page-break-inside: avoid;
+   }
+
+    .page_design{         
+        width:95%;         
+        page-break-inside: avoid;
+    }
+
+    
+    @media print{
+     tr {
+       page-break-inside: avoid;
+     }
+     td {
+       page-break-inside: avoid;
+     }
+     th {
+       page-break-inside: avoid;
+     }
+   }
+
+   .report-heade{
+    display:flex;
+    align-items:center;
+    justify-content: space-between
+   }
+
+   .coimg {
+    object-fit:contain;
+    object-position:center;
+    heigh:200px !important;!
+    border-radius:15px !important;
+   }
+
+    </style>
+{% endblock %}
+{% block printData %}
+    <div class="container page_design">
+        <div class="row mt-3 bg-white rounded pt-3 ps-3 pe-3 pb-3 hidden"
+             id="customer-report-data">
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="col">
+                    <p class=" fw-semibold text-center">
+                        Jamhuriyada Federalka Somalia
+                        <br>
+                        Wasaarada gaadiidka &
+                        <br>
+                        duulista hawada
+                    </p>
+                </div>
+                <div class="col text-center">
+                    <img src="{% static "assets/img/wlogo.png" %}" alt="Logo" height="90px"/>
+                </div>
+                <div class="col">
+                    <p class="fw-semibold text-center">
+                        جمهورية الصومال الفيدرالية
+                        <br>
+                        وزارة النقل
+                        <br>
+                        والطيران المدني
+                    </p>
+                </div>
+            </div>
+            <div class="d-flex alig-items-center justify-content-center">
+                <p class="fw-semibold mb-1 mt-2">Company Report</p>
+            </div>
+            <hr>
+            {% comment %} customer info {% endcomment %}
+            <div class="row mt-3">
+                <h5>
+                    COMPANY INFO <span id="status" class="text-uppercase"></span>
+                </h5>
+                <div class="row">
+                    <div class="col">
+                        <p class="fw-semibold mb-1">NAME:</p>
+                        <p id="coname" class="fw-light">{{ companies.company_name }}</p>
+                    </div>
+                    <div class="col">
+                        <p class="mb-1 fw-bold">EMAIL:</p>
+                        <p id="coemail" class="fw-light">{{ companies.email }}</p>
+                    </div>
+                    <div class="col">
+                        <p class="mb-1 fw-bold">PHONE:</p>
+                        <p id="cophone"class="fw-light">{{ companies.address }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="mb-1 fw-bold">ADDRESS:</p>
+                        <p id="coaddress"class="fw-light">{{ companies.phone }}</p>
+                    </div>
+                    <div class="col">
+                        <p class="mb-1 fw-bold">STATUS:</p>
+                        <p id="costatus"class="fw-light">{{ companies.status }}</p>
+                    </div>
+                    <div class="col">
+                        <p class="mb-1 fw-bold">WEBSITE:</p>
+                        <p id="cowebsite"class="fw-light">{{ companies.website }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="mb-1 fw-bold">REG NO:</p>
+                        <p id="coregno"class="fw-light">{{ companies.reg_no }}</p>
+                    </div>
+                    <div class="col">
+                        <p class="mb-1 fw-bold">OWNER:</p>
+                        <p id="coowner"class="fw-light">{{ companies.owner }}</p>
+                    </div>
+                    <div class="col">
+                        <p class="mb-1 fw-bold">REG DATE:</p>
+                        <p id="coregdate"class="fw-light">{{ companies.reg_date }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="mb-1 fw-bold">REG USER:</p>
+                        <p id="coreguser"class="fw-light">{{ companies.reg_user }}</p>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <h5>VEHICLE(S) INFO</h5>
+                    <div id="vhinfo">
+                        {% if vehicles %}
+                            <table class="w-100 mb-0" id="cotable">
+                                <thead class="thead-dark">
+                                    <tr style="background-color:#379CE4">
+                                        <th class="wd-15p border-bottom-0">Vehicle ID</th>
+                                        <th class="wd-15p border-bottom-0">MODEL - YEAR</th>
+                                        <th class="wd-15p border-bottom-0">VIN</th>
+                                        <th class="wd-15p border-bottom-0">
+                                            ENGINE #
+                                        </th>
+                                        <th class="wd-15p border-bottom-0">
+                                            COLOR
+                                        </th>
+                                        <th class="wd-15p border-bottom-0">
+                                            HP
+                                        </th>
+                                        <th class="wd-15p border-bottom-0">
+                                            PLATE #
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for vh in vehicles %}
+                                        <tr>
+                                            <td>
+                                                {{ vh.vehicle_id }}
+                                            </td>
+                                            <td>
+                                                {{ vh.model_year }}
+                                            </td>
+                                            <td>
+                                                {{ vh.vin }}
+                                            </td>
+                                            <td>
+                                                {{ vh.engine_no }}
+                                            </td>
+                                            <td>
+                                                {{ vh.color }}
+                                            </td>
+                                            <td>
+                                                {{ vh.hp }}
+                                            </td>
+                                            <td>
+                                                {{ vh.plate_no }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            No Vehicle Found
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock printData %}
+    {% block scriptsJS %}
+        <script>
+   window.print();
+    window.onafterprint = function () {
+        window.location.replace("/customer/reports");
+
+    } 
+        </script>
+    {% endblock scriptsJS %}

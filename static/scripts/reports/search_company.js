@@ -60,6 +60,7 @@ $(document).ready(() => {
 
     // search company name
 
+    let companyID = ''
 
     $("#searchcompany").on('input', function () {
         const val = $(this).val()
@@ -79,6 +80,8 @@ $(document).ready(() => {
                             if (value != "") {
                                 $("#searchcompany").attr("value", item);
                                 search_company(ui.item.company_id)
+                                companyID= ui.item.company_id
+
                             }
 
                         },
@@ -101,6 +104,7 @@ $(document).ready(() => {
 
     // prevent refresh
 
+
     $("#searchcompanyform").on('submit', (e) => {
         e.preventDefault()
     })
@@ -108,7 +112,10 @@ $(document).ready(() => {
 
 
 
-
+ // print company 
+ $("#companyPrint").on('click', () => {
+    window.location.href = `/customer/printCompany/${companyID}`
+})
 
 
 

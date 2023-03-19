@@ -51,13 +51,7 @@ $(document).ready(() => {
         $("#vehicle-search").addClass("hidden")
         $("#company-search").removeClass("hidden")
 
-        // report document
-        // $("#customer-report-data").addClass('hidden')
-        // $("#vehicle_report").addClass('hidden')
-
-        // clean seach inputs
-        // $("#SearchVehicle").val('')
-        // $('#searchCustomer').val('')
+       
 
 
     })
