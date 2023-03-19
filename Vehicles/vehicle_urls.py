@@ -30,11 +30,13 @@ urlpatterns = [
     path('codeplate/', views.code_plate_name),
 
 
-
+    # report
     path('searchcustomer/<str:search>',
          views. Searchcustomer, name=' Searchcustomer'),
     path('reports/search_vehicle/<str:search>', reports.Searchvehicle),
     path('reports/vehicle-report/<str:id>', reports.vehicle_report),
+    path('reports/vehicle-print/<str:id>', reports.vehicle_print),
+
 
     # Mot URLs
     path('find_test_el/<int:id>', find_test_el),

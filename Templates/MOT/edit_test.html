@@ -18,14 +18,17 @@
                     {% csrf_token %}
                    <div class="row">
                         <div class="col-md-6 mb-0">
-                             <div class="mb-3">
-                                <label class="form-label">Vehicle Brand</label>
-                                <input type="text"
-                                    class="form-control"
-                                    id="brand"
-                                    placeholder="Enter Code Name"
-                                    required="required">
-                            </div>
+                            <label for="cat" class="form-label">Vehicle Model</label>
+                            <select class="form-select" id="testcat" aria-label="cat">
+                                <option selected>
+                                    Select a brand
+                                </option>
+                                {% for cat in all_brands %}
+                                    <option value="{{ cat.brand_id }}">
+                                        {{ cat.brand_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="col-md-6 mb-0">
                             <div class="mb-3">
@@ -59,25 +62,32 @@
                   </div>
                   <div class="col-md-6 mb-0">
                     <div class="mb-3">
-                       <label class="form-label">Tested Element</label>
-                       <input type="text"
-                           class="form-control"
-                           id="test_element"
-                           placeholder="Enter Code Name"
-                           required="required">
+                        <label for="cat" class="form-label">Test elements</label>
+                        <select class="form-select" id="testcat" aria-label="cat">
+                            <option selected>
+                                Select Element
+                            </option>
+                            {% for cat in tested_el %}
+                                <option value="{{ cat.el_id }}">
+                                    {{ cat.el_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
                    </div>
                </div>
                <div class="col-md-6 mb-0">
-                   <div class="mb-3">
-                      <label class="form-label">Test Cat</label>
-                      <input type="text"
-                          class="form-control"
-                          id="test_cat"
-                          placeholder="Enter Code Name"
-                          required="required">
-                  </div>
-
-              </div>
+                <label for="cat" class="form-label">Test Category</label>
+                <select class="form-select" id="testcat" aria-label="cat">
+                    <option selected>
+                        Select A Category
+                    </option>
+                    {% for cat in catigories %}
+                        <option value="{{ cat.cat_id }}">
+                            {{ cat.cat_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
               </div>
                  </div>    
                  <div class="action-btn">
