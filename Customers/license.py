@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required, permission_required
+
 from django.core.paginator import Paginator
 # Create your views here.
 # Register License
@@ -15,6 +16,8 @@ current_date = date.today()
 currentDatetime = datetime.now()
 years_to_add = current_date.year + 3
 expired_year = current_date.replace(year=years_to_add)
+
+
 
 
 @login_required(login_url='Login')
