@@ -1,9 +1,13 @@
 # customers
-from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
+import io
+import base64
+from PIL import Image
+from rembg import remove
 from django.db.models import Q
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 
 from Customers import models as customer_model
 from Finance import models as financemodel
@@ -297,124 +301,140 @@ def customer_list(request):
 
 @ login_required(login_url="Login")
 def customer_profile(request, id):
-    try:
-        if request.user.has_perm('Customers.view_customer'):
-            customer_exist = None
-            if request.user.is_admin or request.user.is_state:
-                customer_exist = customer_model.customer.objects.filter(
-                    Q(customer_id=id)).filter(Q(federal_state=request.user.federal_state)).first()
+    # try:
+    if request.user.has_perm('Customers.view_customer'):
+        customer_exist = None
+        if request.user.is_admin or request.user.is_state:
+            customer_exist = customer_model.customer.objects.filter(
+                Q(customer_id=id)).filter(Q(federal_state=request.user.federal_state)).first()
 
-            if request.user.is_superuser:
-                customer_exist = customer_model.customer.objects.all()
+        if request.user.is_superuser:
+            customer_exist = customer_model.customer.objects.all()
 
-            if customer_exist is None:
-                return render(request, "./Base/403.html")
+        if customer_exist is None:
+            return render(request, "./Base/403.html")
 
-            bload_group = customer_model.blood_group.objects.all()
-            nationalities = customer_model.countries.objects.all()
-            doc_types = customer_model.personal_id_type.objects.all()  # personal id types
-            states = []
-            stateappre = [
-                {"name": "Banaadir", "appreviation": "BN"},
-                {"name": "Hirshabeelle", "appreviation": "HR"},
-                {"name": "Galmudug", "appreviation": "GM"},
-                {"name": "Puntland", "appreviation": "PN"},
-                {"name": "Koonfur Galbeed", "appreviation": "KG"},
-                {"name": "Jubba land", "appreviation": "JL"},
-                {"name": "Somali land", "appreviation": "SL"},
-            ]
+        bload_group = customer_model.blood_group.objects.all()
+        nationalities = customer_model.countries.objects.all()
+        doc_types = customer_model.personal_id_type.objects.all()  # personal id types
+        states = []
+        img_str = ''
+        stateappre = [
+            {"name": "Banaadir", "appreviation": "BN"},
+            {"name": "Hirshabeelle", "appreviation": "HR"},
+            {"name": "Galmudug", "appreviation": "GM"},
+            {"name": "Puntland", "appreviation": "PN"},
+            {"name": "Koonfur Galbeed", "appreviation": "KG"},
+            {"name": "Jubba land", "appreviation": "JL"},
+            {"name": "Somali land", "appreviation": "SL"},
+        ]
 
-            # check the user state
-            if request.user.is_state and request.user.federal_state is not None:
-                states = customer_model.federal_state.objects.filter(
-                    Q(state_id=request.user.federal_state.state_id)
-                )
-            elif request.user.is_superuser:
-                states = customer_model.federal_state.objects.all()
-            else:
-                states = "No State Found"
+        # check the user state
+        if request.user.is_state and request.user.federal_state is not None:
+            states = customer_model.federal_state.objects.filter(
+                Q(state_id=request.user.federal_state.state_id)
+            )
+        elif request.user.is_superuser:
+            states = customer_model.federal_state.objects.all()
+        else:
+            states = "No State Found"
 
-            if request.method == "GET":
-                if id is not None:
-                    customer = ""
-                    if request.user.is_superuser:
-                        # for admin user
-                        customer = customer_model.customer.objects.filter(
-                            Q(customer_id=id)
-                        ).first()
+        if request.method == "GET":
+            if id is not None:
+                customer = ""
+                if request.user.is_superuser:
+                    # for admin user
+                    customer = customer_model.customer.objects.filter(
+                        Q(customer_id=id)
+                    ).first()
 
-                    else:
-                        # for state user
-                        customer = customer_model.customer.objects.filter(
-                            Q(customer_id=id), federal_state=request.user.federal_state
-                        ).first()
-
-                    vehicles = []
-                    vehicle = vehicle_model.vehicle.objects.filter(
-                        Q(owner=customer))
-                    license = customer_model.license.objects.filter(
-                        Q(owner=customer)).first()
-
-                    transfare = []
-                    transfares = vehicle_model.transfare_vehicles.objects.filter(
-                        Q(old_owner=customer) | Q(new_owner=customer)
-                    )
-                    for tr in transfares:
-                        transfare.append({
-                            'vehicle': tr.vehicle,
-                            'new_owner': tr.new_owner,
-                            'old_owner': tr.old_owner,
-                            'plate': shorten(tr.vehicle.plate_no.state.state_name, tr.vehicle.plate_no.plate_code, tr.vehicle.plate_no.plate_no),
-                            'created_at': tr.created_at.strftime('%d - %B - %Y')
-                        })
-
-                    payments = financemodel.receipt_voucher.objects.filter(
-                        Q(rv_from=customer))
-
-                    companies = customer_model.company.objects.filter(
-                        Q(owner=customer))
-
-                    for vh in vehicle:
-                        stateap = ""
-                        for stateapp in stateappre:
-                            if vh.plate_no is not None:
-                                if vh.plate_no.state.state_name == stateapp["name"]:
-                                    stateap = stateapp["appreviation"]
-
-                        vehicles.append(
-                            {
-                                "vehicle_model": vh.vehicle_model,
-                                "year": vh.year,
-                                "vin": vh.vin,
-                                "created_at": vh.created_at,
-                                "plate": f"{stateap}-{vh.plate_no.plate_code}-{vh.plate_no.plate_no}"
-                                if vh.plate_no is not None
-                                else None,
-                            }
-                        )
-
-                    context = {
-                        "customer": customer,
-                        "pageTitle": "Profile",
-                        "bload_group": bload_group,
-                        "nationalities": nationalities,
-                        "states": states,
-                        "vehicles": vehicles,
-                        "license": license,
-                        "transfares": transfare,
-                        "payments": payments,
-                        "companies": companies,
-                    }
-                    save_log(request, 'Customer / Profile',
-                             f'Waxa ubooqday profileka {customer.full_name}')
-                    return render(request, "Customer/profile.html", context)
                 else:
-                    return JsonResponse(
-                        {"isError": True, "Message": "Provide a customer ID"}, status=400
+                    # for state user
+                    customer = customer_model.customer.objects.filter(
+                        Q(customer_id=id), federal_state=request.user.federal_state
+                    ).first()
+
+                vehicles = []
+                vehicle = vehicle_model.vehicle.objects.filter(
+                    Q(owner=customer))
+                license = customer_model.license.objects.filter(
+                    Q(owner=customer)).first()
+
+                transfare = []
+                transfares = vehicle_model.transfare_vehicles.objects.filter(
+                    Q(old_owner=customer) | Q(new_owner=customer)
+                )
+                for tr in transfares:
+                    transfare.append({
+                        'vehicle': tr.vehicle,
+                        'new_owner': tr.new_owner,
+                        'old_owner': tr.old_owner,
+                        'plate': shorten(tr.vehicle.plate_no.state.state_name, tr.vehicle.plate_no.plate_code, tr.vehicle.plate_no.plate_no),
+                        'created_at': tr.created_at.strftime('%d - %B - %Y')
+                    })
+
+                payments = financemodel.receipt_voucher.objects.filter(
+                    Q(rv_from=customer))
+
+                companies = customer_model.company.objects.filter(
+                    Q(owner=customer))
+                qr_img = ''
+
+                for vh in vehicle:
+                    stateap = ""
+                    for stateapp in stateappre:
+                        if vh.plate_no is not None:
+                            if vh.plate_no.state.state_name == stateapp["name"]:
+                                stateap = stateapp["appreviation"]
+
+                    vehicles.append(
+                        {
+                            "vehicle_model": vh.vehicle_model,
+                            "year": vh.year,
+                            "vin": vh.vin,
+                            "created_at": vh.created_at,
+                            "plate": f"{stateap}-{vh.plate_no.plate_code}-{vh.plate_no.plate_no}"
+                            if vh.plate_no is not None
+                            else None,
+                        }
                     )
-        return render(request, 'Base/403.html')
-    except Exception as error:
-        save_error(request, error)
+
+                    customer_img = customer_model.customer.objects.filter(
+                        Q(customer_id=customer.customer_id))[0].photo.read()
+
+                    image = Image.open(io.BytesIO(customer_img))
+
+                    # # Remove the background using alpha_composite
+                    output_image = remove(image)
+
+                    # # Convert the image to a base64-encoded string
+                    with io.BytesIO() as buffer:
+                        output_image.save(buffer, format='PNG')
+                        img_str = base64.b64encode(buffer.getvalue()).decode()
+
+                context = {
+                    "customer": customer,
+                    "pageTitle": "Profile",
+                    "bload_group": bload_group,
+                    "nationalities": nationalities,
+                    "states": states,
+                    "vehicles": vehicles,
+                    "license": license,
+                    "transfares": transfare,
+                    "payments": payments,
+                    "companies": companies,
+                    'image_str': img_str,
+                }
+                save_log(request, 'Customer / Profile',
+                         f'Waxa ubooqday profileka {customer.full_name}')
+                return render(request, "Customer/profile.html", context)
+            else:
+                return JsonResponse(
+                    {"isError": True, "Message": "Provide a customer ID"}, status=400
+                )
+    return render(request, 'Base/403.html')
+    # except Exception as error:
+    #     save_error(request, error)
 
 
 @ login_required(login_url="Login")

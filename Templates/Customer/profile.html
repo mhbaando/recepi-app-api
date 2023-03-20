@@ -234,20 +234,7 @@
                         </div>
                         <div class="tab-pane fade" id="navs-pills-licenses" role="tabpanel">
                             {% if license %}
-                                <div class="ldes">
-                                    <img src="{% static "assets/img/lifront.png" %}"
-                                         width="100%"
-                                         height="auto"
-                                         alt="Logo"/>
-                                    {{ license.reg_no }}
-                                </div>
-                              
-                                <div class="ldes">
-                                    <img src="{% static "assets/img/liback.png" %}"
-                                         width="100%"
-                                         height="auto"
-                                         alt="Logo"/>
-                                </div>
+                                {% include './license_card.html' %}
                                 <div class="d-flex align-items-end justify-content-end mt-5">
                                     <button class="btn btn-primary" id="licensePrint">
                                         Print
