@@ -75,54 +75,62 @@
                                                 <tr>
                                                     <td>{{ test.test_num }}</td>
                                                     <td>{{ test.test_meter }}</td>
-                                                    <td>{{ test.tested_vehicle.vehicle_model }} - {{ test.tested_vehicle.vin }}</td>
-                                                    <td>Pass</td>
+                                                    <td>{{ test.tested_vehicle }}</td>
+                                                    <td>{{ test.status }}</td>
                                                     <td>{{ test.issue_date }}</td>
                                                     <td>{{ test.expired_date }}</td>
                                                     <td>
-                                                        <button type="button"
-                                                                class="btn btn-primary text-white"
-                                                                id="edittests"
-                                                                data-test="{{ test.test_id }}">
+                                                        <a href="{% url 'view_single_test' test.test_id %}"
+                                                           type="button"
+                                                           class="btn btn-primary text-white"
+                                                           id="viewmodel">
                                                             <i class='bx bx-low-vision'></i>
-                                                        </button>
+                                                        </a>
+                                                        {% if test.status == 'Passed' %}
+                                                            <a href="{% url 'view_single_test' test.test_id %}"
+                                                               type="button"
+                                                               class="btn btn-primary text-white"
+                                                               id="viewmodel">
+                                                                <i class='bx bx-certification'></i>
+                                                            </a>
+                                                        {% endif %}
                                                     </td>
-                                                {% endfor %}
-                                            </tbody>
-                                        </thead>
-                                    </table>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="mb-3 col-md-12 d-flex justify-content-between align-items-center">
+                                <div activePage = {{ testicles.number }} class="col-md-6 activePage">
+                                    Showing {{ testicles.number }} to {{ testicles.paginator.num_pages }} of {{ total }}.
                                 </div>
-                                <div class="mb-3 col-md-12 d-flex justify-content-between align-items-center">
-                                    <div activePage = {{ testicles.number }} class="col-md-6 activePage">
-                                        Showing {{ testicles.number }} to {{ testicles.paginator.num_pages }} of {{ total }}.
-                                    </div>
-                                    <div class="col-md-6 d-flex justify-content-end align-items-center">
-                                        <nav aria-label="Page navigation">
-                                            <ul class="pagination">
-                                                <li class="page-item first {% if not testicles.has_previous %}disabled{% endif %}"
-                                                    page="1">
-                                                    <a class="page-link" href="javascript:void(0);">
-                                                        <i class="tf-icon bx bx-chevrons-left"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item prev {% if not vrhicles.has_previous %}disabled{% endif %}"
-                                                    page="{% if testicles.has_previous %}{{ testicles.previous_page_number }}{% else %}No Page{% endif %}">
-                                                    <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i
-                                                    ></a>
-                                                </li>
-                                                <li class="page-item next {% if not testicles.has_next %}disabled{% endif %}"
-                                                    page="{% if testciles.has_next %}{{ testicles.next_page_number }}{% else %}No Page{% endif %}">
-                                                    <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i
-                                                    ></a>
-                                                </li>
-                                                <li class="page-item last {% if not testicles.has_next %}disabled{% endif %}"
-                                                    page="{{ testicles.paginator.num_pages }}">
-                                                    <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i
-                                                    ></a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
+                                <div class="col-md-6 d-flex justify-content-end align-items-center">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
+                                            <li class="page-item first {% if not testicles.has_previous %}disabled{% endif %}"
+                                                page="1">
+                                                <a class="page-link" href="javascript:void(0);">
+                                                    <i class="tf-icon bx bx-chevrons-left"></i>
+                                                </a>
+                                            </li>
+                                            <li class="page-item prev {% if not vrhicles.has_previous %}disabled{% endif %}"
+                                                page="{% if testicles.has_previous %}{{ testicles.previous_page_number }}{% else %}No Page{% endif %}">
+                                                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i
+                                                ></a>
+                                            </li>
+                                            <li class="page-item next {% if not testicles.has_next %}disabled{% endif %}"
+                                                page="{% if testciles.has_next %}{{ testicles.next_page_number }}{% else %}No Page{% endif %}">
+                                                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i
+                                                ></a>
+                                            </li>
+                                            <li class="page-item last {% if not testicles.has_next %}disabled{% endif %}"
+                                                page="{{ testicles.paginator.num_pages }}">
+                                                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i
+                                                ></a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
@@ -130,8 +138,6 @@
                 </div>
             </div>
         </div>
-        {% comment %} {% include "./edit_test.html" %}  {% endcomment %}
-    {% endblock content %}
-    {% block scriptData %}
-        <script src={% static "scripts/MOT/edit_mot.js" %}></script>
-    {% endblock scriptData %}
+    </div>
+</div>
+{% endblock content %}
