@@ -1,0 +1,29 @@
+{% load static %}
+{% load qr_code %}
+<div class="w-100 d-flex align-items-center justify-content-center flex-column">
+    <div class="card_holder">
+        <img src="{% static "assets/img/lifront.png" %}"
+             width="100%"
+             height="auto"
+             alt="Logo"/>
+        <img src="{{ customer.photo.url }}" alt="customerPhoto" class="cphoto">
+        <P class="lno fontinfo">{{ license.reg_no }}</P>
+        <P class="lname fontinfo">{{ license.owner.full_name }}</P>
+        <P class="ldob fontinfo">{{ license.owner.place_of_birth }} /  {{ license.owner.date_of_birth }}</P>
+        <P class="lnat fontinfo">{{ license.owner.nationality.country_name }}</P>
+        <P class="lissue fontinfo">{{ license.modified_at|date:"d.m.Y" }}</P>
+        <P class="lexp fontinfo">{{ license.expired_date|date:"d.m.Y" }}</P>
+        <P class="ltyp fontinfo">{{ license.type.type }}</P>
+        <P class="lsig fontinfo">{{ license.owner.firstname }} - {{ license.owner.fourth_name }}</P>
+        <img src="data:image/png;base64,{{ image_str }}"
+             alt="My Image"
+             class="bgimg">
+    </div>
+    <div class="lbackholder mt-3">
+        <img src="{% static "assets/img/liback.png" %}"
+             width="100%"
+             height="auto"
+             alt="Logo"/>
+        {% qr_from_text "{{ customer.full_name }}-{{ license.reg_no }}-{{ license.place_of_issue.place_name }}" size="m" image_format="png" error_correction="L" %}
+    </div>
+</div>

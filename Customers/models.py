@@ -99,8 +99,8 @@ class customer(models.Model):
     federal_state = models.ForeignKey(
         to=federal_state, on_delete=models.RESTRICT, blank=True, null=True)  # Federal state
     phone = models.CharField(max_length=100, null=True, blank=True)
-    photo = models.FileField(null=True,
-                             blank=True, upload_to='customer_images')
+    photo = models.ImageField(null=True,
+                              blank=True, upload_to='customer_images')
     document = models.FileField(
         null=True, blank=True, upload_to='customer_document')
 
