@@ -1,0 +1,96 @@
+{% extends "Base/index.html" %}
+{% load static %}
+{% block cssData %}
+{% endblock cssData %}
+{% block content %}
+    {% csrf_token %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4">
+            <span class="text-muted fw-light">Home / Customer /</span> {{ pageTitle }}
+        </h4>
+        <div class="w-100 card d-flex align-items-center justify-content-center flex-column">
+            <div class="card-body d-flex align-items-center justify-content-center flex-column">
+                <img src="{% static 'assets/img/kalawito.png' %}"
+                     alt="kalawito"
+                     width="90%"
+                     height="auto"
+                     class="card-top">
+                <div class="border w-100 mb-4"></div>
+                <div class="w-100 d-flex align-items-center justify-content-between">
+                    <div class="">
+                        <div class="d-flex align-items-center justify-content-start gap-3">
+                            <h6 class="mb-0 text-black">Test #</h6>
+                            <p class="mb-0">{{ test.test_num }}</p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-start gap-3 py-2">
+                            <h6 class="mb-0 text-black">Auto Meter Read</h6>
+                            <p class="mb-0">{{ test.test_meter }}</p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-start gap-3">
+                            <h6 class="mb-0 text-black">Owner Name</h6>
+                            <p class="mb-0">{{ test.tested_vehicle.owner.full_name }}</p>
+                        </div>
+                    </div>
+                    {% comment %} the second div {% endcomment %}
+                    <div>
+                        <div class="d-flex align-items-center justify-content-start gap-3">
+                            <h6 class="mb-0 text-black">Test Date</h6>
+                            <p class="mb-0">{{ test.issue_date }}</p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-start gap-3 py-2">
+                            <h6 class="mb-0 text-black">Expire Date</h6>
+                            <p class="mb-0">{{ test.expired_date }}</p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-start gap-3">
+                            <h6 class="mb-0 text-black">Mobile</h6>
+                            <p class="mb-0">{{ test.tested_vehicle.owner.phone }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 d-flex align-items-center justify-content-center flex-column ps-3 pe-3 pb-4">
+                <p class="fw-bold fs-5">TEST RESULT</p>
+                <table class="table w-100 mb-0 align-items-start border">
+                    <thead class="thead-dark">
+                        <tr style="background-color:#379CE4">
+                            <th class="wd-15p text-white px-2">#</th>
+                            <th class="wd-15p text-white px-2">Test Category</th>
+                            <th class="wd-15p text-white px-2">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-items-start justify-content-start">
+                        <tr class="">
+                            <td class="">{{ test.test_cat.cat_id }}</td>
+                            <td class="">{{ test.test_cat.cat_name }}</td>
+                            <td>
+                                <table class="table w-100 mb-0 align-items-start">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th style="background-color:#379CE4" class="text-white ps-2">Test Name</th>
+                                            <th style="background-color:#379CE4" class="text-white ps-2">Result</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="align-items-start">
+                                        {% for res in test_res %}
+                                            <tr>
+                                                <td class="ps-2 border-bottom-1 py-2">{{ res.test_el.el_name }}</td>
+                                                <td class="ps-2 border-bottom-1 py-2 text-{{ res.show_result.result_class }}">{{ res.show_result.result_status }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="w-100 d-flex align-items-end justify-content-end ps-3 pe-3 pb-4">
+                <a href="{% url 'print_test' test.test_id %}"
+                   class="btn text-white"
+                   style="background-color:#379CE4">Print</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scriptData %}
+{% endblock scriptData %}

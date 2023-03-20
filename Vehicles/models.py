@@ -216,4 +216,5 @@ class test_result_holder(models.Model):
     def show_result(self):
         return {
             'result_status': 'Fail' if not self.status else 'Pass',
+            'result_class': 'danger' if not self.status else 'success'
         }

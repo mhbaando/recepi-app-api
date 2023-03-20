@@ -75,17 +75,25 @@
                                                 <tr>
                                                     <td>{{ test.test_num }}</td>
                                                     <td>{{ test.test_meter }}</td>
-                                                    <td>{{ test.tested_vehicle.vehicle_model }} - {{ test.tested_vehicle.vin }}</td>
-                                                    <td>Pass</td>
+                                                    <td>{{ test.tested_vehicle }}</td>
+                                                    <td>{{ test.status }}</td>
                                                     <td>{{ test.issue_date }}</td>
                                                     <td>{{ test.expired_date }}</td>
                                                     <td>
-                                                        <button type="button"
-                                                                class="btn btn-primary text-white"
-                                                                id="edittests"
-                                                                data-test="{{ test.test_id }}">
+                                                        <a href="{% url 'view_single_test' test.test_id %}"
+                                                           type="button"
+                                                           class="btn btn-primary text-white"
+                                                           id="viewmodel">
                                                             <i class='bx bx-low-vision'></i>
-                                                        </button>
+                                                        </a>
+                                                        {% if test.status == 'Passed' %}
+                                                            <a href="{% url 'view_single_test' test.test_id %}"
+                                                               type="button"
+                                                               class="btn btn-primary text-white"
+                                                               id="viewmodel">
+                                                                <i class='bx bx-certification'></i>
+                                                            </a>
+                                                        {% endif %}
                                                     </td>
                                                 {% endfor %}
                                             </tbody>

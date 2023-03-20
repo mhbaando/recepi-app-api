@@ -255,3 +255,30 @@ def view_mot(request):
             'Message': 'On Error Occurs . Please try again or contact system administrator'
         }
         return JsonResponse(message, status=200)
+
+
+@login_required(login_url='Login')
+def view_single_test(request, id):
+    context = {
+        'pageTitle': 'View Test'
+    }
+    test = vehicle_model.test.objects.filter(Q(test_id=id)).first()
+    test_res = vehicle_model.test_result_holder.objects.filter(
+        Q(test_id=test.test_id)).all()
+    context['test'] = test
+    context['test_res'] = test_res
+
+    return render(request, 'MOT/single_test.html', context)
+
+
+@login_required(login_url='Login')
+def print_single_test(request, id):
+    test = vehicle_model.test.objects.filter(Q(test_id=id)).first()
+    test_res = vehicle_model.test_result_holder.objects.filter(
+        Q(test_id=test.test_id)).all()
+    context = {
+        'pageTitle': 'Test Report',
+        'test': test,
+        'test_res': test_res
+    }
+    return render(request, 'MOT/single_test_print.html', context)
