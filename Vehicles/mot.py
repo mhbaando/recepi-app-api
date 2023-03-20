@@ -187,5 +187,52 @@ def view_mot(request):
         'pageTitle': 'View MOTs',
     }
     tests = vehicle_model.test.objects.all()
-    context['tests'] = tests
+    view_test = []
+    if tests is not None:
+        for test in tests:
+            test_res = vehicle_model.test_result_holder.objects.filter(
+                Q(test_id=test.test_id))
+            is_passed = 'Passed'
+            for res in test_res:
+                if not res.status:
+                    is_passed = 'Failed'
+
+            view_test.append({
+                'test_id': test.test_id,
+                'test_num': test.test_num,
+                'test_meter': test.test_meter,
+                'tested_vehicle': f"{test.tested_vehicle.vehicle_model} - {test.tested_vehicle.vin}",
+                'status': is_passed,
+                'issue_date': test.issue_date,
+                'expired_date': test.expired_date
+            })
+
+    context['tests'] = view_test
     return render(request, 'MOT/view_mot.html', context)
+
+
+@login_required(login_url='Login')
+def view_single_test(request, id):
+    context = {
+        'pageTitle': 'View Test'
+    }
+    test = vehicle_model.test.objects.filter(Q(test_id=id)).first()
+    test_res = vehicle_model.test_result_holder.objects.filter(
+        Q(test_id=test.test_id)).all()
+    context['test'] = test
+    context['test_res'] = test_res
+
+    return render(request, 'MOT/single_test.html', context)
+
+
+@login_required(login_url='Login')
+def print_single_test(request, id):
+    test = vehicle_model.test.objects.filter(Q(test_id=id)).first()
+    test_res = vehicle_model.test_result_holder.objects.filter(
+        Q(test_id=test.test_id)).all()
+    context = {
+        'pageTitle': 'Test Report',
+        'test': test,
+        'test_res': test_res
+    }
+    return render(request, 'MOT/single_test_print.html', context)
