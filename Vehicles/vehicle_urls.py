@@ -42,6 +42,6 @@ urlpatterns = [
     path('find_test_el/<int:id>', find_test_el),
     path('find_car/<str:search>', Searchvehicle),
     path('regsiter_mots/', register_mot, name="register_mot"),
-    path('view_mots', view_mot, name='view_mot')
+    path('view_mots/', view_mot, name='view_mot')
 
 ]
