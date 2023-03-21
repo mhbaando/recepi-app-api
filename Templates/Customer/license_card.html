@@ -1,5 +1,4 @@
 {% load static %}
-{% load qr_code %}
 <div class="w-100 d-flex align-items-center justify-content-center flex-column">
     <div class="card_holder">
         <img src="{% static "assets/img/lifront.png" %}"
@@ -24,6 +23,5 @@
              width="100%"
              height="auto"
              alt="Logo"/>
-        {% qr_from_text "{{ license.owner.full_name }}" size="m" image_format="png" error_correction="L" %}
     </div>
 </div>

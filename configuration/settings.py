@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     "Finance",
     "Customers",
     "Vehicles",
-    "qr_code"
 ]
 
 
