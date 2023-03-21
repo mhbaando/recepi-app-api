@@ -596,3 +596,54 @@ def update_customer(request):
         })
     except Exception as error:
         save_error(request, error)
+
+
+@login_required(login_url='login')
+def print_license(request, id):
+    context = {
+        'pageTitle': 'License'
+    }
+
+    if request.user.has_perm('Customers.view_customer'):
+        customer_exist = None
+        if request.user.is_admin or request.user.is_state:
+            customer_exist = customer_model.customer.objects.filter(
+                Q(customer_id=id)).filter(Q(federal_state=request.user.federal_state)).first()
+
+        if request.user.is_superuser:
+            customer_exist = customer_model.customer.objects.filter(
+                Q(customer_id=id)).first()
+
+        if customer_exist is None:
+            return render(request, "./Base/403.html")
+
+        license = customer_model.license.objects.filter(
+            Q(owner=customer_exist)).first()
+
+        qr_img = ''
+        if license is not None:
+            # generate qrcode
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr_data = f"{customer_exist.full_name} - {license.reg_no} - {license.type.type} / {license.expired_date}"
+            qr.add_data(qr_data)
+            qr.make(fit=True)
+            qrimg = qr.make_image(
+                fill_color=(3, 40, 71))
+
+            # convert the qrcode to an image
+            buffer = io.BytesIO()
+            qrimg.save(buffer, format='PNG')
+
+            # encode base64
+            qr_img = base64.b64encode(
+                buffer.getvalue()).decode('utf-8')
+
+            context['license'] = license
+            context['qr_image'] = qr_img
+        return render(request, 'Customer/print_license_card.html', context)
+    return redirect('un_authorized')

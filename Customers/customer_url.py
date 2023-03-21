@@ -33,6 +33,7 @@ urlpatterns = [
     path('edit_liscence/<int:id>', license.edit_liscence),
     path('status_licenses/<int:id>', license.find_status, name='find_license'),
     path('edit_manage/<int:id>', license.edit_manage),
+    path('print_license/<int:id>', customer.print_license, name="print_license"),
 
     # customers
     # register customer

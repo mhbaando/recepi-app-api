@@ -13,7 +13,6 @@
         <P class="lissue fontinfo">{{ license.modified_at|date:"d.m.Y" }}</P>
         <P class="lexp fontinfo">{{ license.expired_date|date:"d.m.Y" }}</P>
         <P class="ltyp fontinfo">{{ license.type.type }}</P>
-        import base64
         <P class="lsig fontinfo">{{ license.owner.firstname }} - {{ license.owner.fourth_name }}</P>
         {% comment %} <img src="data:image/png;base64,{{ image_str }}" alt="My Image" class="bgimg"> {% endcomment %}
     </div>
