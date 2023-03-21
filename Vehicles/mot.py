@@ -152,7 +152,6 @@ def register_mot(request):
                         'Message': 'The Vehilce has Active un expired test'
                     })
 
-                # print(date.today(), get_test.expired_date)
                 test_toregister = vehicle_model.test(
                     test_meter=testread,
                     test_num=testno,
@@ -204,13 +203,12 @@ def register_mot(request):
 def view_mot(request):
     try:
         if request.user.has_perm('Vehicles.add_test'):
-            tests = []
+            view_test = []
             tests = vehicle_model.test.objects.all()
             CheckSearchQuery = "SearchQuery" in request.GET
             CheckDataNumber = "DataNumber" in request.GET
             CheckStatus = "Status" in request.GET
 
-            Status = "Active"
             SearchQuery = ""
             DataNumber = 10
 
@@ -222,39 +220,47 @@ def view_mot(request):
 
             if CheckSearchQuery:
                 SearchQuery = request.GET["SearchQuery"]
+                if tests is not None:
+                    tests = (
+                        vehicle_model.test.objects
+                        .filter(Q(tested_vehicle__vehicle_model__brand_name__icontains=SearchQuery))
+                        .order_by("-created_at")
+                    )
 
-                tests = (
-                    vehicle_model.test.objects
-                    .filter(Q(tested_vehicle__vehicle_model__brand_name__icontains=SearchQuery))
-                    .order_by("-created_at")
-                )
-            paginator = Paginator(tests, DataNumber)
+            for test in tests:
+                test_res = vehicle_model.test_result_holder.objects.filter(
+                    Q(test_id=test.test_id))
+                is_passed = 'Passed'
+                for res in test_res:
+                    if not res.status:
+                        is_passed = 'Failed'
+
+                view_test.append({
+                    'test_id': test.test_id,
+                    'test_num': test.test_num,
+                    'test_meter': test.test_meter,
+                    'tested_vehicle': f"{test.tested_vehicle.vehicle_model} - {test.tested_vehicle.vin}",
+                    'status': is_passed,
+                    'issue_date': test.issue_date,
+                    'expired_date': test.expired_date
+                })
+
+            paginator = Paginator(view_test, DataNumber)
             page_number = request.GET.get("page")
             test_obj = paginator.get_page(page_number)
+
             context = {
                 'SearchQuery': SearchQuery,
                 'DataNumber': DataNumber,
                 'pageTitle': 'View MOTs',
                 'tests': test_obj,
                 'total': len(tests),
-
-
             }
 
-            # context['tests'] = tests
             return render(request, 'MOT/view_mot.html', context)
         return redirect('un_authorized')
     except Exception as error:
-        username = request.user.username
-        name = request.user.first_name + ' ' + request.user.last_name
-        # register the error
-        sendException(
-            request, username, name, error)
-        message = {
-            'isError': True,
-            'Message': 'On Error Occurs . Please try again or contact system administrator'
-        }
-        return JsonResponse(message, status=200)
+        save_error(request, error)
 
 
 @login_required(login_url='Login')
