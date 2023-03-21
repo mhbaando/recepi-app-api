@@ -17,12 +17,25 @@ from Users.views import sendException, sendTrials
 @login_required(login_url="Login")
 def Searchvehicle(request, search):
     try:
-        if request.user.has_perm("vehicles.view_vehicle"):
+        if request.user.has_perm("Customers.view_customer") and request.user.has_perm('Vehicles.view_vehicle'):
             if request.method == "GET":
-                searchQuery = vehicle_model.vehicle.objects.filter(
-                    Q(enginer_no__icontains=search) | Q(
-                        owner__full_name__icontains=search) | Q(vin__icontains=search) | Q(plate_no__plate_no__icontains=search)
-                )
+                searchQuery = []
+                if not request.user.is_superuser and request.user.federal_state is None:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'Update Your state'
+                    })
+
+                if request.user.is_superuser:
+                    searchQuery = vehicle_model.vehicle.objects.filter(
+                        Q(enginer_no__icontains=search) | Q(
+                            owner__full_name__icontains=search) | Q(vin__icontains=search) | Q(plate_no__plate_no__icontains=search)
+                    )
+                else:
+                    searchQuery = vehicle_model.vehicle.objects.filter(
+                        Q(enginer_no__icontains=search) | Q(
+                            owner__full_name__icontains=search) | Q(vin__icontains=search) | Q(plate_no__plate_no__icontains=search)
+                    ).filter(owner__federal_state=request.user.federal_state)
 
                 message = []
                 for xSearch in range(0, len(searchQuery)):
@@ -150,6 +163,12 @@ def register_mot(request):
                     return JsonResponse({
                         'isError': True,
                         'Message': 'The Vehilce has Active un expired test'
+                    })
+
+                if not request.user.is_superuser and request.user.federal_state != vehicle.owner.federal_state:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'you cant register on behalf of other state'
                     })
 
                 test_toregister = vehicle_model.test(
