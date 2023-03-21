@@ -183,9 +183,9 @@ def register_vehicle(request):
                          f'Waxa uu gaari udiiwangaliyay {new_vehicle.owner}')
                 # return for post method
                 return JsonResponse({'isError': False, 'Message': 'Vehicle has been successfully Saved'}, status=200)
-        else:
+        
 
-            return redirect('un_authorized')
+        return redirect('un_authorized')
 
     except Exception as error:
         username = request.user.username
@@ -892,6 +892,3 @@ def code_plate_name(request):
             'Message': 'On Error Occurs . Please try again or contact system administrator'
         }
         return JsonResponse(message, status=200)
-
-
-

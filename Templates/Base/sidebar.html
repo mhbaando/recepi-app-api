@@ -88,16 +88,20 @@
                                 </a>
                             </li>
                         {% endif %}
+                        {% if perms.Vehicles.add_test %}
                         <li class="menu-item {% if pageTitle == 'Register MOT' %} active{% endif %}">
                             <a href="{% url 'register_mot' %}" class="menu-link">
                                 <div data-i18n="CRM">MOT</div>
                             </a>
                         </li>
-                        <li class="menu-item {% if pageTitle == 'View MOTs' or pageTitle == 'View Test' %} active{% endif %}">
+                        {% endif %}
+                        {% if perms.Vehicles.view_test %}
+                        <li class="menu-item {% if pageTitle == 'View MOTs' %} active{% endif %}">
                             <a href="{% url 'view_mot' %}" class="menu-link">
                                 <div data-i18n="CRM">View MOT</div>
                             </a>
                         </li>
+                        {% endif %}
                     </ul>
                 </li>
                 <li class="menu-item {% if pageTitle == 'Accounts' or pageTitle == 'Create Account' or pageTitle == 'Receipts' or pageTitle == 'Create Receipt' %}active open{% endif %}">
