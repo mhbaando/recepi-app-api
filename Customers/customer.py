@@ -20,7 +20,6 @@ from Vehicles import models as vehicle_model
 from Vehicles.plate_converter import shorten
 
 from . import models as customer_model
-from .tasks import process_image
 from Customers.autditory import save_error, save_log
 
 
