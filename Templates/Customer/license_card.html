@@ -24,6 +24,6 @@
              width="100%"
              height="auto"
              alt="Logo"/>
-        {% qr_from_text "{{ customer.full_name }}-{{ license.reg_no }}-{{ license.place_of_issue.place_name }}" size="m" image_format="png" error_correction="L" %}
+        {% qr_from_text "{{ license.owner.full_name }}" size="m" image_format="png" error_correction="L" %}
     </div>
 </div>
