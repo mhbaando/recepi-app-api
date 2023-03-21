@@ -1,8 +1,13 @@
 # customers
 import io
+import qrcode
+
+import cv2
 import base64
+import numpy as np
 from PIL import Image
 from rembg import remove
+
 from django.db.models import Q
 from django.http import JsonResponse
 from django.core.paginator import Paginator
@@ -15,6 +20,7 @@ from Vehicles import models as vehicle_model
 from Vehicles.plate_converter import shorten
 
 from . import models as customer_model
+from .tasks import process_image
 from Customers.autditory import save_error, save_log
 
 
@@ -378,7 +384,6 @@ def customer_profile(request, id):
 
                 companies = customer_model.company.objects.filter(
                     Q(owner=customer))
-                qr_img = ''
 
                 for vh in vehicle:
                     stateap = ""
@@ -399,18 +404,43 @@ def customer_profile(request, id):
                         }
                     )
 
-                    customer_img = customer_model.customer.objects.filter(
-                        Q(customer_id=customer.customer_id))[0].photo.read()
+                qr_img = ''
+                if license is not None:
+                    # customer_img = customer_model.customer.objects.filter(
+                    #     Q(customer_id=customer.customer_id))[0].photo.read()
 
-                    image = Image.open(io.BytesIO(customer_img))
+                    # # remove backgroudn from customer image
+                    # image = Image.open(io.BytesIO(customer_img))
 
-                    # # Remove the background using alpha_composite
-                    output_image = remove(image)
+                    # # # Remove the background using alpha_composite
+                    # output_image = remove(image)
 
-                    # # Convert the image to a base64-encoded string
-                    with io.BytesIO() as buffer:
-                        output_image.save(buffer, format='PNG')
-                        img_str = base64.b64encode(buffer.getvalue()).decode()
+                    # # # Convert the image to a base64-encoded string
+                    # with io.BytesIO() as buffer:
+                    #     output_image.save(buffer, format='PNG')
+                    #     img_str = base64.b64encode(
+                    #         buffer.getvalue()).decode('utf-8')
+
+                    # generate qrcode
+                    qr = qrcode.QRCode(
+                        version=1,
+                        error_correction=qrcode.constants.ERROR_CORRECT_L,
+                        box_size=10,
+                        border=4,
+                    )
+                    qr_data = f"{customer.full_name} - {license.reg_no} - {license.type.type} / {license.expired_date}"
+                    qr.add_data(qr_data)
+                    qr.make(fit=True)
+                    qrimg = qr.make_image(
+                        fill_color=(3, 40, 71))
+
+                    # convert the qrcode to an image
+                    buffer = io.BytesIO()
+                    qrimg.save(buffer, format='PNG')
+
+                    # encode base64
+                    qr_img = base64.b64encode(
+                        buffer.getvalue()).decode('utf-8')
 
                 context = {
                     "customer": customer,
@@ -423,7 +453,8 @@ def customer_profile(request, id):
                     "transfares": transfare,
                     "payments": payments,
                     "companies": companies,
-                    'image_str': img_str,
+                    # 'image_str': img_str,
+                    'qr_image': qr_img
                 }
                 save_log(request, 'Customer / Profile',
                          f'Waxa ubooqday profileka {customer.full_name}')

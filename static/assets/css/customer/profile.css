@@ -112,3 +112,11 @@ p {
     height: 4.3308in;
     position: relative;
 }
+
+.qrimg {
+    position: absolute;
+    right: 5%;
+    top:27.5%;
+    width: 175px;
+    height: auto;
+}

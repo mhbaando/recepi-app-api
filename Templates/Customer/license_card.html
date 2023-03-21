@@ -13,15 +13,15 @@
         <P class="lissue fontinfo">{{ license.modified_at|date:"d.m.Y" }}</P>
         <P class="lexp fontinfo">{{ license.expired_date|date:"d.m.Y" }}</P>
         <P class="ltyp fontinfo">{{ license.type.type }}</P>
+        import base64
         <P class="lsig fontinfo">{{ license.owner.firstname }} - {{ license.owner.fourth_name }}</P>
-        <img src="data:image/png;base64,{{ image_str }}"
-             alt="My Image"
-             class="bgimg">
+        {% comment %} <img src="data:image/png;base64,{{ image_str }}" alt="My Image" class="bgimg"> {% endcomment %}
     </div>
     <div class="lbackholder mt-3">
         <img src="{% static "assets/img/liback.png" %}"
              width="100%"
              height="auto"
              alt="Logo"/>
+        <img src="data:image/png;base64,{{ qr_image }}" alt=""  class="qrimg">
     </div>
 </div>
