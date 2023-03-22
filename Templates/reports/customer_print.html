@@ -71,32 +71,10 @@
     <div class="container page_design">
         <div class="row mt-3 bg-white rounded pt-3 ps-3 pe-3 pb-3 hidden"
              id="customer-report-data">
-            <div class="row d-flex align-items-center justify-content-center">
-                <div class="col">
-                    <p class=" fw-semibold text-center">
-                        Jamhuriyada Federalka Somalia
-                        <br>
-                        Wasaarada gaadiidka &
-                        <br>
-                        duulista hawada
-                    </p>
-                </div>
-                <div class="col text-center">
-                    <img src="{% static "assets/img/wlogo.png" %}" alt="Logo" height="90px"/>
-                </div>
-                <div class="col">
-                    <p class="fw-semibold text-center">
-                        جمهورية الصومال الفيدرالية
-                        <br>
-                        وزارة النقل
-                        <br>
-                        والطيران المدني
-                    </p>
-                </div>
-            </div>
-            <div class="d-flex alig-items-center justify-content-center">
-                <p class="fw-semibold mb-1 mt-2">Customer Report</p>
-            </div>
+            <img src="{% static "assets/img/creport.png" %}"
+                 alt="customer report header"
+                 width="100%"
+                 heigh="auto"/>
             <hr>
             {% comment %} customer info {% endcomment %}
             <div class="row mt-3">
@@ -177,9 +155,7 @@
                 <h6>
                     LICENSE INFO
                     {% if found_license.status == 'Active' %}
-                        <span class="text-uppercase text-success">
-                            ({{ found_license.status }})
-                        </span>
+                        <span class="text-uppercase text-success">({{ found_license.status }})</span>
                     {% else %}
                         <span class="text-uppercase text-danger">
                             ({{ found_license.status }})

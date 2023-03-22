@@ -189,7 +189,7 @@ def view_company(request):
             # for state user
             if request.user.is_state or request.user.is_admin:
                 companies = customer_model.company.objects.filter(federal_state=request.user.federal_state).filter(
-                    Q(firstname__icontains=SearchQuery)).order_by('-created_at')
+                    Q(company_name__icontains=SearchQuery)).order_by('-created_at')
             # for admin users
             else:
                 companies = customer_model.company.objects.filter(
@@ -201,9 +201,11 @@ def view_company(request):
             companies = customer_model.company.objects.filter(
                 Q(federal_state=request.user.federal_state)).order_by('-created_at')
             # paginate data
+
         paginator = Paginator(companies, DataNumber)
         page_number = request.GET.get('page')
         companies_obj = paginator.get_page(page_number)
+
         # pass company and data number down to the context
         context['total'] = len(companies)
         context['DataNumber'] = DataNumber
