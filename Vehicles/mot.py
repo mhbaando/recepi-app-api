@@ -267,7 +267,8 @@ def view_mot(request):
             paginator = Paginator(view_test, DataNumber)
             page_number = request.GET.get("page")
             test_obj = paginator.get_page(page_number)
-
+            save_log(request, 'Vehicle / MOT Register',
+                     'waxa uu boqday MOT Registration')
             context = {
                 'SearchQuery': SearchQuery,
                 'DataNumber': DataNumber,

@@ -30,7 +30,7 @@ def register_vehicle(request):
                 for i in range(1960, datetime.now().year + 1):
                     year.append(i)
 
-                year.reverse()
+                year.reverse
                 context = {"vehicle_models": vehicle_models, "colors": colors, "origins": origins,
                            "cylenders": cylinders, "owners": owners, 'year': year, "pageTitle": 'Register vehicle'}
                 save_log(request, 'Vehicle / Register',
@@ -183,7 +183,6 @@ def register_vehicle(request):
                          f'Waxa uu gaari udiiwangaliyay {new_vehicle.owner}')
                 # return for post method
                 return JsonResponse({'isError': False, 'Message': 'Vehicle has been successfully Saved'}, status=200)
-        
 
         return redirect('un_authorized')
 
@@ -533,7 +532,7 @@ def view_vehicle(request):
         vehicles = (
             vehicle_model.vehicle.objects
             .filter(Q(owner__full_name__icontains=SearchQuery) | (Q(vin__icontains=SearchQuery)) | (Q(vehicle_id__icontains=SearchQuery)) | (Q(plate_no__plate_no__icontains=SearchQuery)))
-            .order_by("-created_at")
+            .order_by("-created_at").filter(Q(owner__federal_state=request.user.federal_state))
         )
 
     paginator = Paginator(vehicles, DataNumber)
@@ -559,6 +558,7 @@ def view_vehicle(request):
 
 
 @ login_required(login_url="Login")
+@permission_required('Vehicles.view_vehicle', raise_exception=True)
 def vehicle_profile(request, pk):
 
     cylenders = vehicle_model.cylinder.objects.all().order_by(
@@ -633,7 +633,7 @@ def find_vehicle(request, id):
                         ).values()
 
                     save_log(request, 'Vehicle / Find',
-                             f'waxa uu raadiyay Vehicleka leh')
+                             f'waxa uu raadiyay Vehicleka leh {id} gaan')
                     return JsonResponse(
                         {"isErro": False, "Message": list(vehicle)}
                     )
@@ -882,13 +882,4 @@ def code_plate_name(request):
             return redirect('un_authorized')
 
     except Exception as error:
-        username = request.user.username
-        name = request.user.first_name + ' ' + request.user.last_name
-        # register the error
-        sendException(
-            request, username, name, error)
-        message = {
-            'isError': True,
-            'Message': 'On Error Occurs . Please try again or contact system administrator'
-        }
-        return JsonResponse(message, status=200)
+        save_error(request, error)
