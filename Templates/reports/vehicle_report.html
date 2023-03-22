@@ -6,33 +6,11 @@
 <div class="row mt-3 bg-white rounded pt-3 ps-3 pe-3 pb-3 hidden"
      id="vehicle_report">
     <div class="row report-header">
-        <div class="col">
-            <p class=" fw-semibold text-center">
-                Jamhuriyada Federalka Somalia
-                <br>
-                Wasaarada gaadiidka &
-                <br>
-                duulista hawada
-            </p>
-        </div>
-        <div class="col text-center">
-            <img src="{% static "assets/img/wlogo.png" %}"
-                 alt="Logo"
-                 width="150"
-                 heigh="auto"/>
-        </div>
-        <div class="col">
-            <p class="fw-semibold text-center">
-                جمهورية الصومال الفيدرالية
-                <br>
-                وزارة النقل
-                <br>
-                والطيران المدني
-            </p>
-        </div>
-    </div>
-    <div class="d-flex alig-items-center justify-content-center">
-        <p class="fw-semibold mb-1 mt-2">Vehicle Report</p>
+        <img src="{% static 'assets/img/vreport.png' %}"
+             alt="kalawito"
+             width="90%"
+             height="auto"
+             class="card-top">
     </div>
     <hr>
     {% comment %} customer info {% endcomment %}
@@ -98,9 +76,7 @@
         </div>
         <div class="row">
             <div class="row col">
-                <p class="mb-1 fw-bold">
-                    Plate Number:
-                </p>
+                <p class="mb-1 fw-bold">Plate Number:</p>
                 <p id="plat_nu">
                 </p>
             </div>
@@ -124,11 +100,10 @@
         <h5>
             TRANSFER(S) HISTORY <span id="transfare_times"></span>
         </h5>
-         <div class="hidden" id="tr_hist">
+        <div class="hidden" id="tr_hist">
             <table class="w-100 mb-0" id="transfer_table">
-                   
                 <thead class="thead-dark">
-                    <tr style="background-color:#379CE4">
+                    <tr style="background-color:#032847">
                         <th class="wd-15p text-white">
                             RV #
                         </th>
@@ -156,10 +131,10 @@
                 </tbody>
             </table>
         </div>
-        <div class="hidden" id="trfound"> 
+        <div class="hidden" id="trfound">
             <p class="fw-5">
                 Not Transfer Found
-            </p> 
+            </p>
         </div>
         <div class="mt-4 d-flex align-items-end justify-content-end col">
             <div class="hstack gap-2">
@@ -170,7 +145,7 @@
                     Print
                 </button>
             </div>
-    </div>
+        </div>
     </div>
 </div>
 {% block scriptData %}

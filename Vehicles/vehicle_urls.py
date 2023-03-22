@@ -46,5 +46,7 @@ urlpatterns = [
 
     path('view_mots', view_mot, name='view_mot'),
     path('view_single_test/<int:id>', view_single_test, name="view_single_test"),
-    path('print_test/<int:id>', print_single_test, name="print_test")
+    path('print_test/<int:id>', print_single_test, name="print_test"),
+
+    path('print_mot_cert/<int:id>', print_mot_cert, name='print_mot_cert')
 ]

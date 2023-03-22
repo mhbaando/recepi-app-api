@@ -1,0 +1,159 @@
+{% extends "Base/print_base.html" %}
+{% load static %}
+{% block cssStyle %}
+    <style>
+        * {
+            color: exact!important;  
+            -webkit-print-color-adjust: exact!important; 
+             print-color-adjust: exact!important;
+          }
+        body{
+        font-size:10px;
+        display:flex;
+        justify-content: start;
+        align-items: center;
+        flex-direction: column;
+        box-sizing: border-box;
+        min-width: 100%;    
+        }
+
+    .report-heade{
+        display:flex;
+        align-items:center;
+        justify-content: space-between
+    }
+
+    .coimg {
+        object-fit:contain;
+        object-position:center;
+        heigh:200px !important;!
+        border-radius:15px !important;
+    }
+
+    #bg_cert{
+        width:100vw;
+        height:100%;
+        position: relative;
+    }
+
+    .fontinfo {
+        color: black;
+        font-weight: 500;
+
+        font-size: 10px;
+        text-transform: uppercase;
+
+        }
+
+        .testno {
+            position:absolute;
+            top:26.5%;
+            left:13%;
+        }
+        .owname {
+            position:absolute;
+            top:26.5%;
+            left:39%;
+        }
+        .tdate {
+            position:absolute;
+            top:26.5%;
+            left:74.4%;
+        }
+
+        .tmeter {
+            position:absolute;
+            top:31%;
+            
+            left:13%;
+        }
+
+        .mobile{
+            position:absolute;
+            top:31%;
+            
+            left:40%;
+
+        }
+        .exp_date{
+            position:absolute;
+            top:31%;
+            
+            left:74.3%;
+
+        }
+        .plate_no{
+            position:absolute;
+            top:44%;
+            
+            left:32.3%;
+        }
+        .vtype{
+            position:absolute;
+            top:48.3%;
+            
+            left:32.3%;
+
+        }
+        .vmodel{
+            position:absolute;
+            top:52.3%;
+            
+            left:32.3%;
+
+        }
+        .vyear{
+            position:absolute;
+            top:56%;
+            
+            left:32.3%
+        }
+        .vcolor{
+            position:absolute;
+            top:60%;
+            
+            left:32.3%
+            
+        }
+        .vin{
+            position:absolute;
+            top:64%;
+            
+            left:32.3%
+        }
+        .reg{
+            position:absolute;
+            top:88%;
+            
+            left:28.3%
+        }
+    </style>
+{% endblock %}
+{% block printData %}
+    <div class="container w-100">
+        <div class="w-100" id="bg_cert">
+            <img src="{% static 'assets/img/mot_cert.png' %}" alt="" width="100%">
+            <P class="fontinfo testno">{{ test.test_num }}</P>
+            <P class="fontinfo owname " style="max-width:180px">{{ test.tested_vehicle.owner.full_name }}</P>
+            <P class="fontinfo tdate">{{ test.issue_date }}</P>
+            <P class="fontinfo tmeter">{{ test.test_meter }}</P>
+            <P class="fontinfo mobile">{{ test.tested_vehicle.owner.phone }}</P>
+            <P class="fontinfo exp_date">{{ test.expired_date }}</P>
+            <P class="fontinfo plate_no">{{ test.tested_vehicle.plate_no.plate_no }}</P>
+            <P class="fontinfo vtype">{{ test.tested_vehicle.plate_no.type }}</P>
+            <P class="fontinfo vmodel">{{ test.tested_vehicle.vehicle_model.brand_name }}</P>
+            <P class="fontinfo vyear">{{ test.tested_vehicle.year }}</P>
+            <P class="fontinfo vcolor">{{ test.tested_vehicle.color.color_name }}</P>
+            <P class="fontinfo vin">{{ test.tested_vehicle.vin }}</P>
+            <P class="fontinfo reg">{{ test.reg_user.last_name }}</P>
+        </div>
+    </div>
+{% endblock printData %}
+{% block scriptsJS %}
+    <script>
+   window.print();
+    window.onafterprint = function () {
+        window.location.replace("/vehicles/view_mots");
+    } 
+    </script>
+{% endblock scriptsJS %}

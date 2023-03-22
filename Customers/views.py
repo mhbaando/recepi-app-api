@@ -201,9 +201,11 @@ def view_company(request):
             companies = customer_model.company.objects.filter(
                 Q(federal_state=request.user.federal_state)).order_by('-created_at')
             # paginate data
+
         paginator = Paginator(companies, DataNumber)
         page_number = request.GET.get('page')
         companies_obj = paginator.get_page(page_number)
+
         # pass company and data number down to the context
         context['total'] = len(companies)
         context['DataNumber'] = DataNumber

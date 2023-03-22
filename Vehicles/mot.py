@@ -308,3 +308,37 @@ def print_single_test(request, id):
         'test_res': test_res
     }
     return render(request, 'MOT/single_test_print.html', context)
+
+
+@login_required(login_url='Login')
+def print_mot_cert(request, id):
+
+    if request.user.has_perm('Vehicles.view_test'):
+        test = vehicle_model.test.objects.filter(Q(test_id=id)).first()
+        test_res = vehicle_model.test_result_holder.objects.filter(
+            Q(test_id=test.test_id)).all()
+        test_h = []
+
+        is_passed = True
+        for res in test_res:
+            if not res.status:
+                is_passed = False
+
+        test_h.append({
+            'test_num': test.test_num,
+
+        })
+
+        if not is_passed:
+            return JsonResponse({
+                'isError': True,
+                'Message': 'This vehicle didnt pass any test'
+            })
+        context = {
+            'pageTitle': 'Certificate',
+            'test': test_h,
+            'test_res': test_res
+        }
+
+        return render(request, 'MOT/mot_certificate.html', context)
+    return redirect('un_authorized')
