@@ -189,7 +189,7 @@ def view_company(request):
             # for state user
             if request.user.is_state or request.user.is_admin:
                 companies = customer_model.company.objects.filter(federal_state=request.user.federal_state).filter(
-                    Q(company_name__icontains=SearchQuery)).order_by('-created_at')
+                    Q(company_name__icontains=SearchQuery)).filter(Q(owner__full_name__icontains=SearchQuery)).order_by('-created_at')
             # for admin users
             else:
                 companies = customer_model.company.objects.filter(
@@ -384,7 +384,7 @@ def company_profile(request, id):
         save_error(request, error)
 
 
-@ login_required(login_url="Login")
+@login_required(login_url="Login")
 def find_company(request, id):
     try:
         if request.user.has_perm('Customers.view_company'):
