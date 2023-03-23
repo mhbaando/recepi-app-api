@@ -68,6 +68,7 @@ def AddAccount(request):
             acc_name = request.POST.get('account_name', None)
             acc_type = request.POST.get('account_type', None)
             acc_amount = request.POST.get('account_amount', None)
+            acc_amount = float(acc_amount)
 
             if acc_number is None or acc_name is None or acc_type is None or acc_amount is None:
                 return JsonResponse(
@@ -76,6 +77,16 @@ def AddAccount(request):
                         'title': 'validate error',
                         'type': 'danger',
                         'Message': 'Fill All Required Fields'
+                    }
+                )
+
+            if acc_amount <= 0:
+                return JsonResponse(
+                    {
+                        'isError': True,
+                        'title': "Duplicate Error!!",
+                        'type': "warning",
+                        'Message': "Amount can not be 0 or Negative Number"
                     }
                 )
 

@@ -529,11 +529,18 @@ def view_vehicle(request):
     if CheckSearchQuery:
         SearchQuery = request.GET["SearchQuery"]
 
+    if request.user.is_superuser:
         vehicles = (
             vehicle_model.vehicle.objects
-            .filter(Q(owner__full_name__icontains=SearchQuery) | (Q(vin__icontains=SearchQuery)) | (Q(vehicle_id__icontains=SearchQuery)) | (Q(plate_no__plate_no__icontains=SearchQuery)))
-            .order_by("-created_at").filter(Q(owner__federal_state=request.user.federal_state))
+            .filter(Q(owner__full_name__icontains=SearchQuery) | (Q(vin__icontains=SearchQuery)) | (Q(vehicle_id__icontains=SearchQuery)) | (Q(plate_no__plate_no__icontains=SearchQuery)) | (Q(plate_no__plate_no__icontains=SearchQuery)))
+            .order_by("-created_at")
         )
+    else:
+        vehicles = (
+            vehicle_model.vehicle.objects
+            .filter(Q(owner__full_name__icontains=SearchQuery) | (Q(vin__icontains=SearchQuery)) | (Q(vehicle_id__icontains=SearchQuery)) | (Q(plate_no__plate_no__icontains=SearchQuery)) | (Q(plate_no__plate_no__icontains=SearchQuery)))
+            .order_by("-created_at")
+        ).filter(owner__federal_state=request.user.federal_state)
 
     paginator = Paginator(vehicles, DataNumber)
     page_number = request.GET.get("page")
