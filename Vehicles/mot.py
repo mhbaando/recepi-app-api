@@ -317,26 +317,31 @@ def print_mot_cert(request, id):
         test = vehicle_model.test.objects.filter(Q(test_id=id)).first()
         test_res = vehicle_model.test_result_holder.objects.filter(
             Q(test_id=test.test_id)).all()
-        test_h = []
 
         is_passed = True
         for res in test_res:
             if not res.status:
                 is_passed = False
 
-        test_h.append({
-            'test_num': test.test_num,
-
-        })
-
         if not is_passed:
             return JsonResponse({
                 'isError': True,
                 'Message': 'This vehicle didnt pass any test'
             })
+
+        test_data = {
+            'test_num': test.test_num,
+            'tested_vehicle': test.tested_vehicle,
+            'issue_date': test.issue_date,
+            'test_meter': test.test_meter,
+            'expired_date': test.expired_date,
+            'plate_no': plate_converter.shorten(test.tested_vehicle.plate_no.state.state_name, test.tested_vehicle.plate_no.plate_code, test.tested_vehicle.plate_no.plate_no),
+            'reg_user': f"{test.reg_user.first_name} {test.reg_user.last_name}"
+        }
+
         context = {
             'pageTitle': 'Certificate',
-            'test': test_h,
+            'test': test_data,
             'test_res': test_res
         }
 
