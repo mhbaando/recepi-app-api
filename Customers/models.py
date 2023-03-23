@@ -102,7 +102,7 @@ class customer(models.Model):
     photo = models.ImageField(null=True,
                               blank=True, upload_to='customer_images')
     photo_bgr = models.ImageField(null=True,
-                              blank=True, upload_to='customer_images') # will be store photo removed bg
+                                  blank=True, upload_to='customer_images')  # will be store photo removed bg
     document = models.FileField(
         null=True, blank=True, upload_to='customer_document')
 
@@ -156,6 +156,7 @@ class company(models.Model):
     document = models.FileField(
         null=True, blank=True, upload_to='comapany_document', max_length=80)
     description = models.TextField(null=True, blank=True)
+    reason = models.TextField(null=True, blank=True)
     owner = models.ForeignKey(customer, on_delete=models.RESTRICT)
     is_blocked = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
