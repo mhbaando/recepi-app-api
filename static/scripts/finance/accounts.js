@@ -28,7 +28,7 @@ $(document).ready(function () {
     let page = $(".activePage").attr("activePage");
     let search = $("#SearchQuery").val();
     let entries = $("#DataNumber").val();
-    let url = `/customer/accounts?DataNumber=${entries}&page=${page}`;
+    let url = `/finance/accounts?DataNumber=${entries}&page=${page}`;
 
     if (search.trim().length <= 0) {
       return null
