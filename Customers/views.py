@@ -275,7 +275,11 @@ def block_company(request):
 def unblockcompany(request, id):
     try:
         if request.user.has_perm('Customers.unblock_company'):
-            if request.method == 'GET':
+            if request.method == 'POST':
+
+                co_id = request.POST.get('co_id').strip()
+                co_desc = request.POST.get('co_desc')
+                c_doc = request.FILES['co_doc']
 
                 # find the company for admin
                 if request.user.is_superuser:
@@ -288,6 +292,10 @@ def unblockcompany(request, id):
 
                 if company is not None:
                     company.is_blocked = False
+                    company.document = c_doc
+
+                    company.reason = co_desc
+
                     company.save()
 
                     username = request.user.username
@@ -302,6 +310,7 @@ def unblockcompany(request, id):
                     return JsonResponse({'isError': False, 'Message': 'Unblocked Succefully'}, status=200)
 
                 return JsonResponse({'isError': True, 'Message': 'Company not found'}, status=404)
+            return render(request, 'Base/403.html')
 
     except Exception as error:
         save_error(request, error)
