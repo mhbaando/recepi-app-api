@@ -205,16 +205,7 @@ def register_mot(request):
             })
         return redirect('un_authorized')
     except Exception as error:
-        username = request.user.username
-        name = request.user.first_name + ' ' + request.user.last_name
-        # register the error
-        sendException(
-            request, username, name, error)
-        message = {
-            'isError': True,
-            'Message': 'On Error Occurs . Please try again or contact system administrator'
-        }
-        return JsonResponse(message, status=200)
+        save_error(request, error)
 
 
 @permission_required('Vehicles.view_test', raise_exception=True)
@@ -242,7 +233,8 @@ def view_mot(request):
                 if tests is not None:
                     tests = (
                         vehicle_model.test.objects
-                        .filter(Q(tested_vehicle__vehicle_model__brand_name__icontains=SearchQuery))
+                        .filter(Q(tested_vehicle__vehicle_model__brand_name__icontains=SearchQuery) | Q(tested_vehicle__vin__icontains=SearchQuery)
+                                | (Q(test_num__icontains=SearchQuery)))
                         .order_by("-created_at")
                     )
 
