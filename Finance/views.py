@@ -36,12 +36,10 @@ def AccountsPage(request):
             if CheckDataNumber:
                 DataNumber = int(request.GET['DataNumber'])
 
-            if CheckStatus:
-
-                Status = request.GET.get('Status')
-
             if CheckSearchQuery:
                 SearchQuery = request.GET['SearchQuery']
+                accounts = account.objects.filter(
+                    Q(account_name__icontains=SearchQuery)).order_by('-created_at')
 
             paginator = Paginator(accounts, DataNumber)
 
@@ -159,8 +157,8 @@ def ReceiptPage(request):
 
             if CheckSearchQuery:
                 SearchQuery = request.GET['SearchQuery']
-            else:
-                pass
+                receipt_vouchers = receipt_voucher.objects.filter(
+                    Q(rv_number__icontains=SearchQuery)).order_by('-created_at')
 
             paginator = Paginator(receipt_vouchers, DataNumber)
 
