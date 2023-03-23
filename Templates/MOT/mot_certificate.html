@@ -17,23 +17,16 @@
         min-width: 100%;    
         }
 
-    .report-heade{
-        display:flex;
-        align-items:center;
-        justify-content: space-between
-    }
-
-    .coimg {
-        object-fit:contain;
-        object-position:center;
-        heigh:200px !important;!
-        border-radius:15px !important;
-    }
 
     #bg_cert{
-        width:100vw;
-        height:100%;
+        width:100%;
+        height:100vh;
         position: relative;
+    }
+
+    img {
+        width:100%;
+        height:100%;
     }
 
     .fontinfo {
@@ -123,29 +116,28 @@
         }
         .reg{
             position:absolute;
-            top:88%;
-            
-            left:28.3%
+            top:90.2%;
+            left:26%
         }
     </style>
 {% endblock %}
 {% block printData %}
-    <div class="container w-100">
-        <div class="w-100" id="bg_cert">
-            <img src="{% static 'assets/img/mot_cert.png' %}" alt="" width="100%">
+    <div class="container w-100 h-100">
+        <div id="bg_cert">
+            <img src="{% static 'assets/img/mot_cert.png' %}" alt="">
             <P class="fontinfo testno">{{ test.test_num }}</P>
             <P class="fontinfo owname " style="max-width:180px">{{ test.tested_vehicle.owner.full_name }}</P>
             <P class="fontinfo tdate">{{ test.issue_date }}</P>
             <P class="fontinfo tmeter">{{ test.test_meter }}</P>
             <P class="fontinfo mobile">{{ test.tested_vehicle.owner.phone }}</P>
             <P class="fontinfo exp_date">{{ test.expired_date }}</P>
-            <P class="fontinfo plate_no">{{ test.tested_vehicle.plate_no.plate_no }}</P>
+            <P class="fontinfo plate_no">{{ test.plate_no }}</P>
             <P class="fontinfo vtype">{{ test.tested_vehicle.plate_no.type }}</P>
             <P class="fontinfo vmodel">{{ test.tested_vehicle.vehicle_model.brand_name }}</P>
             <P class="fontinfo vyear">{{ test.tested_vehicle.year }}</P>
             <P class="fontinfo vcolor">{{ test.tested_vehicle.color.color_name }}</P>
             <P class="fontinfo vin">{{ test.tested_vehicle.vin }}</P>
-            <P class="fontinfo reg">{{ test.reg_user.last_name }}</P>
+            <P class="fontinfo reg">{{ test.reg_user }}</P>
         </div>
     </div>
 {% endblock printData %}
