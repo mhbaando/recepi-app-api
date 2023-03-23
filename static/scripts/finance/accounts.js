@@ -15,8 +15,8 @@ $(document).ready(function () {
   });
 
   $("#Status").change(function () {
-      RefreshPage();
-    });
+    RefreshPage();
+  });
 
   $(".pagination .page-item").on("click", function () {
     const pageNumber = $(this).attr("page");
@@ -28,15 +28,16 @@ $(document).ready(function () {
     let page = $(".activePage").attr("activePage");
     let search = $("#SearchQuery").val();
     let entries = $("#DataNumber").val();
-    
-    let url = `/finance/accounts?DataNumber=${entries}&page=${page}`;
-    
+    let url = `/customer/accounts?DataNumber=${entries}&page=${page}`;
 
-    if (search != "") {
+    if (search.trim().length <= 0) {
+      return null
+    }
+    else {
       url += `&SearchQuery=${search}`;
+      window.location.replace(url);
     }
 
-    window.location.replace(url);
-  }
 
+  }
 });
