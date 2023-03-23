@@ -194,12 +194,12 @@ def view_company(request):
             else:
                 companies = customer_model.company.objects.filter(
                     Q(company_name__icontains=SearchQuery)).order_by('-created_at')
-
-        if request.user.is_superuser:
-            companies = customer_model.company.objects.all().order_by('-created_at')
         else:
-            companies = customer_model.company.objects.filter(
-                Q(federal_state=request.user.federal_state)).order_by('-created_at')
+            if request.user.is_superuser:
+                companies = customer_model.company.objects.all().order_by('-created_at')
+            else:
+                companies = customer_model.company.objects.filter(
+                    Q(federal_state=request.user.federal_state)).order_by('-created_at')
             # paginate data
 
         paginator = Paginator(companies, DataNumber)
