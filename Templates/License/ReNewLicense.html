@@ -112,6 +112,16 @@
                             </div>
                             <div class="col-md-4 mb-0">
                                 <div class="mb-3">
+                                    <label class="form-label">Place issue</label>
+                                    <select id="place_issues" class="form-select" disabled>
+                                        <option value="">
+                                            Select A place issue
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-0">
+                                <div class="mb-3">
                                     <label class="form-label">Type</label>
                                     <select id="license_type"class="form-select">
                                         {% if licensetype %}
@@ -120,22 +130,6 @@
                                             </option>
                                             {% for item in licensetype %}
                                                 <option value={{ item.type_id }}>{{ item.type }}
-                                                </option>
-                                            {% endfor %}
-                                        {% endif %}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-0">
-                                <div class="mb-3">
-                                    <label class="form-label">Place Issued</label>
-                                    <select id="place_issue"class="form-select">
-                                        {% if FederalState %}
-                                            <option value="">
-                                                Select A Place Issue
-                                            </option>
-                                            {% for item in place_issue %}
-                                                <option value={{ item.place_id }}>{{ item.place_name }}
                                                 </option>
                                             {% endfor %}
                                         {% endif %}

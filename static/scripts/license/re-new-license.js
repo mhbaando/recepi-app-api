@@ -2,6 +2,36 @@ $(document).ready(function () {
 
   let rnLicenseId;
 
+  $("#state_name").on("change", function () {
+    state = $("#state_name option:selected").val()
+  
+    fetch('/customer/state_r_op/' + state, {
+
+      
+      method: 'GET',
+      headers: { "X-CSRFToken": csrftoken },
+      
+    }).then(res => res.json()).then(data => {
+      // succes
+      // state.attr('value', `${data.s_state}`)
+      // console.log(data.s_state);
+      console.log(data.s_state);
+      console.log(data.s_name);
+    
+    
+      if ($(this).val()) {
+        $("#place_issues").prop('disabled', false)
+        $("#place_issues").append(`<option value="${data.s_state}">${data.s_name}</option>`)
+        $("#place_issues option:eq(0)").prop("selected", true);
+        $("#place_issues").prop('disabled', true)
+      }
+      
+    }).catch(err => {
+      Swal.fire('Error', err, 'error')
+    })
+  })
+  })
+
 
   $("#submit").on("click", function () {
 
@@ -171,4 +201,3 @@ $(document).ready(function () {
     });
   }
 
-})
