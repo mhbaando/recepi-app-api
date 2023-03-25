@@ -10,12 +10,15 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Logging to Docker hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Checkout # acces code
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          node-version: "16.x"
       - name: Test
         run: docker-compose run --rm app sh -c "python manage.py test"
       - name: Lint
