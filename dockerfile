@@ -11,6 +11,7 @@ ENV PYTHONUNBUFFERED 1
 
 # project dependecies
 COPY ./requirements.txt /temp/requirements.txt
+COPY ./requirements.dev.txt /temp/requirements.dev.txt
 COPY ./app /app
 WORKDIR /app
 EXPOSE 8000
@@ -24,9 +25,15 @@ EXPOSE 8000
 # 7. dont create home dir for that user 
 # 8. name of the user django-user
 
+# overwrite the docer composer
+# fi => end of if
+ARG DEV=false
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /temp/requirements.txt && \
+    if [ $DEV = "true"]; \
+    then /py/bin/pip install -r /temp/requirements.dev.txt ; \
+    fi && \
     rm -rf /temp && \
     adduser \
     --disabled-password \
