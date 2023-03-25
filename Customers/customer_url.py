@@ -43,6 +43,8 @@ urlpatterns = [
     path('updatecustomer/', customer.update_customer),
     path('profile/<int:id>', customer.customer_profile, name="customer_profile"),
     path('findcustomer/<int:id>', customer.find_customer),
+    path('state_op/<int:id>', license.sel_state),
+    path('state_r_op/<int:id>', license.sel_state),
 
     # Reports
     path('reports', reports.report_home, name='Reports'),

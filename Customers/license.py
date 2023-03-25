@@ -18,8 +18,6 @@ years_to_add = current_date.year + 3
 expired_year = current_date.replace(year=years_to_add)
 
 
-
-
 @login_required(login_url='Login')
 @permission_required('Customers.add_license', raise_exception=True)
 def NewLicense(request):
@@ -34,7 +32,6 @@ def NewLicense(request):
     else:
         # admins can view all users
         states = customer_model.federal_state.objects.all()
-        place_issues = customer_model.placeissue.objects.all()
 
     licensetype = customer_model.licensetype.objects.all()
     context = {
@@ -58,7 +55,7 @@ def ReNewLicense(request):
     FederalState = []
     if request.user.is_admin or request.user.is_superuser:
         FederalState = customer_model.federal_state.objects.all()
-        place_issue = customer_model.placeissue.objects.all()
+        # place_issue = customer_model.customer.objects.all()
     else:
         FederalState = customer_model.federal_state.objects.filter(
             Q(state_id=request.user.federal_state.state_id))
@@ -623,3 +620,59 @@ def renew_license(request, id):
                     'isError': True,
                     'Message': 'please provide a liecense ID',
                 })
+
+
+@ login_required(login_url="Login")
+def sel_state(request, id):
+    if request.method == 'GET':
+
+        find_selected_state = customer_model.placeissue.objects.filter(
+            state=id).first()
+        print(find_selected_state)
+
+        if find_selected_state is not None:
+            return JsonResponse({
+                'isError': False,
+                's_state': find_selected_state.place_id,
+                "s_name": find_selected_state.place_name,
+
+
+
+            })
+
+        return JsonResponse({
+            'isError': True,
+            'message': 'owner name Not Found'
+        })
+    return JsonResponse({
+        'isError': True,
+        'message': 'Method not allowd'
+    }, status=400)
+
+
+@ login_required(login_url="Login")
+def renew_state(request, id):
+    if request.method == 'GET':
+
+        find_selected_state = customer_model.placeissue.objects.filter(
+            state=id).first()
+        print(find_selected_state)
+
+        if find_selected_state is not None:
+            return JsonResponse({
+                'isError': False,
+                's_state': find_selected_state.place_id,
+                "s_name": find_selected_state.place_name,
+
+
+
+            })
+
+        return JsonResponse({
+            'isError': True,
+            'message': 'owner name Not Found'
+        })
+    return JsonResponse({
+        'isError': True,
+        'message': 'Method not allowd'
+    }, status=400)
