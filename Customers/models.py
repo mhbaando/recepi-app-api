@@ -159,6 +159,7 @@ class company(models.Model):
     reason = models.TextField(null=True, blank=True)
     owner = models.ForeignKey(customer, on_delete=models.RESTRICT)
     is_blocked = models.BooleanField(default=False)
+   
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     reg_user = models.ForeignKey(Users, on_delete=models.RESTRICT)
