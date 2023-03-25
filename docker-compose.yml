@@ -1,0 +1,22 @@
+# version of docker composer sytanx
+version: "3.9"
+
+# main block 
+# docker containts one or more services
+# . build inside our current driectory
+
+# port mapping 8000 our machin to 8000 docker 
+# volumes is mapping our inside directorty to docker container
+
+# commands is to run docker
+services:
+  app:
+    build: 
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+        - ./app:/app
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+
