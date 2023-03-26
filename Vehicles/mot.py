@@ -214,7 +214,17 @@ def view_mot(request):
     try:
         if request.user.has_perm('Vehicles.add_test'):
             view_test = []
-            tests = vehicle_model.test.objects.all()
+            if request.user.is_superuser:
+                tests = vehicle_model.test.objects.all().order_by('created_at')
+            else:
+                if request.user.federal_state is None:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'Update your State to View MOT'
+                    })
+                tests = vehicle_model.test.objects.filter(
+                    Q(tested_vehicle__owner__federal_state=request.user.federal_state))
+
             CheckSearchQuery = "SearchQuery" in request.GET
             CheckDataNumber = "DataNumber" in request.GET
             CheckStatus = "Status" in request.GET
@@ -230,13 +240,24 @@ def view_mot(request):
 
             if CheckSearchQuery:
                 SearchQuery = request.GET["SearchQuery"]
-                if tests is not None:
+                if request.user.is_superuser:
+                    if test is not None:
+                        tests = (
+                            vehicle_model.test.objects
+                            .filter(Q(tested_vehicle__vehicle_model__brand_name__icontains=SearchQuery) | Q(tested_vehicle__vin__icontains=SearchQuery)
+                                    | (Q(test_num__icontains=SearchQuery))
+                                    )
+
+                        )
+
+                else:
                     tests = (
                         vehicle_model.test.objects
                         .filter(Q(tested_vehicle__vehicle_model__brand_name__icontains=SearchQuery) | Q(tested_vehicle__vin__icontains=SearchQuery)
-                                | (Q(test_num__icontains=SearchQuery)))
-                        .order_by("-created_at")
-                    )
+                                | (Q(test_num__icontains=SearchQuery))
+                                )
+
+                    ).filter(Q(tested_vehicle__owner__federal_state=request.user.federal_state))
 
             for test in tests:
                 test_res = vehicle_model.test_result_holder.objects.filter(

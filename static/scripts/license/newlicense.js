@@ -1,12 +1,35 @@
 $(document).ready(function () {
+  
+  $("#state_name").on("change", function () {
+    state = $("#state_name option:selected").val()
+  
+    fetch('/customer/state_op/' + state, {
 
-  $("#state_name").on('change', function () {
-    if ($(this).val()) {
-      $("#place_issue").prop('disabled', false)
-    } else {
-      $("#place_issue option:eq(0)").prop("selected", true);
-      $("#place_issue").prop('disabled', true)
-    }
+      
+      method: 'GET',
+      headers: { "X-CSRFToken": csrftoken },
+      
+    }).then(res => res.json()).then(data => {
+      // succes
+      // state.attr('value', `${data.s_state}`)
+      // console.log(data.s_state);
+      console.log(data.s_state);
+      console.log(data.s_name);
+    
+    
+      if ($(this).val()) {
+        $("#place_issue").prop('disabled', false)
+        $("#place_issue").append(`<option value="${data.s_state}">${data.s_name}</option> `)
+      } else {
+        $("#place_issue option:eq(1)").prop("selected", true);
+        $("#place_issue").prop('disabled', true)
+      }
+      
+      
+    }).catch(err => {
+      Swal.fire('Error', err, 'error')
+    })
+  })
   })
 
   $("#submit").on("click", function () {
@@ -178,4 +201,3 @@ $(document).ready(function () {
     });
   }
 
-});

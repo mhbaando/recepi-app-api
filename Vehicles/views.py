@@ -486,7 +486,7 @@ def view_vehicle(request):
         if request.user.federal_state is None:
             return JsonResponse({
                 'isError': True,
-                'Message': 'Update Your State to veiw viheclse'
+                'Message': 'Update Your State to view vehicles'
             })
 
         all_vehicles = vehicle_model.vehicle.objects.filter(Q(owner__federal_state=request.user.federal_state)).order_by(
@@ -529,22 +529,22 @@ def view_vehicle(request):
     if CheckSearchQuery:
         SearchQuery = request.GET["SearchQuery"]
 
-    if request.user.is_superuser:
-        vehicles = (
-            vehicle_model.vehicle.objects
-            .filter(Q(owner__full_name__icontains=SearchQuery) | (Q(vin__icontains=SearchQuery))
-                    | (Q(vehicle_id__icontains=SearchQuery)) | (Q(plate_no__plate_no__icontains=SearchQuery))
-                    | (Q(plate_no__plate_no__icontains=SearchQuery)))
-            .order_by("-created_at")
-        )
-    else:
-        vehicles = (
-            vehicle_model.vehicle.objects
-            .filter(Q(owner__full_name__icontains=SearchQuery) | (Q(vin__icontains=SearchQuery))
-                    | (Q(vehicle_id__icontains=SearchQuery)) |
-                    (Q(plate_no__plate_no__icontains=SearchQuery)) | (Q(plate_no__plate_no__icontains=SearchQuery)))
-            .order_by("-created_at")
-        ).filter(owner__federal_state=request.user.federal_state)
+        if request.user.is_superuser:
+            vehicles = (
+                vehicle_model.vehicle.objects
+                .filter(Q(owner__full_name__icontains=SearchQuery) | (Q(vin__icontains=SearchQuery))
+                        | (Q(vehicle_id__icontains=SearchQuery)) | (Q(plate_no__plate_no__icontains=SearchQuery))
+                        | (Q(plate_no__plate_no__icontains=SearchQuery)))
+
+            )
+        else:
+            vehicles = (
+                vehicle_model.vehicle.objects
+                .filter(Q(owner__full_name__icontains=SearchQuery) | (Q(vin__icontains=SearchQuery))
+                        | (Q(vehicle_id__icontains=SearchQuery)) | (Q(plate_no__plate_no__icontains=SearchQuery))
+                        | (Q(plate_no__plate_no__icontains=SearchQuery))).filter(Q(owner__federal_state=request.user.federal_state))
+
+            )
 
     paginator = Paginator(vehicles, DataNumber)
     page_number = request.GET.get("page")
@@ -569,7 +569,7 @@ def view_vehicle(request):
 
 
 @ login_required(login_url="Login")
-@permission_required('Vehicles.view_vehicle', raise_exception=True)
+@ permission_required('Vehicles.view_vehicle', raise_exception=True)
 def vehicle_profile(request, pk):
 
     cylenders = vehicle_model.cylinder.objects.all().order_by(
@@ -867,8 +867,8 @@ def SearchReceiptVoucher(request, search):
         return JsonResponse({'Message': message}, status=200),
 
 
-@login_required(login_url='Login')
-@permission_required('Vehicles.add_code_plate', raise_exception=True)
+@ login_required(login_url='Login')
+@ permission_required('Vehicles.add_code_plate', raise_exception=True)
 def code_plate_name(request):
 
     try:

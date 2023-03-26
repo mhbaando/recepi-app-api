@@ -1,0 +1,39 @@
+{% load static %}
+{% block cssData %}
+    <link rel="stylesheet" href="{% static "assets/css/company/model.css" %}"/>
+    <link rel="stylesheet"
+          href="{% static "assets/css/company-register.css" %}"/>
+{% endblock cssData %}
+<div class="overlays hidden"></div>
+<div class="model-containers hidden">
+    <div class="model">
+        <div class="w-100">
+            <div class="d-flex align-items-end justify-content-end ">
+                <span class="text-danger cursor">X</span>
+            </div>
+            <form id="unblock-form">
+                {% csrf_token %}
+                {% comment %} model content {% endcomment %}
+                <div class="col">
+                    <div class="row mt-4">
+                        <div class="form-outline">
+                            <label class="form-label" for="desc">Reason</label>
+                            <textarea class="form-control"
+                                      id="reason"
+                                      placeholder="write reason to unblock"
+                                      rows="4"
+                                      required="required"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary close">Close</button>
+                            <button type="submit" class="btn btn-primary">Un Block Company</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% block scriptData %}
+    <script src="{% static "scripts/company/unblock_modal.js" %}"></script>
+{% endblock scriptData %}
