@@ -14,7 +14,7 @@
         <P class="lexp fontinfo">{{ license.expired_date|date:"d.m.Y" }}</P>
         <P class="ltyp fontinfo">{{ license.type.type }}</P>
         <P class="lsig fontinfo">{{ license.owner.firstname }} - {{ license.owner.fourth_name }}</P>
-        {% comment %} <img src="data:image/png;base64,{{ image_str }}" alt="My Image" class="bgimg"> {% endcomment %}
+        <img src="{{ customer.photo.url }}" alt="My Image" class="bgimg">
     </div>
     <div class="lbackholder mt-3">
         <img src="{% static "assets/img/liback.png" %}"

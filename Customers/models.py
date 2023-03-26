@@ -101,8 +101,7 @@ class customer(models.Model):
     phone = models.CharField(max_length=100, null=True, blank=True)
     photo = models.ImageField(null=True,
                               blank=True, upload_to='customer_images')
-    photo_bgr = models.ImageField(null=True,
-                              blank=True, upload_to='customer_images') # will be store photo removed bg
+
     document = models.FileField(
         null=True, blank=True, upload_to='customer_document')
 

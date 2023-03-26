@@ -18,8 +18,6 @@ years_to_add = current_date.year + 3
 expired_year = current_date.replace(year=years_to_add)
 
 
-
-
 @login_required(login_url='Login')
 @permission_required('Customers.add_license', raise_exception=True)
 def NewLicense(request):
@@ -81,15 +79,16 @@ def ReNewLicense(request):
 @login_required(login_url='Login')
 @permission_required('Customers.view_license', raise_exception=True)
 def LicenseLists(request):
-    CheckSearchQuery = 'SearchQuery' in request.GET
-    CheckDataNumber = 'DataNumber' in request.GET
-    CheckStatus = 'Status' in request.GET
     DataNumber = 10
     Status = "Active"
     SearchQuery = ''
-    Licenselists = []
     states = []
+    Licenselists = []
     place_issues = []
+
+    CheckStatus = 'Status' in request.GET
+    CheckDataNumber = 'DataNumber' in request.GET
+    CheckSearchQuery = 'SearchQuery' in request.GET
     licensetype = customer_model.licensetype.objects.all().order_by('created_at')
 
     if request.user.is_superuser:

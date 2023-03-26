@@ -307,6 +307,8 @@ def print_mot_cert(request, id):
 
     if request.user.has_perm('Vehicles.view_test'):
         test = vehicle_model.test.objects.filter(Q(test_id=id)).first()
+        if test is None:
+            return redirect('un_authorized')
         test_res = vehicle_model.test_result_holder.objects.filter(
             Q(test_id=test.test_id)).all()
 

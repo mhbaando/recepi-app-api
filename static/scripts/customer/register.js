@@ -118,6 +118,16 @@ $(document).ready(function () {
       contentType: false,
       data: formData,
       async: true,
+      beforeSend: function () {
+        swal.fire({
+          html: '<h5>Loading...</h5>',
+          showConfirmButton: false,
+          onRender: function () {
+            // there will only ever be one sweet alert open.
+            $('.swal2-content').prepend(sweet_loader);
+          }
+        });
+      },
       success: function (response) {
         if (!response.isError) {
           Swal.fire({
