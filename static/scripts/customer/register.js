@@ -92,11 +92,11 @@ $(document).ready(function () {
       return Swal.fire("Error", "Select State", "error");
     }
 
-    formData.append("fname", fName);
-    formData.append("sname", sName);
-    formData.append("thname", thName);
-    formData.append("foname", foName);
-    formData.append("mname", mName);
+    formData.append("firs_name", fName);
+    formData.append("second_name", sName);
+    formData.append("last_name", thName);
+    formData.append("fourth_name", foName);
+    formData.append("mother_name", mName);
     formData.append("dob", dob.val());
     formData.append("gender", gender);
     formData.append("bload_group", group);
@@ -105,9 +105,9 @@ $(document).ready(function () {
     formData.append("email", email);
     formData.append("address", address);
     formData.append("state", state);
-    formData.append("perid", personalID);
-    formData.append("img", customerImage);
-    formData.append("docType", docType);
+    formData.append("personal_id", personalID);
+    formData.append("image", customerImage);
+    formData.append("document_type", docType);
 
 
     $.ajax({
@@ -147,8 +147,25 @@ $(document).ready(function () {
           // resete the form 
           $("#reg_form")[0].reset()
 
+
         } else {
-          Swal.fire("Error", response.Message, "error");
+          if (!Array.isArray(response.Message)) {
+            Swal.fire(
+              'Error', response.Message, 'error'
+            )
+          } else {
+            swal.fire({
+              html: `<div class="alert alert-danger mt-5">
+              ${$.each(response.Message, (i, ms) =>
+                `<p class="d-block">${ms}</p>`
+              )}
+              </div >`,
+              showConfirmButton: false,
+              onRender: function () {
+                $('.swal2-content').prepend(sweet_loader);
+              }
+            });
+          }
         }
       },
       error: function (error) {

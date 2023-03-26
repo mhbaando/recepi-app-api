@@ -3,10 +3,8 @@ import io
 import uuid
 import qrcode
 
-import cv2
 import base64
-import numpy as np
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from rembg import remove
 from django.core.files.base import ContentFile
 
@@ -21,8 +19,8 @@ from Finance import models as financemodel
 from Vehicles import models as vehicle_model
 from Vehicles.plate_converter import shorten
 
-from . import models as customer_model
 from Customers.autditory import save_error, save_log
+from Customers.forms import customer_from
 
 
 @login_required(login_url="Login")
@@ -58,143 +56,142 @@ def register_customer(request):
             return render(request, "Customer/register.html", context)
 
         elif request.method == 'POST':
-            customerImg = request.FILES["img"]
-            dob = request.POST.get("dob", None)
-            fName = request.POST.get("fname", None)
-            sName = request.POST.get("sname", None)
-            mName = request.POST.get("mname", None)
-            phone = request.POST.get("phone", None)
-            email = request.POST.get("email", None)
-            state = request.POST.get("state", None)
-            gender = request.POST.get("gender", None)
-            foName = request.POST.get("foname", None)
-            thName = request.POST.get("thname", None)
-            customer_address = request.POST.get("address", None)
-            docType = request.POST.get("docType", None)
-            personalID = request.POST.get("perid", None)
-            bload_group = request.POST.get("bload_group", None)
-            nationality = request.POST.get("nationality", None)
+            customerImg = request.FILES["image"]
+            customerForm = customer_from(request.POST)
 
-            # check data
-            if (
-                dob is None
-                or fName is None
-                or sName is None
-                or mName is None
-                or phone is None
-                or email is None
-                or state is None
-                or gender is None
-                or foName is None
-                or thName is None
-                or customer_address is None
-                or personalID is None
-                or bload_group is None
-                or nationality is None
-            ):
-                return JsonResponse(
-                    {
-                        "isError": True,
-                        "title": "Validate Error",
-                        "type": "danger",
-                        "Message": "Fill All Required Fields",
-                    },
+            if customerForm.is_valid():
+                cleanData = customerForm.cleaned_data
+
+                firs_name = cleanData['firs_name']
+                second_name = cleanData['second_name']
+                last_name = cleanData['last_name']
+                fourth_name = cleanData['fourth_name']
+                mother_name = cleanData['mother_name']
+                dob = cleanData['dob']
+                gender = cleanData['gender']
+                bload_group = cleanData['bload_group']
+                nationality = cleanData['nationality']
+                phone = cleanData['phone']
+                email = cleanData['email']
+                address = cleanData['address']
+                state = cleanData['state']
+                personal_id = cleanData['personal_id']
+                document_type = cleanData['document_type']
+
+                group = customer_model.blood_group.objects.filter(
+                    Q(blood_group_id=bload_group)
+                ).first()
+                docs_type = customer_model.personal_id_type.objects.filter(
+                    Q(personal_id=document_type)
+                ).first()
+                nation = customer_model.countries.objects.filter(
+                    Q(country_id=nationality)
+                ).first()
+                selected_satate = customer_model.federal_state.objects.filter(
+                    Q(state_id=state)
+                ).first()
+
+                if (
+                    group is None
+                    or docs_type is None
+                    or nation is None
+                    or selected_satate is None
+                ):
+                    return JsonResponse(
+                        {"isError": True, "Message": "Bad Request"}, status=400
+                    )
+
+                if (
+                    request.user.is_superuser is False
+                    and request.user.federal_state is None
+                ):
+                    return JsonResponse(
+                        {
+                            "isError": True,
+                            "Message": "Not allowed to register with out state"
+                        }
+                    )
+
+                # check if personal id is existed
+                personalID_exists = customer_model.customer.objects.filter(
+                    Q(personal_id=personal_id)).exists()
+
+                if personalID_exists:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'Duplicate Personal ID Not Allowed'
+                    })
+
+                new_customer = customer_model.customer(
+                    firstname=firs_name,
+                    middle_name=second_name,
+                    lastname=last_name,
+                    fourth_name=fourth_name,
+                    mother_name=mother_name,
+                    full_name=f"{firs_name} {second_name} {last_name} {fourth_name}",
+                    gender=gender,
+                    date_of_birth=dob,
+                    blood_group=group,
+                    personal_id_type=docs_type,
+                    nationality=nation,
+                    personal_id=personal_id,
+                    email=email,
+                    address=address,
+                    federal_state=selected_satate,
+                    phone=phone,
+                    reg_user=request.user,
                 )
 
-            group = customer_model.blood_group.objects.filter(
-                Q(blood_group_id=bload_group)
-            ).first()
-            docs_type = customer_model.personal_id_type.objects.filter(
-                Q(personal_id=docType)
-            ).first()
-            nation = customer_model.countries.objects.filter(
-                Q(country_id=nationality)
-            ).first()
-            selected_satate = customer_model.federal_state.objects.filter(
-                Q(state_id=state)
-            ).first()
+                try:
+                    # read upploaded image
+                    image = Image.open(io.BytesIO(customerImg.read()))
+                    if image.format != 'PNG':
+                        return JsonResponse({
+                            'isError': True,
+                            'Message': 'Uppload Only PNG Photo'
+                        })
 
-            if (
-                group is None
-                or docs_type is None
-                or nation is None
-                or selected_satate is None
-            ):
-                return JsonResponse(
-                    {"isError": True, "Message": "Bad Request"}, status=400
-                )
+                    # remove background
+                    output_image = remove(image)
 
-            if (
-                request.user.is_superuser == False
-                and request.user.federal_state is None
-            ):
-                return JsonResponse(
-                    {
-                        "isError": True,
-                        "Message": "Not allowed to register with out state",
-                    }
-                )
+                    # Convert the image to a base64-encoded string
+                    filename = f"{str(uuid.uuid4())}.png"
+                    with io.BytesIO() as buffer:
+                        output_image.save(buffer, format="PNG")
+                        binary_data = buffer.getvalue()
+                        content_file = ContentFile(binary_data, name=filename)
 
-            # check if personal id is existed
-            personalID_exists = customer_model.customer.objects.filter(
-                Q(personal_id=personalID)).exists()
+                        new_customer.photo.save(
+                            filename, content_file, save=True)
 
-            if personalID_exists:
-                return JsonResponse({
-                    'isError': True,
-                    'Message': 'Duplicate Personal ID Not Allowed'
-                })
+                    new_customer.save()
 
-            new_customer = customer_model.customer(
-                firstname=fName,
-                middle_name=sName,
-                lastname=thName,
-                fourth_name=foName,
-                mother_name=mName,
-                full_name=f"{fName} {sName} {thName} {foName}",
-                gender=gender,
-                date_of_birth=dob,
-                blood_group=group,
-                personal_id_type=docs_type,
-                nationality=nation,
-                personal_id=personalID,
-                email=email,
-                address=customer_address,
-                federal_state=selected_satate,
-                phone=phone,
-                reg_user=request.user,
-            )
+                    save_log(request, 'Customer / Register',
+                             f'Waxa uu diiwangaliyay {new_customer.full_name}')
+                    return JsonResponse(
+                        {
+                            "isError": False,
+                            "Message": "Customer has been successfully Saved",
+                        })
 
-            # read upploaded image
-            image = Image.open(io.BytesIO(customerImg.read()))
-            if image.format != 'PNG':
-                return JsonResponse({
-                    'isError': True,
-                    'Message': 'Uppload Only PNG Photo'
-                })
+                except Exception:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'Invalid Image Format'
+                    })
 
-            # remove background
-            output_image = remove(image)
+            errors = customerForm.errors.as_data()
+            error_messages = []
+            for field, field_errors in errors.items():
+                for error in field_errors:
+                    if '__all__' not in field:
+                        error_messages.append(f"{field}: {error.message}")
 
-            # Convert the image to a base64-encoded string
-            filename = f"{str(uuid.uuid4())}.png"
-            with io.BytesIO() as buffer:
-                output_image.save(buffer, format="PNG")
-                binary_data = buffer.getvalue()
-                content_file = ContentFile(binary_data, name=filename)
+            return JsonResponse({
+                'isError': True,
+                'Message': error_messages
+            })
 
-                new_customer.photo.save(
-                    filename, content_file, save=True)
-
-            new_customer.save()
-
-            save_log(request, 'Customer / Register',
-                     f'Waxa uu diiwangaliyay {new_customer.full_name} ')
-            return JsonResponse(
-                {
-                    "isError": False,
-                    "Message": "Customer has been successfully Saved",
-                })
         # except Exception as error:
         #     save_error(request, error)
     return render(request, 'Base/403.html')
