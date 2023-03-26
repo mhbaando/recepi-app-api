@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
+import uuid
+
 
 from Vehicles.plate_converter import shorten
 from . import models
@@ -16,6 +18,8 @@ from Vehicles import models as vehilce_model
 from Finance import models as financemodel
 from datetime import datetime
 from Customers.autditory import save_error, save_log
+from Customers.forms import company_form, company_edit
+
 
 # Create your views here.
 # company
@@ -100,6 +104,25 @@ def register_company(request):
                     if (c_companyDoc.size > 2097152):
                         return JsonResponse({'isError': True, 'Message': 'you can not  upload more then 1mb'}, status=200)
 
+                    elif request.method == 'POST':
+                        companyImg = request.FILES["image"]
+                        companyForm = company_form(request.POST)
+
+                        if companyForm.is_valid():
+                            cleanData = companyForm.cleaned_data
+
+                            cname = cleanData['cname']
+                            c_rnum = cleanData['c_rnum']
+                            c_webiste = cleanData['cwebsite']
+                            c_owner = cleanData['c_owner']
+                            c_phone = cleanData['c_phone']
+                            c_email = cleanData['c_email']
+                            c_address = cleanData['c_address']
+                            c_state = cleanData['c_state']
+                            c_logo = cleanData['c_logo']
+                            c_companyDoc = cleanData['c_companydoc']
+                            c_desc = cleanData['c_desc']
+
                     # register new compnay
                     new_company = customer_model.company(
                         company_name=c_name,
@@ -115,6 +138,14 @@ def register_company(request):
                         owner=found_owner,
                         reg_user=request.user
                     )
+
+                    if companyImg.format != 'PNG':
+                        return JsonResponse({
+                            'isError': True,
+                            'Message': 'Uppload only PNG photo'
+
+                        })
+
                     new_company.save()
                     save_log(request, 'Company / Register',
                              f'Waxa uu diwangaliyay ${new_company.company_name}')
@@ -126,8 +157,9 @@ def register_company(request):
                 'Message': 'Method Not allowed'
             })
         return render(request, 'Base/403.html')
-    except:
-        pass
+    except Exception as error:
+        save_error(request, error)
+
 # search
 
 
@@ -426,14 +458,20 @@ def update_company(request):
     try:
         # check Permission
         if request.user.has_perm("Customers.change_company"):
-            company_id = request.POST.get('company_id', None)
-            c_name = request.POST.get('cname', None)
-            cphone = request.POST.get('cphone', None)
-            cemail = request.POST.get('cemail', None)
-            caddress = request.POST.get('caddress', None)
-            cwebsite = request.POST.get('cwebsite', None)
-            cregister = request.POST.get('cregister', None)
-            cstate = request.POST.get('cstate', None)
+
+            if request.method == 'POST':
+                edit_form = company_edit(request.POST)
+                if edit_form.is_valid():
+                    cleanData = edit_form.cleaned_data
+                    company_id = request.POST.get("company_id", None)
+                company_id = request.POST.get('company_id', None)
+            c_name = cleanData['cname']
+            cphone = cleanData['cphone']
+            cemail = cleanData['cemail']
+            caddress = cleanData['caddress']
+            cwebsite = cleanData['cwebsite']
+            cregister = cleanData['cregister']
+            cstate = request.POST.get['cstate']
 
             if company_id is not None:
                 company = customer_model.company.objects.filter(
@@ -465,7 +503,18 @@ def update_company(request):
                                avatar, action, module, path)
                     return JsonResponse({'isError': False, 'Message': 'company has been updated'}, status=200)
                 return JsonResponse({'isErro': True, 'Message': 'Company Not found'})
-            return JsonResponse({'isErro': True, 'Message': 'Provide company id'}, status=400)
+
+            error_message = ''
+            for field, errors in edit_form.errors.items():
+                for error in errors:
+                    if '__all__' not in field:
+                        error_message += f'{field}: {error}\n'
+
+                return JsonResponse({'isErro': True, 'Message': error_message})
+
+            return JsonResponse({
+                'isError': True, 'Message': 'methode not allowed'
+            })
         return JsonResponse({
             'isError': True,
             'Message': 'you dont have permission to update this compnay'
