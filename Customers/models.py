@@ -88,16 +88,16 @@ class customer(models.Model):
     date_of_birth = models.DateField(max_length=100, null=True, blank=True)
     place_of_birth = models.CharField(max_length=100, null=True, blank=True)
     blood_group = models.ForeignKey(
-        to=blood_group, on_delete=models.RESTRICT, blank=True, null=True)  # Table Blood Group
+        to=blood_group, on_delete=models.RESTRICT, blank=True, null=True)
     personal_id_type = models.ForeignKey(
-        to=personal_id_type, on_delete=models.RESTRICT, blank=True, null=True)  # Personal ID Type
+        to=personal_id_type, on_delete=models.RESTRICT, blank=True, null=True)
 
     nationality = models.ForeignKey(countries, on_delete=models.RESTRICT)
     personal_id = models.CharField(max_length=100, null=True, blank=True)
     email = models.CharField(max_length=100, null=True, blank=True)
     address = models.CharField(max_length=100, null=True, blank=True)
     federal_state = models.ForeignKey(
-        to=federal_state, on_delete=models.RESTRICT, blank=True, null=True)  # Federal state
+        to=federal_state, on_delete=models.RESTRICT, blank=True, null=True)
     phone = models.CharField(max_length=100, null=True, blank=True)
     photo = models.ImageField(null=True,
                               blank=True, upload_to='customer_images')

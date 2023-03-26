@@ -180,16 +180,9 @@ def register_customer(request):
                         'Message': 'Invalid Image Format'
                     })
 
-            errors = customerForm.errors.as_data()
-            error_messages = []
-            for field, field_errors in errors.items():
-                for error in field_errors:
-                    if '__all__' not in field:
-                        error_messages.append(f"{field}: {error.message}")
-
             return JsonResponse({
                 'isError': True,
-                'Message': error_messages
+                'Message': 'Form Is Not Valid'
             })
 
         # except Exception as error:
