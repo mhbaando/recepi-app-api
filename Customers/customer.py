@@ -1,10 +1,11 @@
 # customers
 import io
 import uuid
+from django.forms import ValidationError
 import qrcode
 
 import base64
-from PIL import Image, UnidentifiedImageError
+from PIL import Image
 from rembg import remove
 from django.core.files.base import ContentFile
 
@@ -20,7 +21,7 @@ from Vehicles import models as vehicle_model
 from Vehicles.plate_converter import shorten
 
 from Customers.autditory import save_error, save_log
-from Customers.forms import customer_from
+from Customers.forms import customer_from, customer_edit
 
 
 @login_required(login_url="Login")
@@ -62,14 +63,14 @@ def register_customer(request):
             if customerForm.is_valid():
                 cleanData = customerForm.cleaned_data
 
-                firs_name = cleanData['firs_name']
+                first_name = cleanData['first_name']
                 second_name = cleanData['second_name']
                 last_name = cleanData['last_name']
                 fourth_name = cleanData['fourth_name']
                 mother_name = cleanData['mother_name']
                 dob = cleanData['dob']
                 gender = cleanData['gender']
-                bload_group = cleanData['bload_group']
+                blood_group = cleanData['blood_group']
                 nationality = cleanData['nationality']
                 phone = cleanData['phone']
                 email = cleanData['email']
@@ -79,7 +80,7 @@ def register_customer(request):
                 document_type = cleanData['document_type']
 
                 group = customer_model.blood_group.objects.filter(
-                    Q(blood_group_id=bload_group)
+                    Q(blood_group_id=blood_group)
                 ).first()
                 docs_type = customer_model.personal_id_type.objects.filter(
                     Q(personal_id=document_type)
@@ -123,12 +124,12 @@ def register_customer(request):
                     })
 
                 new_customer = customer_model.customer(
-                    firstname=firs_name,
+                    firstname=first_name,
                     middle_name=second_name,
                     lastname=last_name,
                     fourth_name=fourth_name,
                     mother_name=mother_name,
-                    full_name=f"{firs_name} {second_name} {last_name} {fourth_name}",
+                    full_name=f"{first_name} {second_name} {last_name} {fourth_name}",
                     gender=gender,
                     date_of_birth=dob,
                     blood_group=group,
@@ -180,9 +181,14 @@ def register_customer(request):
                         'Message': 'Invalid Image Format'
                     })
 
+            error_message = ''
+            for field, errors in customerForm.errors.items():
+                for error in errors:
+                    if '__all__' not in field:
+                        error_message += f'{field}: {error}\n'
             return JsonResponse({
                 'isError': True,
-                'Message': 'Form Is Not Valid'
+                'Message': error_message
             })
 
         # except Exception as error:
@@ -503,65 +509,48 @@ def find_customer(request, id):
 
 @ login_required(login_url="Login")
 def update_customer(request):
-    try:
-        if request.user.has_perm('Customers.change_customer'):
-            customer_id = request.POST.get("customer_id", None)
-            f_name = request.POST.get("fname", None)
-            m_name = request.POST.get("sname", None)
-            th_name = request.POST.get("thname", None)
-            fo_name = request.POST.get("foname", None)
-            full_name = request.POST.get("full_name", None)
-            mother_name = request.POST.get("mname", None)
-            dob = request.POST.get("dob", None)
-            personal_id = request.POST.get("perid", None)
-            gender = request.POST.get("gender", None)
-            group = request.POST.get("bload_group", None)
-            nationality = request.POST.get("nationality", None)
-            phone = request.POST.get("phone", None)
-            email = request.POST.get("email", None)
-            address = request.POST.get("address", None)
-            state = request.POST.get("state", None)
+    # try:
+    if request.user.has_perm('Customers.change_customer'):
+        if request.method == 'POST':
+            edit_form = customer_edit(request.POST)
+            if edit_form.is_valid():
+                cleanData = edit_form.cleaned_data
 
-            if customer_id is not None:
-                customer = customer_model.customer.objects.filter(
-                    customer_id=customer_id
-                ).first()
-                state = customer_model.federal_state.objects.filter(
-                    state_id=state).first()
-                bload_group = customer_model.blood_group.objects.filter(
-                    blood_group_id=group
-                ).first()
-                nation = customer_model.countries.objects.filter(
-                    country_id=nationality
-                ).first()
+                customer_id = request.POST.get("customer_id", None)
 
-                if customer is not None:
-                    if (
-                        f_name is None
-                        or m_name is None
-                        or th_name is None
-                        or fo_name is None
-                        or full_name is None
-                        or mother_name is None
-                        or dob is None
-                        or personal_id is None
-                        or gender is None
-                        or group is None
-                        or nationality is None
-                        or phone is None
-                        or email is None
-                        or address is None
-                        or state is None
-                    ):
-                        return JsonResponse(
-                            {"isErro": False, "Message": "All feilds are required"},
-                            status=400,
-                        )
+                first_name = cleanData['first_name']
+                second_name = cleanData['second_name']
+                last_name = cleanData['last_name']
+                fourth_name = cleanData['fourth_name']
+                full_name = cleanData['full_name']
+                mother_name = cleanData['mother_name']
+                personal_id = cleanData['personal_id']
+                gender = cleanData['gender']
+                blood_group = cleanData['blood_group']
+                nationality = cleanData['nationality']
+                email = cleanData['email']
+                phone = cleanData['phone']
+                dob = cleanData['dob']
+                state = cleanData['state']
+                address = cleanData['address']
 
-                    customer.firstname = f_name
-                    customer.middle_name = m_name
-                    customer.lastname = th_name
-                    customer.fourth_name = fo_name
+                if customer_id is not None:
+                    customer = customer_model.customer.objects.filter(
+                        customer_id=customer_id
+                    ).first()
+                    state = customer_model.federal_state.objects.filter(
+                        state_id=state).first()
+                    bload_group = customer_model.blood_group.objects.filter(
+                        blood_group_id=blood_group
+                    ).first()
+                    nation = customer_model.countries.objects.filter(
+                        country_id=nationality
+                    ).first()
+
+                    customer.firstname = first_name
+                    customer.middle_name = second_name
+                    customer.lastname = last_name
+                    customer.fourth_name = fourth_name
                     customer.mother_name = mother_name
                     customer.full_name = full_name
                     customer.gender = gender
@@ -579,21 +568,34 @@ def update_customer(request):
                     save_log(request, 'Customer / Update',
                              f'Waxa uu update greyay {customer.full_name}')
                     return JsonResponse(
-                        {"isError": False, "Message": "Customer has been updated"},
+                        {"isError": False, "Message": "Customer has been Updated"},
                         status=200,
                     )
+
                 return JsonResponse(
-                    {"isErro": False, "Message": "Customer Not Found"}, status=404
-                )
-            return JsonResponse(
-                {"isErro": False, "Message": "customer id is required"}, status=400
-            )
+                    {"isErro": False, "Message": "Customer Not Found"})
+
+            error_message = ''
+            for field, errors in edit_form.errors.items():
+                for error in errors:
+                    if '__all__' not in field:
+                        error_message += f'{field}: {error}\n'
+
+            return JsonResponse({
+                'isError': True,
+                'Message': error_message
+            })
+
         return JsonResponse({
             'isError': True,
-            'Message': 'You don\'t have permission to do this operation'
+            'Message': 'Method Not Allowed'
         })
-    except Exception as error:
-        save_error(request, error)
+    return JsonResponse({
+        'isError': True,
+        'Message': 'You don\'t have permission to do this operation'
+    })
+    # except Exception as error:
+    #     save_error(request, error)
 
 
 @login_required(login_url='login')

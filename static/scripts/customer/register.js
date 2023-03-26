@@ -92,14 +92,14 @@ $(document).ready(function () {
       return Swal.fire("Error", "Select State", "error");
     }
 
-    formData.append("firs_name", fName);
+    formData.append("first_name", fName);
     formData.append("second_name", sName);
     formData.append("last_name", thName);
     formData.append("fourth_name", foName);
     formData.append("mother_name", mName);
     formData.append("dob", dob.val());
     formData.append("gender", gender);
-    formData.append("bload_group", group);
+    formData.append("blood_group", group);
     formData.append("nationality", nation);
     formData.append("phone", phone);
     formData.append("email", email);
