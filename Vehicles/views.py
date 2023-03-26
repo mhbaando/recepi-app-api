@@ -12,6 +12,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import login_required, permission_required
 from Customers.autditory import save_error, save_log
 from .plate_converter import shorten
+from Vehicles.forms import vehicle_form, update_form, assign_form
 
 
 @login_required(login_url="Login")
@@ -38,154 +39,157 @@ def register_vehicle(request):
                 return render(request, "vehicles/register_vehicle.html", context)
 
             elif request.method == 'POST':
+                vehicleform = vehicle_form(request.POST)
+                if vehicleform.is_valid():
+                    cleared_data = vehicleform.cleaned_data
                 # get data from the request
-                model_brand = request.POST.get('model_brand', None)
-                color = request.POST.get('color', None)
-                origin = request.POST.get('origin', None)
-                year = request.POST.get('year', None)
-                cylinder = request.POST.get('cylinders', None)
-                hp = request.POST.get('hp', None)
-                weight = request.POST.get('weight', None)
-                passenger_seats = request.POST.get('passenger_seats', None)
-                registration_number = request.POST.get(
-                    'registration_number', None)
-                engine_number = request.POST.get('engine_number', None)
-                owner_id = request.POST.get('owner_id', None)
-                rv_num = request.POST.get('rv_number', None)
+                    model_brand = cleared_data['model_brand']
+                    color = cleared_data['color']
+                    origin = cleared_data['origin']
+                    year = cleared_data['year']
+                    cylinder = cleared_data['cylinders']
+                    hp = cleared_data['hp']
+                    weight = cleared_data['weight']
+                    passenger_seats = cleared_data['passenger_seats']
+                    registration_number = cleared_data['registration_number']
+                    engine_number = cleared_data['engine_number']
+                    owner_id = cleared_data['owner_id']
+                    rv_num = cleared_data['rv_number']
 
-                if model_brand is None or color is None or origin is None or year is None or cylinder is None or hp is None or weight is None or passenger_seats is None or registration_number is None or engine_number is None or rv_num is None or owner_id is None:
-                    return JsonResponse(
-                        {
+                    is_owner_id = customer_model.customer.objects.filter(
+                        customer_id=owner_id).first()
+
+                    if not is_owner_id.is_verified:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': "Owner is Not Verified!!",
+                                'type': "warning",
+                                'Message': f'You have to Verify First before Registering a Car'
+                            }
+                        )
+                    # receipt checking if it was used before in vehicles
+                    is_voucher_exist = vehicle_model.vehicle.objects.filter(
+                        rv_number=rv_num).first()
+
+                    if is_voucher_exist is not None:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': "Duplicate Error!!",
+                                'type': "warning",
+                                'Message': f'This receipt voucher already used by {is_voucher_exist.owner.full_name}'
+                            }
+                        )
+                    # receipt checking if it was used liscence
+                    found_rv = finance_model.receipt_voucher.objects.filter(
+                        Q(rv_number=rv_num)).first()
+
+                    isvoucer_in_liscence = ''
+                    if found_rv is not None:
+                        isvoucer_in_liscence = customer_model.license.objects.filter(
+                            receipt_voucher=found_rv).first()
+
+                    if isvoucer_in_liscence:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': "Duplicate Error!!",
+                                'type': "warning",
+                                'Message': f'this voucher is already used in Liscence'
+                            }
+                        )
+                    # checking if the rv is being used in transfare vehicles
+                    r_v = finance_model.receipt_voucher.objects.filter(
+                        Q(rv_number=rv_num)).first()
+
+                    isvoucer_in_transfare = ''
+                    if r_v is not None:
+                        isvoucer_in_transfare = vehicle_model.transfare_vehicles.objects.filter(
+                            rv_number=r_v).first()
+
+                    if isvoucer_in_transfare:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': "Duplicate Error!!",
+                                'type': "warning",
+                                'Message': f'this voucher is already used in Transfare Vehicle'
+                            }
+                        )
+
+                    owner = customer_model.customer.objects.filter(
+                        Q(customer_id=owner_id)).first()
+                    brand = vehicle_model.model_brand.objects.filter(
+                        Q(brand_id=model_brand)).first()
+                    car_color = vehicle_model.color.objects.filter(
+                        Q(color_id=color)).first()
+
+                    car_cylinder = vehicle_model.cylinder.objects.filter(
+                        Q(cylinder_id=cylinder)).first()
+
+                    car_origin = customer_model.countries.objects.filter(
+                        Q(country_id=origin)).first()
+
+                    if owner is None or brand is None or car_color is None or car_origin is None:
+                        return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
+
+                    if request.user.is_superuser == False and request.user.federal_state is None:
+                        return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
+
+                    # check if the vin number or engine number already registered
+                    vin_exist = vehicle_model.vehicle.objects.filter(
+                        Q(vin=registration_number)).exists()
+                    engine_no_exits = vehicle_model.vehicle.objects.filter(
+                        Q(enginer_no=engine_number)).exists()
+
+                    if vin_exist:
+                        return JsonResponse({
                             'isError': True,
-                            'title': 'Validate Error',
-                            'type': 'danger',
-                            'Message':  'Fill All Required Fields'
-                        }
-                    )
-                # checking if customer is verified or not
-                is_owner_id = customer_model.customer.objects.filter(
-                    customer_id=owner_id).first()
-
-                if not is_owner_id.is_verified:
-                    return JsonResponse(
-                        {
+                            'Message': 'Vin Number Already Registered to other vehicle'
+                        })
+                    if engine_no_exits:
+                        return JsonResponse({
                             'isError': True,
-                            'title': "Owner is Not Verified!!",
-                            'type': "warning",
-                            'Message': f'You have to Verify First before Registering a Car'
-                        }
-                    )
-                # receipt checking if it was used before in vehicles
-                is_voucher_exist = vehicle_model.vehicle.objects.filter(
-                    rv_number=rv_num).first()
+                            'Message': 'Engine Number Already Registered to other vehicle'
+                        })
 
-                if is_voucher_exist is not None:
-                    return JsonResponse(
-                        {
-                            'isError': True,
-                            'title': "Duplicate Error!!",
-                            'type': "warning",
-                            'Message': f'This receipt voucher already used by {is_voucher_exist.owner.full_name}'
-                        }
-                    )
-                # receipt checking if it was used liscence
-                found_rv = finance_model.receipt_voucher.objects.filter(
-                    Q(rv_number=rv_num)).first()
+                    # Save Vehicle
+                    new_vehicle = vehicle_model.vehicle(
+                        vehicle_model=brand,
+                        color=car_color,
+                        cylinder=car_cylinder,
+                        year=year,
+                        origin=car_origin,
+                        hp=hp,
+                        weight=weight,
+                        vin=registration_number,
+                        enginer_no=engine_number,
+                        pessenger_seat=passenger_seats,
+                        owner=owner,
+                        reg_user_id=request.user.id,
+                        rv_number=rv_num)
 
-                isvoucer_in_liscence = ''
-                if found_rv is not None:
-                    isvoucer_in_liscence = customer_model.license.objects.filter(
-                        receipt_voucher=found_rv).first()
+                    new_vehicle.save()
 
-                if isvoucer_in_liscence:
-                    return JsonResponse(
-                        {
-                            'isError': True,
-                            'title': "Duplicate Error!!",
-                            'type': "warning",
-                            'Message': f'this voucher is already used in Liscence'
-                        }
-                    )
-                # checking if the rv is being used in transfare vehicles
-                r_v = finance_model.receipt_voucher.objects.filter(
-                    Q(rv_number=rv_num)).first()
-
-                isvoucer_in_transfare = ''
-                if r_v is not None:
-                    isvoucer_in_transfare = vehicle_model.transfare_vehicles.objects.filter(
-                        rv_number=r_v).first()
-
-                if isvoucer_in_transfare:
-                    return JsonResponse(
-                        {
-                            'isError': True,
-                            'title': "Duplicate Error!!",
-                            'type': "warning",
-                            'Message': f'this voucher is already used in Transfare Vehicle'
-                        }
-                    )
-
-                owner = customer_model.customer.objects.filter(
-                    Q(customer_id=owner_id)).first()
-                brand = vehicle_model.model_brand.objects.filter(
-                    Q(brand_id=model_brand)).first()
-                car_color = vehicle_model.color.objects.filter(
-                    Q(color_id=color)).first()
-
-                car_cylinder = vehicle_model.cylinder.objects.filter(
-                    Q(cylinder_id=cylinder)).first()
-
-                car_origin = customer_model.countries.objects.filter(
-                    Q(country_id=origin)).first()
-
-                if owner is None or brand is None or car_color is None or car_origin is None:
-                    return JsonResponse({'isError': True, 'Message': 'Bad Request'}, status=400)
-
-                if request.user.is_superuser == False and request.user.federal_state is None:
-                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
-
-                # check if the vin number or engine number already registered
-                vin_exist = vehicle_model.vehicle.objects.filter(
-                    Q(vin=registration_number)).exists()
-                engine_no_exits = vehicle_model.vehicle.objects.filter(
-                    Q(enginer_no=engine_number)).exists()
-
-                if vin_exist:
-                    return JsonResponse({
-                        'isError': True,
-                        'Message': 'Vin Number Already Registered to other vehicle'
-                    })
-                if engine_no_exits:
-                    return JsonResponse({
-                        'isError': True,
-                        'Message': 'Engine Number Already Registered to other vehicle'
-                    })
-
-                # Save Vehicle
-                new_vehicle = vehicle_model.vehicle(
-                    vehicle_model=brand,
-                    color=car_color,
-                    cylinder=car_cylinder,
-                    year=year,
-                    origin=car_origin,
-                    hp=hp,
-                    weight=weight,
-                    vin=registration_number,
-                    enginer_no=engine_number,
-                    pessenger_seat=passenger_seats,
-                    owner=owner,
-                    reg_user_id=request.user.id,
-                    rv_number=rv_num)
-
-                new_vehicle.save()
-
-                save_log(request, 'Vehicles / Register',
-                         f'Waxa uu gaari udiiwangaliyay {new_vehicle.owner}')
-                # return for post method
-                return JsonResponse({'isError': False, 'Message': 'Vehicle has been successfully Saved'}, status=200)
-
+                    save_log(request, 'Vehicles / Register',
+                             f'Waxa uu gaari udiiwangaliyay {new_vehicle.owner}')
+                    # return for post method
+                    return JsonResponse({'isError': False, 'Message': 'Vehicle has been successfully Saved'}, status=200)
+                error_message = ''
+                for field, errors in vehicleform.errors.items():
+                    for error in errors:
+                        if '__all__' not in field:
+                            error_message += f'{field}: {error}\n'
+                return JsonResponse({
+                    'isError': True,
+                    'Message': error_message
+                })
+            return JsonResponse({
+                'isError': True,
+                'Message': 'methode not allowe'
+            })
         return redirect('un_authorized')
-
     except Exception as error:
         username = request.user.username
         name = request.user.first_name + ' ' + request.user.last_name
@@ -667,49 +671,62 @@ def update_vehicle(request):
     try:
         if request.user.has_perm('Vehicles.add_vehicle'):
             if request.method == 'POST':
-                vehicle_id = request.POST.get('vehicleID', None)
-                vweight = request.POST.get('weight', None)
-                vhp = request.POST.get('hp', None)
-                vpassenger_seats = request.POST.get('passenger_seats', None)
-                vengine_no = request.POST.get('engine_no', None)
-                rv_number = request.POST.get('rv_number', None)
-                vcolor = request.POST.get('color', None)
-                vcylinder = request.POST.get('cylinder', None)
-                vbrand = request.POST.get('model_brand', None)
-                year = request.POST.get('year', None)
-                vorigin = request.POST.get('origin', None)
+                updateform = update_form(request.POST)
+                if updateform.is_valid():
+                    cleared_data = updateform.cleaned_data
+                    vehicle_id = cleared_data['vehicleID']
+                    vweight = cleared_data['weight']
+                    vhp = cleared_data['hp']
+                    vpassenger_seats = cleared_data['passenger_seats']
+                    vengine_no = cleared_data['engine_no']
+                    rv_number = cleared_data['rv_number']
+                    vcolor = cleared_data['color']
+                    vcylinder = cleared_data['cylinder']
+                    vbrand = cleared_data['model_brand']
+                    year = cleared_data['year']
+                    vorigin = cleared_data['origin']
 
-                vehicle = vehicle_model.vehicle.objects.filter(
-                    Q(vehicle_id=vehicle_id)).first()
+                    vehicle = vehicle_model.vehicle.objects.filter(
+                        Q(vehicle_id=vehicle_id)).first()
 
-                c_color = vehicle_model.color.objects.filter(
-                    Q(color_id=vcolor)).first()
+                    c_color = vehicle_model.color.objects.filter(
+                        Q(color_id=vcolor)).first()
 
-                c_cylinder = vehicle_model.cylinder.objects.filter(
-                    Q(cylinder_id=vcylinder)).first()
+                    c_cylinder = vehicle_model.cylinder.objects.filter(
+                        Q(cylinder_id=vcylinder)).first()
 
-                c_origin = customer_model.countries.objects.filter(
-                    Q(country_id=vorigin)).first()
+                    c_origin = customer_model.countries.objects.filter(
+                        Q(country_id=vorigin)).first()
 
-                c_brand = vehicle_model.model_brand.objects.filter(
-                    Q(brand_id=vbrand)).first()
+                    c_brand = vehicle_model.model_brand.objects.filter(
+                        Q(brand_id=vbrand)).first()
 
-                vehicle.weight = vweight
-                vehicle.hp = vhp
-                vehicle.pessenger_seat = vpassenger_seats
-                vehicle.enginer_no = vengine_no
-                vehicle.rv_number = rv_number
-                vehicle.year = year
-                vehicle.color = c_color
-                vehicle.cylinder = c_cylinder
-                vehicle.origin = c_origin
-                vehicle.vehicle_model = c_brand
+                    vehicle.weight = vweight
+                    vehicle.hp = vhp
+                    vehicle.pessenger_seat = vpassenger_seats
+                    vehicle.enginer_no = vengine_no
+                    vehicle.rv_number = rv_number
+                    vehicle.year = year
+                    vehicle.color = c_color
+                    vehicle.cylinder = c_cylinder
+                    vehicle.origin = c_origin
+                    vehicle.vehicle_model = c_brand
 
-                vehicle.save()
-                save_log(request, 'Vehicles / Update Car',
-                         f'Waxa uu gaari udiiwangaliyay {vehicle.owner}')
-                # return for post method
-                return JsonResponse({'isError': False, 'Message': 'Vehicle has been updated succesfully'}, status=200)
+                    vehicle.save()
+                    save_log(request, 'Vehicles / Update Car',
+                             f'Waxa uu gaari udiiwangaliyay {vehicle.owner}')
+                    # return for post method
+                    return JsonResponse({'isError': False, 'Message': 'Vehicle has been updated succesfully'}, status=200)
+                error_message = ''
+            for field, errors in updateform.errors.items():
+                for error in errors:
+                    if '__all__' not in field:
+                        error_message += f'{field}: {error}\n'
+            return JsonResponse({
+                'isError': True,
+                'Message': error_message
+            })
+
         else:
 
             return redirect('un_authorized')
@@ -742,64 +759,83 @@ def asign_plate(request):
             year.reverse()
 
             if request.method == 'POST':
-                vehicleiddd = request.POST.get('vehicleIdd', None)
-                code = request.POST.get('code', None)
-                state = request.POST.get('state', None)
+                assignform = assign_form(request.POST)
+                if assignform.is_valid():
+                    cleared_data = assignform.cleaned_data
+                    vehicleiddd = cleared_data['vehicleIdd']
+                    code = cleared_data['code']
+                    state = cleared_data['state']
 
-                types = request.POST.get('type', None)
-                number = request.POST.get('number', None)
-                year = request.POST.get('year')
+                    types = cleared_data['type']
+                    number = cleared_data['number']
+                    year = cleared_data['year']
 
-                selected_type = vehicle_model.type.objects.filter(
-                    type_id=types).first()
+                    selected_type = vehicle_model.type.objects.filter(
+                        type_id=types).first()
 
-                selected_state = customer_model.federal_state.objects.filter(
-                    Q(state_id=state)).first()
+                    selected_state = customer_model.federal_state.objects.filter(
+                        Q(state_id=state)).first()
 
-                selected_vehicle = vehicle_model.vehicle.objects.filter(
-                    Q(vehicle_id=vehicleiddd)).first()
-                selected_code = vehicle_model.code_plate.objects.filter(
-                    Q(code_id=code)).first()
-                if code is None or state is None or types is None or year is None or number is None or year is None:
-                    return JsonResponse(
-                        {
-                            'isError': True,
-                            'title': 'Validate Error',
-                            'type': 'danger',
-                            'Message':  'Fill All Required Fields'
-                        }
-                    )
-
-                if request.user.is_superuser == False and request.user.federal_state is None:
-                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
-                else:
-
-                    # create plate
-                    new_plate = vehicle_model.plate(
-                        plate_code=selected_code,
-                        state=selected_state,
-                        plate_no='{:0>4}'.format(number),
-                        year=year,
-                        type=selected_type,
-                        reg_user_id=request.user.id,
-                    )
-
-                    new_plate.save()
-                    # assign plate to the car
-                    vehicle_to_assign_plate = vehicle_model.vehicle.objects.filter(
+                    selected_vehicle = vehicle_model.vehicle.objects.filter(
                         Q(vehicle_id=vehicleiddd)).first()
-                    if vehicle_to_assign_plate is not None:
-                        vehicle_to_assign_plate.plate_no = new_plate
-                        vehicle_to_assign_plate.save()
+                    selected_code = vehicle_model.code_plate.objects.filter(
+                        Q(code_id=code)).first()
+                    if code is None or state is None or types is None or year is None or number is None or year is None:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': 'Validate Error',
+                                'type': 'danger',
+                                'Message':  'Fill All Required Fields'
+                            }
+                        )
 
-                    save_log(request, 'Vehicles / Plate',
-                             f'Waxa uu register gareeyay plate number ka gaarigaan leh {new_plate.plate_no}')
-                    # return for post method
-                    return JsonResponse({'isError': False, 'Message': 'A New Plate has been registered '}, status=200)
+                    if request.user.is_superuser == False and request.user.federal_state is None:
+                        return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
+                    else:
 
+                        # create plate
+                        new_plate = vehicle_model.plate(
+                            plate_code=selected_code,
+                            state=selected_state,
+                            plate_no='{:0>4}'.format(number),
+                            year=year,
+                            type=selected_type,
+                            reg_user_id=request.user.id,
+                        )
+
+                        new_plate.save()
+                        # assign plate to the car
+                        vehicle_to_assign_plate = vehicle_model.vehicle.objects.filter(
+                            Q(vehicle_id=vehicleiddd)).first()
+                        if vehicle_to_assign_plate is not None:
+                            vehicle_to_assign_plate.plate_no = new_plate
+                            vehicle_to_assign_plate.save()
+
+                        save_log(request, 'Vehicles / Plate',
+                                 f'Waxa uu register gareeyay plate number ka gaarigaan leh {new_plate.plate_no}')
+                        # return for post method
+                        return JsonResponse({'isError': False, 'Message': 'A New Plate has been registered '}, status=200)
+                error_message = ''
+                for field, errors in assign_form.errors.items():
+                    for error in errors:
+                        if '__all__' not in field:
+                            error_message += f'{field}: {error}\n'
+                return JsonResponse({
+                    'isError': True,
+                    'Message': error_message
+                })
         else:
 
             return redirect('un_authorized')
+
+        context = {
+
+            "types": types,
+            "currentYear": datetime.now().year,
+        }
+
+        return render(request, 'vehicles/assign_model.html', context)
     except Exception as error:
         username = request.user.username
         name = request.user.first_name + ' ' + request.user.last_name
@@ -811,13 +847,6 @@ def asign_plate(request):
             'Message': 'On Error Occurs . Please try again or contact system administrator'
         }
         return JsonResponse(message, status=200)
-    context = {
-
-        "types": types,
-        "currentYear": datetime.now().year,
-    }
-
-    return render(request, 'vehicles/assign_model.html', context)
 
 
 @ login_required(login_url='Login')
