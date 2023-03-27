@@ -1,18 +1,18 @@
+import os
+from django.db.models import Q
+from Customers.autditory import save_error, save_log
+from .plate_converter import shorten
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from datetime import datetime
-from Vehicles import models as vehicle_model, plate_converter
+from Vehicles import models as vehicle_model
 from Customers import models as customer_model
 from Finance import models as finance_model
-from django.db.models import Q
 from Users.views import sendException, sendTrials
-from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import login_required, permission_required
-from Customers.autditory import save_error, save_log
-from .plate_converter import shorten
-from Vehicles.forms import vehicle_form, update_form, assign_form
+from Vehicles.forms import vehicle_form, update_form, assign_form, code_plates, transfer_form
 
 
 @login_required(login_url="Login")
@@ -358,92 +358,109 @@ def tranfercreate(request):
 
         if request.user.has_perm('Vehicles.add_transfare_vehicles'):
             if request.method == 'POST':
-                old_owner_id = request.POST.get('olold_hid_id', None)
-                reason = request.POST.get('reason', None)
-                new_owner_id = request.POST.get('new_hid_id', None)
-                receipt_number = request.POST.get('receipt_number', None)
-                description = request.POST.get('description', None)
-                vehicle_id = request.POST.get('vehicleID', None)
-                document = request.FILES['transfer_document']
+                transfareform = transfer_form(request.POST, request.FILES)
+                if transfareform.is_valid():
+                    cleared_data = transfareform.cleaned_data
 
-                is_voucher_exist = vehicle_model.transfare_vehicles.objects.filter(
-                    rv_number=receipt_number).first()
+                    old_owner_id = cleared_data['olold_hid_id']
+                    reason = cleared_data['reason']
+                    new_owner_id = cleared_data['new_hid_id']
+                    receipt_number = cleared_data['receipt_number']
+                    description = cleared_data['description']
+                    vehicle_id = cleared_data['vehicleID']
+                    transfer_document = cleared_data['transfer_document']
 
-                if is_voucher_exist is not None:
-                    return JsonResponse(
-                        {
+                    is_voucher_exist = vehicle_model.transfare_vehicles.objects.filter(
+                        rv_number=receipt_number).first()
+
+                    if is_voucher_exist is not None:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': "Duplicate Error!!",
+                                'type': "warning",
+                                'Message': f'This receipt voucher already been used'
+                            }
+                        )
+
+                    isperson_exit = vehicle_model.vehicle.objects.filter(
+                        owner_id=new_owner_id).first()
+
+                    if isperson_exit is not None:
+                        return JsonResponse(
+                            {
+                                'isError': True,
+                                'title': "Duplicate Error!!",
+                                'type': "warning",
+                                'Message': f"you can't transfer a Vehicle to the same person "
+                            }
+                        )
+
+                    if os.path.isfile(transfer_document):
+                        file_size = os.path.getsize(transfer_document)
+                        if file_size > 2097152:
+                            return JsonResponse(
+                                {
+                                    "isError": True,
+                                    "Message": "File Uppload Must be 2MB Maximimum",
+                                }
+                            )
+
+                    if request.user.is_superuser == False and request.user.federal_state is None:
+                        return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
+
+                    vehcile_to_transfer = vehicle_model.vehicle.objects.filter(
+                        Q(owner=old_owner_id)).first()
+
+                    old_customer = customer_model.customer.objects.filter(
+                        Q(customer_id=old_owner_id)).first()
+
+                    if vehcile_to_transfer is None:
+                        return JsonResponse({
                             'isError': True,
-                            'title': "Duplicate Error!!",
-                            'type': "warning",
-                            'Message': f'This receipt voucher already been used'
-                        }
-                    )
+                            'Message': f'{old_customer.full_name} does\'t have this car'
+                        })
 
-                isperson_exit = vehicle_model.vehicle.objects.filter(
-                    owner_id=new_owner_id).first()
+                    car_to_update = vehicle_model.vehicle.objects.filter(
+                        vehicle_id=vehicle_id).first()
+                    new_owner = customer_model.customer.objects.filter(
+                        customer_id=new_owner_id).first()
 
-                if isperson_exit is not None:
-                    return JsonResponse(
-                        {
+                    if not new_owner.is_verified:
+                        return JsonResponse({
                             'isError': True,
-                            'title': "Duplicate Error!!",
-                            'type': "warning",
-                            'Message': f"you can't transfer a Vehicle to the same person "
-                        }
+                            'Message': 'New Owner is not verified'
+                        })
+
+                    new_transfering = vehicle_model.transfare_vehicles(
+                        old_owner_id=old_customer.customer_id,
+                        new_owner_id=new_owner_id,
+                        vehicle_id=vehcile_to_transfer.vehicle_id,
+                        description=description,
+                        document=transfer_document,
+                        rv_number=receipt_number,
+                        transfare_reason=reason,
+                        reg_user_id=request.user.id,
                     )
-                if document.size > 2097152:
-                    return JsonResponse(
-                        {
-                            "isError": True,
-                            "Message": "File Uppload Must be 2MB Maximimum",
-                        }
-                    )
-                if request.user.is_superuser == False and request.user.federal_state is None:
-                    return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
 
-                vehcile_to_transfer = vehicle_model.vehicle.objects.filter(
-                    Q(owner=old_owner_id)).first()
+                    new_transfering.save()
 
-                old_customer = customer_model.customer.objects.filter(
-                    Q(customer_id=old_owner_id)).first()
+                    car_to_update.owner = new_owner
+                    car_to_update.save()
 
-                if vehcile_to_transfer is None:
-                    return JsonResponse({
-                        'isError': True,
-                        'Message': f'{old_customer.full_name} does\'t have this car'
-                    })
-
-                car_to_update = vehicle_model.vehicle.objects.filter(
-                    vehicle_id=vehicle_id).first()
-                new_owner = customer_model.customer.objects.filter(
-                    customer_id=new_owner_id).first()
-
-                if not new_owner.is_verified:
-                    return JsonResponse({
-                        'isError': True,
-                        'Message': 'New Owner is not verified'
-                    })
-
-                new_transfering = vehicle_model.transfare_vehicles(
-                    old_owner_id=old_customer.customer_id,
-                    new_owner_id=new_owner_id,
-                    vehicle_id=vehcile_to_transfer.vehicle_id,
-                    description=description,
-                    document=document,
-                    rv_number=receipt_number,
-                    transfare_reason=reason,
-                    reg_user_id=request.user.id,
-                )
-
-                new_transfering.save()
-
-                car_to_update.owner = new_owner
-                car_to_update.save()
-
-                save_log(request, 'Vehicles / Register',
-                         f'Waxa uu gaari kawarejiyay {new_transfering.old_owner} kuna wareejiyay {new_transfering.new_owner}')
-                # return for post method
-                return JsonResponse({'isError': False, 'Message': 'A New Transfer has been Succesfully Saved'}, status=200)
+                    save_log(request, 'Vehicles / Register',
+                             f'Waxa uu gaari kawarejiyay {new_transfering.old_owner} kuna wareejiyay {new_transfering.new_owner}')
+                    # return for post method
+                    return JsonResponse({'isError': False, 'Message': 'A New Transfer has been Succesfully Saved'}, status=200)
+                error_message = ''
+                for field, errors in transfareform.errors.items():
+                    for error in errors:
+                        if '__all__' not in field:
+                            error_message += f'{field}: {error}\n'
+                return JsonResponse({
+                    'isError': True,
+                    'Message': error_message
+                })
 
         return redirect('un_authorized')
 
@@ -902,22 +919,44 @@ def code_plate_name(request):
 
     try:
         if request.user.has_perm('Vehicles.add_code_plate'):
-            if request.user.has_perm('Vehicles.add_code_plate'):
-
-                codeplate = request.POST.get('code', None)
+            if request.method == 'POST':
                 if request.user.is_superuser == False and request.user.federal_state is None:
                     return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
 
-                new_code = vehicle_model.code_plate(
-                    code_name=codeplate,
-                    reg_user_id=request.user.id,
+                codeplate = code_plates(request.POST)
 
-                )
-                new_code.save()
-                save_log(request, 'Vehicles / Vehicles / Add Code Plate',
-                         f'Waxa uu gaari udiiwangaliyay {new_code.code_name} kaan le')
-                # return for post method
-                return JsonResponse({'isError': False, 'Message': 'A New Code Plate has been Registered'}, status=200)
+                if codeplate.is_valid():
+                    cleared_data = codeplate.cleaned_data
+
+                    codeplate = cleared_data['code']
+
+                    is_code_plate_exist = vehicle_model.code_plate.objects.filter(
+                        Q(code_name=codeplate)).first()
+                    if is_code_plate_exist is not None:
+                        return JsonResponse({
+                            "isError": True, 'Message': 'this code plate is already registered'
+                        })
+
+                    new_code = vehicle_model.code_plate(
+                        code_name=codeplate,
+                        reg_user_id=request.user.id,
+
+                    )
+                    new_code.save()
+                    save_log(request, 'Vehicles / Vehicles / Add Code Plate',
+                             f'Waxa uu gaari udiiwangaliyay {new_code.code_name} kaan le')
+                    # return for post method
+                    return JsonResponse({'isError': False, 'Message': 'A New Code Plate has been Registered'}, status=200)
+                error_message = ''
+                for field, errors in codeplate.errors.items():
+                    for error in errors:
+                        if '__all__' not in field:
+                            error_message += f'{field}: {error}\n'
+                return JsonResponse({
+                    'isError': True,
+                    'Message': error_message
+                })
+
         else:
             return redirect('un_authorized')
 

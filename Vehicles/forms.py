@@ -1,7 +1,7 @@
+import re
 from django.utils.html import escape
 from django import forms
 from django.core.exceptions import ValidationError
-from email_validator import validate_email
 
 
 class vehicle_form(forms.Form):
@@ -25,8 +25,7 @@ class vehicle_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
         return cleaned_data
 
 
@@ -50,8 +49,7 @@ class update_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
         return cleaned_data
 
 
@@ -70,6 +68,58 @@ class assign_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+        return cleaned_data
+
+
+class code_plates(forms.Form):
+    code = forms.CharField(max_length=80, strip=True)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.is_valid():
+            raise forms.ValidationError('Form is not valid.')
+        for field in self.fields:
+            value = cleaned_data.get(field)
+            if value:
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+        return cleaned_data
+
+
+class transfer_form(forms.Form):
+    olold_hid_id = forms.IntegerField()
+    reason = forms.CharField(max_length=300, strip=True)
+    new_hid_id = forms.IntegerField()
+    receipt_number = forms.CharField(max_length=80, strip=True)
+    description = forms.CharField(max_length=300, strip=True)
+    vehicleID = forms.IntegerField()
+    transfer_document = forms.FileField()
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.is_valid():
+            raise forms.ValidationError('Form is not valid.')
+        for field in self.fields:
+            value = cleaned_data.get(field)
+            if value:
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+        return cleaned_data
+
+
+class Mot_form(forms.Form):
+    vin = forms.IntegerField()
+    testno = forms.IntegerField()
+    testread = forms.IntegerField()
+    expdate = forms.DateField()
+    testCat = forms.IntegerField()
+    selectedTests = forms.CharField(max_length=80, strip=True)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.is_valid():
+            raise forms.ValidationError('Form is not valid.')
+        for field in self.fields:
+            value = cleaned_data.get(field)
+            if value:
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
         return cleaned_data
