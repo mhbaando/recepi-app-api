@@ -1,18 +1,17 @@
 import os
+from django.db.models import Q
+from Customers.autditory import save_error, save_log
+from .plate_converter import shorten
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from datetime import datetime
-from Vehicles import models as vehicle_model, plate_converter
+from Vehicles import models as vehicle_model
 from Customers import models as customer_model
 from Finance import models as finance_model
-from django.db.models import Q
 from Users.views import sendException, sendTrials
-from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import login_required, permission_required
-from Customers.autditory import save_error, save_log
-from .plate_converter import shorten
 from Vehicles.forms import vehicle_form, update_form, assign_form, code_plates, transfer_form
 
 
@@ -450,7 +449,7 @@ def tranfercreate(request):
                     car_to_update.save()
 
                     save_log(request, 'Vehicles / Register',
-                            f'Waxa uu gaari kawarejiyay {new_transfering.old_owner} kuna wareejiyay {new_transfering.new_owner}')
+                             f'Waxa uu gaari kawarejiyay {new_transfering.old_owner} kuna wareejiyay {new_transfering.new_owner}')
                     # return for post method
                     return JsonResponse({'isError': False, 'Message': 'A New Transfer has been Succesfully Saved'}, status=200)
                 error_message = ''
@@ -930,6 +929,13 @@ def code_plate_name(request):
                     cleared_data = codeplate.cleaned_data
 
                     codeplate = cleared_data['code']
+
+                    is_code_plate_exist = vehicle_model.code_plate.objects.filter(
+                        Q(code_name=codeplate)).first()
+                    if is_code_plate_exist is not None:
+                        return JsonResponse({
+                            "isError": True, 'Message': 'this code plate is already registered'
+                        })
 
                     new_code = vehicle_model.code_plate(
                         code_name=codeplate,

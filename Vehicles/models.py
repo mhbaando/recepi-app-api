@@ -69,7 +69,8 @@ class cylinder(models.Model):
 
 class code_plate(models.Model):
     code_id = models.AutoField(primary_key=True)
-    code_name = models.CharField(max_length=100)
+    code_name = models.CharField(
+        max_length=100, unique=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
