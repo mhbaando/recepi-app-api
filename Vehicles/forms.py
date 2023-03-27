@@ -25,7 +25,7 @@ class vehicle_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
         return cleaned_data
 
 
@@ -49,7 +49,7 @@ class update_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
         return cleaned_data
 
 
@@ -68,7 +68,7 @@ class assign_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
         return cleaned_data
 
 
@@ -82,7 +82,7 @@ class code_plates(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
         return cleaned_data
 
 
@@ -102,5 +102,24 @@ class transfer_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+        return cleaned_data
+
+
+class Mot_form(forms.Form):
+    vin = forms.IntegerField()
+    testno = forms.IntegerField()
+    testread = forms.IntegerField()
+    expdate = forms.DateField()
+    testCat = forms.IntegerField()
+    selectedTests = forms.CharField(max_length=80, strip=True)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.is_valid():
+            raise forms.ValidationError('Form is not valid.')
+        for field in self.fields:
+            value = cleaned_data.get(field)
+            if value:
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
         return cleaned_data

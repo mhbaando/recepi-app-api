@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, date
 from Customers.autditory import save_error, save_log
 from django.core.paginator import Paginator
-from Users.views import sendException, sendTrials
+from Vehicles.forms import Mot_form
 
 
 @login_required(login_url="Login")
@@ -106,27 +106,29 @@ def find_test_el(request, id):
 @login_required(login_url='Login')
 @permission_required('Vehicles.add_test', raise_exception=True)
 def register_mot(request):
-    try:
-        if request.user.has_perm('Vehicles.add_test'):
-            if request.method == 'GET':
-                categories = vehicle_model.test_category.objects.all()
-                dates = datetime.now()  # for determingi the max date of the test
+    # try:
+    if request.user.has_perm('Vehicles.add_test'):
+        if request.method == 'GET':
+            categories = vehicle_model.test_category.objects.all()
+            dates = datetime.now()  # for determingi the max date of the test
 
-                context = {
-                    'pageTitle': 'Register MOT',
-                    'categories': categories,
-                    'date': dates
-                }
-                return render(request, 'MOT/register.html', context)
-            if request.method == 'POST':
-                # get data
-                vin = request.POST.get('vin', None)
-                testno = request.POST.get('testno', None)
-                testread = request.POST.get('testread', None)
-                expdate = request.POST.get('expdate', None)
-                testCat = request.POST.get('testCat', None)
-                selectedTests = request.POST.get(
-                    'selectedTests', None).split(',')  # -> ['1','12','13']
+            context = {
+                'pageTitle': 'Register MOT',
+                'categories': categories,
+                'date': dates
+            }
+            return render(request, 'MOT/register.html', context)
+        if request.method == 'POST':
+            motform = Mot_form(request.POST)
+            if motform.is_valid():
+                cleaned_data = motform.cleaned_data
+                vin = cleaned_data['vin']
+                testno = cleaned_data['testno']
+                testread = cleaned_data['testread']
+                expdate = cleaned_data['expdate']
+                testCat = cleaned_data['testCat']
+                # -> ['1','12','13']
+                selectedTests = cleaned_data['selectedTests']
                 # convert to number slected tests now is sting
                 selectedTests = [int(num) for num in selectedTests]
 
@@ -199,13 +201,22 @@ def register_mot(request):
                     'isError': False,
                     'Message': 'Saved Succefully'
                 })
+            error_message = ''
+            for field, errors in motform.errors.items():
+                for error in errors:
+                    if '__all__' not in field:
+                        error_message += f'{field}: {error}\n'
             return JsonResponse({
                 'isError': True,
-                'Message': 'Method Not Allowed'
+                'Message': error_message
             })
-        return redirect('un_authorized')
-    except Exception as error:
-        save_error(request, error)
+        return JsonResponse({
+            'isError': True,
+            'Message': 'Method Not Allowed'
+        })
+    return redirect('un_authorized')
+    # except Exception as error:
+    #     save_error(request, error)
 
 
 @permission_required('Vehicles.view_test', raise_exception=True)
