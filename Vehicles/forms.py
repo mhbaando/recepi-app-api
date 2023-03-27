@@ -73,3 +73,21 @@ class assign_form(forms.Form):
                 cleaned_data[field] = escape(
                     value)
         return cleaned_data
+
+
+class code_plates(forms.Form):
+    code = forms.CharField(max_length=80, strip=True)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.is_valid():
+            raise forms.ValidationError('Form is not valid.')
+        for field in self.fields:
+            value = cleaned_data.get(field)
+            if value:
+                cleaned_data[field] = escape(
+                    value)
+        return cleaned_data
+    
+
+

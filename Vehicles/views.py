@@ -12,7 +12,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import login_required, permission_required
 from Customers.autditory import save_error, save_log
 from .plate_converter import shorten
-from Vehicles.forms import vehicle_form, update_form, assign_form
+from Vehicles.forms import vehicle_form, update_form, assign_form, code_plates
 
 
 @login_required(login_url="Login")
@@ -902,22 +902,37 @@ def code_plate_name(request):
 
     try:
         if request.user.has_perm('Vehicles.add_code_plate'):
-            if request.user.has_perm('Vehicles.add_code_plate'):
-
-                codeplate = request.POST.get('code', None)
+            if request.method == 'POST':
                 if request.user.is_superuser == False and request.user.federal_state is None:
                     return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
 
-                new_code = vehicle_model.code_plate(
-                    code_name=codeplate,
-                    reg_user_id=request.user.id,
+                codeplate = code_plates(request.POST)
 
-                )
-                new_code.save()
-                save_log(request, 'Vehicles / Vehicles / Add Code Plate',
-                         f'Waxa uu gaari udiiwangaliyay {new_code.code_name} kaan le')
-                # return for post method
-                return JsonResponse({'isError': False, 'Message': 'A New Code Plate has been Registered'}, status=200)
+                if codeplate.is_valid():
+                    cleared_data = codeplate.cleaned_data
+
+                    codeplate = cleared_data['code']
+
+                    new_code = vehicle_model.code_plate(
+                        code_name=codeplate,
+                        reg_user_id=request.user.id,
+
+                    )
+                    new_code.save()
+                    save_log(request, 'Vehicles / Vehicles / Add Code Plate',
+                             f'Waxa uu gaari udiiwangaliyay {new_code.code_name} kaan le')
+                    # return for post method
+                    return JsonResponse({'isError': False, 'Message': 'A New Code Plate has been Registered'}, status=200)
+                error_message = ''
+                for field, errors in codeplate.errors.items():
+                    for error in errors:
+                        if '__all__' not in field:
+                            error_message += f'{field}: {error}\n'
+                return JsonResponse({
+                    'isError': True,
+                    'Message': error_message
+                })
+
         else:
             return redirect('un_authorized')
 
