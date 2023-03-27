@@ -112,7 +112,7 @@ class Mot_form(forms.Form):
     testread = forms.IntegerField()
     expdate = forms.DateField()
     testCat = forms.IntegerField()
-    selectedTests = forms.CharField(max_length=80, strip=True)
+    selectedTests = forms.CharField(max_length=300, strip=True)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -121,5 +121,5 @@ class Mot_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', str(value))
         return cleaned_data

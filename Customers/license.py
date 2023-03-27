@@ -1,3 +1,4 @@
+from Customers.forms import Lisence_form
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required, permission_required
@@ -238,6 +239,10 @@ def manage_license(request, id):
             if id == 0:
                 # Post new  Weapon model and check if the user is allowed to create
                 if request.method == 'POST':
+                    liscenceform = Lisence_form(request.POST)
+                    if liscenceform.is_valid():
+                        cleaned_data =
+
                     Type = request.POST.get('Type')
                     if Type == "new_license":
                         # owner = request.POST.get('owner')
