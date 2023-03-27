@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -12,7 +13,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import login_required, permission_required
 from Customers.autditory import save_error, save_log
 from .plate_converter import shorten
-from Vehicles.forms import vehicle_form, update_form, assign_form, code_plates
+from Vehicles.forms import vehicle_form, update_form, assign_form, code_plates, transfer_form
 
 
 @login_required(login_url="Login")
@@ -354,17 +355,21 @@ def seach_transferrr(request, search):
 @ login_required(login_url="Login")
 @ permission_required('Vehicles.add_transfare_vehicles', raise_exception=True)
 def tranfercreate(request):
-    try:
+    # try:
 
-        if request.user.has_perm('Vehicles.add_transfare_vehicles'):
-            if request.method == 'POST':
-                old_owner_id = request.POST.get('olold_hid_id', None)
-                reason = request.POST.get('reason', None)
-                new_owner_id = request.POST.get('new_hid_id', None)
-                receipt_number = request.POST.get('receipt_number', None)
-                description = request.POST.get('description', None)
-                vehicle_id = request.POST.get('vehicleID', None)
-                document = request.FILES['transfer_document']
+    if request.user.has_perm('Vehicles.add_transfare_vehicles'):
+        if request.method == 'POST':
+            transfareform = transfer_form(request.POST, request.FILES)
+            if transfareform.is_valid():
+                cleared_data = transfareform.cleaned_data
+
+                old_owner_id = cleared_data['olold_hid_id']
+                reason = cleared_data['reason']
+                new_owner_id = cleared_data['new_hid_id']
+                receipt_number = cleared_data['receipt_number']
+                description = cleared_data['description']
+                vehicle_id = cleared_data['vehicleID']
+                transfer_document = cleared_data['transfer_document']
 
                 is_voucher_exist = vehicle_model.transfare_vehicles.objects.filter(
                     rv_number=receipt_number).first()
@@ -391,13 +396,17 @@ def tranfercreate(request):
                             'Message': f"you can't transfer a Vehicle to the same person "
                         }
                     )
-                if document.size > 2097152:
-                    return JsonResponse(
-                        {
-                            "isError": True,
-                            "Message": "File Uppload Must be 2MB Maximimum",
-                        }
-                    )
+
+                if os.path.isfile(transfer_document):
+                    file_size = os.path.getsize(transfer_document)
+                    if file_size > 2097152:
+                        return JsonResponse(
+                            {
+                                "isError": True,
+                                "Message": "File Uppload Must be 2MB Maximimum",
+                            }
+                        )
+
                 if request.user.is_superuser == False and request.user.federal_state is None:
                     return JsonResponse({'isError': True, 'Message': 'Not allowed to register with out state'}, status=401)
 
@@ -429,7 +438,7 @@ def tranfercreate(request):
                     new_owner_id=new_owner_id,
                     vehicle_id=vehcile_to_transfer.vehicle_id,
                     description=description,
-                    document=document,
+                    document=transfer_document,
                     rv_number=receipt_number,
                     transfare_reason=reason,
                     reg_user_id=request.user.id,
@@ -444,20 +453,29 @@ def tranfercreate(request):
                          f'Waxa uu gaari kawarejiyay {new_transfering.old_owner} kuna wareejiyay {new_transfering.new_owner}')
                 # return for post method
                 return JsonResponse({'isError': False, 'Message': 'A New Transfer has been Succesfully Saved'}, status=200)
+            error_message = ''
+            for field, errors in transfareform.errors.items():
+                for error in errors:
+                    if '__all__' not in field:
+                        error_message += f'{field}: {error}\n'
+            return JsonResponse({
+                'isError': True,
+                'Message': error_message
+            })
 
-        return redirect('un_authorized')
+    return redirect('un_authorized')
 
-    except Exception as error:
-        username = request.user.username
-        name = request.user.first_name + ' ' + request.user.last_name
-        # register the error
-        sendException(
-            request, username, name, error)
-        message = {
-            'isError': True,
-            'Message': 'On Error Occurs . Please try again or contact system administrator'
-        }
-        return JsonResponse(message, status=200)
+    # except Exception as error:
+    #     username = request.user.username
+    #     name = request.user.first_name + ' ' + request.user.last_name
+    #     # register the error
+    #     sendException(
+    #         request, username, name, error)
+    #     message = {
+    #         'isError': True,
+    #         'Message': 'On Error Occurs . Please try again or contact system administrator'
+    #     }
+    #     return JsonResponse(message, status=200)
 
 
 @ login_required(login_url="Login")

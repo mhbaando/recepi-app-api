@@ -88,6 +88,24 @@ class code_plates(forms.Form):
                 cleaned_data[field] = escape(
                     value)
         return cleaned_data
-    
 
 
+class transfer_form(forms.Form):
+    olold_hid_id = forms.IntegerField()
+    reason = forms.CharField(max_length=300, strip=True)
+    new_hid_id = forms.IntegerField()
+    receipt_number = forms.CharField(max_length=80, strip=True)
+    description = forms.CharField(max_length=300, strip=True)
+    vehicleID = forms.IntegerField()
+    transfer_document = forms.FileField()
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.is_valid():
+            raise forms.ValidationError('Form is not valid.')
+        for field in self.fields:
+            value = cleaned_data.get(field)
+            if value:
+                cleaned_data[field] = escape(
+                    value)
+        return cleaned_data
