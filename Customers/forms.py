@@ -1,3 +1,4 @@
+import re
 from django.utils.html import escape
 from django import forms
 from django.core.exceptions import ValidationError
@@ -48,8 +49,7 @@ class customer_from(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '', value)
         return cleaned_data
 
 # customer edit form sanitizer
@@ -95,8 +95,7 @@ class customer_edit(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '', value)
         return cleaned_data
 
 
@@ -138,8 +137,7 @@ class company_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '', value)
         return cleaned_data
 
 
@@ -179,6 +177,5 @@ class company_edit(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '', value)
         return cleaned_data
