@@ -1,10 +1,14 @@
+import io
+import uuid
+from PIL import Image
+from django.core.files.base import ContentFile
+
 from django.shortcuts import render
 from Customers import models as customer_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
-import uuid
 
 
 from Vehicles.plate_converter import shorten
@@ -56,39 +60,34 @@ def vew_register_company(request):
 
 @login_required(login_url='Login')
 def register_company(request):
-    try:
-        if request.user.has_perm('Customers.add_company'):
-            if request.method == 'POST':
-                # get data from the request
-                c_name = request.POST.get('cname', None)
-                c_rnum = request.POST.get('rnumber', None)
-                c_webiste = request.POST.get('website', None)
-                c_owner = request.POST.get('owner', None)
-                c_phone = request.POST.get('phone', None)
-                c_email = request.POST.get('email', None)
-                c_address = request.POST.get('address', None)
-                c_state = request.POST.get('state', None)
-                c_logo = request.FILES['logo']
-                c_companyDoc = request.FILES['companyDoc']
-                c_desc = request.POST.get('desc')
+    # try:
+    if request.user.has_perm('Customers.add_company'):
+        if request.method == 'POST':
+            companyImg = request.FILES["logo"]
+            companyDoc = request.FILES['companyDoc']
+            companyForm = company_form(request.POST, request.FILES)
 
+            if companyForm.is_valid():
+                cleanData = companyForm.cleaned_data
+
+                cname = cleanData['cname']
+                c_rnum = cleanData['rnumber']
+                c_webiste = cleanData['website']
+                c_owner = cleanData['owner']
+                c_phone = cleanData['phone']
+                c_email = cleanData['email']
+                c_address = cleanData['address']
+                c_state = cleanData['state']
+                c_companyDoc = cleanData['companyDoc']
+                c_desc = cleanData['desc']
                 states = []
+
                 if request.user.is_state or request.user.is_admin and request.user.federal_state is not None:
                     states = customer_model.federal_state.objects.filter(
                         Q(state_id=request.user.federal_state.state_id)).first()
                 else:
                     # admins can view all users
                     states = customer_model.federal_state.objects.all()
-
-                if c_name is None or c_rnum is None or c_webiste is None or c_owner is None or c_phone is None or c_email is None or c_address is None or c_state is None or c_desc is None:
-                    return JsonResponse(
-                        {
-                            'isError': True,
-                            'title': 'Validate Error',
-                            'type': 'danger',
-                            'Message':  'Fill All Required Fields'
-                        }
-                    )
 
                 if not request.user.is_superuser and request.user.federal_state != states:
                     return JsonResponse({'isError': True, 'Message': 'You cant register another state'})
@@ -104,61 +103,70 @@ def register_company(request):
                     if (c_companyDoc.size > 2097152):
                         return JsonResponse({'isError': True, 'Message': 'you can not  upload more then 1mb'}, status=200)
 
-                    elif request.method == 'POST':
-                        companyImg = request.FILES["image"]
-                        companyForm = company_form(request.POST)
+                # register new compnay
+                new_company = customer_model.company(
+                    company_name=cname,
+                    email=c_email,
+                    address=c_address,
+                    federal_state=selected_satate,
+                    phone=c_phone,
+                    website=c_webiste,
+                    reg_no=c_rnum,
+                    document=c_companyDoc,
+                    description=c_desc,
+                    owner=found_owner,
+                    reg_user=request.user
+                )
 
-                        if companyForm.is_valid():
-                            cleanData = companyForm.cleaned_data
+                # validate PDF
 
-                            cname = cleanData['cname']
-                            c_rnum = cleanData['c_rnum']
-                            c_webiste = cleanData['cwebsite']
-                            c_owner = cleanData['c_owner']
-                            c_phone = cleanData['c_phone']
-                            c_email = cleanData['c_email']
-                            c_address = cleanData['c_address']
-                            c_state = cleanData['c_state']
-                            c_logo = cleanData['c_logo']
-                            c_companyDoc = cleanData['c_companydoc']
-                            c_desc = cleanData['c_desc']
-
-                    # register new compnay
-                    new_company = customer_model.company(
-                        company_name=c_name,
-                        email=c_email,
-                        address=c_address,
-                        federal_state=selected_satate,
-                        phone=c_phone,
-                        logo=c_logo,
-                        website=c_webiste,
-                        reg_no=c_rnum,
-                        document=c_companyDoc,
-                        description=c_desc,
-                        owner=found_owner,
-                        reg_user=request.user
-                    )
-
-                    if companyImg.format != 'PNG':
+                try:
+                    # read upploaded image
+                    image = Image.open(io.BytesIO(companyImg.read()))
+                    if image.format != 'PNG':
                         return JsonResponse({
                             'isError': True,
-                            'Message': 'Uppload only PNG photo'
-
+                            'Message': 'Uppload Only PNG Photo'
                         })
 
-                    new_company.save()
-                    save_log(request, 'Company / Register',
-                             f'Waxa uu diwangaliyay ${new_company.company_name}')
+                     # save upploded image to the database
+                    filename = f"{str(uuid.uuid4())}.png"
+                    with io.BytesIO() as buffer:
+                        image.save(buffer, format="PNG")
+                        binary_data = buffer.getvalue()
+                        content_file = ContentFile(binary_data, name=filename)
 
-                    return JsonResponse({'isError': False, 'Message': 'Company has been successfully Saved'})
-                return JsonResponse({'isError': True, 'Message': 'Owner didnt extist'})
+                        new_company.logo.save(
+                            filename, content_file, save=True)
+
+                        new_company.save()
+                        save_log(request, 'Company / Register',
+                                 f'Waxa uu diwangaliyay ${new_company.company_name}')
+
+                        return JsonResponse({'isError': False, 'Message': 'Company has been successfully Saved'})
+                except Exception:
+                    return JsonResponse({
+                        'isError': True,
+                        'Message': 'Invalid Image Format'
+                    })
+
+            error_message = ''
+            for field, errors in companyForm.errors.items():
+                for error in errors:
+                    if '__all__' not in field:
+                        error_message += f'{field}: {error}\n'
             return JsonResponse({
                 'isError': True,
-                'Message': 'Method Not allowed'
+                'Message': error_message
             })
-        return render(request, 'Base/403.html')
-    except Exception as error:
-        save_error(request, error)
+
+        return JsonResponse({
+            'isError': True,
+            'Message': 'Method Not allowed'
+        })
+    return render(request, 'Base/403.html')
+    # except Exception as error:
+    #     save_error(request, error)
 
 # search
 
