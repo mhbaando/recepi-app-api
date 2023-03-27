@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, date
 from Customers.autditory import save_error, save_log
 from django.core.paginator import Paginator
+from Users.views import sendException, sendTrials
 from Vehicles.forms import Mot_form
 
 
@@ -122,15 +123,18 @@ def register_mot(request):
             motform = Mot_form(request.POST)
             if motform.is_valid():
                 cleaned_data = motform.cleaned_data
+
+            # get data
                 vin = cleaned_data['vin']
                 testno = cleaned_data['testno']
                 testread = cleaned_data['testread']
                 expdate = cleaned_data['expdate']
                 testCat = cleaned_data['testCat']
-                # -> ['1','12','13']
-                selectedTests = cleaned_data['selectedTests']
+                selectedTests = cleaned_data['selectedTests'].split('-')
+                # selectedTests = request.POST.get(
+                #     'selectedTests', None).split(',')  # -> ['1','12','13']
                 # convert to number slected tests now is sting
-                selectedTests = [int(num) for num in selectedTests]
+                [int(num) for num in selectedTests if num.isdigit()]
 
                 if vin is None or testno is None or testread is None or expdate is None or testCat is None or len(selectedTests) <= 0 or selectedTests is None:
                     return JsonResponse({
