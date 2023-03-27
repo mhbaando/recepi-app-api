@@ -96,7 +96,7 @@ $(document).ready(function () {
           }).then(function (e) {
             if (e.value) {
               Swal.DismissReason.cancel;
-              location.replace('/customer/company-views/')
+              location.replace('/customer/company-views')
             }
           });
 
