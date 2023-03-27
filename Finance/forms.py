@@ -1,7 +1,10 @@
 from django.forms import ModelForm
 from django import forms
+import re
 from django.utils.html import escape
 # Account data cleaning
+
+
 class account_form(forms.Form):
     acc_number = forms.CharField(max_length=20, strip=True)
     acc_name = forms.CharField(max_length=25, strip=True)
@@ -51,8 +54,8 @@ class receipt_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub(
+                    '[^0-9a-zA-Z]+', '', value)
         return cleaned_data
 
 # recipt edit form
@@ -70,8 +73,8 @@ class reciept_edit(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub(
+                    '[^0-9a-zA-Z]+', '', value)
         return cleaned_data
 
 
@@ -90,8 +93,8 @@ class account_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub(
+                    '[^0-9a-zA-Z]+', '', value)
         return cleaned_data
 
 
@@ -109,8 +112,8 @@ class account_edit(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub(
+                    '[^0-9a-zA-Z]+', '', value)
         return cleaned_data
 
 
@@ -126,8 +129,8 @@ class receipt_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub(
+                    '[^0-9a-zA-Z]+', '', value)
         return cleaned_data
 
 # recipt edit form
@@ -145,6 +148,6 @@ class reciept_edit(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = escape(
-                    value)
+                cleaned_data[field] = re.sub(
+                    '[^0-9a-zA-Z]+', '', value)
         return cleaned_data
