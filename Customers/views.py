@@ -78,7 +78,7 @@ def register_company(request):
                 c_email = cleanData['email']
                 c_address = cleanData['address']
                 c_state = cleanData['state']
-                c_companyDoc = companyDoc
+                c_companyDoc = cleanData['companyDoc']
                 c_desc = cleanData['desc']
                 states = []
 
@@ -117,6 +117,9 @@ def register_company(request):
                     owner=found_owner,
                     reg_user=request.user
                 )
+
+                # validate PDF
+
                 try:
                     # read upploaded image
                     image = Image.open(io.BytesIO(companyImg.read()))

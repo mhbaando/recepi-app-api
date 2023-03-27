@@ -1,14 +1,21 @@
+import io
 import re
-from django.utils.html import escape
 from django import forms
-from django.core.exceptions import ValidationError
+from django.db import models
+from django.utils.html import escape
 from email_validator import validate_email
-import re
+from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
+from django.utils.translation import gettext_lazy as _
 
 gender_option = [
     ('Male', 'Male'),
     ('Female', 'Female')
 ]
+
+
+def is_file(value):
+    return isinstance(value, io.IOBase)
 
 
 class customer_from(forms.Form):
@@ -19,7 +26,7 @@ class customer_from(forms.Form):
     mother_name = forms.CharField(max_length=100, strip=True)
     dob = forms.DateField()
     gender = forms.ChoiceField(choices=gender_option)
-    blood_group = forms.IntegerField()
+    bload_group = forms.IntegerField()
     nationality = forms.IntegerField()
     phone = forms.CharField(max_length=15, strip=True)
     email = forms.CharField(max_length=50, strip=True)
@@ -52,9 +59,12 @@ class customer_from(forms.Form):
             if value:
                 if type(value) is int:
                     cleaned_data[field] = escape(value)
+                elif 'dob' in field or 'bload_group' in field:
+                    cleaned_data[field] = escape(value)
                 else:
+                    print(value)
                     cleaned_data[field] = re.sub(
-                        '[^0-9a-zA-Z]+', '-', value)
+                        '[^0-9a-zA-Z]+', '', value)
         return cleaned_data
 
 # customer edit form sanitizer
@@ -119,6 +129,7 @@ class company_form(forms.Form):
     address = forms.CharField(max_length=100, strip=True)
     state = forms.IntegerField()
     desc = forms.CharField(max_length=250, strip=True)
+    companyDoc = forms.FileField()
 
     def clean_phone(self):
         phone = self.cleaned_data['phone']
@@ -149,6 +160,26 @@ class company_form(forms.Form):
             raise forms.ValidationError('Invalid email address.')
         return email
 
+    def clean_pdf_file(self):
+        pdf_file = self.cleaned_data.get('companyDoc')
+        if pdf_file:
+            # Check if the file extension is pdf
+            if not pdf_file.name.lower().endswith('.pdf'):
+                raise ValidationError(
+                    _('Invalid file extension. Only PDF files are allowed.'))
+
+            # Check if the file is actually a PDF file
+            if pdf_file.content_type != 'application/pdf':
+                raise ValidationError(
+                    _('Invalid file type. Only PDF files are allowed.'))
+
+            # Check if the file has been renamed
+            if pdf_file.name != pdf_file.file.name:
+                raise ValidationError(
+                    _('File name does not match the original file name.'))
+
+        return pdf_file
+
     def clean(self):
         cleaned_data = super().clean()
         if not self.is_valid():
@@ -158,8 +189,11 @@ class company_form(forms.Form):
             if value:
                 if type(value) is int:
                     cleaned_data[field] = escape(value)
+                elif 'companyDoc' in field:
+                    cleaned_data[field] = value
                 else:
-                    cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+                    cleaned_data[field] = re.sub(
+                        '[^0-9a-zA-Z]+', '', value)
         return cleaned_data
 
 

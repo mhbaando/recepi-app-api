@@ -70,7 +70,7 @@ def register_customer(request):
                 mother_name = cleanData['mother_name']
                 dob = cleanData['dob']
                 gender = cleanData['gender']
-                blood_group = cleanData['blood_group']
+                blood_group = cleanData['bload_group']
                 nationality = cleanData['nationality']
                 phone = cleanData['phone']
                 email = cleanData['email']
