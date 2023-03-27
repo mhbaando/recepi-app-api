@@ -239,9 +239,8 @@ def manage_license(request, id):
             if id == 0:
                 # Post new  Weapon model and check if the user is allowed to create
                 if request.method == 'POST':
-                    liscenceform = Lisence_form(request.POST)
-                    if liscenceform.is_valid():
-                        cleaned_data =
+                    # liscenceform = Lisence_form(request.POST)
+                    # if liscenceform.is_valid():
 
                     Type = request.POST.get('Type')
                     if Type == "new_license":

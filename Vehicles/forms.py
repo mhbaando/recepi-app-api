@@ -102,7 +102,7 @@ class transfer_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', str(value))
         return cleaned_data
 
 
