@@ -25,7 +25,7 @@ class vehicle_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', str(value))
         return cleaned_data
 
 
@@ -49,7 +49,7 @@ class update_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', str(value))
         return cleaned_data
 
 
@@ -68,7 +68,7 @@ class assign_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', str(value))
         return cleaned_data
 
 
@@ -82,7 +82,7 @@ class code_plates(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', str(value))
         return cleaned_data
 
 
@@ -104,6 +104,13 @@ class transfer_form(forms.Form):
             if value:
                 cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', str(value))
         return cleaned_data
+
+    def clean_transfer_document(self):
+        transfer_document = self.cleaned_data['transfer_document']
+        if transfer_document:
+            if not transfer_document.name.endswith('.pdf'):
+                raise ValidationError('Only PDF files are allowed.')
+        return transfer_document
 
 
 class Mot_form(forms.Form):
