@@ -2,6 +2,8 @@ import re
 from django.utils.html import escape
 from django import forms
 from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError
+from django.utils.deconstruct import deconstructible
 
 
 class vehicle_form(forms.Form):
@@ -86,6 +88,13 @@ class code_plates(forms.Form):
         return cleaned_data
 
 
+@deconstructible
+class PdfValidator:
+    def __call__(self, value):
+        if not value.name.endswith('.pdf'):
+            raise ValidationError('Only PDF files are allowed.')
+
+
 class transfer_form(forms.Form):
     olold_hid_id = forms.IntegerField()
     reason = forms.CharField(max_length=300, strip=True)
@@ -93,7 +102,7 @@ class transfer_form(forms.Form):
     receipt_number = forms.CharField(max_length=80, strip=True)
     description = forms.CharField(max_length=300, strip=True)
     vehicleID = forms.IntegerField()
-    transfer_document = forms.FileField()
+    transfer_document = forms.FileField(validators=[PdfValidator()])
 
     def clean(self):
         cleaned_data = super().clean()
@@ -105,12 +114,15 @@ class transfer_form(forms.Form):
                 cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', str(value))
         return cleaned_data
 
-    def clean_transfer_document(self):
-        transfer_document = self.cleaned_data['transfer_document']
-        if transfer_document:
-            if not transfer_document.name.endswith('.pdf'):
-                raise ValidationError('Only PDF files are allowed.')
-        return transfer_document
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.is_valid():
+            raise forms.ValidationError('Form is not valid.')
+        for field in self.fields:
+            value = cleaned_data.get(field)
+            if value:
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', str(value))
+        return cleaned_data
 
 
 class Mot_form(forms.Form):
