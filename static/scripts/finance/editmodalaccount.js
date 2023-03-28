@@ -61,9 +61,9 @@ $(document).ready(() => {
 
         formData.append("account_id", accountID);
         formData.append("accnumber", accnumber);
-        formData.append("acctype", acctype);
+        formData.append("accountype", acctype);
         formData.append("accname", accname);
-        formData.append("accamount", accamount);
+        formData.append("amount", accamount);
       
 
 
