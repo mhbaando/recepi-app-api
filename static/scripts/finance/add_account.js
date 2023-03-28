@@ -22,10 +22,10 @@ $(document).ready(function () {
       return false
     }
     // Append all these to form-data
-    formData.append("account_number", acctnumber);
-    formData.append("account_name", acctname);
-    formData.append("account_type", accountpe);
-    formData.append("account_amount", acctamount);
+    formData.append("acc_number", acctnumber);
+    formData.append("acc_name", acctname);
+    formData.append("accountype", accountpe);
+    formData.append("acc_amount", acctamount);
 
     $.ajax({
       method: "POST",
