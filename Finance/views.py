@@ -60,57 +60,57 @@ def AccountsPage(request):
 
 
 def AddAccount(request):
-    # try:
-    if request.user.has_perm('Finance.add_account'):
+    try:
+        if request.user.has_perm('Finance.add_account'):
 
-        if request.method == "POST":
-            acc_number = request.POST.get('account_number', None)
-            acc_name = request.POST.get('account_name', None)
-            acc_type = request.POST.get('account_type', None)
-            acc_amount = request.POST.get('account_amount', None)
-            acc_amount = float(acc_amount)
+            if request.method == "POST":
+                acc_number = request.POST.get('account_number', None)
+                acc_name = request.POST.get('account_name', None)
+                acc_type = request.POST.get('account_type', None)
+                acc_amount = request.POST.get('account_amount', None)
+                acc_amount = float(acc_amount)
 
-            if acc_number is None or acc_name is None or acc_type is None or acc_amount is None:
-                return JsonResponse(
-                    {
-                        'isError': True,
-                        'title': 'validate error',
-                        'type': 'danger',
-                        'Message': 'Fill All Required Fields'
-                    }
+                if acc_number is None or acc_name is None or acc_type is None or acc_amount is None:
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': 'validate error',
+                            'type': 'danger',
+                            'Message': 'Fill All Required Fields'
+                        }
+                    )
+
+                if acc_amount <= 0:
+                    return JsonResponse(
+                        {
+                            'isError': True,
+                            'title': "Duplicate Error!!",
+                            'type': "warning",
+                            'Message': "Amount can not be 0 or Negative Number"
+                        }
+                    )
+
+                found_acct = models.account_types.objects.filter(
+                    Q(type_id=acc_type)).first()
+
+                new_account = models.account(
+                    account_number=acc_number,
+                    account_name=acc_name,
+                    account_type=found_acct,
+                    amount=acc_amount,
+                    reg_user=request.user
                 )
+                new_account.save()
+                return JsonResponse({'isError': False, 'Message': 'created successfully'})
 
-            if acc_amount <= 0:
-                return JsonResponse(
-                    {
-                        'isError': True,
-                        'title': "Duplicate Error!!",
-                        'type': "warning",
-                        'Message': "Amount can not be 0 or Negative Number"
-                    }
-                )
-
-            found_acct = models.account_types.objects.filter(
-                Q(type_id=acc_type)).first()
-
-            new_account = models.account(
-                account_number=acc_number,
-                account_name=acc_name,
-                account_type=found_acct,
-                amount=acc_amount,
-                reg_user=request.user
-            )
-            new_account.save()
-            return JsonResponse({'isError': False, 'Message': 'created successfully'})
-
-        context = {
-            'pageTitle': 'Create Account',
-            'account_types': models.account_types.objects.all()
-        }
-        return render(request, 'Finance/add_account.html', context)
-    return redirect('un_authorized')
-    # except Exception as error:
-    #     save_error(request, error)
+            context = {
+                'pageTitle': 'Create Account',
+                'account_types': models.account_types.objects.all()
+            }
+            return render(request, 'Finance/add_account.html', context)
+        return redirect('un_authorized')
+    except Exception as error:
+        save_error(request, error)
 
 
 def ManageAccounts(request, action):
