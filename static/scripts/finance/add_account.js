@@ -11,9 +11,9 @@ $(document).ready(function () {
     let formData = new FormData();
     let acctnumber = $("#accnumber").val();
     let acctname = $("#accname").val();
-    let acctamount = $("#amount").val();
+    let acctamount = parseFloat($("#amount").val().trim());
 
-    if (!acctname || acctname.trim().length <= 0 || !acctnumber || acctnumber.trim().length <= 0 || !acctamount || acctamount.trim().length <= 0) {
+    if (!acctname || acctname.trim().length <= 0 || !acctnumber || acctnumber.trim().length <= 0 ) {
       Swal.fire("Error", "All filds are required", "error");
       return false
     }
