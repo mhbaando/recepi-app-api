@@ -393,7 +393,7 @@ def customer_profile(request, id):
                         'vehicle': tr.vehicle,
                         'new_owner': tr.new_owner,
                         'old_owner': tr.old_owner,
-                        'plate': shorten(tr.vehicle.plate_no.state.state_name, tr.vehicle.plate_no.plate_code, tr.vehicle.plate_no.plate_no),
+                        'plate': shorten(tr.vehicle.plate_no.state.state_name, tr.vehicle.plate_no.plate_code, tr.vehicle.plate_no.plate_no) if tr.vehicle.plate_no else 'No Plate Assigned',
                         'created_at': tr.created_at.strftime('%d - %B - %Y')
                     })
 
