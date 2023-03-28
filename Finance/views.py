@@ -11,6 +11,7 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from Customers import models as customer_model
 from Customers.autditory import save_error, save_log
+from .forms import account_form, account_edit, receipt_form, reciept_edit
 
 # current_date = date.today()
 # currentDatetime = datetime.now()
@@ -349,46 +350,72 @@ def find_rcfroms(request, name):
 def savereciept(request, action):
     try:
         if request.user.has_perm('Finance.view_receipt_voucher'):
-
             # creating new account
             if action == 'reciet_form':
                 if request.method == 'POST':
-                    # Get all data from the request
-                    amount = request.POST.get('rvamount', None)
-                    rv_number = request.POST.get('rv_number', None)
-                    personal_id = request.POST.get('personal_id', None)
-                    reason = request.POST.get('reason', None)
+                    rv_form = receipt_form(request.POST)
+                    if rv_form.is_valid():
+                        cleaned_data = rv_form.cleaned_data
+                        # Get all data from the request
 
-                    if rv_number is None or reason is None or amount is None or amount == 0 or personal_id is None:
-                        return JsonResponse({
-                            'isError': True,
-                            'Message': 'Bad Request All Filds are required'
-                        })
+                        amount = cleaned_data['rvamount']
+                        rv_number = cleaned_data['rv_number']
+                        personal_id = cleaned_data['personal_id']
+                        reason = cleaned_data['reason']
 
-                    customer = customer_model.customer.objects.filter(
-                        Q(personal_id=personal_id)).first()
+                        try:
+                            int(amount)
+                        except ValueError:
+                            return JsonResponse({
+                                'isError': True,
+                                'Message': 'InValid Amount'
+                            })
+                        try:
+                            int(rv_number)
+                        except ValueError:
+                            return JsonResponse({
+                                'isError': True,
+                                'Message': 'InValid RV Number'
+                            })
 
-                    if not customer.is_verified:
-                        return JsonResponse({
-                            'isError': True,
-                            'Message': 'customer is not verified',
+                        if int(amount) <= 0:
+                            return JsonResponse({
+                                'isError': True,
+                                'Message': 'Rv Amount must be greater then 0'
+                            })
 
-                        })
+                        if int(rv_number) <= 0:
+                            return JsonResponse({
+                                'isError': True,
+                                'Message': 'Invalid RV Number'
+                            })
 
-                    new_reciet = models.receipt_voucher(
-                        rv_number=rv_number,
-                        rv_from=customer,
-                        rv_amount=amount,
-                        reason=reason,
-                        reg_user=request.user
-                    )
+                        customer = customer_model.customer.objects.filter(
+                            Q(personal_id=personal_id)).first()
 
-                    # Save data to database
-                    new_reciet.save()
-                    return JsonResponse({'isError': False, 'Message': 'created successfully'})
+                        if not customer.is_verified:
+                            return JsonResponse({
+                                'isError': True,
+                                'Message': 'customer is not verified',
 
+                            })
+
+                        new_reciet = models.receipt_voucher(
+                            rv_number=rv_number,
+                            rv_from=customer,
+                            rv_amount=amount,
+                            reason=reason,
+                            reg_user=request.user
+                        )
+
+                        # Save data to database
+                        new_reciet.save()
+                        save_log(request, 'Fincance/ Recipt',
+                                 'waxa u buray raceipt cusub')
+                        return JsonResponse({'isError': False, 'Message': 'created successfully'})
             # If there is not action matching
             return render(request, 'receipt_list.html')
+        return render(request, 'Base/403.html')
     except Exception as error:
         save_error(request, error)
 
@@ -455,12 +482,12 @@ def find_reciept(request, id):
 def update_reviept(request, id):
     try:
         if request.user.has_perm('Finance.change_receipt_voucher'):
-
-            try:
-                if request.user.has_perm('Finance.change_receipt_voucher'):
-
-                    rcfrom = request.POST.get('recievedfrom', None)
-                    reason = request.POST.get('reason', None)
+            if request.method == 'POST':
+                edit_rv = reciept_edit(request.POST)
+                if edit_rv.is_valid():
+                    cleaned_data = edit_rv.cleaned_data
+                    rcfrom = cleaned_data['recievedfrom']
+                    reason = cleaned_data['reason']
 
                     if id is not None:
                         rv = models.receipt_voucher.objects.filter(
@@ -485,29 +512,23 @@ def update_reviept(request, id):
                             rv.save()
 
                             # for auditory
-                            username = request.user.username
-                            names = request.user.first_name + ' ' + request.user.last_name
-                            avatar = str(request.user.avatar)
-                            module = "finance / update"
-                            action = f"updated a reciept {rv.rv_id}"
-                            path = request.path
-                            sendTrials(request, username, names,
-                                       avatar, action, module, path)
+                            save_log(request, 'Finance / Receipt',
+                                     'waxa u update greyay recipt')
                             return JsonResponse({'isError': False, 'Message': 'reciept has been updated'}, status=200)
-                        return JsonResponse({'isErro': False, 'Message': 'reciept feild is required'}, status=400)
-
-            except Exception as error:
-                username = request.user.username
-                name = request.user.first_name + '' + request.user.last_name
-                sendException(
-                    request, username, name, error
-                )
-                message = {
+                        return JsonResponse({'isErro': True, 'Message': 'reciept feild is required'})
+                error_message = ''
+                for field, errors in edit_rv.errors.items():
+                    for error in errors:
+                        if '__all__' not in field:
+                            error_message += f'{field}: {error}\n'
+                return JsonResponse({
                     'isError': True,
-                    'Message': 'on Error occurs . please try again or contact system adminstrator'
-
-                }
-            return JsonResponse(message, status=200)
+                    'Message': error_message
+                })
+            return JsonResponse({
+                'isError': True,
+                'Message': 'Method Not Allowed'
+            })
     except Exception as error:
         save_error(request, error)
 
@@ -519,55 +540,87 @@ def update_reviept(request, id):
 def update_account(request):
     try:
         if request.user.has_perm('Finance.change_account'):
+            if request.method == 'POST':
+                edit_form = account_edit(request.POST)
+                if edit_form.is_valid():
+                    cleanData = edit_form.cleaned_data
 
-            try:
-                account_id = request.POST.get('account_id', None)
-                accnumber = request.POST.get('accnumber', None)
-                accountype = request.POST.get('acctype', None)
-                accname = request.POST.get('accname', None)
-                amount = request.POST.get('accamount', None)
+                    account_id = cleanData['account_id']
+                    accnumber = cleanData['accnumber']
+                    accountype = cleanData['accountype']
+                    amount = cleanData['amount']
+                    accname = cleanData['accname']
 
-                if account_id is not None:
-                    account = models.account.objects.filter(
-                        account_id=account_id).first()
+                    try:
+                        float(accnumber)
+                    except ValueError:
+                        return JsonResponse({
+                            'isError': True,
+                            'Message': 'InValid Account Number'
+                        })
 
-                    if account is not None:
-                        if accname is None or accnumber is None or accountype is None or amount is None:
-                            return JsonResponse({'isErro': False, 'Message': 'all fields are required'}, status=400)
+                    try:
+                        float(accountype)
+                    except ValueError:
+                        return JsonResponse({
+                            'isError': True,
+                            'Message': 'InValid Account Type'
+                        })
 
-                        account_type = models.account_types.objects.filter(
-                            type_id=accountype).first()
+                    try:
+                        int(amount)
+                    except ValueError:
+                        return JsonResponse({
+                            'isError': True,
+                            'Message': 'InValid Amount '
+                        })
 
-                        account.account_number = accnumber
-                        account.account_type = account_type
-                        account.account_name = accname
-                        account. amount = amount
+                    if int(amount) <= 0:
+                        return JsonResponse({
+                            'isError': True,
+                            'Message': 'Amount can not be 0 or Negative Number'
+                        })
 
-                        account.save()
+                    if account_id is not None:
+                        account = models.account.objects.filter(
+                            account_id=account_id).first()
 
-                        # for auditory
-                        username = request.user.username
-                        names = request.user.first_name + ' ' + request.user.last_name
-                        avatar = str(request.user.avatar)
-                        module = "Finance / update"
-                        action = 'updated a accont' + account.account_name
-                        path = request.path
-                        sendTrials(request, username, names,
-                                   avatar, action, module, path)
-                        return JsonResponse({'isError': False, 'Message': 'account has been updated'}, status=200)
-                    return JsonResponse({'isErro': False, 'Message': 'company feild is required'}, status=400)
+                        if account is not None:
 
-            except Exception as error:
-                username = request.user.username
-                name = request.user.first_name + '' + request.user.last_name
-                sendException(
-                    request, username, name, error
-                )
-                message = {
+                            account_type = models.account_types.objects.filter(
+                                type_id=accountype).first()
+
+                            account.account_number = accnumber
+                            account.account_type = account_type
+                            account.account_name = accname
+                            account. amount = amount
+
+                            account.save()
+
+                            # for auditory
+                            username = request.user.username
+                            names = request.user.first_name + ' ' + request.user.last_name
+                            avatar = str(request.user.avatar)
+                            module = "Finance / update"
+                            action = 'updated a accont' + account.account_name
+                            path = request.path
+                            sendTrials(request, username, names,
+                                       avatar, action, module, path)
+                            return JsonResponse({'isError': False, 'Message': 'account has been updated'}, status=200)
+                        return JsonResponse({'isErro': False, 'Message': 'company feild is required'}, status=400)
+                error_message = ''
+                for field, errors in edit_form.errors.items():
+                    for error in errors:
+                        if '__all__' not in field:
+                            error_message += f'{field}: {error}\n'
+                return JsonResponse({
                     'isError': True,
-                    'Message': 'on Error occurs . please try again or contact system adminstrator'
-
-                }
-        return JsonResponse(message, status=200)
+                    'Message': error_message
+                })
+            return JsonResponse({
+                'isError': True,
+                'Message': 'Method Not allowed'
+            })
+        return render(request, 'Base/403.html')
     except Exception as error:
         save_error(request, error)
