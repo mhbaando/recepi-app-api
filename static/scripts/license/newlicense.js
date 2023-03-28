@@ -1,36 +1,32 @@
 $(document).ready(function () {
-  
-  $("#state_name").on("change", function () {
-    state = $("#state_name option:selected").val()
-  
-    fetch('/customer/state_op/' + state, {
 
-      
-      method: 'GET',
-      headers: { "X-CSRFToken": csrftoken },
-      
-    }).then(res => res.json()).then(data => {
-      // succes
-      // state.attr('value', `${data.s_state}`)
-      // console.log(data.s_state);
-      console.log(data.s_state);
-      console.log(data.s_name);
-    
-    
-      if ($(this).val()) {
-        $("#place_issue").prop('disabled', false)
-        $("#place_issue").append(`<option value="${data.s_state}">${data.s_name}</option> `)
-      } else {
-        $("#place_issue option:eq(1)").prop("selected", true);
+  $("#state_name").on("change", function () {
+    let state = $("#state_name option:selected").val()
+  
+      if(state ==='Select State' || !state){
+        $("#place_issue").empty();
+        $("#place_issue").append(`<option value="">Select A Place of Issue</option> `)
         $("#place_issue").prop('disabled', true)
-      }
-      
-      
-    }).catch(err => {
-      Swal.fire('Error', err, 'error')
-    })
+    }else{
+           fetch('/customer/state_op/' + state, {
+            method: 'GET',
+            headers: { "X-CSRFToken": csrftoken },
+  
+      }).then(res => res.json()).then(data => {
+        if ($(this).val()) {
+          $("#place_issue").prop('disabled', false)
+          $("#place_issue").empty();
+          $("#place_issue").append(`<option value="${data.s_state}">${data.s_name}</option> `)
+        } else {
+          $("#place_issue option:eq(1)").prop("selected", true);
+          $("#place_issue").prop('disabled', true)
+        }
+      }).catch(err => {
+        Swal.fire('Error', err, 'error')
+      })
+    }
   })
-  })
+
 
   $("#submit").on("click", function () {
 
@@ -201,3 +197,4 @@ $(document).ready(function () {
     });
   }
 
+})

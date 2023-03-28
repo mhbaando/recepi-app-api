@@ -238,8 +238,10 @@ class company_edit(forms.Form):
 class Lisence_form(forms.Form):
     federal_state = forms.IntegerField()
     place_issue = forms.IntegerField()
-    license_type = forms.CharField(max_length=30, strip=True)
-    rv_number = forms.CharField(max_length=380, strip=True)
+    license_type = forms.IntegerField()
+    rv_number = forms.IntegerField()
+    rv_id = forms.IntegerField()
+    Type = forms.CharField(max_length=30, strip=True)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -248,5 +250,19 @@ class Lisence_form(forms.Form):
         for field in self.fields:
             value = cleaned_data.get(field)
             if value:
-                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', value)
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', str(value))
+        return cleaned_data
+
+class renew_form(forms.Form):
+    rv_number = forms.IntegerField()
+ 
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.is_valid():
+            raise forms.ValidationError('Form is not valid.')
+        for field in self.fields:
+            value = cleaned_data.get(field)
+            if value:
+                cleaned_data[field] = re.sub('[^0-9a-zA-Z]+', '-', str(value))
         return cleaned_data
